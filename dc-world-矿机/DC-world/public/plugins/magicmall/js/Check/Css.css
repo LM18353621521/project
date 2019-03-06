@@ -1,0 +1,14 @@
+﻿
+.txtInput_focus {
+	border: 1px solid #FF0000 !important;
+}
+
+.tips_ok {
+	margin-left:8px;
+}
+    .tips_ok img
+    {
+        margin-bottom:0px;
+    }
+        .tips_error {  margin: 2px 0px 0px 12px; padding: 0px 10px 0px 8px; height: 30px;  line-height: 30px;   white-space: nowrap; position: absolute; z-index: 9999; text-align:center;border: 1px solid transparent; border-radius: 4px; background-color: #F6BD12; color: #FFF; border-color: #faebcc;   font-size: 14px; border-radius: 3px; }
+        .tips_error::after { border-style: solid; border-color: transparent #F6BD12; border-width: 10px 10px 10px 0px; border-width: 8px 8px 8px 0px; content: ""; display: block; position: absolute; width: 0; z-index: 188; left: -7px; bottom: 6px; }

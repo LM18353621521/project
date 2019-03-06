@@ -1,0 +1,31 @@
+<include file="common/main" title="投诉建议" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                投诉建议
+            </div>
+            <a href="javascript:void(0)">
+                <i></i>
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="login">
+            <textarea rows="10" cols="55" name="message" id="message" placeholder="描述一下您的问题" style="border: 0;margin-left: 5px;"></textarea>
+        </div>
+        <input class="login_btn" id="login_btn" type="button" value="确认"/>
+    </body>
+    <block name="custom_js">
+        <script type="text/javascript">
+            $(function () {
+                $("#login_btn").click(function(){
+                    if($("#message").val()==""){
+                        return false;
+                    }
+                    ajax_post("/index.php/Vpay/Member/complaint_add",{"message":$("#message").val()},"/index.php/Vpay/Member/index");
+                })
+            })
+        </script>
+    </block>
+</block>

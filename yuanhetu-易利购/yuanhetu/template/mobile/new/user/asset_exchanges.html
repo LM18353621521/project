@@ -1,0 +1,124 @@
+<include file="public/header" title="余额兑换佣金" body="g4"/>
+<include file="public/header_nav" title="余额兑换佣金" href="javascript:history.back(-1)"/>
+<style type="text/css" media="screen">
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 40px;
+    }
+
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+</style>
+<form id="data_form" enctype="multipart/form-data">
+    <div class="loginsingup-input mobil_topup">
+        <div class="lsu">
+            <span>可用余额：<span class="red">{$user.distribut_money}</span></span>
+            <!--<input type="text" name="account" id="add_money" value=""  placeholder="0.00">-->
+        </div>
+        <div class="lsu lsu-recharge">
+            <span>兑换数量：</span>
+            <input type="text" name="num" id="num" value="" placeholder="请输入兑换数量" onblur="check_input(this,'after_num')"   onKeyUp="check_input(this,'after_num')">
+        </div>
+        <div class="lsu lsu-recharge">
+            <span>兑换比例：</span>
+            <input type="text" name="exchange_rate" id="exchange_rate" value="1:{$exchange_rate}" readonly
+                   placeholder="0.00">
+        </div>
+        <div class="lsu lsu-recharge">
+            <span>获得佣金：</span>
+            <input type="text" name="after_num" id="after_num" value="" placeholder="0.00" readonly>
+        </div>
+        <div class="lsu lsu-recharge">
+            <span>备注信息：</span>
+            <input type="text" name="remark" id="remark" value="" placeholder="请输入备注">
+        </div>
+        <div class="lsu-submit">
+            <input type="submit" onclick="submit_do();return false;" value="确认提交">
+        </div>
+    </div>
+</form>
+<!--充值方式-e-->
+<div class="mask-filter-div" style="display: none;"></div>
+
+<script type="text/javascript">
+    var exchange_rate = {$exchange_rate|default=0};
+    function check_input(that, input_name) {
+        //清除"数字"和"."以外的字符
+        var value = that.value;
+        value = value.replace(/[^\d.]/g, "");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g, "");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g, ".");
+        value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+        value = value.substring(0, 10);
+        that.value = value;
+        if (input_name) {
+            var after_num= value*exchange_rate;
+            after_num = after_num.toFixed(2);
+            $('input[name=' + input_name + ']').val(after_num);
+        }
+    }
+
+    //提交表单
+    function submit_do() {
+        var num = $('#num').val();
+        if (isNaN(num) || parseInt(num) <= 0 || num == '') {
+            layer.open({content: '请输入正确的兑换数量', time: 2});
+            return false;
+        }
+
+        var formdata = new FormData($('#data_form')[0]);
+        $.ajax({
+            type: "POST",
+            url: "/index.php/Mobile/User/asset_exchange",
+            data:formdata,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            // 告诉jQuery不要去设置Content-Type请求头
+            contentType: false,
+            dataType: "json",
+            success: function(data){
+                if (data.status == 1) {
+                    layer.open({content:data.msg,time:2});
+                    window.location.href='/index.php/Mobile/User/index';
+                }else{
+                    layer.open({content:data.msg,time:2});
+                }
+            },
+            error: function(data){
+                layer.open({content:'系统异常',time:2});
+            },
+        });
+
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link href="__PUBLIC__/mui/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <style>
+        .area {
+            margin: 20px auto 0px auto;
+        }
+
+        .mui-input-group:first-child {
+            margin-top: 20px;
+        }
+
+        .mui-input-group label {
+            width: 22%;
+        }
+
+        .mui-input-row label ~ input,
+        .mui-input-row label ~ select,
+        .mui-input-row label ~ textarea {
+            width: 78%;
+        }
+
+        .mui-checkbox input[type=checkbox],
+        .mui-radio input[type=radio] {
+            top: 6px;
+        }
+
+        .mui-content-padded {
+            margin-top: 25px;
+        }
+
+        .mui-btn {
+            padding: 10px;
+        }
+
+        .mui-input-row label ~ input, .mui-input-row label ~ select, .mui-input-row label ~ textarea {
+            margin-top: 1px;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<header class="mui-bar mui-bar-nav" style="background: #ef373b;" >
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" style="color: white" href="/index.php/Home/member/member" ></a>
+    <h1 class="mui-title" style="color: white ">防伪查询</h1>
+</header>
+<div class="mui-content">
+    <form class="mui-input-group">
+        <div class="mui-input-row">
+            <label>防伪</label>
+            <input type="text" class="mui-input-clear mui-input" placeholder="请输入防伪编号" ng-model="sn">
+        </div>
+    </form>
+    <div class="mui-content-padded">
+        <button class="mui-btn mui-btn-block mui-btn-danger" onclick="sel(sn)">查询</button>
+    </div>
+</div>
+<script src="__PUBLIC__/mui/js/mui.js"></script>
+</body>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        $scope.sel=function (sn) {
+            var data=$scope;
+            $http({
+                method:'POST',
+                data:{'sn':sn},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/member/fandsecurity"
+            }).then(function successCallback(response) {
+                console.log(response.data)
+                $scope.agent = response.data.data;
+                if(response.data.code == -1)
+                {
+                    layer.msg(response.data.msg)
+                }else{
+                    layer.msg(response.data.data)
+                }
+
+            }, function errorCallback(response) {
+
+            });
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,118 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+<div class="fixed-bar">
+    <div class="item-title">
+        <div class="subject">
+            <h3>团队奖项设置</h3>
+            <h5></h5>
+        </div>
+        <ul class="tab-base nc-row">
+            <foreach name="prize_list" item="v" key="k">
+                <li><a href="{:U('Distribut.Distribut/prize',['id'=>$id,'prize_info'=>$k])}" <if condition="$k==$prize_info">class="current"</if>><span>{$v}</span></a></li>
+            </foreach>
+        </ul>
+    </div>
+</div>
+<!-- 操作说明 -->
+<div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+        <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+        <span id="explanationZoom" title="收起提示"></span> </div>
+    <ul>
+        <li><span style="color: #009fff">注：(角色分销新增角色将会与会员等级角色同步)</span></li>
+        <li>若开启角色分销，普通会员启用默认分销规则，还可以去设置分销商等级设定分销规则</li>
+        <li>分销返佣金额每个商品单独设定，原则上不高于商品价格50%</li>
+    </ul>
+</div>
+<form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Systems.Systems/handle')}">
+<div class="ncap-form-default">
+
+    <div class="bDiv"  style="height: auto;">
+        <dl class="row">
+            <dt class="tit">是否开启团队奖</dt>
+            <dd class="opt">
+                <div class="onoff">
+                    <label for="team_prize_switch1" class="cb-enable  <if condition="$config['team_prize_switch'] eq 1">selected</if>">开启</label>
+                    <label for="team_prize_switch0" class="cb-disable <if condition="$config['team_prize_switch'] eq 0">selected</if>">关闭</label>
+                    <input type="radio"  id="team_prize_switch1" onclick="ajax_switch(1)" name="team_prize_switch" value="1" <if condition="$config['team_prize_switch'] eq 1">checked="checked"</if>>
+                    <input type="radio"  id="team_prize_switch0" onclick="ajax_switch(0)" name="team_prize_switch" value="0" <if condition="$config['team_prize_switch'] eq 0">checked="checked"</if> >
+                </div>
+                <p class="notic">注意：开关，切勿频繁修改分佣参数，容易引起系统运算报错</p>
+            </dd>
+        </dl>
+        <div class="ncap-form-default" id="team_prize_switch_on_off" <if condition="$config['switch'] eq 0">style="display: block;"</if>>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="team_prize_money"><em>*</em>单位</label>
+                </dt>
+                <dd class="opt">
+                    <label><input type="radio"  id="team_prize_unit" name="team_prize_unit" value="1" checked="checked" <if condition="$config['team_prize_unit'] eq 1">checked="checked"</if>>按金额</label>
+                    <p class="notic">金额单位：元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="team_prize_money"><em>*</em>金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="team_prize_money" value="{$config['team_prize_money']}" id="team_prize_money" class="input-txt">
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+<!--             <dl class="row">
+                <dt class="tit">
+                    <label for="team_prize_level"><em>*</em>参与层级数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="team_prize_level" value="{$config['team_prize_level']}" id="team_prize_level" class="input-txt">
+                    <p class="notic">第二层往后开始算层级数目，如 ：1  （只算第二层参与团队奖）</p>
+                </dd>
+            </dl> -->
+            <input type="hidden" name="inc_type" value="{$prize_info.'-'.$id}">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </div>
+</div>
+
+</div>
+</form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+function ajax_subimit(da){
+    $.ajax({
+        type: "POST",
+        url: "/index.php/Admin/Distribut.Distribut/ajax_prize",
+        data: da,
+        success: function(res){
+            layer.msg('保存成功！', {icon: 1});
+        }
+    })
+}
+
+function ajax_switch(num){
+    if (num == 1) {
+        // $('#team_prize_switch_on_off').show()
+    } else {
+        // $('#team_prize_switch_on_off').hide()
+        $('input[name="team_prize_switch"]:checked').val(0);
+        var da = $('#handlepost').serialize();
+        ajax_subimit(da);
+    }
+}
+var bool = $('input[name="team_prize_switch"]:checked').val();
+if (bool == 1) {
+    // $('#team_prize_switch_on_off').show()
+}
+function adsubmit(){
+    //异步提交
+    var da = $('#handlepost').serialize();
+    ajax_subimit(da);
+}
+
+</script>
+</body>
+</html>

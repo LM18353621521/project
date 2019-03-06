@@ -1,0 +1,261 @@
+<include file="common/header" title="找回密码" body=""/>
+<style>
+	.header {
+            background-color: #182341;
+
+        }
+        .header .header-title {
+            color: #fff!important;
+        }
+        .left-arrow:before{
+            border-color: #fff;
+        }
+        .header a {
+        	color: #FFFFFF;
+        }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="{:U('Login/login')}" class="left-arrow"></a>
+            </div>
+            <div class="header-title">找回密码</div>
+            <div class="header-right">
+                <a href="#"><a href="{:U('Dcworld/Login/login')}" class='fs28'>登录</a></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd pt200" style="background: url('__PUBLIC__/images/u_bg.jpg') no-repeat;background-size: cover;">
+        <!-- 页面内容-->
+
+            <div class="weui-cells bigpad_cells" style="background: none;">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd" style="margin-right:  8px;border-right:  1px solid #eeeeee;">
+                        <input type="text" class="weui-input" value="+86" id="picker" readonly="" style="
+    width:  .5rem;
+    background:  transparent;
+    border:  none;
+    color:  #fff;
+
+
+">
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input phone_input" placeholder="输入手机号码/账号" name="account"  onInput ="returnNum(this)" maxlength="11" type="tel">
+                    </div>
+                    <div>
+                        <i style="display: none;" class="clean_input"></i>
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" maxlength="6" id="yzm_input" onInput ="returnNum(this)" name="code" placeholder="输入验证码" type="number">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span class="getcode text-main" style="color: #ffffff;" id="mycode" onclick="sendemail()">获取验证码</span>
+                        <span class="reget_time" style="display: none;"></span>
+                    </div>
+                </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" maxlength="12"  id="yzm_input"  name="memorizing_word" placeholder="输入助记词" type="text">
+                        </div>
+                    </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-flex input_password">
+                            <div class="weui-flex__item">
+                                <input class="weui-input" placeholder="设置密码 （6-16个字符）" type="password" name="password">
+                            </div>
+                            <i class="eye"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-flex input_password">
+                            <div class="weui-flex__item">
+                                <input class="weui-input" placeholder="再次输入密码" name="repassword"  type="password">
+                            </div>
+                            <i class="eye"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="weui-cell border-none">-->
+                    <!--<div class="weui-cell__ft" style="display: block;width: 100%;">-->
+                        <!--<if condition="$act==1">-->
+                            <!--<a href="{:U('Login/forget',array('act'=>2))}" class="fs26 tr" style="color: #ffffff;">助记词找回密码？</a>-->
+                            <!--<else/>-->
+                            <!--<a href="{:U('Login/forget',array('act'=>1))}" class="fs26 tr" style="color: #ffffff;">短信验证找回密码？</a>-->
+                        <!--</if>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+
+
+        <div class="weui-btn-area login_btn mt90">
+            <!-- <a href="#" class="weui-btn weui-btn_primary">注册</a> -->
+            <button id="login_submit" type="button" class="weui-btn weui-btn_primary" onclick="confirm_form()" >确定修改</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).on("focus","input",function(){
+    }).on("blur","input",function(){
+        document.querySelector(".page-bd").scrollIntoView(true);
+    })
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $("#picker").picker({
+        title: "请选择区段",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['+86','+852','+853','+886']
+            }
+        ]
+    });
+    $(".add_lead-next").click(function () {
+        lc_num<5?lc_num++:6;
+        $("#add_staff .layui-tab-title li").eq(lc_num).addClass("layui-this").siblings("li").removeClass("layui-this");
+        $("#add_staff .layui-tab-item").eq(lc_num).addClass("layui-show").siblings(".layui-tab-item").removeClass("layui-show");
+    });
+    $(function () {
+        // 切换密码框是否可见
+        $(".input_password").on('click', '.eye', function () {
+            var $this = $(this);
+            if ($this.hasClass('close')) {
+                $this.removeClass('close');
+                $this.parents('.input_password').find('input').attr('type', 'password');
+            } else {
+                $this.addClass('close');
+                $this.parents('.input_password').find('input').attr('type', 'text');
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    function returnNum(_this) {
+        _this.value = _this.value.replace(/[^0-9]/g, '');
+    }
+</script>
+<script>
+    var countdown=60;
+    function sendemail(){
+        var type=1; //reg
+        var mobile= $('input[name=account]').val();
+        var pwd= $('input[name=password]').val();
+
+        // if(!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(number))){
+        if(mobile=='' || !(/^((13[0-9])|(14[0-9])|(15[0-9])|(17[0-9])|(18[0-9])|(19[0-9])|166|(147))\d{8}$/.test(mobile))){
+            $.toast("请输入正确的手机号", "cancel");
+        }else{
+            $.post("{:U('Login/sendCode')}", {account: mobile, type: 2}, function(data){
+                if (data.code == 0) {
+                    var obj = $("#mycode");
+                    settime(obj);
+                    $.toast("发送成功");
+                } else {
+                    var obj = $("#mycode");
+                    $.toast(data.msg, "cancel");
+                    obj.attr("onclick", "sendemail()");
+                    obj.html("获取验证码");
+                    countdown = 60;
+                }
+            },'json');
+        }
+    }
+
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr("onclick", "sendemail()");
+            obj.html("获取验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr("onclick", "null");
+            obj.html("重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                    settime(obj) }
+                ,1000)
+    }
+
+</script>
+<script>
+    var act="{$act}";
+    confirm_form = function () {
+        var account= $("input[name='account']").val();
+        var pwd= $('input[name=password]').val();
+        var repwd= $("input[name=repassword]").val();
+        var repwd= $("input[name=repassword]").val();
+        var code= $('input[name=code]').val();
+        var memorizing_word= $('input[name=memorizing_word]').val();
+
+        if(account==""){
+            $.toast("请输入手机号码！", "cancel");
+            return false;
+        }
+
+            if(code==""){
+                $.toast("请输入验证码!", "cancel");
+                return false;
+            }
+
+            if(memorizing_word==""){
+                $.toast("请输入助记词！", "cancel");
+                return false;
+            }
+
+        if(pwd==""){
+            $.toast("请输入新密码!", "cancel");
+
+            return false;
+        }
+
+        if (pwd!= repwd) {
+            $.toast("两次密码不一致！", "cancel");
+            return false;
+        }
+
+        $.ajax({
+            method: 'POST',
+            dataType: 'JSON',
+            data: {
+                "act":act,
+                "account" : account,
+                "code" : code,
+                "memorizing_word":memorizing_word,
+                "password" : pwd,
+                "repassword" :repwd,
+            },
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            url: "{:U('Login/forget')}",
+            success: function (data) {
+                if(data.code==-1){
+                    $.toast(data.msg, "cancel");
+                }
+                else if(data.code==0){
+                    $.toast("修改成功！");
+                    setTimeout(function () {
+                        // window.location.href="/index.php/Vpay/Login/login"
+                        window.location.href = "{:U('Login/login')}";
+                    },1500)
+                }
+            },error: function (result) {
+                $.toast("请求错误！", "cancel");
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

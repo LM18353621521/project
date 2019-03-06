@@ -1,0 +1,41 @@
+<style type="text/css">
+    .fansbox li {
+        border-bottom: none; 
+        padding: 0.5rem 0;
+    }
+</style>
+<!--<div class="weui-navbar" style="max-width:70%;">-->
+    <!--<a class="weui-navbar__item" style="color: #000;" >-->
+        <!--时间-->
+    <!--</a>-->
+    <!--<a class="weui-navbar__item"  style="color: #000; padding-left: 11%" >-->
+        <!--金额-->
+    <!--</a>-->
+<!--</div>-->
+<div class="weui-cell_bd"  style="border-bottom: 1px solid #eee;padding:0rem; font-weight: bold;">
+    <ul class="weui-media-box__info mt5" style="">
+        <li class="weui-media-box__info__meta pr10" style="width: 60%;" >
+            <span class="fs22" style="color: #333333;">时间</span></li>
+        <li class="weui-media-box__info__meta" style="width: 40%">
+            <span class="fs22" style="color: #333333;" >金额</span>
+        </li>
+    </ul>
+</div>
+<if condition="empty($quarter_region) eq false">    
+    <volist name="quarter_region" id="quarter">
+        <div class="weui-cell_bd"  style="border-bottom: 1px solid #eee;padding: 0.1rem 0px;">
+            <ul class="weui-media-box__info mt5" style="">
+                <li class="weui-media-box__info__meta pr10" style="width: 60%;" >
+                    <span class="fs22" style="color: #333333;">{$quarter.start_time|date='Y-m',###} ~ {$quarter.end_time|date='Y-m',###}</span></li>
+                <li class="weui-media-box__info__meta" style="width: 40%">
+                    <span class="fs22" style="color: #333333;" >{$quarter['jackpot']}</span>    
+                </li>
+            </ul>
+        </div>
+    </volist>
+<else/>
+    <div class="weui-cell__hd wx_cells_01" style="width:100%;text-align:center;margin-top:1rem;">
+        <img style="margin:0 auto;width:2.3rem;" src="/template/mobile/new2/static/images/none2.png">
+        <label class="weui-label" style="margin:0.1rem auto;width:4.5rem;">该区域还没有分红</label>
+    </div>
+</if>

@@ -1,0 +1,96 @@
+<include file="common/header" title="账户列表" body=""/>
+<style>
+    .weui-cell__hd{
+        width: 1.3rem;
+    }
+</style>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">账户列表</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd black_bg">
+        <!-- 页面内容-->
+        <div class="weui-cells">
+            <a href="{:U('Member/alipay_edit')}" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd account_style">
+                    <img src="__PUBLIC__/images/zfb.png" alt="">
+                    <span>支付宝</span>
+                </div>
+                <div class="weui-cell__bd fs28">
+                    <p>姓名：{$alipay['account_name']|default = '暂无'}</p>
+                    <p class="mt10 fs26" style="color: #606470;">账号：{$alipay['account']|default = '暂无'}</p>
+                </div>
+                <div class="weui-cell__ft account_edit">
+                    <if condition='$alipay[account]'>
+                        <span>编辑</span>
+                    <else/>
+                        <span>添加</span>
+                    </if>
+                </div>
+            </a>
+        </div>
+        <div class="weui-cells">
+            <a href="{:U('Member/wechat_edit')}" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd account_style">
+                    <img src="__PUBLIC__/images/wx.png" alt="">
+                    <span>微信</span>
+                </div>
+                <div class="weui-cell__bd fs28">
+                    <p>姓名：{$wechat['account_name']|default = '暂无'}</p>
+                    <p class="mt10 fs26" style="color: #606470;">账号：{$wechat['account']|default = '暂无'}</p>
+                </div>
+                <div class="weui-cell__ft account_edit">
+                    <if condition='$wechat[account]'>
+                        <span>编辑</span>
+                    <else/>
+                        <span>添加</span>
+                    </if>
+                </div>
+            </a>
+        </div>
+        <div class="weui-cells">
+            <a href="{:U('Member/bank_card_edit')}" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd account_style">
+                    <img src="__PUBLIC__/images/yhk.png" alt="">
+                    <span>银行卡</span>
+                </div>
+                <div class="weui-cell__bd fs28">
+                    <p>姓名：{$bank_card['account_name']|default = '暂无'}</p>
+                    <p class="mt10 fs26" style="color: #606470;">账号：{$bank_card['account']|default = '暂无'}</p>
+                </div>
+                <div class="weui-cell__ft account_edit">
+                    <if condition='$bank_card[account]'>
+                        <span>编辑</span>
+                    <else/>
+                        <span>添加</span>
+                    </if>
+                </div>
+            </a>
+        </div>
+        <div class="fs24 mt30" style="padding: 0 0.2rem;color: #81879a;display: flex;align-items: center;">
+            <img src="__PUBLIC__/images/icon_4.png" alt="" class="img30">
+            请认真核对账户信息，因填写错误造成的损失将无法挽回
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<include file="common/header" title="微信账户信息" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">微信账户信息</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <form method="post" id="form1" enctype="multipart/form-data">
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <input type="hidden" name="id" value="{$wechat['id']}"/>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">微信账号</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="account" value="{$wechat['account']}" placeholder="请输入微信账号">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">收款人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="account_name" value="{$wechat['account_name']}" placeholder="请输入收款人姓名">
+                    </div>
+                </div>
+
+            </div>
+            <div class="weui-cells__title">上传二维码</div>
+            <div class="weui-cells">
+                <div class="weui-cell flex-start">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="uploaderFiles">
+                                </ul>
+                                <div class="weui-uploader__input-box" id="fileList">
+                                    <input id="wechat_code" class="weui-uploader__input" onchange="handleFiles(this)" type="file" accept="image/*" multiple="">
+                                    <input type="hidden" name="account_code" value="{$wechat['account_code']}"/>
+                                    <div id="code_src"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <button type="button" onclick="submit_btn()" class="weui-btn weui-btn_primary">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    window.onload = function(){ 
+        var code_src = "{$wechat['account_code']}";
+        if (code_src.length>0) {
+            $('#fileList').removeClass('weui-uploader__input-box');
+            img = new Image();
+            img.src = code_src; //创建一个object URL，并不是你的本地路径
+            img.width = 77;
+            img.height = 77;
+            $('#code_src').html(img);
+        }
+    } 
+</script>
+<script type="text/javascript">
+    (function(win){
+        var callMobile = function (handlerInterface, handlerMethod, parameters){
+            var dic = {'handlerInterface':handlerInterface,'function':handlerMethod,'parameters': parameters};
+            win.webkit.messageHandlers[handlerInterface].postMessage(dic);
+        }
+        var init = function(){
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+                var instruct = {};
+                if ( !win.app || typeof win.app.Scavenging !== 'function') {
+                    instruct.Scavenging = function () {  //获取微信开放平台code
+                        callMobile('Photo','AppReturnBase64Image',{});
+                    }
+                }
+                win.app = instruct;
+            }
+        }
+        win.init_ISO = init;
+    })(window);
+
+    function AppReturnBase64Image(base64imag){
+        var html = '';
+        html += '< img style="width: 100%;height: 90%;" src="' + base64imag + '" alt="" class="" />';
+
+        $('#fileList').removeClass('weui-uploader__input-box');
+        img = new Image();
+        img.src = base64imag;
+        img.width = 77;
+        img.height = 77;
+        $('#code_src').html(img); //上传了收款码显示在页面
+        $.showLoading('图片上传中'); // Loading
+        $.ajax({
+            type: "POST",
+            url: "{:U('Dcworld/Member/baseUploadImg')}",
+            data: {file_img:base64imag,file_name:'wechat_code'},
+            dataType: 'json',
+            success: function (data) {
+                $.hideLoading();
+                $('input[name=account_code]').val(data.data.data);
+            }
+        });
+
+    }
+
+
+    window.URL = window.URL || window.webkitURL;
+    function handleFiles(obj) {
+        fileList = document.getElementById("fileList");
+        var files = obj.files;
+        img = new Image();
+        if(window.URL){
+            img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+            }
+            if(fileList.firstElementChild){
+                // fileList.removeChild(fileList.firstElementChild);
+            }
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function(e){
+                img.src = this.result;
+            }
+        }else{
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+        }
+        img.width = 77;
+        img.height = 77;
+        $('#fileList').removeClass('weui-uploader__input-box');
+        $('#code_src').html(img);
+
+        //ajax上传图片
+        var upload_img = new FormData();
+        upload_img.append('wechat_code',files[0]);
+        upload_img.append('file_name','wechat_code');
+
+        $.showLoading('图片上传中'); // Loading
+        $.ajax({
+            type: "POST",
+            url: "{:U('Dcworld/Member/uploadImg')}",
+            data: upload_img,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function (data) {
+                $.hideLoading();
+                if(data.data.status == 1){
+                    //将地址存入input框
+                    $('input[name=account_code]').val(data.data.data);
+
+                }else if(data.data.status == -1) {
+
+                    $.toast(data.data.data, 'cancel');
+                    return false;
+                }else{
+                    $.toast('网络开小差啦，请重新提交', 'cancel');
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+<script>
+    //提交表单
+    function submit_btn(){
+
+        var id = $('input[name="id"]').val();
+        // 验证姓名不为空
+        var account_name = $('input[name="account_name"]').val();
+        if (account_name == '' || account_name == null || account_name == undefined) {
+            $.toast('请输入收款人姓名', 'cancel');
+            return false;
+        }
+        //验证联系方式
+        var account = $('input[name="account"]').val();
+        if (account == '' || account == null || account == undefined) {
+            $.toast('请填写微信账户', 'cancel');
+            return false;
+        }
+        //二维码
+        var account_code = $('input[name="account_code"]').val();
+        if (account_code == '' || account_code == null || account_code == undefined) {
+            $.toast('请上传二维码', 'cancel');
+            return false;
+        }
+        var data = {id:id,account_name:account_name,account:account,account_code:account_code};
+        $.showLoading('数据提交中'); // Loading
+        $.ajax({
+            url: "{:U('Dcworld/Member/wechat_edit')}",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                $.hideLoading();
+                if(data.data.status == 1){
+                    //跳转
+                    $.toast(data.data.data);
+                    window.location.href = "{:U('Dcworld/Member/account_list')}";
+                }else {
+                    $.toast(data.data.data, 'cancel');
+                }
+            }
+        });
+    }
+
+</script> 
+</body>
+</html>

@@ -1,0 +1,38 @@
+<include file="common/header" title="{$articlecat.cat_name}" body=""/>
+
+<div class="page">
+
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">{$articlecat.cat_name}</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells">
+
+            <foreach name="articleList" item="vo">
+                <a class="weui-cell weui-cell weui-cell_access"  href="{:U('Member/article_detail',array('article_id'=>$vo['article_id']))}">
+                    <div class="weui-cell__bd">
+                        <p>{$vo.title}</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </foreach>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+</html>

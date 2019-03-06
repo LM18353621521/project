@@ -1,0 +1,118 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>维修属性分类 - 添加维修属性分类</h3>
+        <h5>添加或编辑维修属性分类</h5>
+      </div>
+    </div>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span id="explanationZoom" title="收起提示"></span>
+    </div>
+    <ul>
+      <!--<li>商品分类最多分为三级</li>-->
+      <li>添加或者修改属性时, 应注意选择对应的上级</li>
+    </ul>
+  </div>
+  <form action="{:U('Service.Service/addrepairspec')}" method="post" class="form-horizontal" id="category_form">
+    <div class="ncap-form-default">
+      <dl class="row">
+        <dt class="tit">
+          <label for="t_mane"><em>*</em>属性名称</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="名称" class="input-txt" name="name" value="{$info.name}">
+          <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit" colspan="2">
+          <label class="" for="s_sort">维修分类</label>
+        </dt>
+        <dd class="opt">
+          <div id="gcategory">
+            <select name="cat_id" id="cat_id"  class="class-select valid">
+                <!--<option value="0">顶级分类</option>-->
+                <foreach name="cat_info" item="v" >
+                    <option value="{$v[id]}" <if condition="$info['cat_id'] eq $v['id']">selected</if>>{$v[name]}</option>
+                </foreach>
+            </select>
+          </div>
+          <p class="notic">维修属性只能绑定关联维修一级分类显示</p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit">
+          <label>属性展示图片</label>
+        </dt>
+        <dd class="opt">
+          <div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.image}">
+                  <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.image}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                </a>
+            </span>
+            <span class="type-file-box">
+                <input type="text" id="image" name="image" value="{$info.image}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','service','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+          </div>
+          <span class="err"></span>
+          <p class="notic">请上传图片格式文件</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label for="t_sort"><em>*</em>排序</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" class="t_mane" name="sort_order" id="t_sort" value="{$info.sort_order}">
+          <span class="err" style="color:#F00; display:none;" id="err_sort_order"></span>
+          <p class="notic">根据排序进行由小到大排列显示。</p>
+        </dd>
+      </dl>
+        <dl class="row">
+            <dt class="tit">
+                <label>显示</label>
+            </dt>
+            <dd class="opt">
+                <div class="onoff">
+                    <label for="service_show1" class="cb-enable  selected">是</label>
+                    <label for="service_show0" class="cb-disable ">否</label>
+                    <input id="service_show1" name="is_show" value="1" type="radio" checked="checked">
+                    <input id="service_show0" name="is_show" value="0" type="radio" >
+                </div>
+                <p class="notic"></p>
+            </dd>
+        </dl>
+      <div class="bot"><a id="submitBtn" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);" onClick="adsubmit();">确认提交</a></div>
+    </div>
+    <input type="hidden" name="id" value="{$info.id}">
+  </form>
+</div>
+<script>
+
+function adsubmit()
+{
+    $('#category_form').submit();
+}
+function img_call_back(fileurl_tmp)
+{
+    $("#image").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+</script>
+</body>
+</html>

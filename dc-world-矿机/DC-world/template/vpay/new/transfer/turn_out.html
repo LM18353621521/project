@@ -1,0 +1,67 @@
+<include file="common/main" title="转出" body=""/>
+
+        <div class="nav_top flex">
+            <a  href="{:U('Index/index')}">
+                <i></i>
+            </a>
+            <div class="flex1">
+                转出
+            </div>
+            <a class="show_text" href="{:U('Transfer/turnout_record')}">
+               转出记录
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="login">
+            <div>
+                <label>对方账户</label>
+                <input style="text-align: right;" type="text" name="account" id="account" maxlength="11" placeholder="输入手机号/UID" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+            </div>
+        </div>
+        <a class="login_btn" id="next_btn" href="javascript:void(0);">
+            下一步
+        </a>
+        <a class="login_btn" href="{:U('Transfer/exchange_integral')}" style="margin-top: 0.1rem; ">
+            兑换积分
+        </a>
+    </body>
+    <block name="custom_js">
+        <script type="text/javascript">
+            $(function () {
+                $("#next_btn").click(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/index.php/Vpay/Transfer/turn_out",
+                        data: {"account":$("#account").val()},// 你的formid
+                        dataType: 'JSON',
+                        error: function (result) {
+                            layer.msg("请求错误！");
+                        },
+                        success: function (data) {
+                            resultredirect(data, "/index.php/Vpay/Transfer/turnout_infor");
+                        }
+                    });
+                });
+                function resultredirect(result, redurl) {
+                    if (result) {
+                        var code = result.code;
+                        var msg = result.msg;
+                        var res = result.data;
+                        if (code == 0) {
+                            //layer.msg(msg, {time: 1000})
+                            if (redurl) {
+                                setTimeout(function () {
+                                    window.location.href = redurl+"?id="+res.id;
+                                }, 1500)
+                            }
+                        } else {
+                            layer.msg(msg);
+                        }
+                    } else {
+                        layer.msg("返回为空");
+                    }
+                }
+            });
+        </script>
+    </block>
+</block>

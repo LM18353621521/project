@@ -1,0 +1,143 @@
+<include file="common/main" title="银行卡" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            银行卡
+        </div>
+        <a  href="javascript:void(0)">
+          
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <p class="b_tip">
+        <i></i>
+        <span>务必保证收款账户姓名、账户等信息真实有效</span>
+    </p>
+    <div class="bank_list" id="tpls">
+        <script id="tpl" type="text/html">
+            <ul>
+                {{each data as li i}}
+            <li class="flex" ng-repeat="li in bankList">
+                <div>
+                    <i></i>
+                </div>
+                <div class="flex1">
+                    <label>
+                        <span>
+                            {{li.realName}}
+                        </span>
+                        <span>
+                            {{li.bankName}}
+                        </span>
+                    </label>
+                    <p>
+                        {{li.no}}
+                    </p>
+                </div>
+                {{if li.isdefault == 1}}
+                <div class="red" ng-if="li.isdefault == 1">
+                    默认
+                </div>
+                {{/if}}
+                {{if li.isdefault == 0}}
+                <div ng-if="li.isdefault == 0">
+                    <button onclick="setDefault({{li.id}})">
+                        设为默认
+                    </button>
+                    {{/if}}
+                    <button onclick="del({{li.id}})">
+                        删除
+                    </button>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        </script>
+    </div>
+    <div style="height: 0.45rem;"></div>
+    <a style="position: fixed;bottom: 0;left: 5.6%;" class="login_btn" href="{:U('Member/addBankcard')}">
+        添加银行卡
+    </a>
+</body>
+
+        <script>
+                $.ajax({
+                    method: 'POST',
+                    dataType:'json',
+                    data: {
+                        "memberId": $("input[name='memberId']").val(),
+                        "nickname": $("input[name='nickname']").val()
+                    },
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: "/index.php/Vpay/Member/bankList",
+                    success: function (data) {
+
+                        if (data.code == 0) {
+                            var html = template('tpl',data);
+                            document.getElementById("tpls").innerHTML = html;
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    }, error: function (response) {
+
+                    }
+                });
+
+                //设置默认银行卡
+                setDefault = function (id) {
+                    $.ajax({
+                        method:'POST',
+                        dataType:'json',
+                        data:{
+                            "id" : id
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Member/setDefaultCard",
+                        success: function(data) {
+                            if(data.code==0){
+                                layer.msg(data.data);
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            }else {
+                                layer.msg(data.msg)
+                            }
+                        },
+                        error:function(response){
+                            //errorHandle(response);
+                         }
+                    });
+                }
+
+                //删除
+                del = function (id) {
+                    layer.confirm('确认删除？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            method:'POST',
+                            dataType:'json',
+                            data:{
+                                "id" : id
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Member/delBankCard",
+                            success:function (data) {
+
+                            if(data.code==0){
+                                layer.msg(data.data);
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            }else {
+                                layer.msg(data.msg)
+                            }},
+                            error:function(data) {
+
+                            }
+                     });
+                    })
+                }
+        </script>

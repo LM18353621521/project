@@ -1,0 +1,44 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>门店管理 - 编辑门店</h3>
+                <h5>网站系统门店管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="suppliersHandle" action="{:U('Supplier.Supplier/supplierTypeHandle')}" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="type_id" value="{$info.type_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>分类名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="name" value="{$info.name}" id="name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">门店分类名称</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function adsubmit(){
+        if($('input[name=name]').val() == ''){
+            layer.msg('分类名称不能为空！', {icon: 2,time: 1000});   //alert('少年，用户名不能为空！');
+            return false;
+        }
+        
+        $('#suppliersHandle').submit();
+    }
+    
+</script>
+</body>

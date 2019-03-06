@@ -1,0 +1,1517 @@
+img{
+    max-width:100%; 
+}
+.nav_top{
+    background: #111216;
+    color: #fff;
+    height: 0.44rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.nav_top a{
+    width: 20%;
+    display: block;
+    text-align: center;
+}
+.nav_top a:first-child i{
+    background:url("../images/go_back.png") no-repeat; 
+    background-size: 100%;
+    display: block;
+    width: 0.2rem;
+    height: 0.2rem;
+    margin:0.12rem 0 0 0.12rem;
+}
+.set_up i{
+    background:url("../images/home_icon_shezhi.png") no-repeat; 
+    background-size: 100%;
+    display: block;
+    width: 0.24rem;
+    height: 0.24rem;
+    margin:0.1rem 0.24rem;
+    float: right;
+}
+.nav_top div{
+    font-size: 0.16rem;
+    line-height: 0.44rem;
+    text-align: center;
+}
+.login{
+    background: #fff;
+    margin-top: 0.1rem;
+}
+.login div{
+    line-height:0.5rem;
+    height: 0.5rem;
+    border-bottom: 1px solid #eee;
+    padding:0 0.12rem;
+    position: relative;
+}
+.login div:last-child{
+    border: none;
+}
+.login div label{
+    color: #232323;
+    font-size:0.15rem;
+    width: 30%;
+}
+.login div input{
+    border: none;
+    font-size:0.15rem;
+    width: 66%;
+}
+.login_btn{
+    width: 88.8%;
+    margin:0.5rem auto 0;
+    height: 0.44rem;
+    line-height: 0.44rem;
+    text-align: center;
+    border: none;
+    background: #ff992e;
+    color: #fff;
+    border-radius: 3px;
+    display: block!important;
+    font-size: 0.16rem;
+}
+.login_btn:active{
+    opacity: 0.8;
+    background: #ff992e;
+}
+.go_rf a{
+    font-size: 0.14rem;
+    margin-top: 0.16rem;
+}
+.go_rf a:first-child{
+    color: #ff992e;
+    float: left;
+    margin-left: 0.21rem;
+}
+.go_rf a:last-child{
+    color: #999999;
+    float: right;
+    margin-right: 0.21rem;
+}
+.get_yzm{
+    display: inline-block;
+    font-size: 0.14rem;
+    line-height: 0.35rem;
+    height: 0.35rem;
+    width: 0.9rem;
+    border: 1px solid #ff992e;
+    color: #ff992e;
+    border-radius: 0.05rem;
+    float: right;
+    position: absolute;
+    right: 0.12rem;
+    top: 0.08rem;
+}
+.index_user{
+    background: #fff;
+    text-align: center;
+}
+.user_infor div{
+    max-width: 1.33rem;
+}
+.user_infor div a{
+    display: block;
+}
+.user_infor div:nth-child(2) {
+    width: 1.08rem;
+    height: 0.8rem;
+}
+.user_infor div:nth-child(2) div{
+    position: absolute;
+    top: -0.54rem;
+    width: 1.08rem;
+    height: 1.08rem;
+    border-radius: 50%;
+    background: #fff;
+}
+.user_infor div:nth-child(2) div img{
+    width: 1.01rem;
+    height: 1.01rem;
+    border-radius: 50%;
+    margin-top: 0.035rem;
+}
+.user_infor label{
+    font-size: 0.18rem;
+    margin:0.12rem 0 0rem;
+    overflow: hidden;
+    display: block;
+}
+.user_infor  p{
+    font-size: 0.12rem;
+    color: #999;
+}
+.user_sao{
+    width: 1.88rem;
+    margin: 0 auto;
+}
+.t1{
+    margin: 0.1rem 0;
+}
+.user_list{
+    background: #fff;
+    text-align: center;
+}
+.user_list ul li{
+    float: left;
+    width: 33.14%;
+    border-right:  0.01rem solid #eee; 
+}
+.user_list ul li:nth-child(1){
+    border-bottom: 1px solid #eee;
+}
+.user_list ul li:nth-child(2){
+    border-bottom: 1px solid #eee;
+}
+.user_list ul li:nth-child(3){
+    border-bottom: 1px solid #eee;
+}
+.user_list ul li:nth-child(3){
+    border-right: none;
+}
+.user_list ul li:nth-child(6){
+    border-right: none;
+}
+.user_list ul li a{
+    display: block;
+}
+.user_list ul li a div{
+    font-size: 0.15rem;
+    color: #323232;
+    padding-bottom: 0.2rem;
+}
+.user_list ul li i{
+    width: 0.42rem;
+    height: 0.28rem;
+    margin: 0.2rem auto 0.1rem;
+    display: block;
+}
+.user_list ul li:nth-child(1) i{
+    background: url("../images/home_icon_zchu.png") no-repeat;
+    background-size: 100%;
+}
+.user_list ul li:nth-child(2) i{
+    background: url("../images/home_icon_zru.png") no-repeat;
+    background-size: 100%;
+}
+.user_list ul li:nth-child(3) i{
+    background: url("../images/home_icon_mru.png") no-repeat;
+    background-size: 100%;
+}
+.user_list ul li:nth-child(4) i{
+    background: url("../images/home_icon_mchu.png") no-repeat;
+    background-size: 100%;
+}
+.user_list ul li:nth-child(5) i{
+    background: url("../images/home_icon_szzc.png") no-repeat;
+    background-size: 100%;
+}
+.user_list ul li:nth-child(6) i{
+    background: url("../images/home_icon_sc.png") no-repeat;
+    background-size: 100%;
+}
+.ba_list {
+    height: 0.4rem;
+    line-height: 0.4rem;
+    background: #fff;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    border-bottom: 1px solid #eee;
+}
+.ba_list ul li{
+    width: 33.33%;
+    text-align: center;
+    color: #666666;
+    font-size: 0.14rem;
+    float: left;
+}
+.list_show{
+    background: #fff;
+    margin-top: 0.1rem;
+}
+.list_show ul li{
+    height: 0.4rem;
+    line-height: 0.4rem;
+    border-bottom: 1px solid #eee;
+}
+.list_show ul li:last-child{
+    border-bottom: none;
+}
+.list_show ul li div{
+    color: #666666;
+    font-size: 0.14rem;
+    width: 33.33%;
+    float: left;
+    text-align: center;
+}
+.list_show ul li div:last-child{
+    font-size: 0.12rem;
+    color: #999;
+}
+.show_text{
+    font-size: 0.14rem;
+    line-height: 0.44rem;
+    color: #fff;
+}
+.turn_hed{
+    width: 100%;
+    height: 1.5rem;
+    background: url("../images/zhuanchu_bg_top.png") no-repeat;
+    background-size: cover; 
+    padding-top: 0.1rem;
+}
+.turn_icon{
+    width: 0.8rem;
+    height: 0.8rem;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+.turn_icon img{
+    width: 0.74rem;
+    height: 0.74rem;
+    border-radius: 50%;
+    margin: 0.03rem auto 0;
+}
+.turn_name{
+    text-align: center;
+    font-size: 0.15rem;
+    color: #fff;
+    margin-top: 0.2rem;
+}
+.l_tit{
+    background: #F6F6F6;
+    font-size: 0.14rem;
+    text-indent: 0.12rem;
+    line-height: 0.3rem;
+}
+.tips{
+    font-size: 0.12rem;
+    color: #999;
+    text-indent: 0.12rem;
+    display: inline-block;
+}
+.ex_t{
+    padding: 0.12rem;
+    background: #fff;
+    margin-top: 0.1rem;
+    margin-bottom: -0.1rem;
+}
+.ex_t div{
+    text-align: center;
+}
+.ex_t div label{
+    font-size: 0.18rem;
+}
+.ex_t div p{
+    font-size: 0.12rem;
+    color: #999;
+}
+.ex_t div:nth-child(2){
+    height: 0.45rem;
+    width: 0.01rem;
+    background: #C7C7C7;
+}
+.er_w{
+    width: 75%;
+    height: 3.5rem;
+    background: url("../images/share.png") no-repeat;
+    background-size: cover;
+    margin: 0.3rem auto;
+    text-align: center;
+}
+.er_w img{
+    width: 90%;
+    margin-top: 5%;
+}
+.c_into{
+    width: 0.6rem;
+    margin: 1rem auto 0;
+    display: block;
+    color: #fff;
+    font-size: 0.14rem;
+}
+.cz_list{
+    background: #fff;
+}
+.cz_list ul li{
+    float: left;
+    width: 1rem;
+    height: 0.36rem;
+    line-height: 0.36rem;
+    text-align: center;
+    margin: 0.06rem 0.112rem;
+    border: 1px solid #eeeeee;
+    font-size: 0.15rem;
+    border-radius: 5px;
+}
+.active5{
+    border: 1px solid #ff992e;
+    background: #ff992e;
+    color: #ffffff;
+}
+.add_bank{
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    background: #fff;
+    height: 0.7rem;
+    margin-top: 0.1rem;
+}
+.add_bank i{
+    background: url("../images/mairu_icon_addcard.png") no-repeat;
+    background-size: 100%; 
+    width: 0.4rem;
+    height: 0.3rem;
+    display: block;
+    margin: 0.1rem auto 0;
+}
+.add_bank p{
+    text-align: center;
+    color: #808080;
+    font-size: 0.14rem;
+}
+.sell_desc{
+    background: #fff;
+    margin-top: 0.1rem;
+}
+.sell_desc textarea{
+    border: none;
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    padding: 0.12rem;
+    font-size: 0.14rem;
+    height: 0.8rem;
+}
+.red{
+    color: #FC2B2B;
+}
+.l_left input{
+    text-align: right;
+}
+.l_left select{
+    border: none;
+    color: #666666;
+    float: right;
+    line-height: 0.49rem;
+    height: 0.49rem;
+    outline: none;
+    font-size: 0.15rem;
+}
+.xz_blank{
+    line-height: 0.5rem;
+    height: 0.5rem;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 0 0.12rem;
+    position: relative;
+}
+.mbtn{
+    width: 0.4rem;
+    height: 0.5rem;
+    float: left;
+}
+.xz_blank label{
+    font-size: 0.15rem;
+    float: left;
+}
+.mui-radio input[type='radio'], .mui-checkbox input[type='checkbox']{
+    left: 0;
+    top: 0.1rem;
+}
+.mui-radio input[type='radio']:checked:before, .mui-checkbox input[type='checkbox']:checked:before {
+    color: #ff992e;
+}
+.da_desc{
+    background: #fff;
+}
+.da_desc div{
+    padding: 0.12rem;
+}
+.da_desc div label{
+    color: #333333;
+    font-size: 0.15rem;
+    float: left;
+    width: 33%;
+}
+.da_desc div:first-child label i{
+    background: #F3A600;
+    width: 0.08rem;
+    height: 0.08rem;
+    display: inline-block;
+    position: relative;
+    top: -0.01rem;
+}
+.da_desc div:nth-child(2) label i{
+    background: #BF3936;
+    width: 0.08rem;
+    height: 0.08rem;
+    display: inline-block;
+    position: relative;
+    top: -0.01rem;
+}
+/*.da_desc div p{
+    color: #333333;
+    font-size: 0.15rem;
+    text-indent: 0.2rem;
+    width: 100%;
+    text-align: right;
+    word-break: break-all;
+    margin-top: 0.1rem;
+}*/
+.da_desc div p.copy{
+    width: 0.68rem;
+    height: 0.25rem;
+    line-height: 0.25rem;
+    float: right;
+    background: #ff992e;
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+}
+#textDiv{
+    padding: 0.12rem;
+}
+.dnav_list{
+    margin: 0.1rem 0;
+    background: #fff;
+    overflow: hidden;
+    padding:0 0.12rem;
+}
+.dnav_list ul li{
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+.dnav_list ul li div{
+    height: 0.16rem;
+    line-height: 0.16rem;
+    margin-bottom: 0.08rem;
+    color: #808080;
+}
+.dnav_list ul li i{
+    width: 0.38rem;
+    height: 0.38rem;
+    display: block;
+    margin: 0.04rem auto;
+}
+.dnav_list ul li:nth-child(1) i{
+    background: url("../images/szzc_icon_zchu.png") no-repeat;
+    background-size: 100%;
+}
+.dnav_list ul li:nth-child(2) i{
+    background: url("../images/szzc_icon_zchou.png") no-repeat;
+    background-size: 100%;
+}
+.dnav_list ul li:nth-child(3) i{
+    background: url("../images/szzc_icon_bao.png") no-repeat;
+    background-size: 100%;
+}
+.dnav_list ul li:nth-child(4) i{
+    background: url("../images/szzc_icon_jiaoyi.png") no-repeat;
+    background-size: 100%;
+}
+.dig_list{
+    background: #fff;
+}
+.dig_list li{
+    border-bottom: 1px solid #eee;
+}
+.dig_list li:last-child{
+    border: none;
+}
+.dig_list li label.d_top{
+    font-size: 0.15rem;
+    color: #333333;
+    padding:0.06rem 0.12rem;
+}
+.dig_list li label i{
+    background: #BF3936;
+    width: 0.08rem;
+    height: 0.08rem;
+    display: inline-block;
+    position: relative;
+    top: -0.01rem;
+}
+.dig_list li .d_desc{
+    padding: 0 0.1rem;
+}
+.dig_list li .d_desc div{
+    width: 33.33%;
+    text-align: center;
+    overflow: hidden;
+}
+.dig_list li .d_desc div:last-child{
+    width: 37%;
+}
+.dig_list li .d_desc div:first-child{
+    width: 29%;
+    text-align: left;
+}
+.dig_list li .d_desc div label{
+    font-size: 0.14rem;
+    color: #333;
+}
+.dig_list li .d_desc div p{
+    font-size: 0.12rem;
+    color: #999;
+}
+.dig_list li .d_desc div a{
+    color: #fff;
+    font-size: 0.12rem;
+    padding: 0.03rem;
+}
+.dig_list li .d_desc div a:first-child{
+    background: #18C481;
+    margin-right: 0.04rem;
+}
+.dig_list li .d_desc div a:last-child{
+    background: #FFCB18;
+}
+.tra_list{
+    height: 0.4rem;
+    line-height: 0.4rem;
+    background: #fff;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    border-bottom: 1px solid #eee;
+}
+.tra_list ul li{
+    width: 50%;
+    text-align: center;
+    color: #666666;
+    font-size: 0.14rem;
+    float: left;
+    position: relative;
+}
+.tra_list ul li.active6{
+    color: #ff992e;
+}
+.tra_list ul li.active6:after{
+    content: '';
+    position: absolute;
+    display: block;
+    border-bottom: 2px solid #ff992e;
+    width: 70%;
+    bottom: 0;
+    left: 15%;
+}
+.cd_nav{
+    width: 100%;
+    position: fixed;
+    background: #fff;
+    overflow: hidden;
+}
+.cd_nav li{
+    width: 33.33%;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+.cd_nav li i{
+    background: url("../images/zchou_icon_yure.png") no-repeat;
+    background-size: 100%;
+    width: 0.25rem;
+    height: 0.25rem;
+    display: block;
+    margin: 0.05rem auto; 
+}
+.cd_nav li:nth-child(2) i{
+    background: url("../images/zchou_icon_jinxing.png") no-repeat;
+    background-size: 100%;
+}
+.cd_nav li:nth-child(3) i{
+    background: url("../images/zchou_icon_end.png") no-repeat;
+    background-size: 100%;
+}
+
+.cd_nav li div{
+    font-size: 0.14rem;
+    line-height: 0.2rem;
+    height: 0.2rem;
+    margin-bottom: 0.05rem;
+}
+.cd_nav li.active a{
+    color: #ff992e;
+}
+.cd_nav li.active:after{
+    content: '';
+    position: absolute;
+    display: block;
+    border-bottom: 2px solid #ff992e;
+    width: 70%;
+    bottom: 0;
+    left: 15%;
+}
+.dr_list{
+    background: #fff;
+    margin-top: 0.1rem;
+}
+.dr_list .dr_t{
+    border-bottom: 1px solid #eee;
+    padding: 0.12rem; 
+}
+.dc_img{
+    width: 0.8rem;
+    height: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+.dc_img img{
+    width: 100%;
+}
+.dr_bg{
+    background: url("../images/zchou_status_yure.png") no-repeat;
+    background-size: 100%;
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.dr_desc{
+    margin-left: 0.1rem;
+}
+.dr_desc div:first-child label{
+    width: 50%;
+    display: block;
+    font-size: 0.14rem;
+    color: #333;
+}
+.dr_desc div:first-child p{
+    color: #FA4876;
+    text-indent: 0.2rem;
+    text-align: left;
+    position: relative;
+}
+.dr_desc div:first-child p i{
+    background: url("../images/zchou_icon_yure.png") no-repeat;
+    background-size: 100%;
+    width: 0.14rem;
+    height: 0.14rem;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0.05rem;
+}
+.dr_desc div{
+    font-size: 0.12rem;
+    margin-bottom: 0.05rem;
+    color: #999;
+}
+.dc_m div{
+    width: 33.33%;
+    text-align: center;
+    padding:0.06rem 0;
+}
+.dc_m div label{
+    font-size: 0.16rem;
+    color: #333;
+}
+.dc_m div label.red{
+    color: #FA4876;
+}
+.dc_m div p{
+    color: #999;
+    font-size: 0.12rem;
+}
+.d_last{
+    padding:0.06rem 0.12rem 0.12rem;
+}
+.d_scol{
+    width: 1.8rem;
+    height: 0.08rem;
+    background: #E1E1E1;
+    border-radius: 5px;
+    margin-top: 0.08rem;
+    margin-right: 0.1rem;
+    overflow: hidden;
+}
+.d_last label{
+    font-size: 0.14rem;
+    width: 0.8rem;
+    text-align: center;
+}
+.d_scol p{
+    width: 50%;
+    height: 0.08rem;
+    background: #ff992e;
+}
+.d_last .d_gm{
+    color: #fff;
+    background: #D7D7D7;
+    font-size: 0.14rem;
+    text-align: center;
+}
+.dcent_top{
+    height: 1.35rem;   
+    text-align: center;
+    background: url("../images/zhuanchu_bg_top.png") no-repeat;
+    background-size: cover;
+    color: #fff;
+}
+.zz_gm{
+    margin: 0 auto;
+    width: 1rem;
+    padding: 0.2rem 0 0.1rem;
+}
+.dcenter_bg {
+    background: url(../images/szzx_icon_crown.png) no-repeat;
+    background-size: 103%;
+    height: 0.3rem;
+    text-indent: 0.36rem;
+    margin-top: -0.07rem;
+    line-height: 0.4rem;
+}
+.money{
+    font-size: 0.25rem;
+    padding-bottom: 0.1rem;
+    border-bottom: 1px solid #ff992e;
+}
+.zz_bg{
+    height: 0.52rem;
+}
+.zz_bg label{
+    font-size: 0.14rem;
+}
+.zz_bg p{
+    font-size: 0.12rem;
+}
+.zz_bg a{
+    color: #fff;
+}
+
+.dcent_list{
+    height: 0.4rem;
+    background: #fff;
+    margin-top: 0.1rem;
+}
+.dcent_list ul li{
+    float: left;
+    width: 33.33%;
+    text-align: center;
+    font-size: 0.15rem;
+    line-height: 0.4rem;
+    position: relative;
+}
+.dcent_list ul li.active7{
+    color: #ff992e;
+}
+.dcent_list ul li.active7:after{
+    content: '';
+    position: absolute;
+    display: block;
+    border-bottom: 2px solid #ff992e;
+    width: 70%;
+    bottom: 0;
+    left: 15%;
+}
+.dc_bt{
+    text-align: center;
+    line-height: 0.5rem;
+    height: 0.5rem;  
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.dc_bt a{
+    color: #fff;
+    display: block;
+    width: 50%;
+    float: left;
+    font-size: 0.16rem;
+}
+.dc_bt a:first-child{
+    background: #F7AF31;  
+}
+.dc_bt a:last-child{
+    background: #1EC51E;
+}
+.xpay_tp{
+    background: #fff;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+.xpay_tp ul li{
+    float: left;
+    width: 33.33%;
+    text-align: center;
+}
+.xpay_tp ul li label{
+    color: #999;
+    font-size: 0.12rem;
+}
+.xpay_tp ul li span{
+    color: #333;
+}
+.xpay_tp ul li span i.rise{
+    background: url("../images/jiaoyi_icon_sheng.png") no-repeat;
+    background-size: 100%;
+    display: inline-block;
+    width: 0.1rem;
+    height: 0.1rem;
+}
+.xpay_tp ul li span i.fall{
+    background: url("../images/jiaoyi_icon_die.png") no-repeat;
+    background-size: 100%;
+    display: inline-block;
+    width: 0.1rem;
+    height: 0.1rem;
+}
+.xpay_nav{
+    background: #fff;
+    overflow: hidden;
+    margin-bottom: 0.1rem;
+}
+.xpay_nav ul li{
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+.xpay_nav ul li a{
+    display: block;
+}
+.xpay_nav ul li a i{
+    width: 0.35rem;
+    height: 0.35rem;
+    display: block;
+    margin: 0.1rem auto 0.05rem;
+}
+.xpay_nav ul li a div{
+    color: #999;
+    line-height: 0.2rem;
+    height: 0.2rem;
+    margin-bottom: 0.1rem;
+}
+.xpay_nav ul li:nth-child(1) a i{
+    background: url("../images/jiaoyi_icon_chushou.png") no-repeat;
+    background-size: 100%;
+}
+.xpay_nav ul li:nth-child(2) a i{
+    background: url("../images/jiaoyi_icon_goumai.png") no-repeat;
+    background-size: 100%;
+}
+.xpay_nav ul li:nth-child(3) a i{
+    background: url("../images/jiaoyi_icon_order.png") no-repeat;
+    background-size: 100%;
+}
+.xpay_nav ul li:nth-child(4) a i{
+    background: url("../images/jiaoyi_icon_jiaoyijilu.png") no-repeat;
+    background-size: 100%;
+}
+.xpay_m{
+    background: #fff;
+    overflow: hidden;
+    height: 0.4rem;
+    line-height: 0.4rem;
+}
+.xpay_m ul li{
+    float: left;
+    text-align: center;
+    font-size: 0.15rem;
+    width: 33.3%;
+    position: relative;
+}
+.xpay_m ul li.active8{
+    color: #ff992e;
+}
+.xpay_m ul li.active8:after{
+   content: '';
+    position: absolute;
+    display: block;
+    border-bottom: 2px solid #ff992e;
+    width: 70%;
+    bottom: 0;
+    left: 15%;
+}
+.pay_list{
+    margin-top: 0.1rem;
+    background: #fff;
+}
+.pay_list ul li{
+    border-bottom: 1px solid #eee;
+    padding: 0.12rem;
+}
+.pay_list ul li:last-child{
+    border-bottom: none;
+}
+.pay_list ul li div:first-child{
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 50%;
+    text-align: center;
+}
+.pay_list ul li div:first-child img{
+    width: 100%;
+}
+.pay_list ul li div:nth-child(2){
+    margin-left: 0.12rem;
+}
+.pay_list ul li div:nth-child(2) label{
+    font-size: 0.14rem;
+    color: #333;
+}
+.pay_list ul li div:nth-child(2) p{
+    font-size: 0.12rem;
+    color: #999;
+}
+.pay_list ul li div:last-child label{
+    color: #ff992e;
+    font-size: 0.14rem;
+}
+.pay_list ul li div:last-child button{
+    color: #fff;
+    background: #FA4876;
+    font-size: 0.14rem;
+    padding: 0.03rem 0.06rem;
+    border-radius: 3px;
+    outline: none;
+}
+.order_l{
+    background: #fff;
+    width: 85%;
+    margin: 0.2rem auto;
+    padding: 0.1rem;
+}
+.order_l div{
+    padding: 0.12rem;
+    border-bottom: 1px solid #eee;
+}
+.order_l div input{
+    border: none;
+    color: #666;
+}
+.order_l div label{
+    color: #999;
+}
+.order_l button{
+    width: 70%;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    background: #ff992e;
+    color: #fff;
+    border: 5px;
+    margin: 0.2rem auto;
+    outline: none;
+}
+.set_infor{
+    background: url("../images/shezhi_bg_top.png") no-repeat;
+    background-size: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+.set_infor .user_img{
+    width: 0.68rem;
+    height: 0.68rem;
+    text-align: center;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0.6rem auto 0;
+    /* padding-top: 1rem; */
+    /* margin-top: -0.5rem; */
+}
+.set_infor .user_img img{
+    width: 100%;
+}
+.suser_infor{
+    height: 0.4rem;
+    line-height: 0.4rem;
+    overflow: hidden;
+}
+.suser_infor div{
+    width: 50%;
+    float: left;
+    font-size: 0.14rem;
+}
+.suser_infor div ul li{
+    float: left;
+    margin-left:  0.03rem;
+}
+.suser_infor div ul{
+    display: inline-block;
+}
+.suser_infor div ul li i{
+    background: url("../images/shezhi_icon_xinyong.png") no-repeat;
+    background-size: 100%;
+    display: block;
+    width: 0.12rem;
+    height: 0.12rem;
+}
+.suser_list{
+    margin-top: 0.1rem;
+}
+.suser_list div{
+    background: #fff;
+}
+.suser_list div a{
+    display: block;
+    padding: 0.12rem 0.12rem 0.12rem 0;
+    margin-left: 0.12rem;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+.suser_list div a label{
+    font-size: 0.15rem;
+    text-indent: 0.4rem;
+    position: relative;
+}
+.suser_list div a i{
+    width: 0.1rem;
+    height: 0.18rem;
+    background:url("../images/shezhi_icon_next.png") no-repeat;
+    background-size: 100%; 
+    display: block;
+    position: absolute;
+    top: 0.15rem;
+    right: 0.12rem;
+}
+.suser_list div a label i{
+    width: 0.3rem;
+    height: 0.3rem;
+    display: block;
+    position: absolute;
+    top: -0.02rem;
+    left: 0;
+}
+.suser_list div:nth-child(1) a label i{
+    background:url("../images/shezhi_icon_nicheng.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(2) a label i{
+    background:url("../images/shezhi_icon_card.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(3) a label i{
+    background:url("../images/shezhi_icon_zichan.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(4) a label i{
+    background:url("../images/shezhi_icon_dengmi.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(5) a label i{
+    background:url("../images/shezhi_icon_zhimi.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(6) a label i{
+    background:url("../images/shezhi_icon_gonggao.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(7) a label i{
+    background:url("../images/shezhi_icon_xiaoxi.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(8) a label i{
+    background:url("../images/shezhi_icon_dianpu.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(9) a label i{
+    background:url("../images/shezhi_icon_dingdan.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(10) a label i{
+    background:url("../images/shezhi_icon_dizhi.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(11) a label i{
+    background:url("../images/shezhi_icon_tj.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(12) a label i{
+    background:url("../images/shezhi_icon_fenxiang.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(13) a label i{
+    background:url("../images/shezhi_icon_banben.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:nth-child(14) a label i{
+    background:url("../images/shezhi_icon_guanyu.png") no-repeat;
+    background-size: 100%; 
+}
+.suser_list div:last-child a{
+    border-bottom: none;
+}
+.suser_list div:nth-child(3) a{
+    border-bottom: none;
+}
+.suser_list div:nth-child(5) a{
+    border-bottom: none;
+}
+.suser_list div:nth-child(7) a{
+    border-bottom: none;
+}
+.suser_list div:nth-child(10) a{
+    border-bottom: none;
+}
+.sign_out{
+    height: 0.45rem;
+    line-height: 0.45rem;
+    text-align: center;
+    margin: 0.1rem auto 0.3rem;
+    font-size: 0.16rem;
+    background: #f1ad46;
+    color: #fff;
+    border-radius: 5px;
+    width: 3rem;
+}
+.b_tip{
+    padding: 0.05rem 0;
+}
+.b_tip i{
+    display: inline-block;
+    width: 0.02rem;
+    height: 0.18rem;
+    background: #FD2543;
+    position: relative;
+    top: 0.02rem;
+    left: 0.12rem;
+}
+.b_tip span{
+    font-size: 0.14rem;
+    display: inline-block;
+    text-indent: 0.15rem;
+}
+.bank_list ul li{
+    margin-bottom: 0.1rem;
+    background: #fff;
+    padding: 0.12rem;
+}
+.bank_list ul li i{
+    background:url("../images/mairu_icon_addcard.png") no-repeat;
+    background-size: 100%; 
+    display: block;
+    width: 0.4rem;
+    height: 0.3rem;
+    margin-top: 0.1rem;
+}
+.bank_list ul li div:nth-child(2){
+    margin-left: 0.12rem;
+    font-size: 0.14rem;
+}
+.bank_list ul li div:nth-child(2) label{
+    color: #666;
+}
+.bank_list ul li div:nth-child(2) p{
+    color: #999;
+}
+.bank_list ul li button{
+   width: 0.6rem;
+   background: #ff992e;
+   height: 0.25rem;
+   line-height: 0.25rem;
+   color: #fff;
+   outline: none;
+   border-radius: 5px;
+   font-size: 0.12rem;
+}
+.bank_list ul li button:last-child{
+    background: #fa4876;
+    margin-top: 0.05rem;
+}
+.user_a_top{
+    background: #fff;
+    text-align: center;
+    padding: 0.12rem 0;
+}
+.user_a_top div label{
+    font-size: 0.12rem;
+    color: #999;
+}
+.user_a_top div p{
+    font-size: 0.15rem;
+    color: #666;
+}
+.user_a_img{
+    margin-top: 0.16rem;
+}
+.user_a_img i{
+    width: 0.38rem;
+    height: 0.19rem;
+    background: url("../images/zichan_icon_jiantou.png") no-repeat;
+    background-size: 100%;
+    display: block;
+}
+.user_a_list{
+    background: #fff;
+    overflow: hidden;
+}
+.user_a_list ul li{
+    width: 44.5%;
+    float: left;
+    border-bottom: 1px solid #eee;
+    padding: 0.1rem;
+    overflow: hidden;
+    height: 0.5rem;
+}
+.user_a_list ul li label{
+    font-size: 0.15rem;
+    color: #333;
+}
+.user_a_list ul li p{
+    font-size: 0.12rem;
+    color: #999;
+}
+.user_a_list ul li:nth-child(2n+1){
+    border-right: 1px solid #eee;
+}
+.notice_list ul li{
+    background: #fff;
+    padding: 0.12rem;
+    margin-top: 0.1rem;
+    position: relative;
+}
+.notice_list ul li label{
+    font-size: 0.14rem;
+    color: #999;
+}
+.notice_list ul li p{
+    font-size: 0.14rem;
+    color: #333;
+    width: 80%;
+}
+.notice_list ul li  i{
+    width: 0.1rem;
+    height: 0.18rem;
+    background: url(../images/shezhi_icon_next.png) no-repeat;
+    background-size: 100%;
+    display: block;
+    position: absolute;
+    top: 0.3rem;
+    right: 0.12rem;
+}
+.n_det{
+    padding: 0.12rem;
+}
+.n_det h3{
+    text-align: center;
+}
+.n_det p{
+    word-break: break-all;
+}
+.bank_show{
+    background: #fff;
+    padding: 0.12rem;
+    margin-top: 0.1rem;
+}
+.bank_show a{
+    border-bottom:1px solid #eee;
+    color: #999;
+    position: relative;
+    display: block;
+}
+.bank_show a i{
+    width: 0.1rem;
+    height: 0.18rem;
+    background: url(../images/shezhi_icon_next.png) no-repeat;
+    background-size: 100%;
+    display: block;
+    position: absolute;
+    top: 0rem;
+    right: 0.12rem;
+}
+.more_show{
+    position: relative;
+}
+.more_show i{
+    background: url(../images/more_show.png) no-repeat;
+    background-size: 100%;
+    display: block;
+    width: 0.2rem;
+    height: 0.2rem;
+    margin-top: 0.12rem;
+    margin-left: 0.4rem;
+}
+.nav_top div.list_xz{
+    display: none;
+    position: absolute;
+    background: #ff992e;
+    top: 0.5rem;
+    right: 0.12rem;
+    line-height: 0.3rem;
+    width: 1rem;
+}
+.nav_top .list_xz a{
+    width: 100%;
+    color: #fff;
+    font-size: 0.12rem;
+}
+.masks{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+}
+.pwd-box{
+    width:3rem;
+    background: #fff;
+    padding-left: 0.01rem;
+    position: absolute;
+    border: 1px solid #9f9fa0;
+    border-radius: 3px;
+    overflow:hidden;
+    top: 40%;
+    padding: 0.12rem;
+    margin-left: -1.63rem;
+    left: 50%;
+    display: none;
+    z-index: 111;
+}
+.pwd-box input[type="tel"]{
+    width: 100%;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    font-size: 0.16rem;
+    opacity: 0;
+    z-index: 1;
+    letter-spacing: 0.35rem;
+}
+.fake-box input{
+    width: 0.44rem;
+    height: 0.4rem;
+    border: none;
+    text-align: center;
+    font-size: 0.18rem;
+    border: 1px solid #eee;
+}
+.pwd-box label{
+    text-align: center;
+    display: block;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    margin-top: 0.1rem;
+}
+input[type=button]{
+    -webkit-appearance:none;
+    outline:none
+}
+
+.dowm_bg{
+    background: url("../images/down_bg.png") no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.down_img{
+    text-align: center;
+    margin: 0rem auto;
+    padding: 0.6rem 0;
+}
+.down_img p{
+    font-size: 0.28rem;
+    color: #fff;
+    margin:0.1rem 0;
+    text-shadow: 0 1px 3px #000;
+    letter-spacing: 2px;
+}
+.down_app a{
+    display: block;
+    width: 90%;
+    margin: 0.1rem auto;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    text-align: center;
+    color: #fff;
+    background: #44ACFD;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+.down_app a:first-child{
+    font-size: 0.12rem;
+}
+.down_app a:last-child{
+    font-size: 0.14rem;
+}
+.down_desc{
+    position: absolute;
+    bottom: -0.8rem;
+    text-align: center;
+    font-size: 0.2rem;
+    color: #fff;
+    text-shadow: 0 1px 3px #000;
+    width: 100%;
+    letter-spacing: 5px;
+}
+
+.masks-remark{
+    width:3rem;
+    height: 1.76rem;
+    background: #fff;
+    padding-left: 0.01rem;
+    position: absolute;
+    /*border: 1px solid #9f9fa0;*/
+    text-align: center;
+    border-radius: 3px 3px 0px 0px;
+    top: 20%;
+    padding: 0.12rem;
+    margin-left: -1.63rem;
+    left: 50%;
+    display: none;
+    z-index: 111;
+}
+.pwd-box-remark{
+    width:3rem;
+    background: #fff;
+    padding-left: 0.01rem;
+    position: absolute;
+    border: 1px solid #9f9fa0;
+    border-radius:0px 0px 3px 3px;
+    overflow:hidden;
+    top: 46%;
+    padding: 0.12rem;
+    margin-left: -1.63rem;
+    left: 50%;
+    display: none;
+    z-index: 111;
+}
+.pwd-box-remark input[type="tel"]{
+    width: 100%;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    font-size: 0.16rem;
+    opacity: 0;
+    z-index: 1;
+    letter-spacing: 0.35rem;
+}
+.pwd-box-remark input{
+    width: 0.44rem;
+    height: 0.4rem;
+    border: none;
+    text-align: center;
+    font-size: 0.18rem;
+    border: 1px solid #eee;
+}
+.pwd-box-remark label{
+    text-align: center;
+    display: block;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    margin-top: 0.1rem;
+}

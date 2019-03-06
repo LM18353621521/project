@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 收益查询</title>
+    <style type="text/css" media="screen">
+    .picker-item{
+      touch-action: none;
+    }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">收益查询</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cell weui-lmg">
+            <div class="weui-cell__bd timer">
+                <label><input class="weui-input" id="time3" type="text" value="2012-12-12 "></label>
+                <span>-</span>
+                <label><input class="weui-input" id="time4" type="text" value="2012-12-12 "></label>
+                <span><button class="btn-pm" onclick="load_more(1)">查询</button></span>
+            </div>
+         </div>
+         <div class="weui-cells tr" id="div1">
+            <div class="weui-cell">
+                <div class="weui-cell__bd one-en">时间</div>
+                <!-- <div class="weui-cell__bd one-en">会员账户</div> -->
+                <!-- <div class="weui-cell__bd one-en">会员姓名</div> -->
+                <div class="weui-cell__bd one-en">收入</div>
+                <div class="weui-cell__bd one-en">备注</div>
+            </div>
+            
+         </div>
+          <p id="zzjz" style="text-align: center" hidden="">正在加载</p>
+            <p id="jzwc" style="text-align: center" hidden="">已经全部加载完了</p>
+            <p id="xtyc" style="text-align: center" hidden="">系统异常，请刷新</p>
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+  $("#time3").datetimePicker({
+        times: function () {
+          return [];
+        },
+        value: '2018-12-01 ',
+        onChange: function (picker, values, displayValues) {
+          //console.log(values);
+        }
+  });
+  $("#time4").datetimePicker({
+        times: function () {
+          return [];
+        },
+        value: '2019-12-31 ',
+        onChange: function (picker, values, displayValues) {
+          //console.log(values);
+        }
+  });
+load_more();
+// 当前页数
+var p = 0;
+// 加载完毕标志
+var endflg =  0;
+// 防止重复加载
+var busy = false;
+// 存放数据
+var logs = [];
+function load_more($type=0){
+    if($type==1){
+      p = 0;
+      endflg =  0;
+      busy = false;
+    }
+    if(busy){
+        return false;
+    }
+    busy = true;
+    $.ajax({
+            method:'POST',
+            data:{
+                "p" : p,
+                'time1':$('#time3').val(),
+                'time2':$('#time4').val()
+            },
+            dataType: "json",
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            url: "/index.php/Mobile/User/income_inquiry",
+            success: function(data){              
+                busy = false;
+                $('#zzjz').show();
+                $('#jzwc').hide();
+                if(data.length<15&&p==0){
+                    $('#zzjz').hide();
+                    $('#jzwc').show();
+                }
+                var div1='';
+                if(p==0){
+                     div1+='<div class="weui-cell"><div class="weui-cell__bd one-en">'+'时间'+
+                    /*'</div><div class="weui-cell__bd one-en">'+'会员账户'+
+                    '</div><div class="weui-cell__bd one-en">'+'会员姓名'+*/
+                    '</div><div class="weui-cell__bd one-en">'+'收入'+
+                    '</div><div class="weui-cell__bd one-en">'+'备注'+
+                    '</div></div>';
+                    $('#div1').html('');
+                }
+                $.each(data,function(index,item){
+                    div1+='<div class="weui-cell"><div class="weui-cell__bd one-en">'+data[index].createTime+
+                    // '</div><div class="weui-cell__bd one-en">'+data[index].mobile+
+                    // '</div><div class="weui-cell__bd one-en">'+data[index].userId+
+                    '</div><div class="weui-cell__bd one-en">'+data[index].num+
+                    '</div><div class="weui-cell__bd one-en">'+data[index].type_str+
+                    '</div></div>';
+                    
+                })
+                $('#div1').append(div1);
+
+                if(data.length==0){
+                    $('#jzwc').show();
+                    $('#zzjz').hide();
+                    var endflg = 1;
+                    return false;
+                }
+                p++;
+            },error:function(){
+                $('#xtyc').show();
+                $('#zzjz').hide();
+                $('#jzwc').hide();
+            }
+        });
+}
+var loading = false;  //状态标记
+    $('.page-bd').infinite().on("infinite", function() {
+        
+      if(loading) return;
+      loading = true;
+      setTimeout(function() {
+        //console.log(9);
+        load_more();
+        
+        loading = false;
+      }, 1500);   //模拟延迟
+    });
+</script>
+
+</body>
+</html>

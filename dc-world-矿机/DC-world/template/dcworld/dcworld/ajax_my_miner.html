@@ -1,0 +1,46 @@
+<foreach name="$user_miner" item="vo">
+    <div class="user-ul_li">
+        <div class="weui-cell bor-1px-b border-after_none">
+            <div class="weui-cell__hd">
+                <img src="{$vo.original_img}" alt="">
+            </div>
+            <div class="weui-cell__bd">
+                <p>运行天数：<span>{$vo.release_days}天</span></p>
+                <p>剩余算力：<span>{$vo.income_surplus}</span></p>
+            </div>
+            <div class="weui-cell__ft">
+                <p>昨日产值：<span>{$vo.earnings|default="0.00"}DC</span>
+                <p>累计产值：<span>{$vo.income_all - $vo.income_surplus}</span></p>
+                </p>
+            </div>
+        </div>
+        <!--<div class="weui-cell border-befor_none">-->
+            <!--<div class="weui-cell__hd">-->
+                <!--运行中，剩余&nbsp;<span class="color1">{$vo.scrap_days - $vo.release_days}</span>&nbsp;天-->
+            <!--</div>-->
+            <!--<div class="weui-cell__bd">-->
+
+            <!--</div>-->
+            <!--<div class="weui-cell__ft">-->
+                <!--到期时间：{$vo.time_remaining}-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="weui-cell border-befor_none">
+            <div class="weui-cell__hd">
+                <if condition="$vo.status eq 2">
+                    退役矿机...
+                    <else />
+                    矿机运行中...
+                </if>
+
+            </div>
+            <div class="weui-cell__bd">
+
+            </div>
+            <div class="weui-cell__ft">
+                <p>激活时间：{$vo.add_time || date="Y-m-d",###}</p>
+                <p>到期时间：{$vo.time_remaining}</p>
+            </div>
+        </div>
+    </div>
+</foreach>

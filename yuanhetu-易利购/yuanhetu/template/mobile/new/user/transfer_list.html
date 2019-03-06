@@ -1,0 +1,42 @@
+<include file="public/header" title="转让记录" body=""/>
+<include file="public/header_nav" title="转让记录" href="javascript:history.back(-1)"/>
+<div class="application-record">
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li class="li1" style="width: 30%"><span>收款用户</span></li>
+            <li class="li2" style="width: 40%"><span>转让数量</span></li>
+            <li class="li3" style="width: 30%"><span>转让时间</span></li>
+        </ul>
+        <foreach name="list" item="v">
+            <ul>
+                <li class="li1" style="width: 30%"><span>{$v[toUserAccount]}</span></li>
+                <li class="li2" style="width: 40%"><span>{$v[money]}</span></li>
+                <li class="li3" style="width: 30%"><span>{$v[createTime]}</span></li>
+            </ul>
+        </foreach>
+    </div>
+    <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
+        <a >已显示完所有记录</a>
+    </div>
+    <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+</div>
+<script>
+    var page = 1;
+    function ajax_sourch_submit(){
+        page++;
+        $.ajax({
+            type:'GET',
+            url:'/index.php/Mobile/User/transfer_list/is_ajax/1/p/'+page,
+            success:function(data){
+                if($.trim(data)==''){
+                    $('#getmore').show();
+                    return false;
+                }else{
+                    $('.maleri30').append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

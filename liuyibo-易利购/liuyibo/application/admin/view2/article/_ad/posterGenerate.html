@@ -1,0 +1,399 @@
+<include file="public/layout"/>
+<style>
+    canvas {
+        display: inline-block;
+    }
+
+    .resize-container {
+        position: absolute;
+        display: inline-block;
+        cursor: move;
+        margin: 0 auto;
+    }
+
+    .resize-container img {
+        display: block;
+    }
+
+    .click_icon{
+        outline: 2px dashed rgba(222, 60, 80, .9);
+    }
+
+    .click_icon .resize-handle-ne,
+    .click_icon .resize-handle-se,
+    .click_icon .resize-handle-nw,
+    .click_icon .resize-handle-sw {
+        position: absolute;
+        display: block;
+        width: 10px;
+        height: 10px;
+        background: rgba(222, 60, 80, 0.9);
+        z-index: 999;
+    }
+
+    .resize-handle-nw {
+        top: -5px;
+        left: -5px;
+        cursor: nw-resize;
+    }
+
+    .resize-handle-sw {
+        bottom: -5px;
+        left: -5px;
+        cursor: sw-resize;
+    }
+
+    .resize-handle-ne {
+        top: -5px;
+        right: -5px;
+        cursor: ne-resize;
+    }
+
+    .resize-handle-se {
+        bottom: -5px;
+        right: -5px;
+        cursor: se-resize;
+    }
+    .div-size{
+        width: 450px;
+        height:600px;
+        margin: 0 auto;
+    }
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>海报制作</h3>
+                <h5>编辑生成海报</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>上传背景图片请使用图片格式的文件,建议图片尺寸(宽*高)接近手机的屏幕尺寸, 否则将导致前端广告显示不友好。</li>
+            <li>当前选中的图标才可移动和改变尺寸。</li>
+        </ul>
+    </div>
+    <div class="container" style="float: left;padding: 4em;display: block;">
+        <div class="content div-size" id="myPoster" style="text-align: center;">
+            <div class="component div-size" style="border: 3px solid #49708a;overflow: hidden;">
+                <!--二维码-->
+                <div class="resize-container resize_mark1">
+                    <span class="resize-handle resize-handle-nw resize_mark1"></span>
+                    <span class="resize-handle resize-handle-ne resize_mark1"></span>
+                    <img class="resize-image1" onclick="click_icon(this,1);" src="{$qrcodeImg}">
+                    <span class="resize-handle resize-handle-sw resize_mark1"></span>
+                    <span class="resize-handle resize-handle-se resize_mark1"></span>
+                </div>
+                <!--商标logo-->
+                <div class="resize-container resize_mark2">
+                    <span class="resize-handle resize-handle-nw resize_mark2"></span>
+                    <span class="resize-handle resize-handle-ne resize_mark2"></span>
+                    <img class="resize-image2" onclick="click_icon(this,2);" src="__PUBLIC__/static/images/2.png">
+                    <span class="resize-handle resize-handle-sw resize_mark2"></span>
+                    <span class="resize-handle resize-handle-se resize_mark2"></span>
+                </div>
+                <!--海报标题-->
+                <div class="resize-container resize_mark3">
+                    <span class="resize-handle resize-handle-nw resize_mark3"></span>
+                    <span class="resize-handle resize-handle-ne resize_mark3"></span>
+                    <img class="resize-image3" onclick="click_icon(this,3);" src="__PUBLIC__/static/images/3.png">
+                    <span class="resize-handle resize-handle-sw resize_mark3"></span>
+                    <span class="resize-handle resize-handle-se resize_mark3"></span>
+                </div>
+                <!--此处是海报logo↓-->
+                <!--此处是海报logo↑-->
+            </div>
+        </div>
+    </div>
+    <div class="ncap-form-default">
+        <dl class="row">
+            <dt class="tit">
+                <label>背景图片</label>
+            </dt>
+            <dd class="opt">
+                <div class="input-file-show">
+                    <span class="type-file-box">
+                        <input type="text" id="ad_code" value="" class="type-file-text">
+                        <input type="button" name="button" id="button1" value="上传背景图" class="type-file-button">
+                        <input class="type-file-file" onClick="GetUploadify(1,'','ad','img_call_back')" size="30">
+                    </span>
+                </div>
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="tit">
+                <label>LOGO</label>
+            </dt>
+            <dd class="opt">
+                <div class="input-file-show">
+                    <span class="type-file-box">
+                        <input type="text" id="ad_logo" value="" class="type-file-text">
+                        <input type="button" name="button" id="button2" value="上传LOGO图片" class="type-file-button">
+                        <input class="type-file-file" onClick="GetUploadify(1,'','ad','ad_logo_call_back')" size="30">
+                    </span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <input type="hidden" id="now_click_icon" value=""/>
+</div>
+<script>
+    //出于安全策略，不能在浏览器中跨域操作图片，否则会报错
+    if (window.location.protocol == 'file:') {
+        alert('To test this demo properly please use a local server such as XAMPP or WAMP. See README.md for more details.');
+    }
+    var resizeableImage = function (image_target,icon_id) {
+        var $container,
+                orig_src = new Image(),
+                image_target = $(image_target).get(0),
+                resize_mark = 'resize_mark'+icon_id,
+                event_state = {},
+                constrain = false,
+                max_width = 450,
+                max_height = 600,
+                min_width = 60,
+                min_height = 60,
+                bg_top = $('.component').offset().top,//获取底框边界
+                bg_left = $('.component').offset().left,
+                resize_canvas = document.createElement('canvas');
+
+        init = function () {
+            orig_src.src = image_target.src;
+
+            // Assign the container to a variable
+            $container = $(image_target).parent('.'+resize_mark);
+
+            // Add events
+            $container.on('mousedown touchstart', '.resize-handle', startResize);
+            $container.on('mousedown touchstart', 'img', startMoving);
+            $('.js-crop').on('click', crop);
+        };
+
+        startResize = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            saveEventState(e);
+            $(document).on('mousemove touchmove', resizing);
+            $(document).on('mouseup touchend', endResize);
+        };
+
+        endResize = function (e) {
+            e.preventDefault();
+            $(document).off('mouseup touchend', endResize);
+            $(document).off('mousemove touchmove', resizing);
+        };
+
+        saveEventState = function (e) {
+            event_state.container_width = $container.width();
+            event_state.container_height = $container.height();
+            event_state.container_left = $container.offset().left;
+            event_state.container_top = $container.offset().top;
+            event_state.mouse_x = (e.clientX || e.pageX || e.originalEvent.touches[0].clientX) + $(window).scrollLeft();
+            event_state.mouse_y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
+
+            // This is a fix for mobile safari
+            // For some reason it does not allow a direct copy of the touches property
+            if (typeof e.originalEvent.touches !== 'undefined') {
+                event_state.touches = [];
+                $.each(e.originalEvent.touches, function (i, ob) {
+                    event_state.touches[i] = {};
+                    event_state.touches[i].clientX = 0 + ob.clientX;
+                    event_state.touches[i].clientY = 0 + ob.clientY;
+                });
+            }
+            event_state.evnt = e;
+        };
+
+        //实现移动功能
+        resizing = function (e) {
+            var mouse = {},
+                    width, height, left, top, offset = $container.offset();
+            mouse.x = (e.clientX || e.pageX || e.originalEvent.touches[0].clientX) + $(window).scrollLeft();
+            mouse.y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
+
+            // Position image differently depending on the corner dragged and constraints
+            if ($(event_state.evnt.target).hasClass('resize-handle-se')) {
+                width = mouse.x - event_state.container_left;
+                height = mouse.y - event_state.container_top;
+                left = event_state.container_left;
+                top = event_state.container_top;
+            } else if ($(event_state.evnt.target).hasClass('resize-handle-sw')) {
+                width = event_state.container_width - (mouse.x - event_state.container_left);
+                height = mouse.y - event_state.container_top;
+                left = mouse.x;
+                top = event_state.container_top;
+            } else if ($(event_state.evnt.target).hasClass('resize-handle-nw')) {
+                width = event_state.container_width - (mouse.x - event_state.container_left);
+                height = event_state.container_height - (mouse.y - event_state.container_top);
+                left = mouse.x;
+                top = mouse.y;
+                if (constrain || e.shiftKey) {
+                    top = mouse.y - ((width / orig_src.width * orig_src.height) - height);
+                }
+            } else if ($(event_state.evnt.target).hasClass('resize-handle-ne')) {
+                width = mouse.x - event_state.container_left;
+                height = event_state.container_height - (mouse.y - event_state.container_top);
+                left = event_state.container_left;
+                top = mouse.y;
+                if (constrain || e.shiftKey) {
+                    top = mouse.y - ((width / orig_src.width * orig_src.height) - height);
+                }
+            }
+
+            // Optionally maintain aspect ratio
+            if (constrain || e.shiftKey) {
+                height = width / orig_src.width * orig_src.height;
+            }
+
+            if (width > min_width && height > min_height && width < max_width && height < max_height) {
+                // To improve performance you might limit how often resizeImage() is called
+                resizeImage(width, height);
+                // Without this Firefox will not re-calculate the the image dimensions until drag end
+                $container.offset({
+                    'left': left,
+                    'top': top
+                });
+            }
+        };
+
+        //实现大小调整的功能
+        resizeImage = function (width, height) {
+            resize_canvas.width = width;
+            resize_canvas.height = height;
+            resize_canvas.getContext('2d').drawImage(orig_src, 0, 0, width, height);
+            $(image_target).attr('src', resize_canvas.toDataURL("image/png"));
+        };
+        //移动
+        startMoving = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            saveEventState(e);
+            $(document).on('mousemove touchmove', moving);
+            $(document).on('mouseup touchend', endMoving);
+        };
+        //移动
+        endMoving = function (e) {
+            e.preventDefault();
+            $(document).off('mouseup touchend', endMoving);
+            $(document).off('mousemove touchmove', moving);
+        };
+        //移动
+        moving = function (e) {
+            var mouse = {}, touches;
+            e.preventDefault();
+            e.stopPropagation();
+
+            touches = e.originalEvent.touches;
+
+            mouse.x = (e.clientX || e.pageX || touches[0].clientX) + $(window).scrollLeft();
+            mouse.y = (e.clientY || e.pageY || touches[0].clientY) + $(window).scrollTop();
+            //当前移动的坐标
+            var now_move_top = mouse.y - (event_state.mouse_y - event_state.container_top);
+            var now_move_left = mouse.x - (event_state.mouse_x - event_state.container_left);
+            //当前移动的图像长宽
+            var width = event_state.container_width;
+            var height = event_state.container_height;
+            //判断是否超出了界限
+            if(now_move_left + width > bg_left + 450){
+                now_move_left = 450 + bg_left - width;
+            }
+            if(now_move_left < bg_left){
+                now_move_left = bg_left;
+            }
+            if(now_move_top + height > bg_top + 600){
+                now_move_top = 600 + bg_top - height;
+            }
+            if(now_move_top < bg_top){
+                now_move_top = bg_top;
+            }
+            $container.offset({
+                'left': now_move_left,
+                'top': now_move_top
+            });
+            // 移动时要注意缩放
+            if (event_state.touches && event_state.touches.length > 1 && touches.length > 1) {
+                var a = event_state.touches[0].clientX - event_state.touches[1].clientX;
+                a = a * a;
+                var b = event_state.touches[0].clientY - event_state.touches[1].clientY;
+                b = b * b;
+                var dist1 = Math.sqrt(a + b);
+
+                a = e.originalEvent.touches[0].clientX - touches[1].clientX;
+                a = a * a;
+                b = e.originalEvent.touches[0].clientY - touches[1].clientY;
+                b = b * b;
+                var dist2 = Math.sqrt(a + b);
+
+                var ratio = dist2 / dist1;
+
+                width = width * ratio;
+                height = height * ratio;
+                // 要提高性能，需要限制调用resizeImage的频率
+                resizeImage(width, height);
+            }
+        };
+        //剪裁图片
+        crop = function () {
+            //Find the part of the image that is inside the crop box
+            var crop_canvas,
+                    left = $('.overlay').offset().left - $container.offset().left,
+                    top = $('.overlay').offset().top - $container.offset().top,
+                    width = $('.overlay').width(),
+                    height = $('.overlay').height();
+
+            crop_canvas = document.createElement('canvas');
+            crop_canvas.width = width;
+            crop_canvas.height = height;
+
+            crop_canvas.getContext('2d').drawImage(image_target, left, top, width, height, 0, 0, width, height);
+            window.open(crop_canvas.toDataURL("image/png"));
+        };
+
+        init();
+    };
+    function click_icon(that,id){
+        for(var i = 1;i < 5;i++){
+            $('.resize-image'+i).parent().removeClass('click_icon');
+        }
+        if($('#now_click_icon').val() != id){
+            resizeableImage(that,id);
+        }
+        $('#now_click_icon').val(id);
+        $(that).parent().addClass('click_icon');
+    }
+</script>
+<script>
+    //上传背景图片
+    function img_call_back(fileurl_tmp) {
+        //放到input里
+        $("#ad_code").val(fileurl_tmp);
+        //放到背景里
+        $('.component').css('background-image','url('+fileurl_tmp+')');
+    }
+    //上传海报内容图
+    function ad_logo_call_back(fileurl_tmp) {
+        //放到input里
+        $("#ad_logo").val(fileurl_tmp);
+        //放到框里
+        var html = "";
+        html += "<div class='resize-container resize_mark4'>";
+        html += "<span class='resize-handle resize-handle-nw resize_mark4'></span>";
+        html += "    <span class='resize-handle resize-handle-ne resize_mark4'></span>";
+        html += "<img class='resize-image4' onclick='click_icon(this,4);' src="+fileurl_tmp+">";
+        html += "   <span class='resize-handle resize-handle-sw resize_mark4'></span>";
+        html += "    <span class='resize-handle resize-handle-se resize_mark4'></span></div>";
+        $('.resize-container.resize_mark3').parent().append(html);
+    }
+</script>
+</body>
+</html>

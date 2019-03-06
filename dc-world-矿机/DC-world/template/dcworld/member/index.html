@@ -1,0 +1,161 @@
+<include file="common/header" title="个人中心" body=""/>
+<div class="page fs28">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="{:U('index/index')}" class="left-arrow"></a>
+    </div>
+    <div class="header-title">个人中心</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+    <div class="page-bd pb30">
+        <!-- 页面内容-->
+        <div class="u_box">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <form id="head_pic" method="post" enctype="multipart/form-data">
+                        <!-- <img src="__PUBLIC__/images/tx.jpg" alt=""> -->
+                        <label class="file" style="cursor:pointer;">
+                            <div class="around" id="fileList">
+                                <img src="{$uinfo['profilePhoto']|default='__PUBLIC__/images/profilePhoto.jpg'}" class="avatar">
+                                <input  type="file" accept="image/*" name="head_pic"  onchange="handleFiles(this)" style="display:none">
+                            </div>
+                        </label>
+                    </form>
+                </div>
+                <div class="weui-cell__bd">
+                    <p class="name fs28 fw500">~{$uinfo.nickname}~</p>
+                    <p class="yid">YID：{$uinfo.id}</p>
+                    <p class="lever fs26">当前等级：{$uinfo.level_name}</p>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/user_assets')}" class="fs28 fw500" style="display: block;">我的资产</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/add_assets')}" class="fs28 fw500" style="display: block;">添加资产</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/account_list')}" class="fs28 fw500" style="display: block;">支付管理</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/security_settings')}" class="fs28 fw500" style="display: block;">安全设置</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Dcworld/transfer_accounts_dc')}" class="fs28 fw500" style="display: block;">DC转账</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/help_center')}" class="fs28 fw500" style="display: block;">帮助中心</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/article_detail',array('article_id'=>41))}" class="fs28 fw500" style="display: block;">关于我们</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a href="javascript:void(0)" onClick="logout()" class="weui-btn bor-1px fs30" style="color: #282c37;">退出</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    function logout(){
+        $.ajax({
+            type: "post",
+            url :"{:U('Login/exitLogin')}",
+            dataType:'json',
+            success: function(data)
+            {
+                $.toast('退出成功');
+                setTimeout(function(){
+                    window.location.href="/Dcworld/Index/index";
+                }, 1000);
+            }
+        });
+    }
+
+
+    //显示上传照片
+    window.URL = window.URL || window.webkitURL;
+    function handleFiles(obj) {
+        fileList = document.getElementById("fileList");
+        var files = obj.files;
+        img = new Image();
+        if(window.URL){
+            img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+            img.width = 60;
+            img.height = 60;
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+            }
+            if(fileList.firstElementChild){
+                fileList.removeChild(fileList.firstElementChild);
+            }
+            $('#fileList').find('img').remove();
+            fileList.appendChild(img);
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function(e){
+                img.src = this.result;
+                img.width = 60;
+                img.height = 60;
+                $('#fileList').find('img').remove();
+                fileList.appendChild(img);
+            }
+        }else
+        {
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+            img.width = 60;
+            img.height = 60;
+            img.onload=function(){
+
+            }
+            $('#fileList').find('img').remove();
+            fileList.appendChild(img);
+        }
+        $('#asubmit').show();
+        $('#logout').hide();
+        $('#head_pic').submit();
+    }
+</script>
+
+</body>
+</html>

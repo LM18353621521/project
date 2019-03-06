@@ -1,0 +1,177 @@
+<include file="common/header" title="沙滩" body=""/>
+
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/st_top.jpg") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+
+    }
+    .header .header-title {
+        color: #000000!important;
+    }
+    .left-arrow:before{
+        border-color: #000000;
+    }
+    #st-box .st-box_hd .weui-cell__bd .nums {
+        width: 1.833333rem;
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">沙滩</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd" id="st-box">
+        <!-- 页面内容-->
+        <div class="st-box_hd weui-cell">
+            <div class="weui-cell__hd">
+                <img src="{$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'}" alt="">
+            </div>
+            <div class="weui-cell__bd">
+                <p class="name">{$user.nickname}</p>
+                <p class="nums">贝壳：<span id="shell_num">{$user.shell}</span></p>
+            </div>
+            <div class="weui-cell__ft">
+                <a href="javascript:;" class="open-popup" data-target="#guize">规则说明</a>
+            </div>
+        </div>
+        <div class="st-box_bd">
+            <ul>
+                <foreach name="shell_data['shell_info']" item="vo" key="k">
+                    <li  key="{$k}" value="{$vo.num}"   <eq name="vo['status']" value="1">style=" display:none;"</eq>  >
+                        <img src="__PUBLIC__/images/st_img{$k+1}.png" alt="">
+                        <p class="num">{$vo.num}</p>
+                    </li>
+                </foreach>
+
+                <!--<li>-->
+                    <!--<img src="__PUBLIC__/images/st_img2.png" alt="">-->
+                    <!--<p class="num">0.02635</p>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<img src="__PUBLIC__/images/st_img3.png" alt="">-->
+                    <!--<p class="num">0.02635</p>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<img src="__PUBLIC__/images/st_img4.png" alt="">-->
+                    <!--<p class="num">0.02635</p>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<img src="__PUBLIC__/images/st_img5.png" alt="">-->
+                    <!--<p class="num">0.02635</p>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<img src="__PUBLIC__/images/st_img6.png" alt="">-->
+                    <!--<p class="num">0.02635</p>-->
+                <!--</li>-->
+            </ul>
+        </div>
+        <div class="st-box_ft">
+            <a href="{:U('Dcworld/Dcworld/exchange_dc')}">
+                <img src="__PUBLIC__/images/st_icon1.png" alt="">
+            </a>
+            <a href="{:U('Dcworld/Dcworld/shell_log')}">
+                <img src="__PUBLIC__/images/st_icon2.png" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+<div id="guize" class="weui-popup__container alert_box">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal guize-box">
+        <div class="guize-box weui-popup__modal_box">
+            <div class="guize-box_hd">
+                {$article.title}
+            </div>
+            <div class="guize-box_bd">
+            {$article.content|htmlspecialchars_decode}
+                <!-- <ul>
+                    <li>
+                        <span class="num">1</span>
+                        <p class="text">
+                            活动时间：3月6日-9月30日；
+                        </p>
+                    </li>
+                    <li>
+                        <span class="num">2</span>
+                        <p class="text">
+                            通过本活动页面邀请好友领取投资红包，单个好友通过连接注册并使用该红包后，您即可获得一笔现金红包简历，金额随机（5~88元）                    </p>
+                    </li>
+                    <li>
+                        <span class="num">3</span>
+                        <p class="text">
+                            活动期间，邀请人通过本活动最多可获得400元现金红奖励，于每天24点前发放至邀请人的宝箱，可于10天内领取，过期失效，不予补发；
+                        </p>
+                    </li>
+                    <li>
+                        <span class="num">4</span>
+                        <p class="text">
+                            本活动不与邀请第四重礼同享。
+                        </p>
+                    </li>
+                </ul> -->
+            </div>
+            <div class="guize-box_ft">
+                <img src="__PUBLIC__/images/icon_del.png" alt="" class="close-popup">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    id = "{$shell_data.id}";
+    can_click=1;
+    $(document).on("click","#st-box .st-box_bd ul li",function () {
+        shell_index=$(this).attr('key');
+        shell_value = $(this).attr('value');
+        var that =$(this);
+        if(can_click==1){
+            can_click=0;
+            $.ajax({
+                method: 'POST',
+                dataType: 'JSON',
+                data: {
+                    id:id,
+                    shell_index:shell_index,
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                url: "/index.php/dcworld/Dcworld/get_shell",
+                success: function (data) {
+                    console.log(data);
+                    if(data.code==-1){
+                        layer.msg(data.msg,{time:1000})
+                        can_click=1;
+                    }
+                    else if(data.code==0){
+                        $("#shell_num").text(data.data);
+                        that.fadeOut();
+                        can_click=1;
+                    }
+                },error: function (result) {
+                    layer.msg("请求错误！");
+                    can_click=1;
+                }
+            });
+        }
+
+
+
+    })
+</script>
+</body>
+</html>

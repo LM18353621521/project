@@ -1,0 +1,125 @@
+<include file="common/main" title="交易记录" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                交易记录
+            </div>
+            <a href="javascript:void(0)">
+                <i></i>
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="tra_list clearfix">
+            <ul>
+                <li class="active6" name="goinfo" ng-click="changeRecord(1);">转出记录</li>
+                <li name="comeinfo"  ng-click="changeRecord(2);">转入记录</li>
+            </ul>
+        </div>
+        <div style="height: 0.4rem;"></div>
+        <div class="list_show">
+            <ul class="clearfix" ng-repeat="log in logs">
+                    <li>
+                        <div style="width: 30%" ng-if="type==1">
+                            uid:{{log.touser_id}}
+                        </div>
+                        <div style="width: 30%" ng-if="type==2">
+                            uid:{{log.user_id}}
+                        </div>
+                        <div style="width: 20%">
+                            {{log.entrustnum}}
+                        </div>
+                        <div style="width: 50%">
+                            {{log.createtime}}
+                        </div>
+                    </li>
+            </ul>
+        </div>
+    </body>
+
+        <script type="text/javascript">
+            var app = getApp('myApp', []);
+            app.controller('Ctrl', function ($scope, $http) {
+                $scope.type=1;//转出记录
+                // 当前页数
+                $scope.p = 0;
+                // 加载完毕标志
+                $scope.endflg = 0;
+                // 防止重复加载
+                $scope.busy = false;
+                // 存放列表数据
+                $scope.logs = [];
+                //存放所有数据
+                $scope.res = "";
+                // 请求数据方法
+                $scope.loadMore = function () {
+                    if ($scope.endflg == 0) {
+                        if ($scope.busy) {
+                            return false;
+                        }
+                        $scope.busy = true;
+                        $http({
+                            method: 'POST',
+                            data: {
+                                "p": $scope.p,
+                                "type":$scope.type
+                            },
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            transformRequest: function (obj) {
+                                var str = [];
+                                for (var p in obj) {
+                                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                }
+                                return str.join("&");
+                            },
+                            url: "/index.php/Home/Virtualcurrency/transaction_record"
+                        }).then(function successCallback(response) {
+                            $scope.busy = false;
+                            if (response.data.data != '' && response.data.data != null) {
+                                if ($scope.p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time: 500});
+                                $scope.endflg = 1;
+                                return false;
+                            }
+                            $scope.p++;
+                            if (response.data.code == -1) {
+                                layer.msg(response.data.msg, {time: 1500})
+                            } else {
+                                if (response.data.data == null) {
+                                    layer.msg(response.data.msg, {time: 1500});
+                                } else {
+                                    // 组织数据
+                                    for (var i in response.data.data) {
+                                        $scope.logs.push(response.data.data[i]);
+                                    }
+                                }
+                            }
+                        }, function errorCallback(response) {
+                            errorHandle(response);
+                        });
+                    } else {
+                        layer.msg("已经全部加载完了...", {time: 500});
+                    }
+                };
+                // 进页面先加载一次数据
+                $scope.loadMore();
+                $scope.changeRecord=function (obj) {
+                    $scope.type=obj;
+                    // 当前页数
+                    $scope.p = 0;
+                    // 加载完毕标志
+                    $scope.endflg = 0;
+                    // 防止重复加载
+                    $scope.busy = false;
+                    // 存放列表数据
+                    $scope.logs = [];
+                    //存放所有数据
+                    $scope.res = "";
+                    $scope.loadMore();
+                }
+            })
+        </script>

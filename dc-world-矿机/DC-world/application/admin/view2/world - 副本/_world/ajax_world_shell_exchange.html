@@ -1,0 +1,71 @@
+<table>
+ 	<tbody>
+ 	<if condition="empty($list) eq true">
+ 		<tr data-id="0">
+	        <td class="no-data" align="center" axis="col0" colspan="50">
+	        	<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+	        </td>
+	     </tr>
+	<else/>
+        <volist name="list" id="v">
+            <tr>
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 50px;">{$v.id}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 150px;">{$v.account}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 100px;">{$v.nickname}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 100px;">
+                        <if condition="$v.status eq 1">
+                            兑换成功
+                            <elseif condition="$v.status eq 0" />
+                            未兑换
+                            <else />
+                            兑换失败
+                        </if>
+                    </div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 100px;">{$v.number}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 100px;">{$v.dc_shell_rate}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 100px;">{$v.dc_cny_rate}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 120px;">{:date('Y-m-d H:i:s', $v.create_time)}</div>
+                </td>
+                <!-- <td align="center" class="handle">
+                    <div style="text-align: center; width: 170px; max-width:170px;">
+                        <a class="btn red"   data-url="" data-id="{$vo.link_id}"  onClick="delfun({$v.id},this)" ><i class="fa fa-trash-o"></i>删除</a>
+                    </div>
+                </td> -->
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+      </if>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

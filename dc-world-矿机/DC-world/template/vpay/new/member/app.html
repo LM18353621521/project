@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>二维码</title>
+    <include file="pub/css-js"/>
+    <style>
+        .self-data li {
+            padding: 2.5% 5%;
+        }
+        .touxiang{
+            background: url("/Public/images/duoduo_logo_512.png");
+            background-size:auto 75%;
+            background-position: center;
+            background-repeat: no-repeat;
+
+        }
+        body{
+            background: lightskyblue;
+        }
+        .btn{
+            position: relative;
+        }
+        .btn .android ,.btn .iphone{
+          display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 3em;
+            text-indent: 2em;
+
+        }
+        .btn .android{
+            background: url("/Public/images/android.png");
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            background-position: 0.8em center;
+        }
+        .btn .iphone{
+            background: url("/Public/images/apple.png");
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            background-position: 0.8em center;
+        }
+        #iframe{
+            position: absolute;
+            top: 3em;
+            height:100%;
+            display: none;
+            z-index: 10000;
+        }
+    </style>
+</head>
+
+<body>
+<include file="pub/loading" />
+<div style="width: 100%;height: 4em;">
+    <header class="page-header" style="z-index: 100000000;" >
+        <h3>
+            <a href="{:U('/Home/Member/memberinfo')}">
+                <img class="back_img" src="__PUBLIC__/mobile/images/back_1.png"/>
+            </a>
+            APP下载
+        </h3>
+    </header>
+</div>
+
+<div class="contaniner" style="text-align: center;margin-top: 3em">
+       <div style="height: 5em"><div style="width: 7em;height: 5em;margin: 0 auto" class="touxiang"></div></div>
+       <div style="color: white">
+           <h3 >打造便捷购物新体验</h3>
+           <span style="display: block;width: auto;margin-bottom: 2em">多多商城APP</span>
+           <div style="margin-bottom: 2em">
+                <img src="/public/images/dd_code.png" width="40%" height="40%">
+           </div>
+           <button class="btn" style="outline: 0;background: #fe6637;color: white;width: 8em;height: 3em;border: 0;border-radius: 0.6em">
+            <a href="{$iphone}" > <span class="iphone" style="color: white">IPhone</span></a> </button>
+           <button class="btn" style="outline: 0;background: #65d43d;color: white;width: 8em;height: 3em;border: 0;border-radius: 0.6em">
+               <a href="{$android}" >
+                   <span class="android"  style="color: white">Android</span></a></button>
+
+       </div>
+
+</div>
+<!--<iframe name="iframe" frameborder="0" width="100%" id="iframe" ></iframe>-->
+<assign name="index" value="4"/>
+<include file="pub/footer" />
+<script>
+    $(".btn ").click(function () {
+         $("#iframe").css("display","block")
+  if($(this).find("a").attr("href")==""){
+      $(this).find("a").attr("href","javascript:void(0)")
+      layer.msg("下载地址不存在");
+      $("#iframe").css("display","none")
+  }
+
+
+    })
+</script>
+</body>
+</html>

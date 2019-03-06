@@ -1,0 +1,90 @@
+<!-- 接单中 -->
+<if condition="($order_status eq 0  && $pay_status eq 1)">
+	<h3>寄修处理</h3>
+	<dl class="row">
+		<dt  class="tit"></dt>
+		<dd class="opt" style="margin-left:10px">
+			<input type="hidden" name="order_status" value="">
+			<input type="hidden" name="action" value="5">
+			<a href="javascript:void(0)" onClick="change_order(1)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">确认</a>
+			<a href="javascript:void(0)" onClick="change_order(5)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">无效</a>
+		</dd>
+	</dl>
+</if>
+<!-- 维修中 -->
+<if condition="($order_status eq 1 )">
+	<!-- 分配工程师 -->
+	<notempty name="engineer">
+	    <h3>工程师分配</h3>
+	    <div class="goods-info">
+	        <dl class="row">
+	             <dt class="tit">
+	             </dt>
+	             <dd class="opt" style="margin-left:10px">
+	                <input type="hidden" name="action" value="4">
+	                <select name="engineer_id" id="engineer">
+	                    <option value="">---请选择---</option>
+	                    <volist name="engineer" id="en">
+	                        <option value="{$en.user_id}">{$en.nickname}</option>
+	                    </volist>
+	                </select>
+	             </dd>
+	        </dl>
+	        <dl class="row">
+	            <dt class="tit">
+	            </dt>
+	            <dd class="opt" style="margin-left:10px">
+	                <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">提交</a>
+	            </dd>
+	        </dl>
+	    </div>
+	</notempty>
+		<!-- 工程师已鉴定完毕，可修改金额 -->
+	<if condition="($pay_status eq 0 )">
+		<notempty name="$order['engineer_judge']">
+            <h3>寄修处理</h3>
+			<dl class="row">
+				<dt class="tit">
+					<label>订单信息：</label>
+				</dt>
+				<dd class="opt" style="margin-left:10px">
+					<label>  重新修改订单金额</label>
+				</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">现实付金额：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="paid_price">
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">调整价格幅度：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="discount" >
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">订单总价：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="total_price">
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt  class="tit"></dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="hidden" name="action" value="1">
+			    <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+			    <if condition="$order['pay_status'] eq 0">
+				    <a href="JavaScript:;" onClick="pay_order();" class="ncap-btn-big ncap-btn-green" id="submitBtn">付款</a>
+			    </if>
+			</dd>
+			</dl>
+		</notempty>
+	</if>
+</if>

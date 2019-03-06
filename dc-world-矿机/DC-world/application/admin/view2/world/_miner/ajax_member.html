@@ -1,0 +1,82 @@
+<table>
+ 	<tbody>
+ 	<if condition="empty($list) eq true">
+ 		<tr data-id="0">
+	        <td class="no-data" align="center" axis="col0" colspan="50">
+	        	<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+	        </td>
+	     </tr>
+	<else/>
+        <volist name="list" id="vo">
+            <tr>
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: left; width: 50px;">{$vo[id]}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.account}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.nickname}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.level_name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.invitecode}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.parentAccount}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.dc_coin}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.frozen_dc}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$vo.shell}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">
+                        <if condition="$vo[isDisable] eq 1">未启用</if>
+                        <if condition="$vo[isDisable] eq 2">启用</if>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 150px;">{$vo.createTime}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 150px;">{$vo.updateTime}</div>
+                </td>
+                <td align="center" >
+                    <div style="text-align: center; width: 300px;">
+                        <a class="btn red" onClick="delfun({$vo[id]}, this)" data-id="{$vo.ad_id}"><i class="fa fa-trash-o"></i>删除</a>
+                        <a  class="btn blue" href="{:url('World.Miner/detail',['id' => $vo['id']])}"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                        <a  class="btn blue" href="javascript:void(0)" onclick="selectUsers({$vo[id]})"><i class="fa fa-pencil-square-o"></i>积分余额</a>
+                        <a  class="btn blue" href="{:url('World.World/view_details',['id' => $vo['id'],'type' => 1])}"><i class="fa fa-pencil-square-o"></i>查看明细</a>
+                    </div>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 10%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+      </if>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

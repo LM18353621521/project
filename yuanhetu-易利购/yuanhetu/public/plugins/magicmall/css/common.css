@@ -1,0 +1,10 @@
+﻿body {
+}
+.wrapper .alert-top {
+    /* margin-top: -22px; */
+    margin-left: -22px;
+    margin-right: -22px;
+    background-color: #fff;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 15px;
+}

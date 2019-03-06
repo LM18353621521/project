@@ -1,0 +1,92 @@
+<include file="public/layout"/>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>矿机设置</h3>
+                <h5>矿机分享海报设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('World.World/system',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('World.World/handle')}">
+        <input type="hidden" name="inc_type" value="{$inc_type}">
+        <div class="ncap-form-default">
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="poster_bg">海报背景图</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" class="nyroModal" rel="gal" href="{$config.poster_bg}">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$config.poster_bg}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+           	            <span class="type-file-box">
+                            <input type="text" id="poster_bg" name="poster_bg" value="{$config.poster_bg}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <p class="notic">建议尺寸（750*1244）</p>
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','poster_bg_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                    <div style="position: relative;width: 350px; height: 622px;margin-top: 30px ">
+                        <div style="display: block; width: 350px; height: 622px; border: 1px solid #ccc; overflow: hidden" id="img_s">
+                            <img style="width: 100%; height: 100%" src="{$config.poster_bg}" alt="">
+                        </div>
+                        <img style="width: 84%; position: absolute;top: 24%;left:8%;" src="__PUBLIC__/static/images/member/qr_show01.jpg" alt="">
+                    </div>
+
+
+                </dd>
+            </dl>
+
+
+
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    //网站首页logo
+    function poster_bg_back(fileurl_tmp)
+    {
+        $("#poster_bg").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+        $("#img_s").html('<img style="width: 100%; height: 100%" src="'+fileurl_tmp+'" alt="">');
+    }
+</script>
+
+
+
+<div id="goTop">
+    <a href="JavaScript:void(0);" id="btntop">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <a href="JavaScript:void(0);" id="btnbottom">
+        <i class="fa fa-angle-down"></i>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>统计报表 - 销售概况</h3>
+                <h5>网站系统销售概况</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>可根据时间查询某个时间段的销售统计.</li>
+            <li>每日销售金额、销售商品数.</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>销售概况</h3>
+                <h5>昨天分成总额：￥<empty name="today.today_amount">0<else/>{$today.today_amount}</empty>|人均客单价：￥{$today.sign}|昨天分成人数：{$today.today_subsidy}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:url('Distribut.Report/prizeHandOut',['action' => 'market'])}" style="background: #5c9bd2;color: #fff; width: 80px;height: 25px;display: inline-block;text-align: center;line-height: 25px;border-radius: 3px;">手动分成</a></h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Distribut.Report/index')}" onSubmit="return check_form();">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="start_time" id="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="end_time" id="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="statistics1" style="height: 400px;width: 70%;float: left"></div>
+        <div id="statistics" style="height: 400px;width: 30%;float: left"></div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">时间</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">分成人数</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">当天总分成额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">平均每人分成额</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <foreach name="list" item="vo" key="k" >
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">{$vo.day}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.order_num}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.amount}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.sign}</div>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                    <a href="#" class="btn blue"><i class="fa fa-search"></i>查看详情</a>
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/js/echart/echarts.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/echart/macarons.js"></script>
+<script src="__PUBLIC__/js/echart/china.js"></script>
+<script src="__PUBLIC__/dist/js/app.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var res = {$result};
+    var myChart1 = echarts.init(document.getElementById('statistics1'),'macarons');
+    var myChart = echarts.init(document.getElementById('statistics'),'macarons');
+    /**
+     * 图标所需数据
+     */
+    var data = {
+        id: 'statistics',
+        value: res.info,
+        legend: ['已分够总人数', '未分够总人数', '不能分的粉丝总人数'],
+        color: [ '#3FA7DC', '#E1CA74','#5170A2'],
+         tooltipShow:true,    //设置悬浮提示显示              --默认显示true
+         hoverAnimation:true, //设置鼠标悬浮点击饼图动画效果  --默认开启动画true
+        title: '饼图',
+    }
+
+    ////////////////////////////////////////
+
+    /**
+     * 数据处理
+     */
+    var seriesData = []
+    data.value.forEach(function(item, index) {
+        seriesData.push({
+            value: item,
+            name: data.legend[index]
+        })
+    })
+    ////////////////////////////////////////
+
+    var option = {
+        backgroundColor: '#fff',
+        title: {
+            x: '2%',
+            y: '2%',
+            textStyle: {
+                fontWeight: 400,
+                fontSize: 16,
+                color: '#687284'
+            },
+            text: data.title || ''
+        },
+        tooltip: {
+            trigger: 'item',
+            show: data.tooltipShow === false ? false : true
+            //   formatter: "{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'horizontal',
+            top: 16,
+            icon: 'circle',
+            selectedMode: false,
+            itemWidth: 6,
+            itemHeight: 6,
+            itemGap: 6,
+            borderRadius: 6,
+            data: data.legend
+        },
+        series: [{
+            type: 'pie',
+            // clickable:false,
+            // selectedMode: 'single',//单点击设置
+            hoverAnimation: data.hoverAnimation === false ? false : true,
+            radius: ['20%', '67%'],
+            color: data.color,
+            label: {
+                normal: {
+                    position: 'inner',
+                    // formatter: '{d}%',
+                    formatter: function(param) {
+                        if (!param.percent) return ''
+                        var f = Math.round(param.percent * 10) / 10;
+                        var s = f.toString();
+                        var rs = s.indexOf('.');
+                        if (rs < 0) {
+                            rs = s.length;
+                            s += '.';
+                        }
+                        while (s.length <= rs + 1) {
+                            s += '0';
+                        }
+                        return s + '%';
+                    },
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 12
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data: seriesData
+        }]
+    };
+    myChart.setOption(option);
+
+
+    option1 = {
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data : res.time
+        },
+        yAxis: {
+            type: 'value',
+            name : '当天分成人数',
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                formatter: '{value} 人'
+            }
+        },
+        series: [{
+            data: res.num,
+            type: 'line',
+            showSymbol: false,
+            smooth: true,
+            itemStyle: {
+                normal: {
+                    color: "#16D9F0"
+                },
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#16D9F0'
+                    }, {
+                        offset: 1,
+                        color: '#fff'
+                    }])
+                }
+            },
+        }]
+    }
+
+    myChart1.setOption(option1);
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

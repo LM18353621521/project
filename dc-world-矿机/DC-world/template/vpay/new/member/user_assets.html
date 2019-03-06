@@ -1,0 +1,88 @@
+<include file="common/main" title="我的资产" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            我的资产
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div> 
+    <div class="flex user_a_top">
+        <div class="flex1">
+            <label>
+                余额
+            </label>
+            <p>
+                {$user.balance}
+            </p>
+        </div>
+        <div class="user_a_img">
+            <i></i>
+        </div>
+        <div class="flex1">
+            <label>
+                [RMB]中国
+            </label>
+            <p>
+                {$user.balance}
+            </p>
+        </div>
+    </div>
+    <p class="b_tip">
+        <span>数字资产</span>
+    </p>
+    <div class="user_a_list">
+        <ul>
+            <li>
+                <label>XTU</label>
+                <p>{$user.vpay}</p>
+            </li>
+            <li>
+                <label>比特币</label>
+                <p>{$user.bitcoin}</p>
+            </li>
+            <li>
+                <label>莱特币</label>
+                <p>{$user.litecoin}</p>
+            </li>
+            <li>
+                <label>以太坊</label>
+                <p>{$user.ethereum}</p>
+            </li>
+            <li>
+                <label>狗狗币</label>
+                <p>{$user.dogecoin}</p>
+            </li>
+            <li>
+                <label></label>
+                <p></p>
+            </li>
+        </ul>
+    </div>
+    <p class="b_tip">
+        <span>其他</span>
+    </p>
+    <div class="user_a_list">
+        <ul>
+            <li>
+                <label>积 分</label>
+                <p>{$user.integral}</p>
+            </li>
+            <li>
+                <label>累计积分</label>
+                <p>{$user.integralSum}</p>
+            </li>
+            <!--<li>
+                <label>V 宝</label>
+                <p>{{ user.vcoin }}</p>
+            </li>-->
+        </ul>
+    </div>
+    <p class="b_tip red">
+        <span>说明：资产的统计包含可用资产加冰冻资产</span>
+    </p>
+</body>

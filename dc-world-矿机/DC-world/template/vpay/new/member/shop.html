@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>个人中心</title>
+    <include file="pub/css-js" />
+    <!--上傳圖片-->
+    <link rel="stylesheet" href="__PUBLIC__/upload/webuploader.css">
+    <script src="__PUBLIC__/upload/webuploader.js"></script>
+    <!-- jquery.validator -->
+    <link rel="stylesheet" href="__PUBLIC__/home/plugins/validator-0.7.0/jquery.validator.css" />
+    <script type="text/javascript" src="__PUBLIC__/home/plugins/validator-0.7.0/jquery.validator.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/plugins/validator-0.7.0/local/zh_CN.js"></script>
+    <include file="pub/newStyle" />
+    <style>
+        .login form ul li input {
+            width: 60%;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 1.4875em;
+            color: #666;
+            border: none;
+        }
+        .msg-wrap {
+            float: right;
+            top: 0;
+            right: -10px;
+        }
+
+        .login form ul li select{
+            border: 1px solid #e1e1e1;
+            padding: 6px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            text-align: center;
+            height: 20px;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; font-size:12px; font-family:'Microsoft YaHei'; line-height:25px; color:#555555;">
+<include file="pub/loading" />
+<div style="width: 100%;height: 4em">
+    <header class="page-header" >
+        <h3>
+            <a href="{:U('/Home/Acount/myListAcount')}">
+                <img class="back_img" src="__PUBLIC__/mobile/images/back_1.png"/>
+            </a>
+            申请开店
+        </h3>
+    </header>
+</div>
+
+<div class="login">
+    <form class="form form-horizontal" id="form-id" enctype="multipart/form-data" method="post" action="{:U('/Home/Shop/applyshop')}">
+        <ul>
+            <li>
+                <label>店铺名称：</label>
+                <input id="name" class="form-control input-sm" type="text" maxlength="15" name="name" data-rule=required;length[1~15]">
+            </li>
+            <li>
+                <label>手机号码：</label>
+                <input class="form-control input-sm" type="text" maxlength="11" id="mobile" name="mobile" data-rule="required;lenth[11];mobile;"/>
+            </li>
+            <li>
+                <label>微信号码：</label>
+                <input class="form-control input-sm" type="text" name="phone" data-rule="required;"/>
+            </li>
+            <li>
+                <label>选择地址：</label>
+                <select class="form-control input-sm" name="province_id" id="province_id" onchange="changeTo(this,'site_id','region_id')">
+                    <option value="">请选择...</option>
+                    <volist name="province_id" id="vo">
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <select class="form-control input-sm" name="site_id" id="site_id" onchange="changeTo(this,'region_id','')">
+                    <option value="">请选择...</option>
+                    <volist name="site_id" id="vo">
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <select class="form-control input-sm" name="region_id" id="region_id" data-rule="required;">
+                    <option value="">请选择...</option>
+                    <volist name="region_id" id="vo">
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+            </li>
+            <li>
+                <label>详细地址：</label>
+                <input class="form-control input-sm" type="text" maxlength="40"  name="address" data-rule="required;length[1~40]"/>
+            </li>
+            <!--上传图片-->
+            <li>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">营业执照：</label>
+                    <div class="col-sm-6" style="overflow: hidden;">
+                        <div class="uploader-img" style="overflow: hidden;">
+                            <div class="uploader-list"></div>
+                            <div id="fileBtn1" class="fileBtn" style="float: right;">上 传</div>
+                        </div>
+                        <input type="hidden" name="business_license" id="business_license" class="hiddenImg">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">手持身份证：</label>
+                    <div class="col-sm-6" style="overflow: hidden;">
+                        <div class="uploader-img" style="overflow: hidden;">
+                            <div class="uploader-list"></div>
+                            <div id="fileBtn2" class="fileBtn" style="float: right;">上 传</div>
+                        </div>
+                        <input type="hidden" name="id_img" id="id_img" class="hiddenImg">
+                    </div>
+                </div>
+
+                <div class="form-group" id="item_list">
+                    <label class="control-label col-sm-2">店铺照片：</label>
+                    <div class="col-sm-6" style="overflow: hidden;">
+                        <div class="uploader-img" style="overflow: hidden;">
+                            <div class="uploader-list"></div>
+                            <div id="fileBtn3" class="fileBtn" style="float: right;">上 传</div>
+                        </div>
+                        <input type="hidden" name="shop_img" id="shop_img" class="hiddenImg">
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        <li style="margin-bottom: 0;border: 0;list-style: none;margin-left: 5%"><input type="checkbox" id="checkbox"required><span>已阅读，并同意<a style="color: blue" href="shopNotice.html">商家入驻须知</a></span></li>
+
+        <input id="shopsubmit" type="submit"  value="提交申请" onclick="return subForm()">
+    </form>
+</div>
+<script type="text/javascript">
+    var uploadImg =  '{:U("Home/Tool/uploadImg")}';
+
+    function subForm(){
+        if($("#form-id").isValid()){
+            if($("#business_license").val() == ""){
+                layer.msg("请选择营业执照");
+                return false;
+            }
+            if($("#id_img").val() == ""){
+                layer.msg("请选择手持身份证！");
+                return false;
+            }
+            if($("#shop_img").val() == ""){
+                layer.msg("请选择店铺照片！");
+                return false;
+            }
+            layer.load("提交中");
+            return true;
+        }else{
+            return false;
+        }
+        return false;
+    }
+</script>
+<script src="__PUBLIC__/upload/upload.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<foreach name="date" item="vo">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-cell__bd__title mb10">
+                {$vo.desc}
+            </div>
+            <div class="weui-cell__bd__desc">
+                <p class="fs24 mb20" style="color: #81879a;">{$vo.change_time || date="Y-m-d H:i:s",###}</p>
+                <p class="fs26 mb10" style="color: #606470;">流水号</p>
+                <!--<p class="fs26" style="color: #606470;">备注</p>-->
+            </div>
+        </div>
+        <div class="weui-cell__ft">
+            <div class="weui-cell__ft__title mb10">
+                <p class="fw500 color1 fs30">{$vo.number}</p>
+            </div>
+            <div class="weui-cell__ft__desc">
+                <p class="mb20">&nbsp;</p>
+                <p class="fs26 mb10">{$vo.log_id}</p>
+                <!--<p class="fs24" style="color: #bababa;">随便说点什么</p>-->
+            </div>
+        </div>
+    </div>
+</foreach>

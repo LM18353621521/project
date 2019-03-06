@@ -1,0 +1,100 @@
+﻿.listcontent img {
+    width: 70px;
+    height: 70px;
+    float: left;
+}
+
+.listcontent input {
+    margin-top: 18px;
+    width: 50%;
+}
+
+.text_left {
+    float: left;
+    line-height: 43px;
+    height: 43px;
+    border: 1px;
+    border: 1px solid #ccc;
+    padding: 1px 7px;
+    width: 20%;
+    padding-left: 5%;
+    background-color: #eee;
+}
+
+
+.exp-pro-grop {
+    display: inline-block;
+}
+
+.temlate-main {
+    width: auto;
+    padding: 10px;
+    border: 1px #ccc solid;
+}
+
+.template-window {
+    width: auto;
+    position: relative;
+}
+
+    .template-window > img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+.print-property {
+    position: absolute;
+    top: 10px;
+}
+
+.property-txt {
+    font-size: 9px;
+    cursor: all-scroll;
+    border: #66AFE9 solid 1px;
+    width: auto;
+    min-width: 60px;
+    background-color: rgba(197, 208, 0, 0.3);
+    color: #000000;
+    padding: 0 1px 0 1px;
+    overflow: hidden;
+}
+
+.print-property > span:first-of-type {
+    position: absolute;
+    top: -15px;
+    right: 0px;
+    cursor: pointer;
+}
+
+.print-property > span:hover {
+    color: red;
+}
+
+.property-press {
+    background-color: rgba(197, 208, 0, 0.6);
+}
+
+.fontset {
+    cursor: pointer;
+}
+
+.fontsetAct {
+    background-color: #008CEA;
+    color: #fff;
+}
+
+.minicolors-swatch {
+    display: none;
+}
+.input-group-addon {
+    border-radius: 0 !important;
+    padding: 7px 5px;
+    /*font-size: 15px;*/
+    font-weight: bolder;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border: 0;
+}

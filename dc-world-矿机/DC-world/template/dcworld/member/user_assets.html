@@ -1,0 +1,255 @@
+<include file="common/header" title="我的资产" body=""/>
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/h_bg2.png") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+    }
+
+    .header .header-title {
+        color: #fff;
+    }
+
+    .left-arrow:before {
+        border-color: #fff;
+    }
+
+    .header {
+        font-size: 0.213333rem;
+        align-items: center;
+    }
+
+    .header .header-left, .header .header-right {
+        width: 150px;
+    }
+
+    .header .header-left {
+        color: #fff;
+        font-size: 0.186667rem;
+        padding-left: 0.19rem;
+    }
+
+    .header a {
+        color: #ffffff;
+    }
+
+    .header .header-right {
+        color: #ffffff;
+        font-size: 0.186667rem;
+        padding-right: 0.19rem;
+    }
+
+    .nav-skip {
+        z-index: 999;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        padding: 0.133333rem 0;
+        right: .3rem;
+        width: 0.4rem;
+        height: .76rem;
+        font-size: 0.4rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+</style>
+<div class="page fs28">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">我的资产</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd pb30">
+        <!-- 页面内容-->
+        <div class="u_box h380 mb90" style="background: url(__PUBLIC__/images/u_bg1.png) no-repeat;background-size: 100% 100%;">
+            <div class="u_box_data" style="position: relative;top: -.2rem;">
+                <p class="fw600 fs45 mb20">DC {$user_info.dc_coin+$user_info.frozen_dc}</p>
+                <p>冻结中 (挂卖冻结)：{$user_info.frozen_dc}</p>
+                <p>可用：{$user_info.dc_coin}</p>
+            </div>
+            <div class="u_box_list weui-flex">
+                <div class="weui-flex__item">
+                    <p class="fs38 fw500" style="color: #282c37;">{$cny_proportion*($user_info.dc_coin+$user_info.frozen_dc)}</p>
+                    <p class="fs26">资产总价值</p>
+                </div>
+                <div class="weui-flex__item">
+                    <p class="fs38 fw500" style="color: #282c37;">
+                        <if condition="$general_income">
+                            {$general_income}
+                            <else />
+                            0
+                        </if>
+                    </p>
+                    <p class="fs26">总收入</p>
+                </div>
+                <div class="weui-flex__item">
+                    <p class="fs38 fw500" style="color: #282c37;">
+                        <if condition="$total_expenditure">
+                            {$total_expenditure}
+                            <else />
+                            0
+                        </if>
+
+                    </p>
+                    <p class="fs26">总支出</p>
+                </div>
+            </div>
+        </div>
+        <div class="weui-tab" style="height: auto;">
+            <div class="weui-navbar bor-1px-b border-after_none">
+                <a class="weui-navbar__item weui-bar__item--on" id="income" href="#tab1" is-show="1">
+                    收入
+                    <em class="nav-skip"><span></span></em>
+                    <ul class="sx_list">
+                        <foreach name="$type_income_list" item="vo" >
+                            <li type="{$key}">{$vo}</li>
+                        </foreach>
+
+                    </ul>
+                </a>
+                <a class="weui-navbar__item" id="expend" href="#tab2">
+                    支出
+                    <em class="nav-skip"><span></span></em>
+                    <ul class="sx_list">
+                        <foreach name="$type_expend_list" item="vo" >
+                            <li type="{$key}">{$vo}</li>
+                        </foreach>
+                    </ul>
+                </a>
+            </div>
+            <div class="weui-tab__bd" style="background-color: #fff;">
+
+                <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" style="height: auto;"></div>
+
+                <div id="tab2" class="weui-tab__bd-item" style="height: auto;"></div>
+
+            </div>
+            <div class="weui-loadmore" style="height:20px;display:none;">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+            </div>
+            <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                已经到底了
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__PUBLIC__/js/lib/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/js/lib/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+        loadlist();
+        $('#income').on('click',function(){
+            pages = 1;
+            loading = false;
+            state = 'income';
+            type = 0;
+            $('.sx_list').hide();
+            $('.nav-skip').removeClass('active');
+            $(this).attr('is-show','1').siblings().removeAttr('is-show');
+            $('#tab1').html("");
+            loadlist('income');
+            $(".weui-loadmore").hide();
+            $(".weui-nodate").hide();
+
+        });
+        $('#expend').on('click',function(){
+            pages = 1;
+            loading = false;
+            state = 'expend';
+            type = 0;
+            $('.sx_list').hide();
+            $('.nav-skip').removeClass('active');
+            $(this).attr('is-show','1').siblings().removeAttr('is-show');
+            $('#tab2').html("");
+            loadlist('expend');
+            $(".weui-loadmore").hide();
+            $(".weui-nodate").hide();
+        });
+    });
+
+    //加载更多商品
+    var pages = 1;
+    var loading = false;  //状态标记
+    var state = '';
+    var type = '';
+    $(".page-bd").infinite().on("infinite", function () {
+        if (loading) return;
+        loading = true;
+        pages++; //页数
+        $('.weui-loadmore').show();
+        setTimeout(function () {
+            loadlist(state,type);
+            loading = false;
+        }, 1500);   //模拟延迟
+    });
+
+    function loadlist(state,type) {
+
+
+        var html = "";
+        if(!state)state='0';
+        if(!type)type='0';
+        $.ajax({
+            type: 'GET',
+            url: "/index.php?m=dcworld&c=Member&is_ajax=1&a=ajax_user_assets&p=" + pages + "&state=" + state +"&type=" + type,
+            success: function (data) {
+
+                if (data) {
+                    if( state == 'income' || state == '0'){
+
+                        $('#tab1').append(data);
+                    }else{
+                        $('#tab2').append(data);
+                    }
+                    $(".weui-loadmore").hide();
+                } else {
+
+                    loading = true;
+                    $(".weui-loadmore").hide();
+                    $(".weui-nodate").show();
+                    // $('#getmore').remove();
+                }
+            }
+        })
+    }
+    $(".nav-skip").on("click",function(event){
+        event.stopPropagation();
+        var show = $(this).parent().attr('is-show');
+
+        if(show !=1){
+            return false;
+        }
+        $(this).toggleClass("active");
+        $(this).siblings(".sx_list").slideToggle();
+        return false;
+    })
+
+    $(".sx_list").find('li').on("click",function(){
+        event.stopPropagation();
+        pages = 1;
+        loading = false;
+        type = $(this).attr('type');
+        state = $(this).parent().parent().attr('id');
+        $(this).parent().hide();
+        var form = $(this).parent().parent().attr('href');
+        $(form).html('');
+        loadlist(state,type);
+        $(".weui-loadmore").hide();
+        $(".weui-nodate").hide();
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<extend name="Public:main" />
+<block name="title">公告</block>
+<block name="body">
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+    <div class="nav_top flex" style="background: #0e94f5;">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            公告
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="n_det">
+        <h3>{{ detail.title }}</h3>
+        <p><span ng-bind-html="detail.content | to_trusted"></span></p>
+    </div>
+</body>
+    <block name="custom_js">
+        <script>
+            var app = getApp('myApp', []);
+            app.filter('to_trusted', ['$sce', function ($sce) {
+                return function (text) {
+                    return $sce.trustAsHtml(text);
+                };
+            }]);
+            app.controller('Ctrl', function ($scope, $http) {
+                $http({
+                    method:'POST',
+                    data:{
+                        "id" : getUrlParam('id'),
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    },
+                    url: "/index.php/Home/Member/notice_detail"
+                }).then(function successCallback(response) {
+                    if(response.data.code==0){
+                        $scope.detail = response.data.data;
+                    }else {
+                        layer.msg(response.data.msg)
+                    }
+                }, function errorCallback(response) {
+                    errorHandle(response);
+                });
+            });
+        </script>
+    </block>
+</block>

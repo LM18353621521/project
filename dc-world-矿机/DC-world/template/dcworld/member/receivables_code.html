@@ -1,0 +1,65 @@
+<include file="common/header" title="收款码" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">收款码</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells weui-cells_form pl_pr30" style="background-color: #f9f9f9;">
+            <div class="weui-cell mb20 border-radio20 bor-1px" style="background-color: #fff;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">收款地址</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;" id="wallet" data-clipboard-action="copy" data-clipboard-target="#wallet">{$user.wallet}</span>
+                </div>
+            </div>
+            <!--<div class="weui-cell mb20 border-radio20 bor-1px border-befor_none" style="background-color: #fff;">-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<label class="weui-label">收款金额</label>-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<input class="weui-input" type="password"  placeholder="请输入收款金额">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="weui-cell mb20 border-radio20 bor-1px border-befor_none" style="background-color: #fff;align-items: end;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">收款码</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <img src="{$wallet_path}" alt="" class="img300">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+
+
+
+    window.onload=function () {
+        var clipboard = new Clipboard('#wallet');
+        clipboard.on('success', function (e) {
+            $.toast("复制成功！");
+            e.clearSelection();
+            console.log(e.clearSelection);
+        });
+    }
+
+</script>
+</body>
+</html>

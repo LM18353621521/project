@@ -1,0 +1,176 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>短信消息设置</h3>
+                <h5>SMS选项设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Plugins.Vpay/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>短信，SMS配置填写，请按照规则填写。</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('Plugins.Vpay/handle')}">
+        <input type="hidden" name="inc_type" value="{$inc_type}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sms_platform">选择短信平台</label>
+                </dt>
+                <dd class="opt">
+                    <select name="sms_platform" id="sms_platform">
+                        <option value="0" <empty name="$config[sms_platform]">selected="selected"</empty>>聚合数据</option>
+                    </select>
+                    <p class="notic">短信平台选择</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="key">短信平台[appkey]</label>
+                </dt>
+                <dd class="opt">
+                    <input id="key" name="key" value="{$config.key}" class="input-txt" type="text"/>
+                    <p class="notic">短信平台配置appkey/keyid</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="tplId">短信平台[模板id]</label>
+                </dt>
+                <dd class="opt">
+                    <input id="tplId" name="tplId" value="{$config.tplId}" class="input-txt" type="text"/>
+                    <p class="notic">短信平台配置模板id</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="url">短信平台[url]</label>
+                </dt>
+                <dd class="opt">
+                    <input id="url" name="url" value="{$config.url}" class="input-txt" type="text"/>
+                    <p class="notic">短信平台配置url</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">用户注册时</dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="regis_sms_enable1" class="cb-enable <if condition='$config[regis_sms_enable] eq 1'>selected</if>">开启</label>
+                        <label for="regis_sms_enable0" class="cb-disable <if condition='$config[regis_sms_enable] eq 0'>selected</if>">关闭</label>
+                        <input id="regis_sms_enable1" name="regis_sms_enable" <if condition="$config['regis_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">
+                        <input id="regis_sms_enable0" name="regis_sms_enable" <if condition="$config['regis_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">
+                    </div>
+                    <p class="notic">用户注册时使用短信验证</p>
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+                <!--<dt class="tit">用户找回密码时</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="forget_pwd_sms_enable1" class="cb-enable <if condition='$config[forget_pwd_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="forget_pwd_sms_enable0" class="cb-disable <if condition='$config[forget_pwd_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="forget_pwd_sms_enable1" name="forget_pwd_sms_enable" <if condition="$config['forget_pwd_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="forget_pwd_sms_enable0" name="forget_pwd_sms_enable" <if condition="$config['forget_pwd_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">用户找回密码时使用短信验证</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">身份验证时</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="bind_mobile_sms_enable1" class="cb-enable <if condition='$config[bind_mobile_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="bind_mobile_sms_enable0" class="cb-disable <if condition='$config[bind_mobile_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="bind_mobile_sms_enable1" name="bind_mobile_sms_enable" <if condition="$config['bind_mobile_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="bind_mobile_sms_enable0" name="bind_mobile_sms_enable" <if condition="$config['bind_mobile_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">用户身份验证时使用短信验证</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">用户下单时是否发送短信给商家</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="order_add_sms_enable1" class="cb-enable <if condition='$config[order_add_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="order_add_sms_enable0" class="cb-disable <if condition='$config[order_add_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="order_add_sms_enable1" name="order_add_sms_enable" <if condition="$config['order_add_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="order_add_sms_enable0" name="order_add_sms_enable" <if condition="$config['order_add_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">用户下单时是否发送短信给商家</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">客户支付时是否发短信给商家</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="order_pay_sms_enable1" class="cb-enable <if condition='$config[order_pay_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="order_pay_sms_enable0" class="cb-disable <if condition='$config[order_pay_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="order_pay_sms_enable1" name="order_pay_sms_enable" <if condition="$config['order_pay_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="order_pay_sms_enable0" name="order_pay_sms_enable" <if condition="$config['order_pay_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">客户支付时是否发短信给商家</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">商家发货时是否给客户发短信</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="order_shipping_sms_enable1" class="cb-enable <if condition='$config[order_shipping_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="order_shipping_sms_enable0" class="cb-disable <if condition='$config[order_shipping_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="order_shipping_sms_enable1" name="order_shipping_sms_enable" <if condition="$config['order_shipping_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="order_shipping_sms_enable0" name="order_shipping_sms_enable" <if condition="$config['order_shipping_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">商家发货时是否给客户发短信</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">购买虚拟商品支付成功后,是否向用户发送短信</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<div class="onoff">-->
+                        <!--<label for="virtual_goods_sms_enable1" class="cb-enable <if condition='$config[virtual_goods_sms_enable] eq 1'>selected</if>">开启</label>-->
+                        <!--<label for="virtual_goods_sms_enable0" class="cb-disable <if condition='$config[virtual_goods_sms_enable] eq 0'>selected</if>">关闭</label>-->
+                        <!--<input id="virtual_goods_sms_enable1" name="virtual_goods_sms_enable" <if condition="$config['virtual_goods_sms_enable'] eq 1">checked="checked"</if> value="1" type="radio">-->
+                        <!--<input id="virtual_goods_sms_enable0" name="virtual_goods_sms_enable" <if condition="$config['virtual_goods_sms_enable'] eq 0">checked="checked"</if> value="0" type="radio">-->
+                    <!--</div>-->
+                    <!--<p class="notic">用户购买虚拟商品在支付成功后, 发送短信给用户, 提示兑换码已生成</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label for="sms_time_out">短信码超时时间</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<select id="sms_time_out" name="sms_time_out">-->
+                        <!--<option value="60" <if condition="$config['sms_time_out'] eq 60">selected="selected"</if>>1分钟</option>-->
+                        <!--<option value="120"<if condition="$config['sms_time_out'] eq 120">selected="selected"</if>>2分钟</option>-->
+                        <!--<option value="300"<if condition="$config['sms_time_out'] eq 300">selected="selected"</if>>5分钟</option>-->
+                        <!--<option value="600"<if condition="$config['sms_time_out'] eq 600">selected="selected"</if>>10分钟</option>-->
+                        <!--<option value="1200"<if condition="$config['sms_time_out'] eq 1200">selected="selected"</if>>20分钟</option>-->
+                        <!--<option value="1800"<if condition="$config['sms_time_out'] eq 1800">selected="selected"</if>>30分钟</option>-->
+                    <!--</select>-->
+                    <!--<p class="notic">发送短信验证码间隔时间</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<div id="goTop"><a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>

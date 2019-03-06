@@ -1,0 +1,182 @@
+
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<style>
+	.toptip {
+		display: flex;
+		-webkit-display: flex;
+		background-color: rgba(0, 0, 0, 0.6);
+		padding: 8px 10px;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		color: #fff;
+		align-items: center;
+		font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei";
+		font-size: 12px;
+		z-index: 99999;
+	}
+
+	.toptip .top_tx {
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+	.toptip .top_text{
+		flex: 1;
+		-webkit-flex: 1;
+	}
+	.toptip .ljgz_btn{
+		color: #f7594e;
+		background-color: #fff;
+		border-radius: 3px;
+		display: inline-block;
+		padding: 5px  12px;
+
+	}
+	.toptip .close_toptip{
+		position: relative;
+		top: -10px;
+		right: -10px;
+		display: inline-block;
+		width: 20px;
+		text-align: center;
+	}
+	.gzrwm-popup{
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 99999;
+		font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei";
+		display: none;
+	}
+	.gzrwm-popup .gzrwm_mask{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.6);
+		z-index: 1;
+	}
+	.gzrwm-popup .gzrwm_box{
+		z-index: 2;
+		position: absolute;
+		background: #fff;
+		border-radius: 5px;
+		text-align: center;
+		padding: 40px 30px;
+		margin: 0 auto;
+		left: 50%;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+		top: 20%;
+	}
+	.gzrwm-popup .rwm_img_box img{
+		width: 140px;
+		height: 140px;
+	}
+	.gzrwm-popup .ltapgz{
+		font-size: 14px;
+		color: #323232;
+	}
+	.gzrwm-popup .close_gzrwm{
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		font-size: 22px;
+		color: #323232;
+	}
+</style>
+
+
+
+<script type="text/javascript">
+var user_id = getCookie('user_id'); // 当前用户id
+</script>
+<!--微信关注提醒 start-->
+<if condition="$Think.session.subscribe eq 0"></if>
+
+<!--顶部条-->
+<div class="toptip" style="display: none" >
+	<div>
+		<img class="top_tx" src="{$headerpic}" alt="">
+	</div>
+	<div class="top_text">您当前还未关注微信公众号</div>
+	<div>
+		<span class="ljgz_btn">立即关注</span>
+	</div>
+	<span class="close_toptip">×</span>
+</div>
+
+<!--关注弹出框-->
+<div class="gzrwm-popup">
+	<div class="gzrwm_mask"></div>
+	<div class="gzrwm_box">
+		<span class="close_gzrwm">×</span>
+		<div class="rwm_img_box">
+			<img src="{$wx_qr}" alt="">
+		</div>
+		<div class="ltapgz">长按二维码关注公众号</div>
+	</div>
+</div>
+
+
+<script>
+	$(function(){
+		$(".close_toptip").on('click', function(){
+			$(".toptip").hide();
+		});
+		$(".ljgz_btn").on('click', function(){
+			$(".toptip").hide();
+			$(".gzrwm-popup").show();
+		});
+		$(".close_gzrwm").on('click', function(){
+			$(".gzrwm-popup").hide();
+		});
+	});
+</script>
+
+<script type="text/javascript">
+  //关注微信公众号二维码
+  function isWeiXin(){
+	  var ua = window.navigator.userAgent.toLowerCase();
+	  if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+		  return true;
+	  }else{
+		  return false;
+	  }
+  }
+  
+$(function(){
+	if(isWeiXin()){
+			$.ajax({
+				type : "POST",
+				url:"/index.php?m=Mobile&c=MobileBase&a=is_subscribe&t="+Math.random(),
+				data:{},
+				dataType:'JSON',
+				success: function(res)
+				{
+					if(res==1){
+						$(".toptip").show();
+					}else{
+						$(".toptip").hide();
+					}
+				},
+				error:function(){
+					return false;
+				}
+			});
+		}
+})
+ 
+</script>
+<!--微信关注提醒  end-->

@@ -1,0 +1,884 @@
+/* reset zui */
+a {
+    color: #6d6d6d
+}
+
+    a:focus, a:hover {
+        color: #0076ef;
+        text-decoration: none;
+    }
+li { list-style: none; }
+ul {
+    padding-left:0;
+    margin-bottom: 0;
+}
+/*2月2号添加弹框*/
+.jiaos {
+	width: 94%;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+.jiaos ul {
+    padding-left:0;
+    margin-bottom: 0;
+}
+.jiaos li {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding: 18px 0;
+	color: #666666;
+	border-bottom: 1px solid #f2f2f2;
+	cursor: pointer;
+}
+.jiaos li:hover {
+	background: #f8fafb;
+}
+.jiaos li:last-child {
+	border-bottom: 0;
+}
+.jiaos li .jiaos_right {
+	float: right;
+}
+.shanjia {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	text-align: center;
+	padding-top:66px;
+	padding-bottom:110px;
+	font-size: 14px;
+	color: #414141;
+}
+.tankg_sj {
+	width: 100%;
+	overflow: hidden;
+}
+.tpo {
+	width: 94%;
+    margin: 0 auto;
+    padding: 10px 5px 10px 0;
+    overflow: hidden;
+    border-top: 1px dashed #d4d4d4;
+}
+.tpo .tpo_left {
+	color: #666666;
+	float: left;
+}
+.tpo_right {
+	float: left;
+	outline: hidden;
+}
+.tpo_right li {
+	float: left;
+	padding-right: 5px;
+}
+.tpo_right li img {
+	width: 50px;
+	height: 50px;
+}
+.tpo_left {
+	float: left;
+	width: 60px;
+	text-align: right;
+}
+.tpo {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+	padding: 10px 0px;
+}
+.tpo_right_e li {
+   float: left;
+   width: 63px;
+   height: 27px;
+   border-radius: 3px;
+   background: #f8fafb;
+   text-align: center;
+   line-height: 27px;
+   border:1px solid #dedede;
+   margin-right: 5px;
+   cursor: pointer;
+   color: #666666;
+   position: relative;
+}
+.tpo_right_e li:hover {
+   border:1px solid #0076ef;
+   background: #fff;
+}
+.tpo_right_e li:hover  .dgy {
+	display: block;
+}
+.dgy {
+	position: absolute;
+	display: none;
+	right: 0;
+	bottom: -7px;
+}
+.tpo_right_e .click .dgy {
+	display:block;
+}
+.tpo_right_e .click  {
+	border:1px solid #0076ef;
+   background: #fff;
+}
+.tpo_right_e {
+	width: 450px;
+	float: left;
+}
+.tpo_ling {
+	line-height: 32px;
+}
+.uyr {
+	width: 100%;
+	padding: 0px 15px;
+}
+.uyr .tpo:last-child {
+	border-bottom: 0;
+}
+.kmg {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding: 0px 15px;
+	margin: 20px 0 25px 0;
+}
+.lmg_top {
+	padding-top:5px;
+}
+.tankg_tr_e {
+	width: 100%;
+	display: none;
+	margin:0 auto;
+	padding:15px 23px 25px 23px;
+	overflow: hidden;
+	text-align: center;
+}
+.tank_wld {
+	width: 100%;
+	height: auto;
+	padding: 0px 25px 0px 25px;
+	overflow: hidden;
+}
+.tankg_to_right {
+	float: left;
+	width: 60%;
+}
+.omdy {
+	padding: 25px 0;
+}
+.tpo:nth-child(1) {
+	border-bottom: 0;
+}
+.liyou {
+	display: none;
+}
+.lm_botto ul li:last-child {
+	border-bottom: 0!important;
+} 
+
+/*2月2号添加弹框结束*/
+
+/*关闭订单*/
+.max_big select {  
+  appearance:none;  
+  -moz-appearance:none;  
+  -webkit-appearance:none;  
+  background: url("../images/7_03.png") no-repeat scroll right center transparent;  
+  padding-right: 14px;  
+}  
+ 
+.max_big select::-ms-expand { display: none; } 
+
+.modal-dialog {
+	border-radius: 0;
+}
+
+.max_big{
+    max-height: 530px!important;
+    overflow: auto!important; 
+}
+.tankg {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.tankg_top {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding:15px;
+	border-bottom: 1px solid #eeeeee;
+}
+.tankg_top_left {
+	float: left;
+	font-size: 14px; 
+	color: #414141;
+	font-weight: bold;
+}
+.tankg_tr {
+	width: 100%;
+	margin:0 auto;
+	padding:38px 35px 30px 35px;
+	overflow: hidden;
+	text-align: center;
+	padding-top: 38px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #eeeeee;
+}
+.tankg_tr_left {
+	float: left;
+	text-align: right;
+	font-size: 12px;
+	color: #666666;
+	line-height: 32px;
+	padding-right: 1%;
+}
+.tankg_tr_right {
+	width: 275px;
+	float: left;
+}
+.tankg_tr_right  .canvs {
+	width: 100%;
+	border: 1px solid #dedede;
+}
+.tanku {
+	width: 100%;
+	text-align: left;
+	color: #a9a9a9;
+	line-height: 26px;
+}
+
+
+
+/*商品发货*/
+.tanks {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+	padding:0px 15px 0px 15px;
+	border-bottom: 1px solid #eeeeee;
+}
+.tanks_top {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding:15px 9px;
+	color: #666666;
+}
+.tanks_top a {
+	color:#0087f1;
+	text-decoration: underline;
+	padding-left: 5px;
+}
+.tanks_yu {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.tanks_yu ul {
+	padding-left: 0;
+}
+.tanks_yu  li {
+	width: 100%;
+	padding:15px 9px;
+	background: #f8fafb;
+	list-style: none;
+	line-height: 14px;
+	color: #7e95b4;
+	position: relative;
+	margin-bottom: 6px;
+}
+.tanks_yu  li p {
+	margin-bottom: 0;
+}
+.tanks_yu  li span {
+	color: #666666;
+	display: block;
+	padding-bottom: 5px;
+}
+.tanks_re {
+	position: absolute;
+	z-index: 99;
+	top: 40%;
+	right: 10px;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	background: url(../images/index70_06.png) no-repeat center ;
+}
+.tanks_yu li:hover .tanks_re {
+	background: url(../images/index70_03.png) no-repeat center;
+}
+.tanks_bottom {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	padding:0px 9px;
+}
+.tanks_bottom .col-sm-6 {
+	width: 50%;
+	float: left;
+}
+.tanks_bottom .col-sm-6  label {
+	float: left;
+	line-height: 32px;
+	color: #666666;
+}
+.tanks_bottom .col-sm-6 .oud {
+	width: 70%;
+	float: left;
+}
+.tank_wy {
+	padding: 3px 5px!important;
+	height: 28px!important;
+	text-align: center!important;
+}
+
+/*订单详情*/
+.tankg_sj {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	text-align: left;
+	padding:0 15px;
+}
+.tankg_sj ul {
+	padding-left: 0;
+	margin-bottom: 0;
+}
+.tankg_sj ul li {
+	list-style: none;
+	width: 100%;
+	overflow: hidden;
+	padding:15px 0;
+	border-bottom: 1px dashed #d4d4d4;
+	color: #666666;
+
+}
+.tankg_ope {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    border-bottom: 1px solid #eeeeee;
+}
+.tankg_sj ul li label {
+	width: 50%;
+	float: left;
+	margin-bottom: 0;
+}
+
+.tankg_sp_tr {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.tankg_sp_tr ul {
+	padding-left: 0;
+}
+.tankg_sp_tr  li {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	background: #f8fafb;
+	padding:10px;
+	list-style: none;
+	margin-bottom: 5px;
+}
+.tankg_sp_left {
+	float: left;
+	width: 50px;
+	margin-right: 5px;
+}
+.tankg_sp_right {
+	float: left;
+	height: 50px;
+	width: 440px;
+}
+.tankg_sright_tr {
+	width: 220px;
+	float: left;
+
+}
+.tankg_sright_tr p {
+	margin-bottom:0;
+	line-height: 16px;
+	color: #a9a9a9;
+}
+.tankg_sright_tr span {
+	color: #666666;
+}
+.tankg_sp_op {
+	float: right;
+	width: 100px;
+	line-height: 50px;
+	text-align: center;
+	color: #666666;
+}
+.tankg_sp_op  span {
+	color: #ff5606;
+}
+.tankg_sp {
+	width: 100%;
+	padding:0 10px;
+}
+.tankg_sp_top {
+	padding:15px 10px;
+	color: #666666;
+}
+
+
+
+.padj ul {
+	padding-top: 10px;
+	border-top: 1px dashed #d4d4d4;
+}
+
+.tankg_top_left span {
+	font-weight:100;
+	color: #0087f1;
+}
+
+/*物流动态*/
+.tank_wul {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding: 0 10px;
+}
+.tank_wul_top {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.tank_wu_y {
+	position: absolute;
+	width: 1px;
+	height: 100%;
+	border-left: 1px dashed #c2c2c2;
+	left: 3px;
+	top: 12px;
+}
+.tank_wul_k {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.tank_wul_k li {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	position: relative;
+	padding-bottom: 20px;
+	list-style: none;
+	line-height: 14px;
+}
+.tank_wul_k ul {
+	padding-left: 0;
+}
+.tank_wu_re {
+	width: 7px;
+	height: 7px;
+	background: #c2c2c2;
+	border-radius: 100%;
+	float: left;
+	margin-top: 3px;
+}
+.tank_wu_s {
+	float: left;
+	margin-left: 10px;
+}
+.tank_wu_d {
+	float: left;
+	width: 310px;
+	padding-left: 20px;
+}
+.kre {
+	background: #0087f1!important;
+}
+.topm {
+	margin-top: 10px!important;
+}
+
+.qianx {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	text-align: center;
+	padding-top: 35px;
+	padding-bottom: 35px;
+	color: #666666;
+}
+
+.tankduan {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.tankduan ul {
+	padding-left: 0;
+}
+.tankduan li {
+	list-style: none;
+	float: left;
+	width: 33.3%;
+	text-align: center;
+	height: 165px;
+	border-right: 1px solid #eeeeee;
+}
+.tankduan li a {
+	color: #666;
+}
+.tankduan li:last-child {
+	border-right: 0;
+}
+.tankd_top {
+	padding-top:45px;
+	padding-bottom: 32px;
+}
+.tankd_bootm {
+	color: #666;
+}
+
+.min_t {
+	width: 495px;
+}
+.min_qz {
+	width: 400px;
+}
+.min_ko {
+	margin:0!important;
+}
+.min_di {
+	width: 520px;
+}
+.min_di_q {
+	width: 550px;
+}
+.min_pl {
+	width: 645px;
+}
+.tankg_top .close:focus, .close:hover {
+	border:0!important;
+	outline: none!important;
+}
+.tankduan li:hover {
+	background: #f8fafb;
+}
+
+.sousu {
+    position: absolute;
+    right: 45px;
+    top: 13px;
+}
+
+    .sousu i {
+        position: absolute;
+        width: 24px;
+        height: 22px;
+        right: 1px;
+        top: 1px;
+        background: url(../images/1_03.png) no-repeat center #fff;
+        cursor: pointer;
+        display: block;
+    }
+
+    .sousu input {
+        border: 1px solid #dedede;
+        width: 150px;
+        height: 24px;
+        padding: 0 3px;
+    }
+
+.wq_right {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: #0087f1;
+    border-bottom: 1px solid #0087f1;
+    line-height: 12px;
+    display: none;
+}
+
+.kmi1:hover .wq_right {
+    display: block;
+}
+
+.kmi2:hover .wq_right {
+    display: block;
+}
+
+.omr3:hover .wq_right {
+    display: block;
+}
+
+.kmgt {
+    margin: 15px 0;
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+}
+
+.shuch .tree li > .list-toggle {
+    left: 10px;
+    top: 10px;
+}
+
+.shuch .tree li ul li > .list-toggle {
+    left: 63px;
+    top: 7px;
+}
+
+.shuch ul ul {
+    border-top: 0;
+}
+
+tbody tr th .shuch .tree i {
+    left: 0px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.shuch .tree li > .list-toggle:before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin-top: 0px;
+    background: url(/images/9_03.jpg)no-repeat center;
+}
+
+.shuch .tree li.open > .list-toggle:before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: url(/images/9_06.jpg)no-repeat center;
+}
+
+.shuch .tree li {
+    width: 100%;
+}
+
+    .shuch .tree li a span {
+        width: 83px;
+        height: 28px;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 28px;
+        border: 1px solid #e4e4e4;
+        background: #fff;
+        border-radius: 5px;
+        margin-left: 35px;
+    }
+
+.shuch .tree-lines ul > li:after {
+    top: 20px;
+    left: 73px;
+    width: 5px;
+}
+
+.tree-lines ul > li:last-child:before {
+    height: 29px !important;
+}
+
+.shuch .tree-lines ul > li ul li:after {
+    top: 20px;
+}
+
+.shuch .tree-lines ul > li.has-list:before, .tree-lines ul > li:before {
+    top: -9px;
+    bottom: 8px;
+    left: 73px;
+    z-index: 99;
+}
+
+.tree-lines ul > li:first-child:before {
+    top: -10px;
+    bottom: -21px;
+}
+
+.shuch .tree-lines ul > li ul li:after {
+    left: 180px;
+}
+
+.shuch .tree li a {
+    display: inline-block;
+    overflow: hidden;
+    margin-right: 5px;
+    color: #5e5e5e;
+    width: 100%;
+}
+
+.ope {
+    width: 100%;
+    height: auto;
+    background-color: #000;
+}
+
+.shuch .tree li {
+    width: 100%;
+    height: auto;
+    padding: 0 0 0 0px;
+}
+
+.shuch label {
+    position: absolute;
+    top: 8px;
+}
+
+.shuch .omr2 label {
+    position: absolute;
+    top: 12px;
+}
+
+.shuc_v {
+    width: auto;
+    float: left;
+    height: auto;
+    overflow: hidden;
+}
+
+.shuch .tree-lines ul > li:after {
+    width: 72px;
+}
+
+.tree li .omr2 {
+    padding: 0px 0 0px 0px;
+}
+
+    .tree li .omr2 .kmi2 {
+        padding-left: 110px;
+        position: relative;
+    }
+
+.shuch .tree-lines ul > li ul li.has-list:before, .tree-lines ul > li ul li:before {
+    left: 180px;
+}
+
+.tree li .omr3:hover {
+    background-color: #f8fafb;
+}
+
+.kmi1 {
+    padding: 5px 0;
+    overflow: hidden;
+}
+
+    .kmi1:hover {
+        background-color: #f8fafb;
+        width: 100%;
+    }
+
+.kmi2 {
+    padding: 5px 0;
+    overflow: hidden;
+}
+
+    .kmi2:hover {
+        background-color: #f8fafb;
+        width: 100%;
+    }
+
+tbody tr th .shuc .tree .omr2 i {
+    left: 30px;
+}
+
+.tree li .omr3 {
+    padding: 5px 0 3px 216px;
+    position: relative;
+}
+
+tbody tr th .shuch .tree .omr3 i {
+    left: 30px;
+}
+
+.shuch .tree li.open > ul {
+}
+
+.oqp {
+    width: 100%;
+    height: 44px;
+    padding: 8px 0;
+    overflow: hidden;
+}
+
+.shuch .tree .omr2 > .list-toggle:before {
+    padding-top: 24px;
+}
+
+.omr3 .shuc_v {
+    padding-top: 12px;
+}
+
+.oqt {
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    left: 21px;
+    top: 15px;
+    z-index: 1;
+    border-left: 1px dotted #999;
+}
+
+.shuch .tree .open a span {
+    background: #fffaed !important;
+}
+
+.shuch li:last-child .oqt {
+    display: none;
+}
+
+.okg {
+    float: left;
+    line-height: 36px;
+}
+
+.shuch {
+    width: 100%;
+    overflow: hidden;
+    margin: 0px 0 0px 0;
+}
+
+#scroll::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    height: 194px;
+}
+
+/*2月28号添加弹框*/
+.suss {
+    width: 100%;
+    text-align: center;
+}
+
+.max_suss {
+    width: 412px !important;
+}
+
+.suss_top {
+    width: 100%;
+    height: auto;
+    padding-bottom: 22px;
+    padding-top: 0px;
+}
+
+.suss_a {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-size: 24px;
+    color: #1a1919;
+    padding-bottom: 5px;
+}
+
+.suss_er {
+    font-size: 12px;
+    color: #666666;
+}

@@ -1,0 +1,53 @@
+<include file="common/main" title="修改昵称" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            修改昵称
+        </div>
+        <a  href="javascript:void(0)">
+          
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="login">
+        <div>
+            <label>昵称</label>
+            <input type="hidden" name="memberId" value="{$memberId}">
+            <input style="text-align: right;" type="text" name="nickname" maxlength="15" placeholder="输入昵称" value="{$nickname}">
+        </div>
+    </div>
+    <a class="login_btn" href="javascript:void(0)" onclick="sub()">
+        确 认
+    </a>
+</body>
+
+    <script>
+            sub=function () {
+                $.ajax({
+                    method:'POST',
+                    dataType:'json',
+                    data:{
+                        "memberId" : $("input[name='memberId']").val(),
+                        "nickname" : $("input[name='nickname']").val(),
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: "/index.php/Vpay/Member/setNickName",
+                    success: function (data) {
+                    if(data.code==0){
+                        layer.msg(data.data);
+                        setTimeout(function () {
+                            window.location.href = '/index.php/Vpay/Member/index';
+                        }, 1000);
+                    }else {
+                        layer.msg(data.msg)
+                    }
+                }, error: function(result) {
+
+                }
+                });
+            }
+
+    </script>
+</block>

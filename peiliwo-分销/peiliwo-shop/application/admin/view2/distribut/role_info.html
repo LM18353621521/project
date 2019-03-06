@@ -1,0 +1,224 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+<div class="fixed-bar">
+    <div class="item-title">
+        <div class="subject">
+            <h3>商城设置</h3>
+            <h5>分销基本配置</h5>
+        </div>
+        <ul class="tab-base nc-row">
+            <!--<foreach name="group_list" item="v" key="k">-->
+                <!--<li><a href="{:U('Distribut/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>-->
+            <!--</foreach>-->
+            <li><a href="{:U('Systems/index',['inc_type'=> 'distribut'])}" ><span>分销基本设置</span></a></li>
+            <li><a href="{:U('Distribut/index',['inc_type'=> ''])}" class="current"><span>分销奖项设置</span></a></li>
+        </ul>
+    </div>
+</div>
+<!-- 操作说明 -->
+<div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+        <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+        <span id="explanationZoom" title="收起提示"></span> </div>
+    <ul>
+        <!--<li><span style="color: #009fff">注：(角色分销新增角色将会与会员等级角色同步)</span></li>-->
+        <li>普通产品以商品最终购买价格计算奖金，身份产品以产品设置金额计算奖金</li>
+        <!--<li>分销返佣金额每个商品单独设定，原则上不高于商品价格50%</li>-->
+        <!--<li>初始角色（等级=1）可编辑不可删除，所有新建的用户都属于初始角色</li>-->
+    </ul>
+</div>
+<form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Systems/handle')}">
+<!--<input type="hidden" name="form_submit" value="ok" />-->
+<input type="hidden" name="inc_type" value="distribut" />
+<div class="ncap-form-default">
+    <dl class="row">
+        <dt class="tit">分销开关</dt>
+        <dd class="opt">
+            <div class="onoff">
+                <label for="switch1" class="cb-enable  <if condition="$config['switch'] eq 1">selected</if>">开启</label>
+                <label for="switch0" class="cb-disable <if condition="$config['switch'] eq 0">selected</if>">关闭</label>
+                <input type="radio" onclick="ajax_switch(1)"  id="switch1"  name="switch" value="1" <if condition="$config['switch'] eq 1">checked="checked"</if>>
+                <input type="radio" onclick="ajax_switch(0);" id="switch0" name="switch" value="0" <if condition="$config['switch'] eq 0">checked="checked"</if> >
+            </div>
+            <p class="notic">注意：切勿频繁修改分佣参数，容易引起系统运算报错</p>
+        </dd>
+    </dl>
+    <div id="switch_on_off" <if condition="$config['switch'] eq 0">style="display: none;"</if>>
+    <div class="flexigrid" style="margin-left: 80px;">
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 50px;" class="">等级</div>
+                        </th>
+                        <th align="left" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 250px;" class="">等级名称</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">等级描述</div>
+                        </th>
+                        <!--<th align="center" abbr="article_time" axis="col6" class="">-->
+                            <!--<div style="text-align: center; width: 100px;" class="">角色条件</div>-->
+                        <!--</th>-->
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">分销/奖项设置</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="tDiv">
+            <div class="tDiv2" style="float: left;">
+                <div class="fbutton">
+                    <!--<a href="{:U('User/level',['act'=>'add'])}">-->
+                        <!--<div class="add" title="新增会员等级">-->
+                            <!--<span><i class="fa fa-plus"></i>新增会员角色分佣</span>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                </div>
+            </div>
+            <div style="float: left;padding-top: 5px;">
+                <p class="notic">注意：用户按照【等级】从小到大的顺序升级，请按照角色的高级程度来配置角色，越高级的角色，等级应当越高。</p>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <foreach name="list" item="vo" key="k" >
+                        <tr>
+                            <td align="left" class="">
+                                <div style="text-align: left; width: 50px;">{$vo.level_id}</div>
+                            </td>
+                            <td align="left" class="">
+                                <div style="text-align: center; width: 250px;">{$vo.level_name}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.describe}</div>
+                            </td>
+                            <td align="center" class="">
+                                <if condition="$vo.level_id gt 1">
+                                <div style="text-align: center; width: 100px;position: relative" onclick="set_prize({$vo.level_id})">
+                                    <a href="javascript:;" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                </div>
+                                </if>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                    <a href="{:U('User/level',array('act'=>'edit','level_id'=>$vo['level_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                    <!--<if condition="$vo.level_id neq 1">-->
+                                        <!--<a class="btn red"  href="javascript:void(0)" data-url="{:U('User/levelHandle')}" data-id="{$vo.level_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>-->
+                                    <!--</if>-->
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+</div>
+<!--<div class="bot">-->
+    <!--<input type="hidden" name="inc_type" value="{$inc_type}">-->
+    <!--<a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">保存</a>-->
+<!--</div>-->
+</div>
+</form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    function set_prize(id){
+        if (id == '' || id == null || id == undefined) {
+            id = 0;
+        }
+        console.log(id);
+        var url = "/index.php/Admin/Distribut/prize/inc_type/distribution/id/"+id;
+        layer.open({
+            type: 2,
+            title: '设置奖项',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['85%', '80%'], 
+            content: url,
+        });
+    }
+    function call_back(goodsItem){
+        console.log(goodsItem);
+        // layer.closeAll('iframe');
+    }
+    //删除角色
+    function delfun(that){
+        layer.confirm('是否确认删除？', {
+            btn: ['确认','取消']
+        }, function(){
+            var level_id = $(that).attr('data-id');
+            $.ajax({
+                type: "POST",
+                url: "{:U('Admin/User.User/levelHandle')}",
+                data: {act:'del',level_id:level_id},
+                dataType: "json",
+                error: function () {
+                    layer.alert("服务器繁忙, 请联系管理员!");
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout("window.location.reload()",1000);
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                        $.each(data.result, function (index, item) {
+                            $('#err_' + index).text(item).show();
+                        });
+                    }
+                }
+            });
+        }, function(){});
+    }
+
+function ajax_switch(num){
+    if (num == 1) {
+        $('#switch_on_off').show()
+        adsubmit();
+    } else {
+        $('#switch_on_off').hide();
+        adsubmit();
+    }
+}
+var bool = $('input[name="switch"]:checked').val();
+if (bool == 1) {
+    $('#switch_on_off').show()
+}
+function adsubmit(action){
+    //异步提交
+    var da = $('#handlepost').serialize();
+    $.ajax({
+        type: "POST",
+        url: "/index.php/Admin/Systems/handle",
+        data: da,
+        success: function(res){
+                layer.msg('保存成功！', {icon: 1});
+        }
+    })
+
+}
+</script>
+</body>
+</html>

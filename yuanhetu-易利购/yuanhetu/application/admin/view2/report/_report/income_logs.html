@@ -1,0 +1,124 @@
+<include file="public/layout"/>
+<style>
+    .te_le .dataTables_paginate {
+        float: left;
+    }
+
+    .bot {
+        float: right;
+        padding: 15px 0
+    }
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div class="page" style="padding: 0px 1% 0 1%;">
+    <!-- 操作说明 -->
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>收入日志</h3>
+                <h5>(共{$total_count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form2"
+                  action="{:U('Report.Report/expense_logs',array('tpl'=>'expense_logs'))}" method="get">
+                <input name="prom_id" type="hidden" value="{$Request.param.prom_id}">
+                <input name="prom_type" type="hidden" value="{$Request.param.prom_type}">
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th abbr="article_title" axis="col3" class="" align="left">
+                            <div style="text-align: left; width: 50px;" class="">记录ID</div>
+                        </th>
+                        <th abbr="article_time" axis="col6" class="" align="left">
+                            <div style="text-align: left; width: 100px;" class="">用户账号</div>
+                        </th>
+                        <th abbr="ac_id" axis="col4" class="" align="left">
+                            <div style="text-align: center; width: 100px;" class="">用户手机</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 80px;" class="">数量</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 80px;" class="">变更前</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 80px;" class="">变更后</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 120px;" class="">变更时间</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="list">
+                        <tr>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 50px;">
+                                    {$list.id}
+                                </div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 100px;">{$list.account}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 100px;">{$list.mobile}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$list.num}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$list.before}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$list.after}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 120px;">{$list.updateTime}</div>
+                            </td>
+                            <td class="" style="width: 100%;" align="">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                        <notempty name="list[specGoodsPrice]">
+                            <tr style="display: none" id="spec_goods_id_{$list.goods_id}">
+                                <td></td>
+                                <td class="tl" colspan="5">
+                                    <div style="height: auto;white-space:normal;">
+                                        <volist name="list[specGoodsPrice]" id="spec">
+                                            <a class="<if condition='$spec[prom_id] eq 0'>ncap-btn specBtn<else>ncap-btn-dis</if>"
+                                               data-item-id="{$spec.item_id}"
+                                               data-key-name="{$spec.key_name}" data-store-count="{$spec.store_count}"
+                                               data-price="{$spec.price}" data-spec-img="{$spec.spec_img}"
+                                               title="{$spec.key_name}">{$spec.key_name}</a>
+                                        </volist>
+                                    </div>
+                                </td>
+                            </tr>
+                        </notempty>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        <div class="row">
+            <div class="col-sm-6 text-left"></div>
+            <div class="col-sm-6 text-right">{$page}</div>
+        </div>
+    </div>
+</div>
+<script>
+</script>
+</body>
+</html>

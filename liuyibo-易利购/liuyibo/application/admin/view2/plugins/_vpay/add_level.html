@@ -1,0 +1,87 @@
+<include file="public/layout" />
+<style>
+    .tab-content , .tab-content2{
+        display: none;
+        height: 350px;
+        overflow:auto;
+    }
+    .btn{
+        display: inline-block;
+        background: #00a0e9;
+        color:#FFFFFF;
+        border-radius: 5px;
+        padding: 5px;
+        margin-left: 5px;
+        cursor: default;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>会员等级管理 - 编辑会员等级</h3>
+                <h5>网站系统会员等级管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="level_id" value="{$info.level_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>等级名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="level_name" value="{$info.level_name}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置会员等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>直推条件升级(?)有效会员</label>
+                </dt>
+                <dd class="opt">
+                    <input type="number" name="level_push_num" value="{$info.level_push_num}" id="level_push_num" class="input-txt">
+                    <span class="err" id="err_level_push_num"></span>
+                    <p class="notic">vip升级需要直推多少名有效会员（有效会员为积分大于5000分）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>积分升级条件</label>
+                </dt>
+                <dd class="opt">
+                    <input type="number" name="level_integral" value="{$info.level_integral}" id="level_integral" class="input-txt">
+                    <span class="err" id="err_level_integral"></span>
+                    <p class="notic">设置会员等级升级积分条件</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    等级描述
+                </dt>
+                <dd class="opt">
+                    <textarea  name="desc" class="tarea" rows="6">{$info.desc}</textarea>
+                    <span class="err" id="err_desc"></span>
+                    <p class="notic">会员等级描述信息</p>
+                </dd>
+            </dl>
+            <div class="bot">
+                <a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+            </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $("#handleposition").submit();
+    }
+</script>
+</body>
+</html>

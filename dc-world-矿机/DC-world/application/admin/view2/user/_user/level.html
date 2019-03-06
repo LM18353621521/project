@@ -1,0 +1,796 @@
+<include file="public/layout" />
+<style>
+    .tab-content , .tab-content2{
+        display: none;
+        height: 350px;
+        overflow:auto;
+    }
+    .btn{
+        display: inline-block;
+        background: #00a0e9;
+        color:#FFFFFF;
+        border-radius: 5px;
+        padding: 5px;
+        margin-left: 5px;
+        cursor: default;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>会员等级管理 - 编辑会员等级</h3>
+                <h5>网站系统会员等级管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="level_id" value="{$info.level_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>等级名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="level_name" value="{$info.level_name}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置会员等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>地区代理开关</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="switch1" class="cb-enable  <if condition="$info['is_region_agent'] eq 1">selected</if>">开启</label>
+                        <label for="switch0" class="cb-disable <if condition="$info['is_region_agent'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" onclick="$('#switch_on_off').show();" id="switch1"  name="is_region_agent" value="1" <if condition="$info['is_region_agent'] eq 1">checked="checked"</if>>
+                        <input type="radio" onclick="$('#switch_on_off').hide();$('#region_code').val('0');" id="switch0" name="is_region_agent" value="0" <if condition="$info['is_region_agent'] eq 0">checked="checked"</if> >
+                    </div>
+                </dd>
+            </dl>
+            <dl class="row" <if condition="$info['is_region_agent'] eq 0"> style="display: none;" </if> id="switch_on_off">
+                <dt class="tit">
+                    <label><em>*</em>代理等级</label>
+                </dt>
+                <dd class="opt">
+                    <select class="form-control" name="region_code" id="region_code">
+                        <option <if condition="$info['region_code'] eq 0">selected</if> value="0" selected>请选择</option>
+                        <option <if condition="$info['region_code'] eq 1">selected</if> value="1">省级代理</option>
+                        <option <if condition="$info['region_code'] eq 2">selected</if> value="2">市级代理</option>
+                        <option <if condition="$info['region_code'] eq 3">selected</if> value="3">区级代理</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    等级描述
+                </dt>
+                <dd class="opt">
+                    <textarea  name="describe" class="tarea" rows="6">{$info.describe}</textarea>
+                    <span class="err" id="err_describe"></span>
+                    <p class="notic">会员等级描述信息</p>
+                </dd>
+            </dl>
+            <div class="item-title">
+                <div class="subject">
+                    <h3>角色条件配置</h3>
+                    <h5>达成条件（一）</h5>
+                </div>
+                <div style="text-align: left;padding-left: 10%">
+                    <ul class="tab-base nc-row">
+                        <li onclick="alter_qualification_tab(this,1)"><a class="current"><span>购买类条件</span></a></li>
+                        <li onclick="alter_qualification_tab(this,2)"><a><span>操作类条件</span></a></li>
+                        <li onclick="alter_qualification_tab(this,3)"><a><span>金额条件</span></a></li>
+                        <li onclick="alter_qualification_tab(this,4)"><a><span>推荐条件</span></a></li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="tab-content-1" style="display: block;">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" <if condition="$inc_info['condition_buy']['is_buy_appoint_product_enable']">checked</if> name="IsBuyAppointProductEnable[]"></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>购买指定商品</span>
+                            <span id="show_appoint">
+                                <foreach name="$inc_info['condition_buy']['is_buy_appoint_product_enable_arr']" item="vo">
+                                    <span><span class='btn'>{$vo['name']}</span><i class='fa fa-remove' onclick='remove_appoint(this,1,"{$vo[\"type_id\"]}")'></i></span>
+                                </foreach>
+                            </span>
+                            <select class="form-control" onclick="input_appoint(this,1)">
+                                <option value="0">请选择</option>
+                                <foreach name="$identity_list" item="vo">
+                                    <option value="{$vo['type_id']}">{$vo['name']}</option>
+                                </foreach>
+                            </select>
+                            <input type="hidden" id="hide_appoint" value="{$inc_info['condition_buy']['is_buy_appoint_product_enable']}" name="IsBuyAppointProductEnable[]">
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="buyAny" <if condition="$inc_info['condition_buy']['buy_any']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>购买任意普通商品</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="oneConsumption[]" <if condition="$inc_info['condition_buy']['one_consumption']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>一次性消费满</span>
+                            <input type="text" name="oneConsumption[]" value="{$inc_info['condition_buy']['one_consumption']}" placeholder="请输入">
+                            <span class="zs">元</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="allConsumption[]" <if condition="$inc_info['condition_buy']['all_consumption']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>累计消费满</span>
+                            <input type="text" name="allConsumption[]" value="{$inc_info['condition_buy']['all_consumption']}" placeholder="请输入">
+                            <span class="zs">元</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="cumulativePurchases[]" <if condition="$inc_info['condition_buy']['cumulative_purchases']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>累计购买满</span>
+                            <input type="text" name="cumulativePurchases[]" value="{$inc_info['condition_buy']['cumulative_purchases']}" placeholder="请输入">
+                            <span class="zs">次</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label>计算的时机</label>
+                        </dt>
+                        <dd class="opt">
+                            <input type="radio" name="update_point" value="1" <if condition="$update_point eq 1"> checked </if>>支付时
+                            <input type="radio" name="update_point" value="2" <if condition="$update_point eq 2"> checked </if>>发货时
+                            <input type="radio" name="update_point" value="3" <if condition="$update_point eq 3"> checked </if>>收货时
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content" id="tab-content-2">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="followOfficialAccounts" <if condition="$inc_info['condition_operate']['follow_official_accounts']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>关注公众号获得</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="register" <if condition="$inc_info['condition_operate']['register']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>注册获得</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="application" <if condition="$inc_info['condition_operate']['application']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>申请获得</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content" id="tab-content-3">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="accumulative" <if condition="$inc_info['condition_amount']['accumulative']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info['condition_amount']['accumulative']">
+                                <foreach name="$inc_info['condition_amount']['accumulative']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_accumulative_currency" style="float: left;">
+                                            <span>累计</span>
+                                            <select class="form-control" name="accumulativeCurrency[]">
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 0">selected</if> value="0">请选择币种</option>
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 1">selected</if> value="1">佣金</option>
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 6">selected</if> value="6">余额</option>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" class="form-control oud" name="accumulativeMoney[]" value="{$vo['accumulativeMoney']}" placeholder="请输入">
+                                            <span class="zs">元</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_accumulative_currency(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_accumulative_currency(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_accumulative_currency" style="float: left;">
+                                    <span>累计</span>
+                                    <select class="form-control" name="accumulativeCurrency[]">
+                                        <option value="0">请选择币种</option>
+                                        <option value="1">佣金</option>
+                                        <option value="6" selected>余额</option>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" class="form-control oud" name="accumulativeMoney[]" placeholder="请输入">
+                                    <span class="zs">元</span>
+                                </div>
+                                <span style="padding-left: 10px;">
+                                    <a onclick="add_accumulative_currency(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                </span>
+                            </if>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content" id="tab-content-4">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="direct" <if condition="$inc_info['condition_recommend']['direct']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info['condition_recommend']['direct']">
+                                <foreach name="$inc_info['condition_recommend']['direct']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_direct_grade" style="float: left;">
+                                            <span>直推会员级别达</span>
+                                            <select class="form-control" name="directGrade[]">
+                                                <option value="0">请选择</option>
+                                                <foreach name="check_role" item="vos">
+                                                    <option <if condition="$vo['directGrade'] eq $vos['level_id']">selected</if> value="{$vos['level_id']}">{$vos['level_name']}</option>
+                                                </foreach>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" name="directNumber[]" class="form-control oud" value="{$vo['directNumber']}" placeholder="请输入">
+                                            <span class="zs">人</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_direct_grade(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_direct_grade(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_direct_grade" style="float: left;">
+                                    <span>直推会员级别达</span>
+                                    <select class="form-control" name="directGrade[]">
+                                        <option value="0">请选择</option>
+                                        <foreach name="check_role" item="vo">
+                                            <option value="{$vo['level_id']}">{$vo['level_name']}</option>
+                                        </foreach>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" name="directNumber[]" class="form-control oud" value="" placeholder="请输入">
+                                    <span class="zs">人</span>
+                                </div>
+                                <span style="padding-left: 10px;">
+                                    <a onclick="add_direct_grade(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                </span>
+                            </if>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="recommend" <if condition="$inc_info['condition_recommend']['recommend']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info['condition_recommend']['recommend']">
+                                <foreach name="$inc_info['condition_recommend']['recommend']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_recommend_level" style="float: left;">
+                                            <span>推荐层</span>
+                                            <input type="text" class="form-control oud" value="{$vo['recommendLevel']}" name="recommendLevel[]">
+                                            <span class="zs">层</span>
+                                            <span>，会员级别达</span>
+                                            <select class="form-control" name="recommendGrade[]">
+                                                <option value="0">请选择</option>
+                                                <foreach name="check_role" item="vos">
+                                                    <option <if condition="$vo['recommendGrade'] eq $vos['level_id']">selected</if> value="{$vos['level_id']}">{$vos['level_name']}</option>
+                                                </foreach>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" class="form-control oud" value="{$vo['recommendNumber']}" name="recommendNumber[]">
+                                            <span class="zs">人</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_recommend_level(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_recommend_level(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_recommend_level" style="float: left;">
+                                    <span>推荐层</span>
+                                    <input type="text" class="form-control oud" value="0" name="recommendLevel[]">
+                                    <span class="zs">层</span>
+                                    <span>，会员级别达</span>
+                                    <select class="form-control" name="recommendGrade[]">
+                                        <option value="0">请选择</option>
+                                        <foreach name="check_role" item="vo">
+                                            <option value="{$vo['level_id']}">{$vo['level_name']}</option>
+                                        </foreach>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" class="form-control oud" value="0" name="recommendNumber[]">
+                                    <span class="zs">人</span>
+                                </div>
+                            <span style="padding-left: 10px;">
+                                <a onclick="add_recommend_level(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                            </span>
+                            </if>
+                        </dd>
+                    </dl>
+                </div>
+                <div onclick="alter_condition('show')"  <if condition="$inc_info2">style="display:none;"</if> id="alter_condition_button">
+                    <a><i class="fa fa-plus"></i>新增条件(注：新增条件，表示只要满足条件一或条件二的情况，即可成为该等级角色)</a>
+                </div>
+            </div>
+            <div class="item-title" id="alter_condition" <if condition="!$inc_info2">style="display:none;"</if>>
+                <input type="hidden" name="IsQualificationTab2" <if condition="$inc_info2">value="1"<else/>value="0"</if>/>
+                <div class="subject">
+                    <h5>达成条件（二）</h5>
+                </div>
+                <div style="text-align: left;padding-left: 10%">
+                    <ul class="tab-base nc-row">
+                        <li onclick="alter_qualification_tab2(this,1)"><a class="current"><span>购买类条件</span></a></li>
+                        <li onclick="alter_qualification_tab2(this,2)"><a><span>操作类条件</span></a></li>
+                        <li onclick="alter_qualification_tab2(this,3)"><a><span>金额条件</span></a></li>
+                        <li onclick="alter_qualification_tab2(this,4)"><a><span>推荐条件</span></a></li>
+                    </ul>
+                </div>
+                <div class="tab-content2" id="tab-content2-1" style="display: block;">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" <if condition="$inc_info2['condition_buy']['is_buy_appoint_product_enable']">checked</if> name="IsBuyAppointProductEnable2[]"></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>购买指定商品</span>
+                            <span id="show_appoint2">
+                                <foreach name="$inc_info2['condition_buy']['is_buy_appoint_product_enable_arr']" item="vo">
+                                    <span><span class='btn'>{$vo['name']}</span><i class='fa fa-remove' onclick='remove_appoint(this,2,"{$vo[\"type_id\"]}")'></i></span>
+                                </foreach>
+                            </span>
+                            <select class="form-control" onclick="input_appoint(this,2)">
+                                <option value="0">请选择</option>
+                                <foreach name="$identity_list" item="vo">
+                                    <option value="{$vo['type_id']}">{$vo['name']}</option>
+                                </foreach>
+                            </select>
+                            <input type="hidden" id="hide_appoint2" value="{$inc_info2['condition_buy']['is_buy_appoint_product_enable']}" name="IsBuyAppointProductEnable2[]">
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="buyAny2" <if condition="$inc_info2['condition_buy']['buy_any']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>购买任意商品</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="oneConsumption2[]" <if condition="$inc_info2['condition_buy']['one_consumption']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>一次性消费满</span>
+                            <input type="text" name="oneConsumption2[]" value="{$inc_info2['condition_buy']['one_consumption']}" placeholder="请输入">
+                            <span class="zs">元</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="allConsumption2[]" <if condition="$inc_info2['condition_buy']['all_consumption']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>累计消费满</span>
+                            <input type="text" name="allConsumption2[]" value="{$inc_info2['condition_buy']['all_consumption']}" placeholder="请输入">
+                            <span class="zs">元</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="cumulativePurchases2[]" <if condition="$inc_info2['condition_buy']['cumulative_purchases']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>累计购买满</span>
+                            <input type="text" name="cumulativePurchases2[]" value="{$inc_info2['condition_buy']['cumulative_purchases']}" placeholder="请输入">
+                            <span class="zs">次</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label>计算的时机</label>
+                        </dt>
+                        <dd class="opt">
+                            <input type="radio" name="update_point2" value="1" <if condition="$update_point2 eq 1"> checked </if>>支付时
+                            <input type="radio" name="update_point2" value="2" <if condition="$update_point2 eq 2"> checked </if>>发货时
+                            <input type="radio" name="update_point2" value="3" <if condition="$update_point2 eq 3"> checked </if>>确认收货时
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content2" id="tab-content2-2">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="followOfficialAccounts2" <if condition="$inc_info2['condition_operate']['follow_official_accounts']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>关注公众号获得</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="register2" <if condition="$inc_info2['condition_operate']['register']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>注册获得</span>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="application2" <if condition="$inc_info2['condition_operate']['application']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <span>申请获得</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content2" id="tab-content2-3">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="accumulative2" <if condition="$inc_info2['condition_amount']['accumulative']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info2['condition_amount']['accumulative']">
+                                <foreach name="$inc_info2['condition_amount']['accumulative']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_accumulative_currency" style="float: left;">
+                                            <span>累计</span>
+                                            <select class="form-control" name="accumulativeCurrency2[]">
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 0">selected</if> value="0">请选择币种</option>
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 1">selected</if> value="1">佣金</option>
+                                                <option <if condition="$vo['accumulativeCurrency'] eq 6">selected</if> value="6">余额</option>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" class="form-control oud" name="accumulativeMoney2[]" value="{$vo['accumulativeMoney']}" placeholder="请输入">
+                                            <span class="zs">元</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_accumulative_currency(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_accumulative_currency(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_accumulative_currency" style="float: left;">
+                                    <span>累计</span>
+                                    <select class="form-control" name="accumulativeCurrency2[]">
+                                        <option value="0">请选择币种</option>
+                                        <option value="1">佣金</option>
+                                        <option value="6" selected>余额</option>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" class="form-control oud" name="accumulativeMoney2[]" placeholder="请输入">
+                                    <span class="zs">元</span>
+                                </div>
+                                <span style="padding-left: 10px;">
+                                    <a onclick="add_accumulative_currency(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                </span>
+                            </if>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tab-content2" id="tab-content2-4">
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="direct2" <if condition="$inc_info2['condition_recommend']['direct']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info2['condition_recommend']['direct']">
+                                <foreach name="$inc_info2['condition_recommend']['direct']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_direct_grade" style="float: left;">
+                                            <span>直推会员级别达</span>
+                                            <select class="form-control" name="directGrade2[]">
+                                                <option value="0">请选择</option>
+                                                <foreach name="check_role" item="vos">
+                                                    <option <if condition="$vo['directGrade'] eq $vos['level_id']">selected</if> value="{$vos['level_id']}">{$vos['level_name']}</option>
+                                                </foreach>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" name="directNumber2[]" class="form-control oud" value="{$vo['directNumber']}" placeholder="请输入">
+                                            <span class="zs">人</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_direct_grade(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_direct_grade(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_direct_grade" style="float: left;">
+                                    <span>直推会员级别达</span>
+                                    <select class="form-control" name="directGrade2[]">
+                                        <option value="0">请选择</option>
+                                        <foreach name="check_role" item="vo">
+                                            <option value="{$vo['level_id']}">{$vo['level_name']}</option>
+                                        </foreach>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" name="directNumber2[]" class="form-control oud" value="" placeholder="请输入">
+                                    <span class="zs">人</span>
+                                </div>
+                                <span style="padding-left: 10px;">
+                                    <a onclick="add_direct_grade(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                </span>
+                            </if>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label><input type="checkbox" name="recommend2" <if condition="$inc_info2['condition_recommend']['recommend']">checked</if>></label>
+                        </dt>
+                        <dd class="opt">
+                            <if condition="$inc_info2['condition_recommend']['recommend']">
+                                <foreach name="$inc_info2['condition_recommend']['recommend']" item="vo" key="k">
+                                    <div>
+                                        <div class="clear"></div>
+                                        <div class="add_recommend_level" style="float: left;">
+                                            <span>推荐层</span>
+                                            <input type="text" class="form-control oud" value="{$vo['recommendLevel']}" name="recommendLevel2[]">
+                                            <span class="zs">层</span>
+                                            <span>，会员级别达</span>
+                                            <select class="form-control" name="recommendGrade2[]">
+                                                <option value="0">请选择</option>
+                                                <foreach name="check_role" item="vos">
+                                                    <option <if condition="$vo['recommendGrade'] eq $vos['level_id']">selected</if> value="{$vos['level_id']}">{$vos['level_name']}</option>
+                                                </foreach>
+                                            </select>
+                                            <span>满</span>
+                                            <input type="text" class="form-control oud" value="{$vo['recommendNumber']}" name="recommendNumber2[]">
+                                            <span class="zs">人</span>
+                                        </div>
+                                        <if condition="$k eq 0">
+                                            <span style="padding-left: 10px;">
+                                                <a onclick="add_recommend_level(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                                            </span>
+                                            <else/>
+                                            <span>
+                                                <a onclick="del_recommend_level(this);" style="color: red; text-decoration: underline;">删除</a>
+                                            </span>
+                                        </if>
+                                    </div>
+                                </foreach>
+                                <else/>
+                                <div class="add_recommend_level" style="float: left;">
+                                    <span>推荐层第</span>
+                                    <input type="text" class="form-control oud" value="0" name="recommendLevel2[]">
+                                    <span class="zs">层</span>
+                                    <span>，会员级别达</span>
+                                    <select class="form-control" name="recommendGrade2[]">
+                                        <option value="0">请选择</option>
+                                        <foreach name="check_role" item="vo">
+                                            <option value="{$vo['level_id']}">{$vo['level_name']}</option>
+                                        </foreach>
+                                    </select>
+                                    <span>满</span>
+                                    <input type="text" class="form-control oud" value="0" name="recommendNumber2[]">
+                                    <span class="zs">人</span>
+                                </div>
+                            <span style="padding-left: 10px;">
+                                <a onclick="add_recommend_level(this);" style="color: #0076ef; text-decoration: underline;">添加</a>
+                            </span>
+                            </if>
+                        </dd>
+                    </dl>
+                </div>
+                <div onclick="alter_condition('hide')" style="cursor: pointer;">
+                    <a><i class="fa fa-remove"></i>移除条件(注：新增条件，表示只要满足条件一或条件二的情况，即可成为该等级角色)</a>
+                </div>
+            </div>
+            <div class="bot">
+                <a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').show();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/User.User/levelHandle')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/Distribut.Distribut/index',['inc_type'=>'role_info'])}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+    //改变达成条件显示/隐藏状态
+    function alter_condition(status){
+        if(status == 'show'){
+            $('#alter_condition').show();
+            $('#alter_condition_button').hide();
+            $('input[name="IsQualificationTab2"]').val('1');//使用条件二
+        }else if(status == 'hide'){
+            $('#alter_condition').hide();
+            $('#alter_condition_button').show();
+            $('input[name="IsQualificationTab2"]').val('0');//不使用条件二
+        }
+    }
+    //改变角色条件的tab
+    function alter_qualification_tab(that,cid){
+        $($(that).siblings().find('a')).removeClass('current');
+        $(that).find('a').addClass('current');
+        $('.tab-content').hide();
+        var tab_content_id = '#tab-content-'+cid;
+        $(tab_content_id).show();
+    }
+    //改变角色条件2的tab
+    function alter_qualification_tab2(that,cid){
+        $($(that).siblings().find('a')).removeClass('current');
+        $(that).find('a').addClass('current');
+        $('.tab-content2').hide();
+        var tab_content_id = '#tab-content2-'+cid;
+        $(tab_content_id).show();
+    }
+    //添加金额条件
+    function add_accumulative_currency(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_accumulative_currency'+type).html();
+        }else{
+            add_html = $('.add_accumulative_currency').html();
+        }
+        var del_button = '<span><a onclick="del_accumulative_currency(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除金额条件
+    function del_accumulative_currency(that){
+        $(that).parent().parent().remove();
+    }
+    //添加直推条件
+    function add_direct_grade(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_direct_grade'+type).html();
+        }else{
+            add_html = $('.add_direct_grade').html();
+        }
+        var del_button = '<span><a onclick="del_direct_grade(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除直推条件
+    function del_direct_grade(that){
+        $(that).parent().parent().remove();
+    }
+    //添加推荐层条件
+    function add_recommend_level(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_recommend_level'+type).html();
+        }else{
+            add_html = $('.add_recommend_level').html();
+        }
+        var del_button = '<span><a onclick="del_recommend_level(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除推荐层条件
+    function del_recommend_level(that){
+        $(that).parent().parent().remove();
+    }
+    //将点击的商品类别添加到显示中
+    function input_appoint(that,type){
+        //获取商品类别信息
+        var identity_id = $(that).val();//商品类别id
+        if(identity_id == 0)return;
+        var identity_name = $(that).find('option:selected').text();//商品类别名称
+        //数据初始化
+        var show_appoint = '';//显示的数据
+        var hide_appoint = '';//隐藏提交的数据
+        var is_repeat = false;//是否重复
+        //页面显示
+        if(type == 1){
+            show_appoint = $('#show_appoint');
+            hide_appoint = $('#hide_appoint');
+        }else{
+            show_appoint = $('#show_appoint2');
+            hide_appoint = $('#hide_appoint2');
+        }
+        //当前值
+        var appoint_hide_now = hide_appoint.val();
+        if(appoint_hide_now != '' && appoint_hide_now != 0 && appoint_hide_now != '0'){
+            var appoint_arr = appoint_hide_now.split(',');
+            //检查重复
+            for(var i=0;i<appoint_arr.length;i++){
+                if(appoint_arr[i] == identity_id){
+                    is_repeat = true;break;
+                }
+            }
+            if(is_repeat == false){
+                //插入新的商品分类id
+                appoint_arr.push(identity_id);
+                var temp = appoint_arr.join(",");
+                hide_appoint.val(temp);
+            }
+        }else{
+            hide_appoint.val(identity_id);
+        }
+        //插入新的button
+        if(is_repeat == false){
+            //插入的button
+            var appoint_button = "<span><span class='btn'>"+identity_name+"</span><i class='fa fa-remove' onclick='remove_appoint(this,"+type+","+identity_id+")'></i></span>";
+            show_appoint.append(appoint_button);
+        }
+        //归位
+        $(that).val(0);
+    }
+    //移除商品类别
+    function remove_appoint(that,type,gid){
+        var appoint_remove = '';
+        if(type == 1){
+            appoint_remove = $('#hide_appoint');
+        }else{
+            appoint_remove = $('#hide_appoint2');
+        }
+        //移除当前button
+        $(that).parent().remove();
+        //删去隐藏提交数据中的id
+        var appoint_arr = appoint_remove.val().split(',');
+        appoint_arr.splice($.inArray(gid,appoint_arr),1);
+        var temp = appoint_arr.join(",");
+        appoint_remove.val(temp);
+    }
+</script>
+</body>
+</html>

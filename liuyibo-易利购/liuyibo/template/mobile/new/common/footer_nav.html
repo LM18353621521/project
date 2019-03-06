@@ -1,0 +1,32 @@
+<div class="bottom-tabbar" style="height: 50px">
+    <a  <if condition="CONTROLLER_NAME eq 'Index'">class="bottom-tabbar__item @@item1 active " <else/>class="bottom-tabbar__item @@item1" </if> href="{:U('Index/index')}" >
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon01.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon01_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .6rem;">首页</p>
+    </a>
+    <a href="{:U('Cart/index')}"  <if condition="CONTROLLER_NAME eq 'Cart'">class="bottom-tabbar__item @@item2 active " <else/>class="bottom-tabbar__item @@item2"</if>>
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon02.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon02_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .6rem;">购物车</p>
+    </a>
+    <a href="{:U('Goods/categoryList')}" <if condition="CONTROLLER_NAME eq 'Goods'">class="bottom-tabbar__item @@item3 active"<else/>class="bottom-tabbar__item @@item3"</if> >
+        <span class="icon">
+            <img src="__STATIC__/assets/images/bottom_icon03.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon03_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .6rem;">商品分类</p>
+    </a>
+    <a href="{:U('User/index')}" <if condition="CONTROLLER_NAME eq 'User'">class="bottom-tabbar__item @@item4 active"<else/>class="bottom-tabbar__item @@item4"</if> >
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon04.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon04_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .6rem;">我的</p>
+    </a>
+</div>
+</body>
+</html>

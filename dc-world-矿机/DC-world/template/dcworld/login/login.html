@@ -1,0 +1,139 @@
+<include file="common/header" title="登录" body=""/>
+<style>
+
+	.header {
+            background-color: #182341;
+
+        }
+    .page-bd {
+        width: 100%;
+    }
+        .header .header-title {
+            color: #fff!important;
+        }
+        .left-arrow:before{
+            border-color: #fff;
+        }
+        .header a {
+        	color: #FFFFFF;
+        }
+    .body_bg{width: 100%;height:100%;z-index: -1;background: url(/template/vpay/new/public/images/login_bg.png) no-repeat;background-position: center;background-size: cover;position: fixed;top: 0;bottom: 0;}
+    .body_bg img{width: 100%;}
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">登录</div>
+            <div class="header-right">
+                <a href="#"><a href="{:U('Dcworld/Login/register')}" class='fs28'>注册</a></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd" style="background: url('__PUBLIC__/images/u_bg.jpg') no-repeat;background-size: 100% 100%;">
+        <!-- 页面内容-->
+        <div class="login_dftx">
+      <span class="avatar">
+        <img src="__PUBLIC__/images/u_icon1.png" alt="">
+      </span>
+        </div>
+        <div class="weui-cells bigpad_cells" style="background: none;">
+            <div class="weui-cell">
+                <div class="weui-cell__hd" style="margin-right:  8px;border-right:  1px solid #eeeeee;">
+                    <input type="text" class="weui-input" value="+86" id="picker" readonly="" style="
+    width:  .5rem;
+    background:  transparent;
+    border:  none;
+    color:  #fff;
+
+
+">
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input phone_input" placeholder="输入手机号码" type="tel" name="account" autocomplete="off" onInput ="returnNum(this)" maxlength="11">
+                </div>
+                <div>
+                    <i style="display: none;" class="clean_input"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-flex input_password">
+                        <div class="weui-flex__item"><input class="weui-input" placeholder="输入密码" type="password" oncontextmenu="return false" name="password" onpaste="return false"></div>
+                        <i class="eye"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cell border-none">
+                <div class="weui-cell__ft" style="display: block;width: 100%;">
+                    <a href="{:U('Login/forget')}" class="fs26 tr" style="color: #ffffff;">忘记密码？</a>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area login_btn">
+            <button id="submit" class="weui-btn weui-btn_primary" type="button">登录</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function returnNum(_this) {
+        _this.value = _this.value.replace(/[^0-9]/g, '');
+    }
+</script>
+<script>
+    $("#picker").picker({
+        title: "请选择区段",
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['中国大陆 +86','+852','+853','+886']
+            }
+        ]
+    });
+    $("#submit").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "{:U('Login/login')}",
+            data: {
+                "account" : $("input[name='account']").val(),
+                "password" : $("input[name='password']").val()
+            },
+            dataType: "json",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(data){
+                if (data.code == -1) {
+                    $.toast(data.msg,"cancel");
+
+                } else if (data.code == 0) {
+                    
+                    $.toast(data.data.msg);
+
+                    setTimeout(function () {
+                        window.location.href = "{:U('Index/index')}"
+                    }, 1000)
+                }
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).on("focus","input",function(){
+    }).on("blur","input",function(){
+        document.querySelector(".page-bd").scrollIntoView(true);
+    })
+
+// 切换密码框是否可见
+$(".input_password").on('click', '.eye', function () {
+    var $this = $(this);
+    if ($this.hasClass('close')) {
+        $this.removeClass('close');
+        $this.parents('.input_password').find('input').attr('type', 'password');
+    } else {
+        $this.addClass('close');
+        $this.parents('.input_password').find('input').attr('type', 'text');
+    }
+});
+</script>

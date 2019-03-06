@@ -1,0 +1,149 @@
+<include file="public/layout" />
+<style>
+    td{height:40px;line-height:40px; padding-left:20px;}
+    .span_1{
+        float:left;
+        margin-left:0px;
+        height:130px;
+        line-height:130px;
+    }
+    .span_1 ul{list-style:none;padding:0px;}
+    .span_1 ul li{
+        border:1px solid #CCC;
+        height:40px;
+        padding:0px 10px;
+        margin-left:-1px;
+        margin-top:-1px;
+        line-height:40px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <form class="form-horizontal" id="user_form" method="post">
+        <div class="ncap-form-default">
+           <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label for="balance"><em>*</em>余额变动</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<input type="text" name="balance" id="balance" class="input-txt">-->
+                    <!--<span class="err"></span>-->
+                    <!--<p class="notic">余额变动</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label for="integral"><em>*</em>积分变动</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<input type="text" name="integral" id="integral" class="input-txt">-->
+                    <!--<span class="err"></span>-->
+                    <!--<p class="notic">余额变动</p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="dc_coin"><em>*</em>DC币变动</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="dc_coin" id="dc_coin" class="input-txt" onKeyUp="clearNoNum(this)">
+                    <span class="err"></span>
+                    <select name="dc_type">
+                        <option value="0">增加</option>
+                        <option value="1">减少</option>
+                    </select>
+                    <p class="notic">DC币变动</p>
+
+                </dd>
+
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="shell"><em>*</em>贝壳变动</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="shell" id="shell" class="input-txt" onKeyUp="clearNoNum(this)">
+                    <span class="err"></span>
+                    <select name="shell_type">
+                        <option value="0">增加</option>
+                        <option value="1">减少</option>
+                    </select>
+                    <p class="notic">贝壳变动</p>
+                </dd>
+            </dl>
+            <input type="hidden" name="id" value="{$data.id}">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="select_goods();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    can_click=1;
+    function select_goods()
+    {
+        var balance = $("input[name='balance']").val();
+        var integral = $("input[name='integral']").val();
+        var shell = $("input[name='shell']").val();
+        var dc_coin = $("input[name='dc_coin']").val();
+        var id = $("input[name='id']").val();
+        var shell_type = $("select[name='shell_type']").val();
+        var dc_type = $("select[name='dc_type']").val();
+
+        var da = {
+            'balance' : balance,
+            'integral' : integral,
+            'dc_coin' : dc_coin,
+            'shell' : shell,
+            'id' : id,
+            'shell_type' :shell_type,
+            'dc_type' : dc_type,
+        }
+        if(can_click==0){return false}
+        can_click=0;
+        $.ajax({
+            type : "POST",
+            url:'/index.php/Admin/World.miner/updateBalanceIntegral',
+            data : da,
+            dataType: "json",
+            success: function(data){
+                console.log(data)
+                if(data.code==1){
+                    layer.alert(data.msg, {icon: 1},function () {
+                        window.parent.call_back();
+                        can_click=1;
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2},function () {
+                        window.parent.call_back();
+                        can_click=1;
+                    });
+                }
+
+            },
+            error:function(data){
+                layer.alert(data, {icon: 1});
+                can_click=1;
+            }
+        });
+    }
+
+    function clearNoNum(that){
+        //清除"数字"和"."以外的字符
+        var value =that.value;
+        value = value.replace(/[^\d.]/g,"");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g,"");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g,".");
+        value = value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        value = value.substring(0,10);
+        that.value=value;
+    }
+</script>
+</body>
+</html>

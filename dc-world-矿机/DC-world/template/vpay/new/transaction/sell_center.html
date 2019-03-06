@@ -1,0 +1,177 @@
+<include file="common/main" title="卖出中心" body=""/>
+    <div class="nav_top flex">
+        <a  href="/index.php/Vpay/Transaction/sellOut">
+            <i></i>
+        </a>
+        <div class="flex1">
+            卖出中心
+        </div>
+        <a class="more_show" href="javascript:void(0)">
+
+        </a>
+
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <p class="l_tit">点击选择匹配金额</p>
+    <input type="hidden" id="bankcardid" value="{$bankcardid}">
+    <div class="cz_list clearfix">
+        <ul>
+            <volist name="transaction_num" id="vo1" key="k">
+                <li onclick="loadMore({$vo1})" value="<php>echo $vo1;</php>" <if condition="$k eq 1">class="active5"</if> >
+                    {$vo1}
+                </li>
+            </volist>
+        </ul>
+    </div>
+    <div style="height: 0.1rem;"></div>
+    <div class="pay_list" id="tpls">
+        <script id="tpl" type="text/html">
+            <ul>
+                {{each data as log i}}
+            <li class="flex" ng-repeat="log in logs">
+                <div >
+                    {{if log.profilePhoto}}
+                    <img src="{{log.profilePhoto}}" style="width: 100%;height: 100%;border-radius: 50%">
+                    {{else}}
+                    <img src="__PUBLIC__/images/shezhi_icon_head.png">
+                    {{/if}}
+                </div>
+                <div class="flex1">
+                    <label>
+                        {{log.entrustNum}}
+                    </label>
+                    <p>
+                        时间：{{log.createTime}}
+                    </p>
+                </div>
+                <div style="width: 0.7rem;overflow: hidden">
+                    <label>{{log.entrustNum}}</label>
+                    <button onclick="sell({{log.id}})">
+                        卖出
+                    </button>
+                </div>
+            </li>
+                {{/each}}
+            </ul>
+        </script>
+    </div>
+
+
+</body>
+        <script>
+                //金额
+                num = 500;
+                // 当前页数
+                p = 0;
+                // 加载完毕标志
+                endflg = 0;
+                // 防止重复加载
+                busy = false;
+                // 存放数据
+                logs = [];
+                // 请求数据方法
+                loadMore = function(nums){
+
+                    if(nums != num) {
+                        num = nums;
+                        // 当前页数
+                        p = 0;
+                        // 加载完毕标志
+                        endflg = 0;
+                        // 防止重复加载
+                        busy = false;
+                        // 存放数据
+                        logs = [];
+                    }
+
+                    if(endflg == 0){
+                        if(busy){
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method:'POST',
+                            dataType:'JSON',
+                            data:{
+                                "p" : p,
+                                "num" : num
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Transaction/sell_center?p="+p,
+                            success: function (data) {
+                                busy = false;
+                                if(data.data != '' && data.data != null){
+                                    if(p > 0) {
+                                        layer.msg("正在加载...", {time: 500});
+                                    }
+                                } else {
+                                    layer.msg("已经全部加载完了...", {time:500});
+                                    endflg = 1;
+                                    return false;
+                                }
+                                p++;
+                                if(data.code == -1){
+                                    layer.msg(data.msg,{time:1500})
+                                }else{
+                                    if(data.data == null){
+                                        layer.msg(data.msg,{time:1500});
+                                    } else {
+                                        // 组织数据
+                                        var html = template('tpl',data);
+                                        document.getElementById("tpls").innerHTML = html;
+                                    }
+                                }
+                            }, error: function (response) {
+
+                            }
+                        });
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                };
+                // 进页面先加载一次数据
+                loadMore(num);
+
+                $(window).scroll(function(){
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if(scrollTop + windowHeight == scrollHeight){
+                        loadMore(num);
+                    }
+                });
+
+                sell=function (id) {
+                    layer.confirm('确认卖出？', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            method:'POST',
+                            dataType:"JSON",
+                            data:{
+                                "id" : id,
+                                "bankcardid" : $("#bankcardid").val()
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Transaction/center_sellout",
+                            success: function (data) {
+                                if(data.code==0){
+                                        layer.msg("操作成功！");
+                                        setTimeout(function () {
+                                            window.location.href = '/index.php/Vpay/Transaction/unOrderListSell';
+                                        }, 1000);
+                                    }else {
+                                        if(data.msg != '' && data.msg != null) {
+                                            layer.msg(data.msg,{time:1500})
+                                        }
+                                }
+                            }, error: function (response) {
+
+                            }
+                    });
+                    }, function() {
+                        layer.msg('已取消');
+                    })
+                }
+
+        </script>

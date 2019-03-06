@@ -1,0 +1,46 @@
+<!-- 接单中 -->
+<if condition="($order_status eq 0 )">
+	<h3>到店处理</h3>
+	<dl class="row">
+		<dt  class="tit"></dt>
+		<dd class="opt" style="margin-left:10px">
+			<input type="hidden" name="order_status" value="">
+			<input type="hidden" name="action" value="5">
+			<a href="javascript:void(0)" onClick="change_order(1)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">确认</a>
+			<a href="javascript:void(0)" onClick="change_order(5)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">无效</a>
+		</dd>
+	</dl>
+</if>
+
+<!-- 维修中 -->
+<if condition="($order_status eq 1 )">
+	<notempty name="engineer">
+	    <h3>工程师分配</h3>
+	    <div class="goods-info">
+	        <dl class="row">
+	             <dt class="tit">
+	             </dt>
+	             <dd class="opt" style="margin-left:10px">
+	                <input type="hidden" name="action" value="4">
+	                <select name="engineer_id" id="engineer">
+	                    <option value="">---请选择---</option>
+	                    <volist name="engineer" id="en">
+	                        <option value="{$en.user_id}">{$en.nickname}</option>
+	                    </volist>
+	                </select>
+	             </dd>
+
+	        </dl>
+	    </div>
+	</notempty>
+	<h3>到店处理</h3>
+	<dl class="row">
+		<dt  class="tit"></dt>
+		<dd class="opt" style="margin-left:10px">
+			<input type="hidden" name="order_status" value="">
+			<input type="hidden" name="action" value="5">
+			<a href="javascript:void(0)" onclick="change_order(2)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">完成</a>
+			<a href="javascript:void(0)" onclick="change_order(5)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">无效</a>
+		</dd>
+	</dl>
+</if>

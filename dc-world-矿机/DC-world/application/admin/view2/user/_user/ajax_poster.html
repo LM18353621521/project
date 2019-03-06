@@ -1,0 +1,48 @@
+<table>
+       <tbody>
+              <!-- <tr data-id="{$list['id']}"> -->
+              <volist name="list" id="list">
+               
+                <!-- <td align="center" axis="col0" > -->
+                  <div style="text-align: center; width:192px;height:350px; float:left;margin-right:50px;margin-top:10px;" >
+                    <a href="{$list.img}" target="_blank"><img src="{$list.img}" style="width:192px;height:302px;" alt=""></a>
+                    <if condition="$list.type eq 0"><a class="btn red"  href="{:url('User.User/setDefault', ['id' => $list['id']])}"><i class="fa fa-pencil-square-o"></i>设为默认</a></if>
+                    <a class="btn red"  href="javascript:void(0)" data-id="{$list['id']}"  data-url="{:U('Admin/User.User/ajax_poster_delete')}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+                  </div>
+                <!-- </td> -->
+               
+            </volist>
+              <!-- </tr> -->
+          </tbody>
+        </table>
+        <!--分页位置--> {$page}
+		<script>
+            // 点击分页触发的事件
+            $(".pagination  a").click(function(){
+                cur_page = $(this).data('p');
+                ajax_get_table('search-form2',cur_page);
+            });
+
+			function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        $(obj).parent().parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+        </script>

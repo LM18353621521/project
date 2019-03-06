@@ -1,0 +1,353 @@
+<include file="public/layout"/>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>基础设置</h3>
+                <h5>网站全局内容基本选项设置</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>系统基础设置。</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('User.User/handle')}">
+        <input type="hidden" name="inc_type" value="{$inc_type}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_name">银行卡账户名称</label>
+                </dt>
+                <dd class="opt">
+                    <input id="store_name" name="bank_uname" value="{$config.bank_uname}" class="input-txt" type="text" />
+                    <p class="notic">银行卡账户名称</p>
+                </dd>
+                <dt class="tit">
+                    <label for="store_name">银行卡账号</label>
+                </dt>
+                <dd class="opt">
+                    <input id="store_name" name="bank_num" value="{$config.bank_num}" class="input-txt" type="text" />
+                    <p class="notic">银行卡账号</p>
+                </dd>
+                <dt class="tit">
+                    <label for="store_name">开户行</label>
+                </dt>
+                <dd class="opt">
+                    <input id="store_name" name="bank_name" value="{$config.bank_name}" class="input-txt" type="text" />
+                    <p class="notic">银行名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo">支付宝收款二维码</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="alipay_a" class="nyroModal" rel="gal" href="{$config.alicode}">
+                                <i id="alipay_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$config.alicode}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="alicode" name="alicode" value="{$config.alicode}" class="type-file-text">
+                            <input type="button" name="button" id="button2" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','alipay')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">支付宝收款二维码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo">微信收款二维码</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="wx_a" class="nyroModal" rel="gal" href="{$config.wxcode}">
+                                <i id="wx_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$config.wxcode}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="wxcode" name="wxcode" value="{$config.wxcode}" class="type-file-text">
+                            <input type="button" name="button" id="button3" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','wx')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">微信收款二维码</p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">预留资金数</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="goods_integral" name="reserve_funds" value="{$config.reserve_funds|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+            
+                    <p class="notic">单位:元</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">转让手续费</label>
+                </dt>
+                <dd class="opt">
+                    <input name="commodity" value="{$config.commodity|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">购买产品送配额</label>
+                </dt>
+                <dd class="opt">
+                    <input id="invite_integral" name="invite_integral" value="{$config.invite_integral|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">消费专区用收益积分购买产品送配额；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">消费商返点</label>
+                </dt>
+                <dd class="opt">
+                    <!-- 直推层每月累计业绩：<input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="goods_integral" name="consumer" value="{$config.consumer|default=0}" class="input-txt" type="text">
+                    返点： --><input name="consumer2" value="{$config.consumer2|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">消费商直推层每月累计（）元业绩返（）；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">代理商返点</label>
+                </dt>
+                <dd class="opt">
+                    <input name="agent_rebate" value="{$config.agent_rebate|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">享受团队新增流水的（）%奖励；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">合伙人返点</label>
+                </dt>
+                <dd class="opt">
+                    直推代理商收入的：<input name="agent_partner" value="{$config.agent_partner|default=0}" class="input-txt" type="text">
+                    直推消费商以及所有下级的业绩的：<input name="agent_partner2" value="{$config.agent_partner2|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">1：直推代理商收入（挂售产品的收入不计入）的（）%；0.1相当于10%）2：直推消费商以及所有下级的业绩（）%补贴；（0.1相当于10%）</p>
+                    <p class="notic">直推代理商收入只是指自身无限层的下级的返点收入，不算挂售产品的收入</p>
+                </dd>
+            </dl>
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">董事返点</label>
+                </dt>
+                <dd class="opt">
+                    <input name="reserve_funds2" value="{$config.reserve_funds2|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">享受团队流水的（）%奖励；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">提现手续费</label>
+                </dt>
+                <dd class="opt">
+
+                    <input name="bill_charge" value="{$config.bill_charge}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">提现手续费；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">每日最多提现额度</label>
+                </dt>
+                <dd class="opt">
+            
+                    <input name="withdrawal_limit" id="bill_charge" value="{$config.withdrawal_limit}" class="input-txt" type="text">
+                    <span class="err"></span>
+            
+                    <p class="notic">每日最多提现额度(元)</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="reg_integral">兑换积分比例</label>
+                </dt>
+                <dd class="opt">
+                    <input id="goods_integral" name="goods_integral" value="{$config.goods_integral|default=0}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">寄售的商品，卖出后，商品所有者能得到商品价格的5%的积分，存入兑换积分；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">平台管理费</label>
+                </dt>
+                <dd class="opt">
+
+                    <input name="handling_fee" value="{$config.handling_fee}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">平台管理费；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">个人所得税</label>
+                </dt>
+                <dd class="opt">
+
+                    <input name="personal_income" value="{$config.personal_income}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">个人所得税；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">消费者直推返点</label>
+                </dt>
+                <dd class="opt">
+                    收益积分：<input name="push_point11" value="{$config.push_point11}" class="input-txt" type="text">
+                    兑换积分：<input name="push_point1" value="{$config.push_point1}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">消费者直推返点；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">消费商直推返点</label>
+                </dt>
+                <dd class="opt">
+
+                    收益积分：<input name="push_point22" value="{$config.push_point22}" class="input-txt" type="text">
+                    兑换积分：<input name="push_point2" value="{$config.push_point2}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">消费商直推返点（兑换积分）；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">代理商直推返点</label>
+                </dt>
+                <dd class="opt">
+
+                    收益积分：<input name="push_point33" value="{$config.push_point33}" class="input-txt" type="text">
+                    兑换积分：<input name="push_point3" value="{$config.push_point3}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">代理商直推返点（兑换积分）；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">合伙人直推返点</label>
+                </dt>
+                <dd class="opt">
+
+                    收益积分：<input name="push_point44" value="{$config.push_point44}" class="input-txt" type="text">
+                    兑换积分：<input name="push_point4" value="{$config.push_point4}" class="input-txt" type="text">
+                    <span class="err"></span>
+
+                    <p class="notic">合伙人直推返点（兑换积分）；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">董事直推返点</label>
+                </dt>
+                <dd class="opt">
+                    收益积分：<input name="push_point55" value="{$config.push_point55}" class="input-txt" type="text">
+                    兑换积分：<input name="push_point5" value="{$config.push_point5}" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">董事直推返点；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="bill_charge">消费专区购买返兑换积分</label>
+                </dt>
+                <dd class="opt">
+                    返兑换积分：<input name="redeem_points" value="{$config.redeem_points}" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">消费专区购买返兑换积分；（0.1相当于10%）</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+</script>
+<div id="goTop">
+    <a href="JavaScript:void(0);" id="btntop">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <a href="JavaScript:void(0);" id="btnbottom">
+        <i class="fa fa-angle-down"></i>
+    </a>
+</div>
+</body>
+<script type="text/javascript">
+    //添加推荐层条件
+    function add_recommend_level(that){
+        var html = '<div class="add_recommend_level">' +
+                '<span>销售额达到&nbsp;&nbsp;</span>' +
+                '<input type="text" name="push[]" value="">' +
+                '<span>&nbsp;&nbsp;,返&nbsp;</span>' +
+                '<input type="text" name="return_numbers[]" value="">' +
+                '<span class="zs"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                
+                '<span><a onclick="del_recommend_level(this);">删除</a></span>' +
+                '</div>';
+        $(that).parent().parent().parent().append(html);
+    }
+    //删除推荐层条件
+    function del_recommend_level(that){
+        $(that).parent().parent().remove();
+    }
+    function alipay(fileurl_tmp)
+    {
+        /*alert(1);
+        console.log(fileurl_tmp);*/
+        $("#alicode").val(fileurl_tmp);
+        $("#alipay_a").attr('href', fileurl_tmp);
+        $("#alipay_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function wx(fileurl_tmp)
+    {
+       /* alert(1);
+        console.log(fileurl_tmp);*/
+        $("#wxcode").val(fileurl_tmp);
+        $("#wx_a").attr('href', fileurl_tmp);
+        $("#wx_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</html>

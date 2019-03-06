@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>赢在移动后台</title>
+    <link href="__PUBLIC__/plugins/magicmall/css/list.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/js/zui/css/zui.min.css" rel="stylesheet" />
+
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/style.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/zhuangxiu.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/diy.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/tank.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/js/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" />
+    <style>
+        .MyImageBox {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            box-sizing: border-box;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .diy-media-list .form-group {
+            margin-bottom: 10px;
+        }
+
+        .hide {
+            display: block;
+        }
+
+
+        .diy-action-bar .btn {
+            min-width: 70px;
+        }
+
+        .fa-search::before {
+            content: "";
+        }
+
+        .diy-showcase .small > a {
+            padding-bottom: 33.3333%
+        }
+
+        .swipe-df .draggable {
+            display: none;
+        }
+
+        .swipe-df .draggable:nth-child(1) {
+            display: block;
+        }
+        .nodata {
+
+            width: 450px;
+        }
+    </style>
+</head>
+<body style="overflow:auto;">
+<div class="wrapper">
+<div class="alert  alert-dismissable alert-top">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <p><span class="text-muted"><i class="icon icon-volume-up"></i> 操作提示：</span><span class="text-primary">当前页面的二维码或者是网址只是给使用者提供浏览查看功能，并不是最终的装修页面入口</span></p>
+</div>
+<div class="nav-tabs-wrap">
+    <ul class="nav nav-secondary">
+        <li class="active"><a href="###"><span id="plateTips">微信端</span><span id="plate">商城</span><span id="typeTips">首页</span>配置</a></li>
+    </ul>
+</div>
+<div class="panel" style="">
+<div class="panel-body">
+
+<div class="diy-container-layout clearfix" style="">
+<div class="drag-module">
+<h5>点击或拖动添加模块</h5>
+<ul class="module-list">
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="SearchControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon01.png" /></i>
+            <span class="module-tit">商品搜索</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-search-bar">
+                <input type="search" class="diy-search__input " id="searchInput" placeholder="搜索" required=""><a class="gofl" href="javascript:void(0)"></a>
+
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="CarouselControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon02.png" /></i>
+            <span class="module-tit">图片广告</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-swipe swipe-df">
+                <ul class="clearfix picList">
+                    <li class="draggable1">
+                        <a href="#" class="LinkTo" title="">
+                            <img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/imgad.jpg" style="width: 100%; " />
+                        </a>
+                    </li>
+
+                </ul>
+                <section class="diy-swipe_time">
+                    <span class="cur"></span>
+
+                </section>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="PartinglineControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon03.png" /></i>
+            <span class="module-tit">分割线</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-hr"><hr></div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="PicNavigateControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon04.png" /></i>
+            <span class="module-tit">图片导航</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-nav">
+                <ul class="picList">
+                    <li>
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="RichEditControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon05.png" /></i>
+            <span class="module-tit">富文本</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-fulltext">
+                请编辑富文本内容
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="Kitchen1Control">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon06.png" /></i>
+            <span class="module-tit">橱窗1</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-showcase">
+                <div class="big">
+                    <a href="#">
+                        <img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" />
+                    </a>
+                </div>
+                <div class="small">
+                    <a href="#" class="vux-1px-b"> <img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></a>
+                    <a href="#" class="vux-1px-b"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></a>
+                    <a href="#" class="vux-1px-b"> <img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="Kitchen2Control">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon06.png" /></i>
+            <span class="module-tit">橱窗2</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-showcase">
+                <div class="big">
+                    <a href="#" class="LinkTo"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></a>
+                </div>
+                <div class="big">
+                    <a href="#" class="LinkTo"> <img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="BlankControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon07.png" /></i>
+            <span class="module-tit">辅助空白</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-space"></div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="ListControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon08.png" /></i>
+            <span class="module-tit">商品列表</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-goods">
+                <ul class="goods-list-type4 picList">
+                    <li>
+                        <a href="#">
+                            <div class="goods-img"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></div>
+                            <div class="goods-text">
+                                <div class="goods-name">此处显示商品名称</div>
+                                <div class="goods-price"><span class="now-price">￥0</span> <span class="old-price" style="display:none">￥0</span></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="goods-img"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></div>
+                            <div class="goods-text">
+                                <div class="goods-name">此处显示商品名称</div>
+                                <div class="goods-price"><span class="now-price">￥0</span> <span class="old-price" style="display:none">￥0</span></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="goods-img"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></div>
+                            <div class="goods-text">
+                                <div class="goods-name">此处显示商品名称</div>
+                                <div class="goods-price"><span class="now-price">￥0</span> <span class="old-price" style="display:none">￥0</span></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="goods-img"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></div>
+                            <div class="goods-text">
+                                <div class="goods-name">此处显示商品名称</div>
+                                <div class="goods-price"><span class="now-price">￥0</span> <span class="old-price" style="display:none">￥0</span></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item">
+    <div class="box box-element ui-draggable" data-type="NoticeControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon08.png" /></i>
+            <span class="module-tit">公告</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-Notice">
+                <div class="index_ggao">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="ggao_item"><span>服务承诺：</span><span>单日下单单日发货，24小时极速到家!</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-item" id="BottomMenuLi">
+    <div class="box box-element ui-draggable bottom-nav" data-type="BottomMenuControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/module-list_icon09.png" /></i>
+            <span class="module-tit">底部菜单</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-nav noicon">
+                <ul class="picList">
+                    <li data-id="">
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon inline_show"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">首页</span>
+                        </a>
+                    </li>
+                    <li data-id="">
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon inline_show"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航1</span>
+                        </a>
+                    </li>
+                    <li data-id="">
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon inline_show"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航2</span>
+                        </a>
+                    </li>
+                    <li data-id="">
+                        <a href="#" class="LinkTo">
+                            <i class="diy-nav__icon inline_show"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/placeholder.png" /></i>
+                            <span class="diy-nav__label">导航3</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="list-item" id="SecondKillLi">
+    <div class="box box-element ui-draggable" data-type="SecondKillControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/Second.png" /></i>
+            <span class="module-tit">秒杀活动</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="weui-cell weui-cell_access backr">
+                <div class="weui-cell__bd mag_left">
+                    <span activityname>秒杀商品</span>
+
+                </div>
+                <div class="weui-cell__ft mag_right">
+                    <div class="qguo-right">
+                        <span class="tit">距活动结束</span><span class="time">08天</span><span class="mh">:</span><span class="time">18</span><span class="mh">:</span><span class="time">37</span><span class="mh">:</span><span class="time">23</span>
+                    </div>
+                </div>
+            </div>
+            <div class="backr glyr">
+                <ul productlist>
+
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</li>
+
+<li class="list-item" id="TeamBuyingLi">
+    <div class="box box-element ui-draggable" data-type="TeamBuyingControl">
+        <div class="drag">
+            <i class="module-icon"><img src="__PUBLIC__/plugins/magicmall/images/zhuangxiu/pint.png" /></i>
+            <span class="module-tit">拼团活动</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="weui-cell weui-cell_access backr">
+                <div class="weui-cell__bd mag_left">
+                    <span activityname>拼团商品</span>
+
+                </div>
+                <div class="weui-cell__ft mag_right">
+                    <div class="qguo-right">
+
+                    </div>
+                </div>
+            </div>
+            <div class="backr glyr">
+                <ul productlist>
+
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="imge"></div>
+                            <div class="glyr_text">
+                                <div class="glyr_text_top">商品名称</div>
+                                <div class="glyr_text_fg">
+                                    <div class="glyr_text_left"><span>￥</span>0</div>
+                                    <div class="glyr_text_right">￥0</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</li>
+</ul>
+</div>
+<div class="content-layout">
+    <div class="phone-box">
+        <div class="phone-header">
+            <div class="phone-receiver"></div>
+            <div class="phone-title" id="phonetitle">商城首页</div>
+        </div>
+        <div class="phone-body guid">
+            <div class="demo ui-sortable " id="MyBox">
+                <div id="abox"></div>
+
+            </div>
+            <div id="download-layout">
+                <div class="m-container-fluid"></div>
+            </div>
+        </div>
+        <div class="phone-footer"></div>
+    </div>
+</div>
+<div class="diy-ctrl">
+
+</div>
+
+</div>
+
+</div>
+</div>
+<div class="diy-action-bar">
+            <span style="display:inline-block; padding-left:280px;">
+                <button type="button" class="btn btn-primary btn-border" id="save">保存</button>
+                <button type="button" class="btn btn-primary btn-border" id="Enable">应用</button>
+                <button class="btn btn-primary btn-border" id="see" onclick="see()">预览</button>
+                <a href="/index.php?m=Admin&c=Plugins.Plugins&a=renovationIndex" id="cancleLink"><button class="btn btn-primary btn-border">取消</button></a>
+            </span>
+</div>
+</div>
+
+
+
+
+<div class="upload-file" data-imagetype="0" style="display:none" data-target="#UpFile" data-name="UpFile" data-multiple="1">
+
+    <div id="UpFile"></div>
+</div>
+
+
+<!--组件渲染模板开始-->
+
+<include file="public/plugins/magicmall/js/Edit/control/DIYPage/Mobile.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/ShareTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/ModalTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Notice/NoticeTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Search/SearchTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Partingline/PartinglineTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Blank/BlankTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/RichEdit/RichEditTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Carousel/CarouselTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/PicNavigate/PicNavigateTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Kitchen/Kitchen1Template.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/Kitchen/Kitchen2Template.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/BottomMenu/BottomMenuTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/List/ListTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/SecondKill/SecondKillTemplate.html"/>
+<include file="public/plugins/magicmall/js/Edit/control/TeamBuying/TeamBuyingTemplate.html"/>
+
+<!--组件渲染模板结束-->
+<script src="__PUBLIC__/plugins/magicmall/js/jquery.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/zui/js/zui.min.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/kindeditor/kindeditor.min.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/drag-layout/jquery-ui.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/drag-layout/jquery.htmlClean.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/juicer-min.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/webuploader.html5only.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/pageList.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/base64.js"></script>
+
+<script src="__PUBLIC__/static/js/jquery.cookie.js"></script>
+
+
+
+<script>
+    var templateID = '0';
+    var id = "{$data.id}";
+    var Platform = 'Wx';
+    var type = 'home';
+    var objectType = "1";
+    var objectID = "0";
+    var imageDomain = "";
+    var phoneDomain = '';
+    var CustID = '88';
+    var PageJson = "{$data.json}";
+    if (objectType == 1) {
+        objectID = 0
+    } else if (objectType == 2) {
+        $("#plate").html("店铺");
+    }
+
+    function see() {
+
+        window.open(phoneDomain + "/Views/DIY/index.html?t=" + templateID + "&CustID=" + CustID + "&Platform=" + Platform);
+
+
+    }
+    $(document).ready(function () {
+        if (type == "DIY") {
+            $("#typeTips").html("自定义页");
+            $("#Enable").css("display", "none");
+            $("#BottomMenuLi").css("display", "none");
+        }
+        if (parseInt(templateID) <= 0) {
+
+            $("#see").attr('disabled', true);
+
+        }
+
+        if (Platform == "Wx") {
+            $("#plateTips").html("微信端");
+        } else if (Platform == "WxAPP") {
+            $("#plateTips").html("小程序");
+            $("#BottomMenuLi").css("display", "none");
+        }
+        else if (Platform == "APP") {
+            $("#plateTips").html("APP");
+        }
+        else if (Platform == "H5") {
+            $("#plateTips").html("H5");
+        }
+    });
+
+
+</script>
+
+<!--组件js开始-->
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/zp.control.DataModel.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/zp.control.Tools.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Base/BaseControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Base/BaseItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Carousel/CarouselControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Carousel/CarouselItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Search/SearchControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Search/SearchItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Partingline/PartinglineControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Blank/BlankControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/RichEdit/RichEditControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/PicNavigate/PicNavigateItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/PicNavigate/PicNavigateControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Kitchen/Kitchen1Item.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Kitchen/Kitchen1Control.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Kitchen/Kitchen2Item.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Kitchen/Kitchen2Control.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/BottomMenu/BottomMenuItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/BottomMenu/BottomMenuControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/List/ListItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/List/ListControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Notice/NoticeControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Notice/NoticeItem.js"></script>
+
+
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/SecondKill/SecondKillItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/SecondKill/SecondKillControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/TeamBuying/TeamBuyingItem.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/TeamBuying/TeamBuyingControl.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/control/Page.js"></script>
+<!--组件js结束-->
+
+<script src="__PUBLIC__/plugins/magicmall/js/Edit/Dymall.js?i=2"></script>
+</body>
+</html>

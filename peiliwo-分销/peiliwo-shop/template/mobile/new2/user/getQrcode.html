@@ -1,0 +1,39 @@
+<include file="common/header" title="名额二维码" />
+<include file="common/header_nav"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/weui/weui.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/comm.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/fenxiao.css">
+<style type="text/css">
+    .imgsty{
+        width: 267px;
+        padding: 14px;
+        margin: 50px auto;
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">名额二维码</div>
+            <div class="header-right"><a href="#"></a> </div>
+        </div>
+    </div>
+    <div class="page-bd">
+        <div class="weui-cells tc mt0 rtbg">
+            <div class="lbbg">
+                <div style="margin-top: 20px;">
+                    <img class="avatar" src="{$user[head_pic]|default="__STATIC__/images/user68.jpg"}">
+                </div>
+                <div class="fs12 mt5">{$user['nickname']}</div>
+            </div>
+        </div>
+        <div style="text-align:center;padding-top: 1px;background-color:#FFF;padding-bottom: 50px;">
+            <div class="imgsty">
+                <img src="{$urlPath}">
+            </div>
+            <!-- <div style="font-size: 0.7rem;font-weight: 600;margin-top: 20px;"> 长按保存二维码 </div> -->
+        </div>
+    </div>
+</div>

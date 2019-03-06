@@ -1,0 +1,274 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>World矿机 - 算力明细</h3>
+                <h5>矿机算力明细</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>矿机算力明细</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" id="search-form2" method="get" action="{:U('World.World/dc_release_log')}" onsubmit="return check_form();">
+                <input type="hidden" name="ctime" id="ctime" value="{$ctime}">
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_begin" name="add_time_begin" value="" class="qsbox"  placeholder="下单开始时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_end" name="add_time_end" value="" class="qsbox"  placeholder="下单结束时间">
+                    </div>
+                    <div class="sDiv2">
+                        <select name="type" id="type">
+                            <option value="">--请择类型--</option>
+                            <foreach name="type_list" item="vo" key="k">
+                                <option value="{$k}">{$vo}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                    <div class="sDiv2">
+                        <select name="condition" id="condition">
+                            <option value="">--请选择--</option>
+                            <option value="1">用户账号</option>
+                            <option value="2">用户昵称</option>
+                            <option value="3">订单号</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" id="search_key" size="30" class="qsbox" name="search_key" placeholder="手机、ID、昵称">
+                        <input type="button" onclick="check_form1('search-form2',1)"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">编号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">账号</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">用户</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 130px;" class="">订单编号</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">矿机</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">业务类型</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">数额</div>
+                        </th>
+                        <!-- <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更前</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更后</div>
+                        </th> -->
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">变更时间</div>
+                        </th>
+                        <!-- <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th> -->
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="tDiv">
+            <!--<div class="tDiv2">-->
+                <!--<div class="fbutton">-->
+                    <!--<input type="text" placeholder="释放日期：2018-10-20" name="release_date">-->
+                <!--</div>-->
+                <!--<div class="fbutton">-->
+                    <!--<a href="javascript:;" onclick="test_release()">-->
+                        <!--<div class="add" title="模拟释放">-->
+                            <!--<span><i class="fa fa-plus"></i>模拟释放</span>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="fbutton">&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="javascript:;" onclick="publicHandleAll('del')">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="add" title="批量删除">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>批量删除</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="tDiv">
+            <!--<div class="tDiv2">-->
+            <!--<div class="fbutton">-->
+            <!--<a href="javascript:exportReport()">-->
+            <!--<div class="add" title="选定行数据导出excel文件,如果不选中行，将导出列表所有数据">-->
+            <!--<span><i class="fa fa-plus"></i>导出数据</span>-->
+            <!--</div>-->
+            <!--</a>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+         </div>
+</div>
+<script>
+
+    function check_form1(tab,page){
+        var keytype = $('select[name=condition]').val();
+        var keywords=$('input[name=search_key]').val();
+        if(keytype&&keywords==""){
+            layer.alert('请输入关键词', {icon: 2});
+            return false;
+        }
+        ajax_get_table(tab,page);
+    }
+
+    ajax_get_table('search-form2',1);
+    //ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/World.World/ajax_power_log/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+
+
+    function test_release(){
+        var release_date=$('input[name=release_date]').val();
+        if(!release_date){
+            layer.msg("请输入释放日期", {icon: 2});
+            return false;
+        }
+        var data={
+            release_date:release_date,
+        }
+        $.ajax({
+            type : 'post',
+            url : "{:url('World.World/test_relsase')}",
+            data : data,
+            dataType : 'json',
+            success : function(data){
+                if(data.status==1){
+                    layer.msg(data.msg, {icon: 1});
+                    window.location.reload();
+                }else{
+                    layer.msg(data.msg, {icon: 2,time: 2000});
+                }
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#add_time_begin').layDate();
+        $('#add_time_end').layDate();
+    });
+
+    function check_form(){
+        var start_time = $.trim($('#add_time_begin').val());
+        var end_time =  $.trim($('#add_time_end').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#ctime').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#ctime').val('');
+        }
+        return true;
+    }
+    function delfun(id,obj){
+        layer.confirm('确认删除？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            da = {
+                'tabName' : 'world_dc_log',
+                'idName' : 'log_id',
+                'id' : id,
+            };
+            // 确定
+            $.ajax({
+                type : 'post',
+                url : "{:url('Systems.Admin/delDate')}",
+                data : da,
+                dataType : 'json',
+                success : function(data){
+                    layer.closeAll();
+                    if(data.status==1){
+                        layer.msg(data.msg, {icon: 1});
+                        $(obj).parent().parent().parent('tr').remove();
+                    }else{
+                        layer.msg(data.msg, {icon: 2,time: 2000});
+                    }
+                }
+            })
+        }, function(index){
+            layer.close(index);
+        });
+    }
+</script>
+</body>
+</html>

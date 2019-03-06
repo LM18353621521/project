@@ -1,0 +1,120 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>货币设置</h3>
+                <h5>基础设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Plugins.Vpay/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>设置vpay模式基础配置，请参考提示信息。</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Plugins.Vpay/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+            <div id="switch_on_off">
+                <dl class="row"><dt class="tit"><label><b>通配币种</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">{$config.name}</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="vpay" class="input-txt"  value="{$config[vpay]}">
+                        <p class="notic">平台货币</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">比特币</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="bitcoin" class="input-txt"  value="{$config[bitcoin]}">
+                        <p class="notic">比特币市场价参考值</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">莱特币</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="litecoin" class="input-txt"  value="{$config[litecoin]}">
+                        <p class="notic">莱特币市场价参考值</p>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">以太坊</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="ethereum" class="input-txt" value="{$config[ethereum]}">
+                        <p class="notic">以太坊市场价参考值</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">狗狗币</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="dogecoin" class="input-txt" value="{$config[dogecoin]}">
+                        <p class="notic">狗狗币市场价参考值</p>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $(document).ready(function(){
+        $('#prize_begin_time').layDate();
+    });
+    $('#distribut_pattern').change(function(){
+        if($(this).val() == 1)
+            $('#distribut_order_rate').show();
+        else
+            $('#distribut_order_rate').hide();
+    });
+
+    function adsubmit(){
+
+        $('#handlepost').submit();
+    }
+
+    function qr_back_call_back(fileurl_tmp)
+    {
+      $("#qr_back").val(fileurl_tmp);
+      $("#qr_back_a").attr('href', fileurl_tmp);
+      $("#qr_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function qr_big_back_call_back(fileurl_tmp)
+    {
+      $("#qr_big_back").val(fileurl_tmp);
+      $("#qr_big_back_a").attr('href', fileurl_tmp);
+      $("#qr_big_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

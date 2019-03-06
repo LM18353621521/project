@@ -1,0 +1,544 @@
+<include file="common/header" title="交易中心" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="{:U('Dcworld/Dcworld/index')}" class="left-arrow"></a>
+            </div>
+            <div class="header-title">交易中心</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-tab">
+            <div class="weui-navbar">
+                <a href="{:U('Dcworld/Dcworld/trading_center',array('step'=>1))}"  class='weui-navbar__item <eq name="step" value="1">weui-bar__item--on</eq>'  curr_type="1">
+                    买入
+                </a>
+                <a href="{:U('Dcworld/Dcworld/trading_center',array('step'=>2))}"  class='weui-navbar__item <eq name="step" value="2">weui-bar__item--on</eq>'  curr_type="2">
+                    卖出
+                </a>
+                <!--<a href="{:U('Dcworld/Dcworld/trading_center',array('step'=>3))}"  class='weui-navbar__item <eq name="step" value="3">weui-bar__item&#45;&#45;on</eq>'  curr_type="3">-->
+                    <!--挂单中-->
+                <!--</a>-->
+                <a href="{:U('Dcworld/Dcworld/trading_center',array('step'=>4))}"  class='weui-navbar__item <eq name="step" value="4">weui-bar__item--on</eq>'  curr_type="4">
+                    当前订单
+                </a>
+                <a href="{:U('Dcworld/Dcworld/trading_center',array('step'=>5))}"  class='weui-navbar__item <eq name="step" value="5">weui-bar__item--on</eq>'   curr_type="5">
+                    历史订单
+                </a>
+            </div>
+            <div class="weui-tab__bd">
+                <div id="tab1" class='weui-tab__bd-item <eq name="step" value="1">weui-tab__bd-item--active</eq>'>
+                    <form  id="buy_one"   action="{:U('Dcworld/Dcworld/buy')}" method="post">
+                        <input type="hidden" name="dc_cny_rate" value="{$config.dc_cny_rate}">
+                        <div class="weui-cells" style="background-color: #f9f9f9;">
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">买入估价</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <span class="fs36 fw500">{$config.buy_price}</span>CNY
+                                </div>
+                            </div>
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">买入数量</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input" type="text" name="number"
+                                           onblur="check_input(this,'total_price','buy_one')"
+                                           onKeyUp="check_input(this,'total_price','buy_one')" placeholder="请输入数量">
+                                </div>
+                                <div class="weui-cell__ft">
+                                    DC
+                                </div>
+                            </div>
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">买入金额</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input" type="text" name="total_price" onblur="check_input1(this)"
+                                           onKeyUp="check_input1(this)" placeholder="请输入金额">
+                                </div>
+                                <div class="weui-cell__ft">
+                                    CNY
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weui-btn-area mt30">
+                            <button type="button" onclick="submit_buy()" class="weui-btn weui-btn_primary">
+                                立即买入
+                                <!--<a href="{:U('Dcworld/Dcworld/buy')}" class="weui-btn weui-btn_primary">立即买入</a>-->
+                                <!--<a href="javascript:;" class="weui-btn weui-btn_primary">立即买入</a>-->
+                            </button>
+                        </div>
+                    </form>
+                    <div class="weui-panel weui-panel_access" style="background-color: #fff;">
+                        <div class="weui-panel__hd c_tlt">
+                            <span>市场挂单</span>
+                        </div>
+                        <div class="weui-panel__bd"  id="loadlist1">
+                            <!--订单列表-->
+                        </div>
+
+                    </div>
+                    <div class="weui-loadmore" style="height:20px;display:none;">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                        已经到底了
+                    </div>
+                </div>
+                <div id="tab2" class='weui-tab__bd-item <eq name="step" value="2">weui-tab__bd-item--active</eq>'>
+                    <form  id="sell_one"   action="{:U('Dcworld/Dcworld/immediately_sell')}" method="post">
+                        <input type="hidden" name="dc_cny_rate" value="{$config.dc_cny_rate}">
+                        <div class="weui-cells" style="background-color: #f9f9f9;">
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">可交易数量</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <span class="fs36 fw500">{$user.dc_coin|default="0"}</span>DC
+                                </div>
+                            </div>
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">卖出估价</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <span class="fs36 fw500">{$config.sell_price}</span>CNY
+                                </div>
+                            </div>
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">卖出数量</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input" type="text" name="number"
+                                           onblur="check_input(this,'total_price','sell_one')"
+                                           onKeyUp="check_input(this,'total_price','sell_one')" placeholder="请输入数量">
+                                </div>
+                                <div class="weui-cell__ft">
+                                    DC
+                                </div>
+                            </div>
+                            <div class="weui-cell" style="background-color: #fff;">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">卖出金额</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input" type="text" name="total_price" onblur="check_input1(this)"
+                                           onKeyUp="check_input1(this)" placeholder="请输入金额">
+                                </div>
+                                <div class="weui-cell__ft">
+                                    CNY
+                                </div>
+                            </div>
+                            <!--<div class="weui-cell" style="background-color: #fff;" >-->
+                                <!--<div class="weui-cell__hd">-->
+                                    <!--<label class="weui-label">交易限额</label>-->
+                                <!--</div>-->
+                                <!--<div class="weui-cell__bd" style="white-space: nowrap;display: flex;align-items: center;">-->
+                                    <!--<span class="fs32 fw500">100</span><i class="line"></i>-->
+                                    <!--<input class="weui-input" type="text" placeholder="请输入最高" style="flex:1;">-->
+                                <!--</div>-->
+                                <!--<div class="weui-cell__ft">-->
+                                    <!--CNY-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="weui-btn-area mt30">
+                            <button type="button" onclick="submit_sell()" class="weui-btn weui-btn_primary">
+                            立即卖出
+                             </button>
+                        </div>
+                    </form>
+                    <div class="weui-panel weui-panel_access" style="background-color: #fff;">
+                        <div class="weui-panel__hd c_tlt">
+                            <span>市场挂单</span>
+                        </div>
+                        <div class="weui-panel__bd"  id="loadlist2">
+                            <!--订单列表-->
+                        </div>
+                    </div>
+                    <div class="weui-loadmore" style="height:20px;display:none;">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                        已经到底了
+                    </div>
+                </div>
+                <div id="tab3" class='weui-tab__bd-item <eq name="step" value="3">weui-tab__bd-item--active</eq>'>
+                    <div class="weui-panel weui-panel_access" style="background-color: #fff;">
+                        <div class="weui-panel__bd" id="loadlist3">
+                            <!--订单列表-->
+                        </div>
+                    </div>
+                    <div class="weui-loadmore" style="height:20px;display:none;">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                        已经到底了
+                    </div>
+                </div>
+                <div id="tab4" class='weui-tab__bd-item <eq name="step" value="4">weui-tab__bd-item--active</eq>'>
+                    <div class="weui-panel weui-panel_access" style="background-color: #fff;">
+                        <div class="weui-panel__bd" id="loadlist4">
+                            <!--订单列表-->
+                        </div>
+                    </div>
+                    <div class="weui-loadmore" style="height:20px;display:none;">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                        已经到底了
+                    </div>
+                </div>
+                <div id="tab5" class='weui-tab__bd-item <eq name="step" value="5">weui-tab__bd-item--active</eq>'>
+                    <div class="weui-panel weui-panel_access" style="background-color: #fff;">
+                        <div class="weui-panel__bd" id="loadlist5">
+                            <!--订单列表-->
+                        </div>
+                    </div>
+                    <div class="weui-loadmore" style="height:20px;display:none;">
+                        <i class="weui-loading"></i>
+                        <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                        已经到底了
+                    </div>
+                </div>
+
+                <!--<div class="weui-loadmore">-->
+                    <!--<i class="weui-loading"></i>-->
+                    <!--<span class="weui-loadmore__tips">正在加载</span>-->
+                <!--</div>-->
+                <!--<div class="weui-loadmore weui-loadmore_line">-->
+                    <!--<span class="weui-loadmore__tips">暂无数据~</span>-->
+                <!--</div>-->
+                <!--<div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">-->
+                    <!--<span class="weui-loadmore__tips"></span>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .weui-toast p{ color: #FFF}
+</style>
+<script>
+    $(function () {
+//        FastClick.attach(document.body);
+    });
+
+    $(function(){
+//        $('.weui-navbar__item').on('click', function () {
+//            $(this).addClass('weui-bar__item--on').siblings('.weui-bar__item--on').removeClass('weui-bar__item--on');
+//            $(jQuery(this).attr("href")).show().siblings('.weui-tab__bd-item').hide();
+//            $('.weui-panel__bd').html("");
+//            $(".weui-loadmore").show();
+//            $(".weui-nodate").hide();
+//            pages=1;
+//            loadlist();
+//        });
+    });
+
+
+    //加载更多商品
+     pages = 1;
+     loading = false;  //状态标记
+    $(".weui-tab__bd-item").infinite().on("infinite", function () {
+        if (loading) return;
+        loading = true;
+        pages++; //页数
+        $('.weui-loadmore').show();
+        setTimeout(function () {
+            loadlist();
+            loading = false;
+        }, 1500);   //模拟延迟
+    });
+    function loadlist() {
+        var html = "";
+        var type = $('.weui-navbar').find('.weui-bar__item--on').attr('curr_type');
+        var data={
+            type:type,
+            pages:pages,
+        };
+        $.ajax({
+            type: 'POST',
+            data:data,
+            url: "/index.php?m=dcworld&c=Dcworld&is_ajax=1&a=trade_list&p=" + pages,
+            success: function (data) {
+//                console.log(data);
+                if (data) {
+                    $('#loadlist'+type).append(data);
+                    $(".weui-loadmore").hide();
+                    loading = false;
+                } else {
+                    loading = true;
+                    $(".weui-nodate").show();
+                    $(".weui-loadmore").hide();
+                    // $('#getmore').remove();
+                }
+            }
+        })
+    }
+    loadlist();
+
+</script>
+<script>
+    step={$step};
+    buy_price = {$config.buy_price};
+    sell_price = {$config.sell_price};
+    price_float={$config.price_float};
+    user_dc={$user.dc_coin};
+    function check_input(that, input_name,this_form) {
+        //清除"数字"和"."以外的字符
+        var value = that.value;
+        value = value.replace(/[^\d.]/g, "");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g, "");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g, ".");
+        value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+        value = value.substring(0, 10);
+        that.value = value;
+        if (input_name) {
+            var dc_cny_rate=this_form=="buy_one"?buy_price:sell_price;
+            var total_price = value * dc_cny_rate;
+            total_price = total_price.toFixed(3);
+            $("#"+this_form).find('input[name=' + input_name + ']').val(total_price);
+        }
+    }
+    function check_input1(that) {
+        //清除"数字"和"."以外的字符
+        var value = that.value;
+        value = value.replace(/[^\d.]/g, "");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g, "");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g, ".");
+        value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+        value = value.substring(0, 10);
+        that.value = value;
+    }
+    //买入提交
+    function submit_buy() {
+        var number = $("#buy_one").find('input[name=number]').val();
+        var total_price = $("#buy_one").find('input[name=total_price]').val();
+        var curr_price = number*buy_price;
+        var min_price = curr_price-(curr_price*price_float)/100;
+        var max_price = curr_price+(curr_price*price_float)/100;
+        var error="";
+        if(number<=0){
+            error+="买入数量不能小于1个\n<br>";
+        }
+        if(total_price<=0){
+            error+="买入金额必须大于0\n<br>";
+        }
+        if(total_price<min_price){
+            error+="价格浮动为"+price_float+"%，买入金额最小值为"+min_price+"\n<br>";
+        }
+        if(total_price>max_price){
+            error+="价格浮动为"+price_float+"%，买入金额最大值为"+max_price+"\n<br>";
+        }
+        if(error){
+            $.alert(error);
+            return false;
+        }
+
+        $.ajax({
+            type: 'POST',
+            dataType:"JSON",
+            data:{type:1},
+            url: "/index.php?m=dcworld&c=Dcworld&a=check_user_orders",
+            success: function (res) {
+                console.log(res);
+                if (res.code==0) {
+                    $('#buy_one').submit();
+                } else {
+                    $.toast(res.msg, "cancel");
+                }
+            }
+        })
+
+    }
+    //卖出提交
+    function submit_sell() {
+        var number = $("#sell_one").find('input[name=number]').val();
+        var total_price =$("#sell_one").find('input[name=total_price]').val();
+        var curr_price = number*sell_price;
+        var min_price = curr_price-(curr_price*price_float)/100;
+        var max_price = curr_price+(curr_price*price_float)/100;
+        var error="";
+        if(user_dc<number){
+            error+="卖出数量不能大于可交易数量\n<br>";
+        }
+        if(number<=0){
+            error+="卖出数量不能小于1个\n<br>";
+        }
+        if(total_price<=0){
+            error+="卖出金额必须大于0\n<br>";
+        }
+        if(total_price<min_price){
+            error+="价格浮动为"+price_float+"%，卖出金额最小值为"+min_price+"\n<br>";
+        }
+        if(total_price>max_price){
+            error+="价格浮动为"+price_float+"%，卖出金额最大值为"+max_price+"\n<br>";
+        }
+        if(error){
+            $.alert(error);
+            return false;
+        }
+
+        $.ajax({
+            type: 'POST',
+            dataType:"JSON",
+            data:{type:2},
+            url: "/index.php?m=dcworld&c=Dcworld&a=check_user_orders",
+            success: function (res) {
+                console.log(res);
+                if (res.code==0) {
+                    $('#sell_one').submit();
+                } else {
+                    $.toast(res.msg, "cancel");
+                }
+            }
+        })
+
+
+
+    }
+
+    //确认是否买入
+    function confirm_buy(id){
+        $.ajax({
+            type: 'POST',
+            dataType:"JSON",
+            data:{type:2},
+            url: "/index.php?m=dcworld&c=Dcworld&a=check_user_orders",
+            success: function (res) {
+                console.log(res);
+                if (res.code==0) {
+                    window.location.href="/index.php?m=dcworld&c=Dcworld&a=buy_dc&id="+id;
+                } else {
+                    $.toast(res.msg, "cancel");
+                }
+            }
+        })
+
+        return false;
+        $.confirm("确定买入吗？", function() {
+            //点击确认后的回调函数
+
+        }, function() {
+            //点击取消后的回调函数
+        });
+    }
+
+    //确认是否卖出
+    function confirm_sell(id){
+        $.ajax({
+            type: 'POST',
+            dataType:"JSON",
+            data:{type:2},
+            url: "/index.php?m=dcworld&c=Dcworld&a=check_user_orders",
+            success: function (res) {
+
+                if (res.code==0) {
+                    window.location.href="/index.php?m=dcworld&c=Dcworld&a=sell_dc&id="+id;
+                } else {
+                    $.toast(res.msg, "cancel");
+                }
+            }
+        })
+
+        return false;
+        $.confirm("确定买入吗？", function() {
+            //点击确认后的回调函数
+
+        }, function() {
+            //点击取消后的回调函数
+        });
+    }
+
+    //取消卖出
+    function cancel_trade(id,type){
+        $.confirm("确定取消吗？", function() {
+            //点击确认后的回调函数
+            $.ajax({
+                type: 'POST',
+                dataType:"JSON",
+                data:{id:id,type:type},
+                url: "/index.php?m=dcworld&c=Dcworld&is_ajax=1&a=cancel_trade",
+                success: function (res) {
+                    console.log(res);
+                    if (res.code==0) {
+                        $.toast("取消成功",1000);
+                        $('#list'+id).remove();
+                    } else {
+                        $.toast(res.msg, "cancel");
+                    }
+                }
+            })
+
+        }, function() {
+            //点击取消后的回调函数
+        });
+    }
+
+    $(document).ready(function () {
+        //去详情
+        $('#loadlist'+step).on('click','.detail_do',function(e){
+            var that = $(this);
+            var id = that.attr('trade_id');
+            window.location.href="/index.php?m=dcworld&c=Dcworld&a=confirm_the_money&id="+id+"&step="+step;
+        });
+
+        //取消
+        $('#loadlist'+step).on('click','.cancel_do',function(e){
+            var that = $(this);
+            e.stopPropagation();
+            var id = that.parents('.pd0').attr('trade_id');
+            $.confirm("确定取消吗？", function() {
+                //点击确认后的回调函数
+                $.ajax({
+                    type: 'POST',
+                    dataType:"JSON",
+                    data:{id:id},
+                    url: "/index.php?m=dcworld&c=Dcworld&is_ajax=1&a=cancel_trade",
+                    success: function (res) {
+                        console.log(res);
+                        if (res.code==0) {
+                            $.toast("取消成功",1000);
+                            that.parents('.pd0').remove();
+                        } else {
+                            $.toast(res.msg, "cancel");
+                        }
+                    }
+                })
+
+            }, function() {
+                //点击取消后的回调函数
+            });
+        })
+
+    })
+
+</script>
+</body>
+</html>

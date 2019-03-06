@@ -1,0 +1,665 @@
+<layout name="common/layout_nav" />
+    <style>
+        .grid-box .weui-grid {
+            width: 25%;
+            padding-top: 25px;
+            padding-bottom: 25px;
+        }
+
+        .grid-box .weui-grid__icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .rtbg {
+            background-image: url(__STATIC__/assets/images/wdjfbg_t.png);
+            background-size: 5rem;
+            background-position: right top;
+            background-repeat: no-repeat;
+        }
+
+        .lbbg {
+            background-image: url(__STATIC__/assets/images/wdjfbg_b.png);
+            background-size: 4rem;
+            background-position: left bottom;
+            background-repeat: no-repeat;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .lbbg .avatar {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 50%;
+        }
+
+        .lbbg .weui-badge {
+            background-color: #4f5259;
+            padding: 3px 10px;
+            font-size: 0.45rem;
+            font-weight: 400;
+        }
+
+        .setting {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+        }
+        .setting img{
+            width: 0.8rem;
+        }
+        .grid-pagination .swiper-pagination-bullet{
+            background-color: #eeeeee;
+            margin-left: 5px;
+            width: 6px;
+            height: 6px;
+        }
+        .grid-pagination .swiper-pagination-bullet-active{
+            background-color: #e6e6e6;
+            width: 18px;
+            border-radius: 10px;
+        }
+        .weui-grid__label{
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="page-bd">
+        <div class="weui-cells tc mt0 rtbg">
+            <div class="lbbg">
+                <a href="{:U('Mobile/User/logout')}" class="setting"><img src="__STATIC__/assets/images/quit.png"></a>
+                <div><img class="avatar" src="{$user[head_pic]|default="__STATIC__/images/user68.jpg"}"></div>
+                <div class="fs12 mt5">{$user['nickname']}</div>
+                <div class="fs12 mt5" style="font-size: .5rem;">我的ID：  {$user['user_id']} </div>
+                <div class="fs12 mt5">
+                    <if condition="$user['level'] eq 1">消费者
+                    <elseif condition="$user['level'] eq 2">消费商
+                    <elseif condition="$user['level'] eq 3">代理商
+                    <elseif condition="$user['level'] eq 4">合伙人
+                    <elseif condition="$user['level'] eq 5">董事
+                    </if>
+                </div>
+                <div class="fs12 mt5" style="font-size: .5rem;">上级：  {$mobile|default="无"} </div>
+                
+                <!--<a href="###" class="weui-badge mt5">您有<b>2</b>条新通知 ></a>-->
+            </div>
+        </div>
+        <div class="weui-panel">
+            <!-- <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">我的资产</div>
+                </div>
+            </div> -->
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left:0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex cell-flex">
+                                <a href="#" class="weui-flex__item vux-1px-r">
+                                    <div><b class="fs13">{$user['user_money']}</b></div>
+                                    <div class="fs8 text-muted">收益积分</div>
+                                </a>
+                                <a href="#" class="weui-flex__item">
+                                    <div><b class="fs13" style="position: relative">{$frozen_money}
+                                    </b></div>
+                                    <div class="fs8 text-muted">可用配额</div>
+                                </a>
+                                <a href="#" class="weui-flex__item vux-1px-r">
+                                    <div><b class="fs13">{$user['distribut_money']}</b></div>
+                                    <div class="fs8 text-muted">兑换积分</div>
+                                </a>
+                                <a href="#" class="weui-flex__item vux-1px-r">
+                                    <div><b class="fs13">{$team_performance}</b></div>
+                                    <div class="fs8 text-muted">团队流水</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">综合业务</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('/Mobile/Member/hold_query')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/cycx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">持有查询</p>
+                                    </a>
+                                </div>
+                                <!-- <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/income_inquiry')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/sycx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">收益查询</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/income_summary')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/syhz.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">收益汇总</p>
+                                    </a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">粉丝信息</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/myqrcode')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/wdfxm.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">我的分享码</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/my_fans')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/wdfs.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">我的粉丝</p>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">积分查询</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/account_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/syhz.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">积分查询</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/withdrawals_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/zcmx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">支出明细</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/recharge_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/srmx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">收入明细</p>
+                                    </a>
+                                </div>
+                                <!-- <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/product_breakdown')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/spmx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">商品明细</p>
+                                    </a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">交易管理</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/sell_goods')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/cssp.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">出售商品</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/entrust_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/wtgl.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">委托管理</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/buy_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/gmlb.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">购买列表</p>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/sell_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/cslb.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">出售列表</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/mention_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/thbl.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">提货办理</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Member/mention_log')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/thmx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">提货明细</p>
+                                    </a>
+                                </div>
+                                <!-- <div class="weui-flex__item">
+                                    <a href="{:U('/Mobile/Order/wait_receive',array('type'=>'WAITRECEIVE'))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/gmlb.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">权益订单</p>
+                                    </a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">账户中心</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/withdrawals')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/txbl.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">提现办理</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/transfer')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/jfhz.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">积分互转</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/recharge')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/jfdh.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">积分充值</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">安全中心</div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/accountSafe')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/mmsz.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">密码设置</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/userinfo')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/grxx.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">个人信息</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/User/address_list')}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/dzgl.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">地址管理</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel" style="margin-bottom:2.5rem;" >
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">我的订单</div>
+                    <div class="weui-cell__ft"><a href="{:U('Mobile/Order/order_list')}" class="fs9 text-muted">查看全部</a></div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells mt0">
+                    <div class="weui-cell" style="padding-left: 0; padding-right:0;">
+                        <div class="weui-cell__bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/dd_icon_01.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">待付款</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon" style="position:relative;">
+                                            <img src="__STATIC__/assets/images/dd_icon_02.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">待发货</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITRECEIVE'))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/dd_icon_03.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">待收货</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Order/comment',array('status'=>0))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/dd_icon_04.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">待评价</p>
+                                    </a>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}" class="nav-icon-link">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/dd_icon_05.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">退换货</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="weui-panel mb10" style="margin-bottom:2.5rem;" >
+            <div class="weui-panel__hd after-left__0">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">我的工具</div>
+                    <div class="weui-cell__ft"><div class="grid-pagination"></div></div>
+                </div>
+            </div>
+            <div class="weui-panel__bd">
+                Swiper
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="grid-box">
+                                <div class="weui-grids tbornone">
+                                    <a href="{:U('Mobile/User/zpcollect_list')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_01.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">收藏</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/zpshare_list')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_02.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">分享</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_03.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">查快递</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/zpevaluate_list')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_04.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">我的评价</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/zpdistribution_list')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_05.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">分销</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/myqrcode')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_06.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">我的名片</p>
+                                    </a>
+                                    <a href="javascript:;" onclick="show_qrcode()" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_07.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">二维码</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_08.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">在线客服</p>
+                                    </a>
+                                    <a href="{:url('article/news', ['id' => 7])}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/gzh.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">关注公众号</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/add_feedback')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/opinion.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">意见反馈</p>
+                                    </a>
+                                    <a href="{:U('Mobile/User/help_center')}" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/help_center.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">帮助中心</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="grid-box">
+                                <div class="weui-grids tbornone">
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_01.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">2收藏</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_02.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">2分享</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_03.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">3查快递</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_04.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">4我的评价</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_05.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">4分销</p>
+                                    </a>
+                                    <a href="javascript:;" class="weui-grid">
+                                        <div class="weui-grid__icon">
+                                            <img src="__STATIC__/assets/images/grid_icon_06.png" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">6我的名片</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+<style type="text/css">
+    .layermbox0 .layermchild{
+        width: auto;
+    }
+</style>
+<script src="__STATIC__/assets/js/lib/jquery.min.2.1.3.js"></script>
+<script src="__STATIC__/assets/js/lib/weui.min.js"></script>
+<script src="__STATIC__/assets/js/lib/Swiper-3.4.2/swiper.jquery.min.js"></script>
+<script src="__STATIC__/assets/js/comm.js"></script>
+<script>
+    /*$(function () {
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.grid-pagination'
+        });
+        $('.setting').on('click',function (e) {
+            weui.actionSheet([
+                        {
+                            label: '收货地址',
+                            onClick: function () {
+                                console.log('收货地址');
+                                window.location.href = "{:U('Mobile/User/address_list')}";
+                            }
+                        }, {
+                            label: '帐号与安全',
+                            onClick: function () {
+                                window.location.href = "{:U('Mobile/User/accountSafe')}";
+                            }
+                        }, {
+                            label: '个人资料',
+                            onClick: function () {
+                                window.location.href = "{:U('Mobile/User/userinfo')}";
+                            }
+                        },
+                        <if condition="empty($is_weixin_browser)">
+                            {
+                                label: '退出当前账户',
+                                onClick: function () {
+                                window.location.href = "{:U('Mobile/User/logout')}";
+                            }
+                            }
+                        </if>
+                    ],
+                    [
+                        {
+                            label: '关闭',
+                            onClick: function () {
+                                console.log('取消');
+                            }
+                        }
+                    ],
+                    {
+                        className: 'custom-classname'
+                    });
+        });
+    });
+
+    function show_qrcode() {
+        //信息框
+
+        $.get('{:U("Mobile/User/myqrcode")}',{},function(data){
+            layer.open({
+                content: '<img src="'+data+'"/>',
+            });
+        });
+
+    }*/
+</script>
+</body>
+</html>

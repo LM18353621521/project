@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的还款</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/new_z.css">
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/js/jquery.qrcode.min.js"></script>
+</head>
+<style>
+    .nav_order ul li{
+        width: 33.33%;
+    }
+</style>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<!--header-->
+<header class="mui-bar mui-bar-nav" >
+    <a class="mui-icon mui-icon-left-nav mui-pull-left"style="color: white" href="/index.php/Home/member/member"></a>
+    <h1 class="mui-title">我的还款</h1>
+</header>
+<div class="nav_order clearfix">
+    <ul>
+        <li class="order_active" id="all">
+            <a href="/Home/Member/my_repayment">
+                全部
+            </a>
+        </li>
+        <li id="still_no">
+            <a href="/Home/Member/my_repayment?status=1">
+                未还款
+            </a>
+        </li>
+        <li id="already">
+            <a href="/Home/Member/my_repayment?status=2">
+                已还清
+            </a>
+        </li>
+    </ul>
+</div>
+<!--购物车-->
+<div class="mui-content">
+    <ul class="my_repay ">
+        <li class="clearfix" ng-repeat="li in message">
+            <a href="javascript:void (0)">
+                <div>
+                    <label>{{li.money}}元</label>
+                    <p>还款金额</p>
+                </div>
+                <div>
+                    <label ng-show="li.state == 1">
+                        <span>未还</span>{{li.remindersdate}}
+                    </label>
+                    <label ng-show="li.state == 2">
+                        <span class="yh">已还</span>{{li.remindersdate}}
+                    </label>
+                    <p>最后还款日</p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+<script>
+    var app = getApp('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        $scope.floor = function(number) {
+            return Math.floor(number);
+        }
+        //状态
+        $scope.status = getUrlParam("status");
+        if('null' == $scope.status || null == $scope.status) {
+            $scope.status=0;
+        }
+        if (0 == $scope.status) {
+            $("#all").addClass("order_active").siblings().removeClass("order_active");
+        } else if (1 == $scope.status) {
+            $("#still_no").addClass("order_active").siblings().removeClass("order_active");
+        } else if (2 == $scope.status) {
+            $("#already").addClass("order_active").siblings().removeClass("order_active");
+        }
+        // 查看物流flg
+        $scope.kdflg = 0;
+        // 当前页数
+        $scope.p = 0;
+        // 加载完毕标志
+        $scope.endflg =  0;
+        // 防止重复加载
+        $scope.busy = false;
+        // 存放数据
+        $scope.message = [];
+        // 请求数据方法
+        $scope.loadMore = function(){
+//            console.log($scope.p)
+            if($scope.endflg == 0){
+                if($scope.busy){
+                    return false;
+                }
+                $scope.busy = true;
+                $http({
+                    method:'GET',
+                    data:$scope,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    },
+                    url: "/Home/Share/myReminders?p=" + $scope.p +"&state=" + $scope.status,
+                }).then(function successCallback(response) {
+                    $scope.busy = false;
+                    if(response.data.data != '' && response.data.data != null){
+                        if($scope.p > 0) {
+                            layer.msg("正在加载...", {time: 500});
+                        }
+                    } else {
+                        layer.msg("已加载完毕", {time:500});
+                        $scope.endflg = 1;
+                        return false;
+                    }
+                    $scope.p++;
+                    if(response.data.code == -1){
+                        layer.msg(response.data.msg,{time:1500})
+                    }else{
+                        if(response.data.data == null){
+                            layer.msg(response.data.msg,{time:1500});
+                        } else {
+                            // 组织数据
+                            for (var i in response.data.data) {
+                                $scope.message.push(response.data.data[i]);
+                            }
+                        }
+                    }
+                }, function errorCallback(response) {
+                    errorHandle(response);
+                });
+            }else{
+                layer.msg("已加载完毕", {time:500});
+            }
+        };
+        // 进页面先加载一次数据
+        $scope.loadMore();
+
+        $(window).scroll(function(){
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(this).height();
+            if(scrollTop + windowHeight == scrollHeight){
+                $scope.loadMore();
+            }
+        });
+    })
+</script>
+<script>
+    $(".nav_order ul li").click(function(){
+        $(this).addClass("order_active").siblings().removeClass("order_active");
+    });
+</script>
+</html>

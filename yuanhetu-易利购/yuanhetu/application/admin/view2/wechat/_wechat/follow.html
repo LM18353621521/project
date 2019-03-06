@@ -1,0 +1,58 @@
+<include file="public/layout" />
+
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>公众号管理</h3>
+                <h5>一键关注设置</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" method="post" id="handlepost">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>效果预览： </label>
+                </dt>
+                <dd class="opt">
+                    <img src="__PUBLIC__/static/images/concern_preview.png" alt=""/>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">是否首页显示: </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="team_prize_switch1" class="cb-enable  <if condition="$config['wx_follow_switch'] eq 1">selected</if>">开启</label>
+                        <label for="team_prize_switch0" class="cb-disable <if condition="$config['wx_follow_switch'] eq 0">selected</if>">关闭</label>
+                        <input type="radio"  id="team_prize_switch1"  name="wx_follow_switch" value="1" <if condition="$config['wx_follow_switch'] eq 1">checked="checked"</if>>
+                        <input type="radio"  id="team_prize_switch0"  name="wx_follow_switch" value="0" <if condition="$config['wx_follow_switch'] eq 0">checked="checked"</if> >
+                    </div>
+                    <p class="notic">注意：开关，切勿频繁修改分佣参数，容易引起系统运算报错</p>
+                </dd>
+            </dl>
+            <input type="hidden" name="inc_type" value="wechat_type">
+            <div class="bot"><a href="JavaScript:void(0);" onClick="formSubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    function formSubmit(){
+        $("#handlepost").submit();
+    }
+
+</script>
+</body>
+</html>

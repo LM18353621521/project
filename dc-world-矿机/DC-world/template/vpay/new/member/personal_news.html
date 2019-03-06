@@ -1,0 +1,115 @@
+<include file="common/main" title="消息" body=""/>
+    <div class="nav_top flex" >
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            消息
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="notice_list">
+        <ul>
+            <li ng-repeat="notice in notices">
+                <a href="{:U('Member/personal_news_detail')}?id={{ notice.id }}">
+                    <div>
+                        <label>
+                            {{ notice.createtime }}
+                        </label>
+                        <p>
+                            {{ notice.title }}
+                        </p>
+                    </div>
+                   
+                    <i></i>
+                    
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+    <block name="custom_js">
+        <script>
+            var app = getApp('myApp', []);
+            app.controller('Ctrl', function ($scope, $http) {
+
+                // 当前页数
+                $scope.p = 0;
+                // 加载完毕标志
+                $scope.endflg =  0;
+                // 防止重复加载
+                $scope.busy = false;
+                // 存放数据
+                $scope.notices = [];
+                // 请求数据方法
+                $scope.loadMore = function(){
+
+                    if($scope.endflg == 0){
+                        if($scope.busy){
+                            return false;
+                        }
+                        $scope.busy = true;
+                        $http({
+                            method:'POST',
+                            data:{
+                                "p" : $scope.p
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            transformRequest: function(obj) {
+                                var str = [];
+                                for (var p in obj) {
+                                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                }
+                                return str.join("&");
+                            },
+                            url: "/index.php/Home/Member/personal_news?p="+$scope.p,
+                        }).then(function successCallback(response) {
+
+                            $scope.busy = false;
+                            if(response.data.data != '' && response.data.data != null){
+                                if($scope.p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time:500});
+                                $scope.endflg = 1;
+                                return false;
+                            }
+                            $scope.p++;
+                            if(response.data.code == -1){
+                                layer.msg(response.data.msg,{time:1500})
+                            }else{
+                                if(response.data.data == null){
+                                    layer.msg(response.data.msg,{time:1500});
+                                } else {
+                                    // 组织数据
+                                    for (var i in response.data.data) {
+                                        $scope.notices.push(response.data.data[i]);
+                                    }
+                                }
+                            }
+                        }, function errorCallback(response) {
+                            errorHandle(response);
+                        });
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                };
+                // 进页面先加载一次数据
+                $scope.loadMore();
+
+                $(window).scroll(function(){
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if(scrollTop + windowHeight == scrollHeight){
+                        $scope.loadMore();
+                    }
+                });
+            });
+        </script>
+    </block>
+</block>

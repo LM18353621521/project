@@ -1,0 +1,210 @@
+<include file="common/header" title="矿场" body=""/>
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/kc_top.png") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+
+    }
+
+    .header .header-title {
+        color: #fff !important;
+    }
+
+    .left-arrow:before {
+        border-color: #fff;
+    }
+
+    .yd-list {
+        position: absolute;
+        top: 1.333333rem;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .yd-list .yd-list-item {
+        position: absolute;
+        -webkit-animation: stanimate 5s linear infinite;
+        animation: stanimate 5s linear infinite;
+    }
+
+    .yd-list .yd-list-item:nth-child(1) {
+        top: 0.333333rem;
+        left: 0.533333rem;
+    }
+
+    .yd-list .yd-list-item:nth-child(2) {
+        top: 0.533333rem;
+        left: 4rem;
+    }
+
+    .yd-list .yd-list-item:nth-child(3) {
+        top: 1.666667rem;
+        left: 2.666667rem;
+    }
+
+    .yd-list .yd-list-item:nth-child(4) {
+        top: 2rem;
+        left: 0.666667rem;
+    }
+
+    .yd-list .yd-list-item:nth-child(5) {
+        top: 3.333333rem;
+        left: 1.266667rem;
+    }
+
+    .yd-list .yd-list-item:nth-child(6) {
+        top: 3.333333rem;
+        left: 3.333333rem;
+    }
+    .yd-list .yd-list-item:nth-child(6) {
+        top: 3.333333rem;
+        left: 3.333333rem;
+    }
+    .yd-list .yd-list-item:nth-child(7) {
+        top: 1.933333rem;
+        left: 3.8rem;
+    }
+    .yd-list .yd-list-item:nth-child(8) {
+        top: 4.333333rem;
+        left: 2.266667rem;
+    }
+    .yd-list .yd-list-item img {
+        width: 0.666667rem;
+        height: 0.666667rem;
+    }
+
+    .yd-list-item .num {
+        text-align: center;
+        color: #fff;
+        font-size: .18rem;
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">矿场</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd" id="kc-box">
+        <!-- 页面内容-->
+        <div class="kc-box_hd weui-cell">
+            <div class="weui-cell__hd">
+                <div class="b_img">
+                    <img src="{$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'}" alt="">
+                    <!--<p class="name">-->
+                    <!--{$user.nickname}-->
+                    <!--</p>-->
+
+                </div>
+                <p class="lever" style="font-weight: 600;">{$user.level_name}</p>
+            </div>
+            <div class="weui-cell__bd">
+                <div class="dc_box" style="white-space: nowrap" id="dc_num">
+                    DC:{$user.dc_coin|default="0.00"}
+                </div>
+                <div class="sl_box">
+                    算力:{$user.income_surplus|default="0.00"}
+                </div>
+            </div>
+        </div>
+        <div class="kc-box_bd">
+            <div class="b_img1">
+                <img src="__PUBLIC__/images/kc_img3.gif" alt="">
+            </div>
+            <div class="b_img2">
+                <img src="__PUBLIC__/images/kc_img4.gif" alt="">
+            </div>
+            <div class="yd-list">
+                <foreach name="oilList.oil_info" item="vo" key="k">
+                    <div class="yd-list-item" key="{$k}" value="{$vo.num}"
+                    <eq name="vo['status']" value="1">style=" display:none;"</eq>
+                    >
+                    <img src="__PUBLIC__/images/icon_yd.png" alt="">
+                    <p class="num">{$vo.num}</p>
+            </div>
+            </foreach>
+            <!--<div class="yd-list-item">-->
+            <!--<img src="__PUBLIC__/images/icon_yd.png" alt="">-->
+            <!--<p class="num">16.643</p>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+    <div class="kc-box_ft weui-flex">
+        <a href="{:U('Dcworld/Dcworld/my_miner')}" class="weui-flex__item">
+            <img src="__PUBLIC__/images/tx_icon2.png" alt="">
+        </a>
+        <a href="{:U('Dcworld/Dcworld/my_mineral_pool')}" class="weui-flex__item">
+            <img src="__PUBLIC__/images/tx_icon1.png" alt="">
+        </a>
+        <a href="{:U('Dcworld/Dcworld/miner_transaction')}" class="weui-flex__item">
+            <img src="__PUBLIC__/images/tx_icon3.png" alt="">
+        </a>
+    </div>
+</div>
+</div>
+
+<script>
+    id = "{$oilList.id}";
+    can_click = 1;
+    //    $(document).on("click",".yd-list .yd-list-item",function () {
+    //        $(this).fadeOut();
+    //    })
+    $(document).on("click", ".yd-list .yd-list-item", function () {
+        var that = $(this);
+        if (can_click == 0) {
+            return false
+        }
+        can_click = 0;
+        oil_index = $(this).attr('key');
+        oil_value = $(this).attr('value');
+        $.ajax({
+            method: 'POST',
+            dataType: 'JSON',
+            data: {
+                id: id,
+                oil_index: oil_index,
+            },
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            url: "/index.php/dcworld/Dcworld/get_dc_oil",
+            success: function (data) {
+                console.log(data);
+                if (data.code == -1) {
+                    layer.msg(data.msg, {time: 1000})
+                    can_click = 1;
+                }
+                else if (data.code == 0) {
+                    $("#dc_num").text('DC:'+data.data);
+                    that.fadeOut();
+                    can_click = 1;
+                }
+            }, error: function (result) {
+                layer.msg("请求错误！");
+                can_click = 1;
+            }
+        });
+    })
+</script>
+
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+    //    $(document).on("click",".yd-list .yd-list-item",function () {
+    //        $(this).fadeOut();
+    //    })
+</script>
+<script>
+
+</script>
+</body>
+</html>

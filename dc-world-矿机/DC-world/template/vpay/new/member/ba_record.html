@@ -1,0 +1,115 @@
+<include file="common/main" title="资产记录" body=""/>
+    <div class="nav_top flex">
+        <a  href="{:U('Index/index')}">
+            <i></i>
+        </a>
+        <div class="flex1">
+            金币资产记录
+        </div>
+        <a href="javascript:void(0)">
+            <i></i>
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="ba_list clearfix">
+        <ul>
+            <li style="width: 40%">业务类型</li>
+            <li style="width: 10%">数额</li>
+            <li style="width: 50%">时间</li>
+        </ul>
+    </div>
+    <div style="height: 0.4rem;"></div>
+        <div class="list_show" id="tpls">
+            <script id="tpl" type="text/html">
+            <ul class="clearfix" style="table-layout:fixed;">
+                {{each data as value i}}
+                <li ng-repeat="log in logs">
+                    <div style="width: 40%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                        {{value.type_str}}
+                    </div>
+                    <div style="width: 10%">
+                        {{value.num}}
+                    </div>
+                    <div style="width: 50%">
+                        {{value.updateTime}}
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            </script>
+        </div>
+
+</body>
+  
+        <script>
+                // 当前页数
+                var p = 0;
+                // 加载完毕标志
+                var endflg =  0;
+                // 防止重复加载
+                var busy = false;
+                // 存放数据
+                var logs = [];
+
+                loadMore();
+                // 请求数据方法
+             function loadMore(){
+
+                    if(endflg == 0){
+                        if(busy){
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method:'POST',
+                            data:{
+                                "p" : p
+                            },
+                            dataType: "json",
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Member/balanceRecord?p="+ p,
+                            success: function(data){
+
+                            busy = false;
+                            if(data.data != '' && data.data != null){
+                                if( p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time:500});
+                                var endflg = 1;
+                                return false;
+                            }
+                             p++;
+                            if(data.code == -1){
+                                layer.msg(data.msg,{time:1500})
+                            }else{
+                                if(data.data == null){
+                                    layer.msg(data.msg,{time:1500});
+                                } else {
+                                    // 组织数据
+
+                                    var html = template('tpl',data);
+                                    document.getElementById("tpls").innerHTML = html;
+                                    //$("#tpls").html(html);
+                                }
+                                console.log(logs);
+                            }
+                        }
+                        });
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                };
+
+
+                $(window).scroll(function(){
+
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if(scrollTop + windowHeight == scrollHeight){
+                        loadMore();
+                    }
+                });
+        </script>

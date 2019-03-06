@@ -1,0 +1,164 @@
+@bor-color: #f1f1f1;
+@red-color: #c80904;
+@base-radius: 5px;
+
+.category-left {
+  position: absolute;
+  width: 80px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #fff;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.category-left li {
+  position: relative;
+  height: 40px;
+  line-height: 38px;
+  border-bottom: 1px solid @bor-color;
+  &.active a {
+    color: @red-color;
+  }
+  &.active:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: @red-color;
+  }
+  &.active:after {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: -10px;
+    width: 0px;
+    height: 0px;
+    top: 50%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+
+  }
+}
+
+.category-left li a {
+  text-align: center;
+  display: block;
+  height: 40px;
+  color: #4e4d4d;
+  font-size: 12px;
+}
+
+.category-right {
+  position: absolute;
+  left: 80px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.golist-btn {
+  background-color: #fff;
+  display: block;
+  text-align: center;
+  margin: 5px 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: #c80a04;
+  border-radius: 40px;
+  &:before {
+    font-size: 8px;
+    content: 'GO';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height:18px;
+    text-align: center;
+    background-color: @red-color;
+    color: #fff;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+}
+
+.divder {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 10px;
+  &:after {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 1px dotted #c7c7cc;
+    margin-left: 10px;
+  }
+  &:before {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 1px dotted #c7c7cc;
+    margin-right: 10px;
+  }
+}
+
+.goods-list {
+  padding: 0 3px;
+  overflow: hidden;
+  list-style: none;
+  .goods-list__item {
+    float: left;
+    width: 33.333%;
+    box-sizing: border-box;
+    padding: 4px;
+    a {
+      color: #504f4f;
+      border-radius: 3px;
+      overflow: hidden;
+      background-color: #fff;
+      display: block;
+    }
+  }
+  .goods-img {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+;
+  .goods-name {
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    padding-bottom: 6px;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+  }
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+.bottom_text {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  text-decoration: underline;
+  width: 100%;
+  text-align: center;
+  color: #a4a4a4;
+  font-size: 12px;
+}

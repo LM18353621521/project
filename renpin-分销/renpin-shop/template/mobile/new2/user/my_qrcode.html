@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/weui/weui.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/comm.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/js/lib/Swiper-3.4.2/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/category.css">
+    <script src="__STATIC__/assets/js/lib/jquery.min.2.1.3.js"></script>
+    <script src="__STATIC__/assets/js/lib/weui.min.js"></script>
+    <script src="__STATIC__/assets/js/comm.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/style.css">
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+    <script src="__STATIC__/assets/js/wxsdkcommon.js?v=1455"></script>
+
+    <title>我的名片</title>
+</head>
+<script>
+    var appId = "{$signPackage.appId}";
+    var timestamp = "{$signPackage.timestamp}";
+    var nonceStr = "{$signPackage.nonceStr}";
+    var signature = "{$signPackage.signature}";
+</script>
+<body class="[body]">
+
+<div class="page">
+    <!--<div class="page-hd">-->
+        <!--<div class="header">-->
+            <!--<div class="header-left">-->
+                <!--<a href=[href] class="left-arrow"></a>-->
+            <!--</div>-->
+            <!--<div class="header-title">我的名片</div>-->
+            <!--<div class="header-right"><a href="#"></a> </div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <style>
+        html{
+            font-size: 75px !important;
+        }
+        @media only screen and (min-width: 375px)
+        html {
+             font-size: 75px;
+        }
+
+        @media only screen and (min-width: 360px)
+        html {
+             font-size: 72px;
+        }
+        @media only screen and (min-width: 320px)
+        html {
+            font-size: 64px;
+        }
+        body {
+            line-height: 1.6;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            font-size: 12px;
+            background-color: #f8f8f8;
+        }
+        body {
+            font-size: 0.08rem;
+            color: #666;
+            background: #f3f4f5;
+            min-width: 2rem;
+            width: 100%;
+            font-family: Microsoft Yahei, Helvetica Neue, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+        }
+        .page {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+        .page-bd {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #f8f8f8;
+            position: relative;
+        }
+        .weui-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .avatar {
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .avatar {
+            display: inline-block;
+            width: 0.6rem;
+            height: 0.6rem;
+            vertical-align: middle;
+        }
+        .rwmbox {
+            width: 3.913333rem;
+            height: 4.2rem;
+            background-image: url(/template/mobile/new2/static/assets/images/rwmbox_bg.png);
+            background-size: 100% 100%;
+            margin: 0 auto;
+        }
+
+        .rwmbox p {
+            height: 1.066667rem;
+            padding: 0.3rem 0.4rem;
+        }
+        .fs26 {
+            font-size: 0.173333rem;
+        }
+
+        .rwmbox .rwm_imgbox {
+            width: 2.2rem;
+            height: 2.2rem;
+            margin: 0 auto;
+            box-shadow: 0 0 0.133333rem rgba(255, 80, 0, 0.2);
+        }
+        .avatar img {
+            float: left;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .rwmbox .rwm_imgbox img {
+            width: 100%;
+            height: 100%;
+        }
+        .mt20 {
+            margin-top: 0.133333rem;
+        }
+        .fs26 {
+            font-size: 0.173333rem;
+        }
+    </style>
+</head>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-flex" style="align-items: center; padding: 20px;">
+            <div>
+                <span class="avatar"><img src="{$user.head_pic|default="__STATIC__/images/user68.jpg"}" alt=""></span>
+            </div>
+            <div  class="weui-flex__item"><span class="fs28">~{$user.nickname}~</span></div>
+        </div>
+        <div class="rwmbox">
+            <p class="fs26">我在{$tpshop_config['shop_info_store_title']}，快来看看吧！</p>
+            <div class="rwm_imgbox">
+                <img src="{$qrcode_path}" alt="">
+            </div>
+        </div>
+        <div class="fs26 mt20" style="padding:0 0.306667rem; color: #4c4c4c;">
+            <p>1. 长按保存您的推广二维码或提供给您的代理扫描</p>
+            <!--<p>2. 复制您专属链接: “<span id="target">{$url}</span>”给您的代理</p>-->
+            <p>2. 如果您的微信访问，请点击右上角，直接将分享给您的朋友或朋友圈</p>
+        </div>
+        <!--<div class="weui-btn-area">-->
+            <!--<a href="javascript:;" id="copy_btn" data-clipboard-action="copy" data-clipboard-target="#target" class="weui-btn weui-btn_primary">点击复制链接</a>-->
+        <!--</div>-->
+    </div>
+
+</div>
+
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: appId, // 必填，公众号的唯一标识
+        timestamp: timestamp, // 必填，生成签名的时间戳
+        nonceStr: nonceStr, // 必填，生成签名的随机串
+        signature: signature,// 必填，签名，见附录1
+            jsApiList: [ // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        'onMenuShareTimeline',//这里不知道你用的地理接口是哪个就两个都写上了
+        'onMenuShareAppMessage'
+    ]
+    });
+    wx.ready(function(){
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: "推广二维码", // 分享标题
+            link:'http://'+window.location.host+"{:U('User/my_qrcode',array('user_id'=>$user['user_id']))}",
+            imgUrl: "http://test.cctvia.com/template/mobile/new2/static/images/pock_02.png", // 分享图标
+            desc: "你帮我转发,我送你现金"
+        });
+        // 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: "推广二维码", // 分享标题
+            link:'http://'+window.location.host+"{:U('User/my_qrcode',array('user_id'=>$user['user_id']))}",
+            imgUrl: "http://test.cctvia.com/template/mobile/new2/static/images/pock_02.png", // 分享图标
+            desc: "你帮我转发,我送你现金",
+            type: '' // 分享类型,music、video或link，不填默认为link
+        });
+    });
+</script>
+</body>
+</html>

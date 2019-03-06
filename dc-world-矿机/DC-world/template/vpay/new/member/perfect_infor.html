@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+</head>
+<style>
+    .mui-btn-block{
+        padding: 8px 0;
+    }
+    .mui-input-row{
+        height: auto!important;
+        border: none!important;
+    }
+    .mui-input-row label{
+        font-size: 15px;
+    }
+    .add_img{
+        display: block;
+        width: 30%;
+        height: 30%;
+        margin: 10px 1%;
+        float: left;
+    }
+    .add_img img{
+        width: 100%;
+    }
+    .tupian_infor{
+        float: left;
+        width: 30%;
+        margin: 10px 1%;
+    }
+    .tupian_infor img{
+        width: 100%;
+    }
+    .hiddenbox{
+        display: none;
+    }
+</style>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<header class="mui-bar mui-bar-nav" style="background:#f3363a;">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+    <!--  <a class="mui-icon  mui-pull-right toggle" style="color: white;font-size: 14px;line-height: 44px;margin: 0;padding: 0">代理登录</a>-->
+    <h1 class="mui-title login-item" style="color: white">完善资料</h1>
+</header>
+<div class="mui-content" style="padding-top: 54px">
+    <form  class="mui-input-group"method="post" action="" style="margin-top: 0">
+
+        <div class="mui-input-row">
+            <label>真实姓名</label>
+            <input name='realName' id="realName" value="{{message.realname}}" type="text" class="mui-input-clear mui-input" placeholder="请输入您的姓名">
+        </div>
+        <div class="mui-input-row">
+            <label>身份证号</label>
+            <input name='idCard' id="idCard" type="text" value="{{message.idcard}}" class="mui-input-clear mui-input" placeholder="请输入身份证号" >
+        </div>
+        <div class="mui-input-row">
+            <label>身份证正面照</label>
+            <input type="file" style="display: none;" id="file_single1" name="Filedata" onchange="uploadPic_front(this)" accept="image/*;capture=camcorder" />
+            <div class="tupian_infor hiddenbox" id="box1" style="border: none;">
+                <div id="imgdiv1"><img src="{{message.idcardfrontimg}}"/></div>
+            </div>
+            <span class="add_img"><img class="upload_single1" src="__PUBLIC__/images/upload_img.png"/></span>
+            <input name='idCardFrontImg' id="idCardFrontImg" type="hidden" class="mui-input-clear mui-input">
+        </div>
+        <div class="mui-input-row">
+            <label>身份证反面照</label>
+            <input type="file" style="display: none;" id="file_single2" name="Filedata" onchange="uploadPic_back(this)" accept="image/*;capture=camcorder" />
+            <div class="tupian_infor hiddenbox" id="box2" style="border: none;">
+                <div id="imgdiv2"><img src="{{message.idcardbackimg}}"/></div>
+            </div>
+            <span class="add_img"><img class="upload_single2" src="__PUBLIC__/images/upload_img.png"/></span>
+            <input name='idCardBackImg' id="idCardBackImg" type="hidden" class="mui-input-clear mui-input">
+        </div>
+        <div class="mui-input-row">
+            <label>身份证手持照</label>
+            <input type="file" style="display: none;" id="file_single3" name="Filedata" onchange="uploadPic_hold(this)" accept="image/*;capture=camcorder" />
+            <div class="tupian_infor hiddenbox" id="box3" style="border: none;">
+                <div id="imgdiv3"><img src="{{message.idcardhold}}"/></div>
+            </div>
+            <span class="add_img"><img class="upload_single3" src="__PUBLIC__/images/upload_img.png"/></span>
+            <input name='idCardHold' id="idCardHold" type="hidden" class="mui-input-clear mui-input">
+        </div>
+    </form>
+    <div class="mui-content-padded">
+        <button id='login' class="mui-btn mui-btn-block mui-btn-danger" style="line-height: 1"  onclick="sub()">完善资料</button>
+    </div>
+</div>
+<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
+<script>
+    $(".upload_single1").click(function(){
+        $("#file_single1").click();
+    });
+    $(".upload_single2").click(function(){
+        $("#file_single2").click();
+    });
+    $(".upload_single3").click(function(){
+        $("#file_single3").click();
+    });
+</script>
+<script>
+    var uploadPic_front = function (handle) {
+        var id = handle.id;
+        $.ajaxFileUpload({
+            url: "/Home/Login/upidcard",//调用后台方法
+            secureuri: false, //是否需要安全协议，一般设置为false
+            fileElementId: id,
+            dataType: 'json',
+            success: function (data, status) {
+                // console.log(data);
+                if (data.data.status == 0) {
+                    var html = '';
+                    html += '<div id="imgdiv"><img id="" src="'+ data.data.url +'"/></div>';
+                    $("#box1").html(html);
+                    $("#idCardFrontImg").val(data.data.url);
+                    $("#box1").show();
+                    layer.msg("上传成功！");
+                }
+            },
+            error: function (data, status, e) {
+                alert("文件上传错误！");
+            }
+        });
+    };
+    var uploadPic_back = function (handle) {
+        var id = handle.id;
+        $.ajaxFileUpload({
+            url: "/Home/Login/upidcard",//调用后台方法
+            secureuri: false, //是否需要安全协议，一般设置为false
+            fileElementId: id,
+            dataType: 'json',
+            success: function (data, status) {
+                // console.log(data);
+                if (data.data.status == 0) {
+                    var html = '';
+                    html += '<div id="imgdiv"><img id="" src="'+ data.data.url +'"/></div>';
+                    $("#box2").html(html);
+                    $("#idCardBackImg").val(data.data.url);
+                    $("#box2").show();
+                    layer.msg("上传成功！");
+                }
+            },
+            error: function (data, status, e) {
+                alert("文件上传错误！");
+            }
+        });
+    };
+    var uploadPic_hold = function (handle) {
+        var id = handle.id;
+        $.ajaxFileUpload({
+            url: "/Home/Login/upidcard",//调用后台方法
+            secureuri: false, //是否需要安全协议，一般设置为false
+            fileElementId: id,
+            dataType: 'json',
+            success: function (data, status) {
+                // console.log(data);
+                if (data.data.status == 0) {
+                    var html = '';
+                    html += '<div id="imgdiv"><img id="" src="'+ data.data.url +'"/></div>';
+                    $("#box3").html(html);
+                    $("#idCardHold").val(data.data.url);
+                    $("#box3").show();
+                    layer.msg("上传成功！");
+                }
+            },
+            error: function (data, status, e) {
+                alert("文件上传错误！");
+            }
+        });
+    };
+</script>
+<script>
+    var app = angular.module("myApp", []);
+    app.filter('to_trusted', ['$sce', function ($sce) {
+        return function (text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);
+    app.controller('Ctrl', function($scope, $http) {
+        $http({
+            method: 'GET',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+                return str.join("&");
+            },
+            url: "/index.php/Home/member/usermessage"
+        }).then(function successCallback(response) {
+            if(response.data.data.idcardfrontimg != null) {
+                $("#box1").removeClass("hiddenbox");
+            }
+            if(response.data.data.idcardbackimg != null) {
+                $("#box2").removeClass("hiddenbox");
+            }
+            if(response.data.data.idcardhold != null) {
+                $("#box3").removeClass("hiddenbox");
+            }
+            $scope.message = response.data.data;
+            // console.log($scope.message)
+            if (response.data.data == "" || response.data.data == null) {
+                window.location.href = "/index.php/home/index/login"
+            }
+        }, function errorCallback(response) {
+        })
+
+
+        $scope.sub=function () {
+            var realName = $("#realName").val()
+            var idCard = $("#idCard").val();
+            var idCardFrontImg = $("#idCardFrontImg").val();
+            var idCardBackImg = $("#idCardBackImg").val();
+            var idCardHold = $("#idCardHold").val();
+
+            $http({
+                method:'POST',
+                data:{"realName":realName,"idCard":idCard,"idCardFrontImg":idCardFrontImg,"idCardBackImg":idCardBackImg,"idCardHold":idCardHold},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/Home/Member/completeInfo"
+            }).then(function successCallback(response) {
+                successHandle(response, function () {
+                    if (0 == response.data.code) {
+                        layer.msg(response.data.data);
+                        setTimeout(function () {
+                            window.location.href = "/Home/Member/member";
+                        },1000)
+                    }
+                });
+            }, function errorCallback(response) {
+                errorHandle(response);
+            });
+        }
+    });
+</script>
+</body>
+</html>

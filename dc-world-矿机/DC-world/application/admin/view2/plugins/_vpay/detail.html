@@ -1,0 +1,198 @@
+<include file="public/layout" />
+<style>
+    td{height:40px;line-height:40px; padding-left:20px;}
+    .span_1{
+        float:left;
+        margin-left:0px;
+        height:130px;
+        line-height:130px;
+    }
+    .span_1 ul{list-style:none;padding:0px;}
+    .span_1 ul li{
+        border:1px solid #CCC;
+        height:40px;
+        padding:0px 10px;
+        margin-left:-1px;
+        margin-top:-1px;
+        line-height:40px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>会员管理 - 会员信息</h3>
+                <h5>网站系统会员管理会员信息</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="{:url('Admin/User.User/detail',['id'=>$_GET['id'],'inc_type'=> 1])}" <if condition="$_GET['inc_type'] eq 1">class="current"</if>><span>会员信息配置</span></a></li>
+                <if condition="$level_info['is_region_agent'] eq 1">
+                    <li><a href="{:url('Admin/User.User/detail_distribution',['id'=>$_GET['id'],'inc_type'=> 2])}" <if condition="$_GET['inc_type'] eq 2">class="current"</if>><span>区域代理配置</span></a></li>
+                </if>
+            </ul>
+        </div>
+    </div>
+    <form class="form-horizontal" id="user_form" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>会员昵称</label>
+                </dt>
+                <dd class="opt">
+                    <input class="input-txt valid" name="nickname" value="{$user.nickname}" readonly="" type="text">
+                    <p class="notic">会员昵称不可修改。</p>
+                </dd>
+            </dl>
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label>用户积分</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt"><strong class="red">{$user.pay_points}</strong>&nbsp;积分 </dd>-->
+            <!--</dl>-->
+            <dl class="row">
+                <dt class="tit">
+                    <label>账户余额</label>
+                </dt>
+                <dd class="opt"><strong class="red">{$user.balance}</strong>&nbsp;元 </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password">身份等级</label>
+                </dt>
+                <dd class="opt">
+                    <select name="level" id="level">
+                        <foreach name="level" item="v" >                                            
+                            <option value="{$v[level_id]}" <if condition="$user['level'] eq $v[level_id]">selected='selected'</if> >{$v[level_name]}</option>
+                        </foreach>                                            
+                    </select>
+                    <p class="notic">留空表示不修改密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password">新密码</label>
+                </dt>
+                <dd class="opt">
+                    <input id="password" name="password" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">留空表示不修改密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password2">确认密码</label>
+                </dt>
+                <dd class="opt">
+                    <input id="password2" name="password2" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">留空表示不修改密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="paypassword">新支付密码</label>
+                </dt>
+                <dd class="opt">
+                    <input id="paypassword" name="paypassword" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">留空表示不修改支付密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="paypassword2">支付确认密码</label>
+                </dt>
+                <dd class="opt">
+                    <input id="paypassword2" name="paypassword2" class="input-txt" type="text">
+                    <span class="err"></span>
+                    <p class="notic">留空表示不修改支付密码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>注册时间</label>
+                </dt>
+                <dd class="opt">{$user.createTime}</dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>上级ID</label>
+                </dt>
+                <dd class="opt">
+                    <div><input id="parentId" readonly  name="parentId" value="{$user.parentId}" class="input-txt" type="text"></div>
+                    <div> <img id="first_leader_pic" style="margin: 5px;width: 120px;height: 120px" src="{$first_leader.head_pic|default='__PUBLIC__/static/images/seller/default_user_portrait.gif'}" alt=""></div>
+                    <div>用户名：<span id="first_leader_name"><if condition="$user.first_leader eq 0">厂家<else/>{$first_leader.nickname}</if></span></div>
+                    <p class="notic">
+                        <a onclick="selectUsers()" class="ncap-btn"><i class="fa fa-search"></i>选择用户</a>
+                    </p>
+                    <!--<p class="notic">如果冻结会员，会员将不能操作资金。</p>-->
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>是否禁用</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="isDisable1" class="cb-enable <if condition="$user['isDisable'] eq 1">selected</if>"><span>是</span></label>
+                        <label for="isDisable2" class="cb-disable <if condition="$user['isDisable'] eq 2">selected</if>"><span>否</span></label>
+                        <input id="isDisable1" name="isDisable" value="1" type="radio" <if condition="$user['isDisable'] eq 1">checked</if>>
+                        <input id="isDisable2" name="isDisable" value="2" type="radio" <if condition="$user['isDisable'] eq 2">checked</if>>
+                    </div>
+                    <p class="notic">如果冻结会员，会员将不能操作资金。</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    function selectUsers(){
+        var url = "{:url('Admin/Plugins.Vpay/search_users',['tpl'=>'select_users','id'=>$user[id]])}";
+        layer.open({
+            type: 2,
+            title: '选择用户',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+
+    function call_back(user_id,nickanme,head_pic){
+        console.log(user_id);
+        $('#parentId').val(user_id);
+        $('#first_leader_name').text(nickanme);
+        $('#first_leader_pic').attr("src",head_pic);
+        layer.closeAll('iframe');
+    }
+    
+    function checkUserUpdate(){
+        var email = $('input[name="email"]').val();
+        var mobile = $('input[name="mobile"]').val();
+        var password = $('input[name="password"]').val();
+        var password2 = $('input[name="password2"]').val();
+        var paypassword = $('input[name="paypassword"]').val();
+        var paypassword2 = $('input[name="paypassword2"]').val();
+
+        var error ='';
+        if(password != password2){
+            error += "两次密码不一样\n";
+        }
+        if(paypassword != paypassword2){
+            error += "两次支付密码不一样\n";
+        }
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        $('#user_form').submit();
+    }
+</script>
+</body>
+</html>

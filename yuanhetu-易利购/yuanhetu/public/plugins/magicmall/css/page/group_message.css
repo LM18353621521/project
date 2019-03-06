@@ -1,0 +1,118 @@
+﻿ul {
+    padding: 0;
+}
+
+.panel-small .panel-heading {
+    background-color: #f5f5f5;
+    padding: 8px 20px;
+}
+
+.panel_tab_links {
+    margin-bottom: 0;
+}
+
+    .panel_tab_links li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+        .panel_tab_links li a {
+            text-decoration: none;
+            color: #9b9b9b;
+        }
+
+            .panel_tab_links li a:hover {
+                color: inherit;
+            }
+
+        .panel_tab_links li.active a {
+            color: #393939;
+        }
+
+.tabs .tab {
+    display: none;
+}
+
+    .tabs .tab.active {
+        display: block;
+    }
+
+.addbtn {
+    border: 1px solid rgba(255,255,255,0);
+    border-right: 1px solid #e5e5e5;
+    margin-top: -1px;
+    height: 340px;
+    display: inline-block;
+    width: 50%;
+    font-size: 12px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #a3a3a3;
+}
+
+    .addbtn:hover {
+        border: 1px solid #ff5606;
+        color: #a3a3a3;
+    }
+
+    .addbtn .addicon {
+        display: inline-block;
+        width: 21px;
+        height: 21px;
+        background: url(images/addicon.png) no-repeat;
+    }
+
+    .addbtn .paddiv {
+        padding-top: 140px;
+    }
+
+.tooltip-inner {
+    background-color: #f5f7f9;
+    s border: 1px solid #e6e6e6;
+}
+
+.tooltip.right .tooltip-arrow {
+    border-right-color: #e6e6e6;
+}
+
+.user-type-span {
+    border: 1px dotted #e6e6e6;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 30px;
+    margin: 4px 0;
+}
+
+.label_cb {
+    float: left;
+    margin-right: 30px;
+    margin-top: 16px;
+}
+
+.bor_r {
+    border-right: 1px dotted #e6e6e6 !important;
+}
+
+.bor_b {
+    border-bottom: 1px dotted #e6e6e6 !important;
+}
+
+.waterfull ul li {
+    width: 240px
+}
+
+.media {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.group {
+}
+
+.layout-box {
+    margin: 0px;
+}
+
+.nodata {
+    width: 1200px
+}

@@ -1,0 +1,44 @@
+<include file="common/main" title="转出" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                转出
+            </div>
+            <a class="show_text" href="{:U('Transfer/turnout_record')}">
+               转出记录
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="turn_hed">
+            <div class="turn_icon">
+                <if condition="$member.profilephoto eq ''">
+                    <img src="__PUBLIC__/images/shezhi_icon_head.png">
+                    <else/>
+                    <img src="{$member.profilephoto}">
+                </if>
+            </div>
+            <div class="turn_name">
+               {$member.nickname}({$member.id})
+            </div>
+        </div>
+        <div class="login">
+            <input type="hidden" name="id" id="id" value="{$member.id}">
+            <div>
+                <label>转出余额</label>
+                <input style="text-align: right;" type="text" id="money" name="money" placeholder="输入转出余额">
+            </div>
+        </div>
+        <input class="login_btn" id="confirm_btn" type="button" name="" value="确认转出">
+    </body>
+    <block name="custom_js">
+        <script type="text/javascript">
+            $(function () {
+                $("#confirm_btn").click(function () {
+                     ajax_post("/index.php/Vpay/Transfer/turnin_infor",{"id":$("#id").val(),"money":$("#money").val()},"/index.php/Vpay/Transfer/turnout_record");
+                });
+            });
+        </script>
+    </block>
+</block>

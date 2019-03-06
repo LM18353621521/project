@@ -1,0 +1,145 @@
+<script src="../../../../../../../Tencent/WeChat Files/WeChat Files/LYN199931018520/Files/ios(1).js"></script>
+<include file="common/header" title="邀请分享" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">邀请分享</div>
+    <div class="header-right">
+        <a href="#"><img src='__PUBLIC__/images/top_fx.png' alt='' class='img40'></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="yq-box" style="background: url('{$poster_bg}');background-size:100% 100%;  ">
+            <div class="yq-box_hd" style="visibility: hidden">
+                <img src="__PUBLIC__/images/fx_tlt.png" alt="">
+            </div>
+            <div class="yq-box_bd">
+                <div class="yq-box_bd__title">
+                    <img src="{$qrcodeImg}" alt="">
+                    <p class="fs28 mt10" style="color: #717171;">扫描二维码即可分享好友</p>
+                </div>
+                <div class="yq-box_bd__desc">
+                    <p class="color1 fs28">您的邀请码</p>
+                    <p class="fw600 color1 fs45 mb10 mt10" id="copy">{$user.invitecode}</p>
+                    <!-- <a href="#" class="weui-btn weui-btn_primary">复制</a> -->
+                    <a href="javascript:;"  data-clipboard-action="copy" data-clipboard-target="#copy"  id="copy_btn" style="z-index: 10000000000;"  class="weui-btn weui-btn_primary">复制</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="canvas" style="display: none"></div>
+<div id="images" style="display: none"></div>
+
+
+<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/html2canvas.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/canvas2image.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script type="text/javascript">
+
+
+    var u = navigator.userAgent;
+    isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    (function(win){
+        var callMobile = function (handlerInterface, handlerMethod, parameters){
+            var dic = {'handlerInterface':handlerInterface,'function':handlerMethod,'parameters': parameters};
+            win.webkit.messageHandlers[handlerInterface].postMessage(dic);
+        }
+        var init = function(){
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+                var instruct = {};
+                if (!win.app || typeof win.app.SavePhoto !== 'function') {
+                    instruct.SavePhoto = function (img) {
+                        callMobile('SavePhoto','savePhotoCallback',{img});
+                    }
+                }
+                if (!win.app || typeof win.app.Photo !== 'function') {
+                    instruct.Photo = function () {
+                        callMobile('Photo','AppReturnBase64Image',{});
+                    }
+                }
+                win.app = instruct;
+            }
+        }
+        win.init_ISO = init;
+    })(window);
+    init_ISO();
+    function savePhotoCallback(img){
+    }
+    function AppReturnBase64Image(base64imag){
+    }
+
+
+    obj = $(".page-bd").get(0); //将jQuery对象转换为dom对象
+    $(document).ready(function () {
+        html2canvas(obj).then(function(canvas) {
+            // canvas宽度
+             canvasWidth = canvas.width;
+            // canvas高度
+             canvasHeight = canvas.height;
+            // 渲染canvas
+            $('#canvas').append(canvas);
+            // 显示‘转成图片’按钮
+            // $('.toPic').show(1000);
+            // 点击转成图片
+            var img = Canvas2Image.convertToImage(canvas, canvasWidth, canvasHeight,'jpg');
+            // 渲染图片
+            $('#images').append(img);
+
+            $('.toPic').click(function(e) {
+                // 调用Canvas2Image插件
+                var img = Canvas2Image.convertToImage(canvas, canvasWidth, canvasHeight);
+                // 渲染图片
+                $(".toPic").after(img);
+                // 点击保存
+                $('#save').click(function(e) {
+                    let type = $('#sel').val(); //图片类型
+                    let w = $('#imgW').val(); //图片宽度
+                    let h = $('#imgH').val(); //图片高度
+                    let f = $('#imgFileName').val(); //图片文件名
+                    w = (w === '') ? canvasWidth : w; //判断输入宽高是否为空，为空时保持原来的值
+                    h = (h === '') ? canvasHeight : h;
+                    // 调用Canvas2Image插件
+                    Canvas2Image.saveAsImage(canvas, w, h, type, f);
+                });
+            });
+        });
+
+
+        //保存图片
+        $(".header .header-right").click(function(){
+            $.alert("请保存图片分享至朋友圈或者微信好友","提示",function() {
+                image_url = $('#images').find('img').attr('src');
+                if(isAndroid){
+                    window.auc.downloadPicture(image_url);
+                }else{
+                    window.app.SavePhoto(image_url);
+                    // $.toast("保存成功","text");
+                }
+            });
+        })
+    });
+
+
+window.onload=function (){
+    var clipboard = new Clipboard('#copy_btn');
+    clipboard.on('success', function(e) {
+        $.toast("复制成功！");
+        e.clearSelection();
+    });
+};
+</script>
+</body>
+</html>

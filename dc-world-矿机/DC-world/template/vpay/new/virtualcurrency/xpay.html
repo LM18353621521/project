@@ -1,0 +1,523 @@
+<include file="common/main" title="交易" body=""/>
+    <style type="text/css">
+
+        /*.ex_t div label{
+            color: black;
+        }*/
+        /*.ex_t div p{
+            color: #fff;
+        }*/
+        .masks-remark {
+            width: 3rem;
+            height: 1.76rem;
+            background: #fff;
+            padding-left: 0.01rem;
+             position: relative!important;
+             border: none !important;
+            text-align: center;
+            border-radius: 3px 3px 0px 0px;
+            top: 0;
+            padding: 0.12rem;
+             margin-left: 0;
+             left: 0;
+            display: none;
+            z-index: 111;
+        }
+        .pwd-box-remark {
+            width: 3rem!important;
+            background: #fff;
+            padding-left: 0.01rem;
+            position: relative!important;
+            border: none !important;
+            border-radius: 0px 0px 3px 3px;
+            overflow: hidden;
+            top: 0;
+            padding: 0.12rem;
+             margin-left:0;
+             left: 0;
+            display: none;
+            z-index: 111;
+        }
+    </style>
+        <input type="hidden" id="type" value="{$type}">
+        <input type="hidden" id="currency" value="{$currency}">
+        <input type="hidden" id="trans_type" value="{$trans_type}">
+        <div class="nav_top flex">
+            <a  href="{:U('Virtualcurrency/digital_assets')}">
+                <i></i>
+            </a>
+            <div class="flex1">
+                <select ng-change="getAll()" ng-model="currency" ng-value="{{res.currency}}">
+                    <volist name="currencylist" id="vo">
+                        <option value="{$vo.id}">{$vo.china_name}</option>
+                    </volist>
+                </select>
+            </div>
+            <a  href="javascript:void(0)">
+
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="flex ex_t">
+            <div class="flex1">
+                <label>{$data.payvir}</label>
+                <p>{$data.payname}资产</p>
+            </div>
+            <div></div>
+            <div class="flex1">
+                <label>{$data.balance}</label>
+                <p>余额</p>
+            </div>
+        </div>
+        <div class="xpay_tp">
+            <ul>
+                <li>
+                    <label>
+                        当前价格
+                    </label>
+                    <span>
+                        {$data.curprice}
+                    </span>
+                </li>
+                <li>
+                    <label>
+                        高
+                    </label>
+                    <span ng-if="$data.maxprice=='' || $data.maxprice==null">
+                        {$data.curprice}
+                        <i class="rise"></i>
+                    </span>
+                    <span ng-if="$data.maxprice!='' && $data.maxprice!=null">
+                        {$data.maxprice}
+                        <i class="rise"></i>
+                    </span>
+                </li>
+                <li>
+                    <label>
+                        低
+                    </label>
+                    <span ng-if="$data.minprice=='' || $data.minprice==null">
+                        {$data.curprice}
+                        <i class="fall"></i>
+                    </span>
+                    <span ng-if="$data.minprice!='' && $data.minprice!=null">
+                        {$data.minprice}
+                        <i class="fall"></i>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="xpay_nav">
+            <ul>
+                <li style="width: 33.3%">
+                    <a id="sellorder" href="/index.php/Vpay/Virtualcurrency/sell_order?type={$type}&currency={$currency}&trans_type=2">
+                        <i></i>
+                        <div>
+                            发布出售订单
+                        </div>
+                    </a>
+                </li>
+                <li style="width: 33.3%">
+                    <a id="buyorder" href="/index.php/Vpay/Virtualcurrency/purchase_order?type={$type}&currency={$currency}&trans_type=1">
+                        <i></i>
+                        <div>
+                            发布购买订单
+                        </div>
+                    </a>
+                </li>
+                <li style="width:33.3%">
+                    <a href="/index.php/Vpay/Virtualcurrency/xpay_orderlist?type={$type}&currency={$currency}&trans_type={$trans_type}&status=1"><!--默认未完成-->
+                        <i></i>
+                        <div>
+                            订单
+                        </div>
+                    </a>
+                </li>
+                <!--<li>
+                    <a href="javascript:void(0)">
+                        <i></i>
+                        <div>
+                            交易记录
+                        </div>
+                    </a>
+                </li>-->
+            </ul>
+        </div>
+        <div class="mt10">
+            <div class="xpay_m">
+                <ul>
+                    <li class="active8" style="width: 50%;" ng-click="transType(2)">
+                        购买
+                    </li>
+                    <li style="width: 50%;" ng-click="transType(1)">
+                        出售
+                    </li>
+                </ul>
+            </div>
+            <div class="pay_list">
+                <ul>
+                    <li class="flex" ng-repeat="log in logs">
+                        <!--<div>-->
+                            <!--<img ng-src="{{log.bprofilePhoto}}" ng-if="log.trans_type == 1">-->
+                            <!--<img ng-src="{{log.sprofilePhoto}}" ng-if="log.trans_type == 2">-->
+                        <!--</div>-->
+                        <!--<div ng-if="(log.bprofilePhoto=='' && log.trans_type == 1) || (log.sprofilePhoto=='' && log.trans_type == 2)">-->
+                            <!--<img ng-src="__PUBLIC__/vpay/images/shezhi_icon_head.png">-->
+                        <!--</div>-->
+                        <div ng-if="log.trans_type == 1 && log.bprofilephoto !='' && log.bprofilephoto !=null">
+                            <img ng-src="{{log.bprofilephoto}}" style="height: 100%;border-radius: 50%">
+                        </div>
+                        <div ng-if="log.trans_type == 1 && (log.bprofilephoto ==''  || log.bprofilephoto ==null)">
+                            <img ng-src="__PUBLIC__/vpay/images/shezhi_icon_head.png">
+                        </div>
+                        <div ng-if="log.trans_type == 2 && log.sprofilephoto !='' && log.sprofilephoto !=null">
+                            <img ng-src="{{log.sprofilephoto}}" style="height: 100%;border-radius: 50%">
+                        </div>
+                        <div ng-if="log.trans_type == 2 && (log.sprofilephoto ==''  || log.sprofilephoto ==null)">
+                            <img ng-src="__PUBLIC__/vpay/images/shezhi_icon_head.png">
+                        </div>
+
+                        <div class="flex1">
+                            <label ng-if="log.trans_type == 1">
+                                {{log.bname}}
+                            </label>
+                            <label ng-if="log.trans_type == 2">
+                                {{log.sname}}
+                            </label>
+                            <p>
+                                限额：{{log.entrustnum}}
+                            </p>
+                        </div>
+                        <div ng-if="log.trans_type == 1">
+                            <label>{{log.price}}</label>
+                            <button ng-click="btn_sell(log.id,log.bname,log.entrustnum,log.price);">
+                                卖出
+                            </button>
+                        </div>
+                        <div ng-if="log.trans_type == 2">
+                            <label>{{log.price}}</label>
+                            <button ng-click="btn_buy(log.id,log.sname,log.entrustnum,log.price);">
+                                购买
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="masks">
+        </div>
+       <div style="    position: absolute;
+    width: 3.24rem;
+    top: 15%;
+    z-index: 100;
+    left: 50%;
+    margin-left: -1.62rem;">
+           <div class="masks-remark">
+               <div style="color:red;line-height: 0.3rem;" id="titleDiv">
+
+               </div>
+               <div style="text-align: left;line-height: 0.3rem;">
+                   <label style="color: #6b7d86;">限额：</label>
+                   <span id="num"></span>
+                   <hr style="background-color:red;height: 1px;border: none;"/>
+               </div>
+               <div style="text-align: left;line-height: 0.3rem;">
+                   <label style="color: #6b7d86;">当前价格：</label>
+                   <span id="price"></span>
+                   <hr style="background-color:red;height: 1px;border: none;">
+               </div>
+               <div style="text-align: left;line-height: 0.3rem;height: 0.3rem;">
+                   <label id="cur" style="color: #6b7d86;"></label>
+                   <span><input type="text" value="" id="changeNum" style="border: none" oninput="changeMoney(this.value);"/></span>
+                   <hr style="background-color:red;height: 1px;border: none;">
+               </div>
+               <div style="text-align: left;line-height: 0.3rem;height: 0.3rem;">
+                   <label style="color: #6b7d86;">余额：</label>
+                   <span id="money"></span>
+                   <hr style="background-color:red;height: 1px;border: none;">
+               </div>
+           </div>
+           <div class="pwd-box-remark" style="text-align: center">
+               <input type="hidden" class="" id="id-input" style="">
+               <input type="tel" maxlength="6" class="pwd-input" id="pwd-input">
+               <div class="fake-box" style="text-align: center;">
+                   <input type="password" readonly="">
+                   <input type="password" readonly="">
+                   <input type="password" readonly="">
+                   <input type="password" readonly="">
+                   <input type="password" readonly="">
+                   <input type="password" readonly="">
+               </div>
+
+               <div style="text-align: center;">
+                   输入支付密码
+               </div>
+           </div>
+       </div>
+    </body>
+        <script src="http://zeptojs.com/zepto.min.js"></script>
+        <script>
+      
+                // 当前页数
+                p = 0;
+                // 加载完毕标志
+                endflg = 0;
+                // 防止重复加载
+                busy = false;
+                // 存放列表数据
+                logs = [];
+                //存放所有数据
+                res = "";
+                // 请求数据方法
+                loadMore = function(){
+                    //交易类型
+                    type = $("#type").val();
+                    //交易类型
+                    currency = $("#currency").val();
+                    //交易类型
+                    trans_type = $("#trans_type").val();
+
+                    if(endflg == 0){
+                        if(busy){
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method:'POST',
+                            dataType:'JSON',
+                            data:{
+                                "p" : p,
+                                "type" : type,
+                                "currency" : currency,
+                                "trans_type" : trans_type
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Virtualcurrency/xpay?p="+p,
+                            success: function (data) {
+                                busy = false;
+                                if(data.data != '' && data.data != null){
+                                    if(p > 0) {
+                                        layer.msg("正在加载...", {time: 500});
+                                    }
+                                } else {
+                                    layer.msg("已经全部加载完了...", {time:500});
+                                    endflg = 1;
+                                    return false;
+                                }
+                                p++;
+                                if(data.code == -1){
+                                    layer.msg(data.msg,{time:1500})
+                                }else{
+                                    if(data.data == null){
+                                        layer.msg(data.msg,{time:1500});
+                                    } else {
+                                        res=data.data;
+                                        // 组织数据
+                                        for (var i in data.data.list) {
+                                            logs.push(data.data.list[i]);
+                                        }
+                                    }
+                                }
+                            }, error: function (result) {
+                            }
+                        });
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                };
+                // 进页面先加载一次数据
+                loadMore();
+
+                $(window).scroll(function(){
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if(scrollTop + windowHeight == scrollHeight){
+                        loadMore();
+                    }
+                });
+                //币种改变
+                getAll=function () {
+                    //更改input
+                    $("#currency").val(currency);
+                    //更改发布出售订单
+                    $("#sellorder").attr("href","/index.php/Vpay/Virtualcurrency/sell_order?type="+$("#type").val()+"&currency="+currency+"&trans_type=2");
+                    //更改发布购买订单
+                    $("#buyorder").attr("href","/index.php/Vpay/Virtualcurrency/purchase_order?type="+$("#type").val()+"&currency="+currency+"&trans_type=1");
+
+                    //订单
+
+                    //交易记录
+
+                    p=0;
+                    // 加载完毕标志
+                    endflg = 0;
+                    // 防止重复加载
+                    busy = false;
+                    // 存放列表数据
+                    logs = [];
+                    //存放所有数据
+                    res = "";
+                    loadMore();
+                }
+                //流通类型
+                transType=function (obj) {
+                    $("#trans_type").val(obj);
+                    p=0;
+                    // 加载完毕标志
+                    endflg = 0;
+                    // 防止重复加载
+                    busy = false;
+                    // 存放列表数据
+                    logs = [];
+                    //交易类型
+                    type = $("#type").val();
+                    //交易类型
+                    currency = $("#currency").val();
+                    //交易类型
+                    trans_type = $("#trans_type").val();
+
+                    if(endflg == 0){
+                        if(busy){
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method:'POST',
+                            dataType:'JSON',
+                            data:{
+                                "p" : p,
+                                "type" : type,
+                                "currency" : currency,
+                                "trans_type" : trans_type
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Virtualcurrency/getTransData?p="+p,
+                            success: function (data) {
+                                busy = false;
+                                if(data.data != '' && data.data != null){
+                                    if(p > 0) {
+                                        layer.msg("正在加载...", {time: 500});
+                                    }
+                                } else {
+                                    layer.msg("已经全部加载完了...", {time:500});
+                                    endflg = 1;
+                                    return false;
+                                }
+                                p++;
+                                if(data.code == -1){
+                                    layer.msg(data.msg,{time:1500})
+                                }else{
+                                    if(data.data == null){
+                                        layer.msg(data.msg,{time:1500});
+                                    } else {
+                                        // 组织数据
+                                        for (var i in data.data) {
+                                            logs.push(data.data[i]);
+                                        }
+                                    }
+                                    console.log(logs);
+                                }
+                            }, error: function (result) {
+                            }
+                        });
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                }
+
+                //卖出
+                btn_sell=function (id,bname,entrustnum,price) {
+                    transId=id;
+                    $("#titleDiv").text("向【"+bname+"】卖出"+res.payname);
+                    $("#num").text(entrustnum);
+                    $("#price").text(price);
+                    $("#money").text("");
+                    $("#changeNum").val("");
+
+                    $("#cur").text(res.payname+":");
+                    $('.masks,.masks-remark,.pwd-box-remark').show();
+                    /*$(".masks").click(function(){
+                        $('.masks,.masks-remark,.pwd-box-remark').hide();
+                    });*/
+                }
+
+                //购买
+                btn_buy=function (id,sname,entrustnum,price) {
+                    transId=id;
+                    $("#titleDiv").text("向【"+sname+"】购买"+res.payname);
+                    $("#num").text(entrustnum);
+                    $("#price").text(price);
+                    $("#money").text("");
+                    $("#changeNum").val("");
+                    $("#cur").text(res.payname+":");
+                    $('.masks,.masks-remark,.pwd-box-remark').show();
+                }
+
+                $(".pwd-input").on("input", function() {
+                    var $input = $(".fake-box input");
+                    var pwd = $(this).val().trim();
+                    for (var i = 0, len = pwd.length; i < len; i++) {
+                        $input.eq("" + i + "").val(pwd[i]);
+                    }
+                    $input.each(function() {
+                        var index = $(this).index();
+                        if (index >= len) {
+                            $(this).val("");
+                        }
+                    });
+                    if (len == 6) {
+                        //执行其他操作
+                        var num = '';
+                        $input.each(function() {
+                            num += $(this).val().trim()
+                        });
+
+                        var id = $("#id-input").val();
+                        if (num.length != 6) {
+                            layer.msg("请输入您6位数字支付密码！");
+                            return;
+                        }
+                        if (id == 'undefined' || id == undefined || id == 'null' || id == null) {
+                            layer.msg("请刷新页面重试！");
+                            return;
+                        }
+
+                        //发送post请求
+                        $.ajax({
+                            method:'POST',
+                            dataType:'JSON',
+                            data:{
+                                "pwd" : num,
+                                "id" : transId,
+                                "changeNum":$("#changeNum").val(),
+                                "type":$("#type").val(),
+                                "currency":$("#currency").val(),
+                                "trans_type":$("#trans_type").val()
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Virtualcurrency/trade",
+                            success: function (data) {
+                                $(".pwd-box-remark input").val("");
+                                if(data.code==0){
+                                    layer.msg("操作成功！");
+                                    returnData=data.data;
+                                    setTimeout(function () {
+                                        window.location.href = '/index.php/Vpay/Virtualcurrency/xpay_orderlist?type='+returnData.type+"&currency="+returnData.currency+"&trans_type="+returnData.trans_type+"&status="+returnData.status;
+                                    }, 1000);
+                                }else {
+                                    if(data.msg != '' && data.msg != null) {
+                                        layer.msg(data.msg,{time:1500})
+                                    }
+                                }
+                            }, error: function (result) {
+                            }
+                        });
+                    }
+                });
+       
+            //更改金额
+            function  changeMoney(obj) {
+                $("#money").text(obj*($("#price").text()));
+            }
+        </script>

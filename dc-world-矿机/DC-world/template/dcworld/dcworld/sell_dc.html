@@ -1,0 +1,182 @@
+<include file="common/header" title="立即卖出" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">我要卖出</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <form action="{:U('Dcworld/Dcworld/sell_out')}" method="post">
+            <input type="hidden" name="id" value="{$data.id}">
+        <div class="weui-cells weui-cells_form" style="background-color: #fff;">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">当前可用DC</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;">{$user.dc_coin}</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">卖出价格</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;">{$data.dc_cny_rate}CNY</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">交易数量</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;">{$data.number}</span>
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">卖出金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input"  type="text"  name="total_price"  value="{$data.total_price}"  readonly  placeholder="根据数量量算出购买价格">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="weui-cells" style="background-color: #fff;">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">转账方式</label>
+                    <input type="hidden" name="pay_type" value="{$data.pay_type}">
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$data.pay_type_name}" data-values="{$data.pay_type}"  placeholder="请选择转账方式" id="sel_zz">
+                </div>
+                <div class="weui-cell__ft">
+
+                </div>
+            </div>
+            <!--<div class="weui-cell">-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<label class="weui-label">卖出数量</label>-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<input class="weui-input" type="text"  placeholder="请输入卖出数量">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="weui-cell">-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<label class="weui-label">兑换金额</label>-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<input class="weui-input" type="text"  placeholder="根据卖出数量计算兑换金额">-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div class="weui-btn-area">
+            <input type="hidden" name="pwd" value="">
+            <button type="button" class="weui-btn weui-btn_primary" onclick="check_form()">确认卖出</button>
+            <!--<a href="买家付款.html" class="weui-btn weui-btn_primary">确认卖出</a>-->
+        </div>
+        </form>
+    </div>
+</div>
+<style>
+    .weui-toast p{ color: #FFF}
+</style>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+
+    can_click=1;
+    var user_dc_coin ={$user.dc_coin};
+    var number={$data.number};
+    function check_form(){
+        if(user_dc_coin<number){
+            $.alert('！DC币不足，您的可用DC币为:'+user_dc_coin);
+            return false;
+        }
+        var pay_type=$('input[name=pay_type]').val();
+        if(pay_type==0){
+            $.alert('请选择转账方式');
+            return false;
+        }
+
+        $.prompt({
+            title: '输入支付密码',
+            input: '',
+            empty: false, // 是否允许为空
+            onOK: function (input) {
+                $('input[name=pwd]').val(input);                //点击确认
+
+                $.ajax({
+                    type : "POST",
+                    dataType:"JSON",
+                    url:"/index.php/Dcworld/Dcworld/sell_dc",
+                    data : $('form').serialize(),// 你的formid
+                    success: function(res){
+                        console.log(res);
+                        if(res.code==0){
+                            $.toast("下单成功",1000,function(){
+                                window.location.href="/index.php/Dcworld/Dcworld/trading_center";
+                            });
+                        }else if(res.code==-2){
+                            $.toast(res.msg, "forbidden");
+                            setTimeout(function(){
+                                check_form();
+                            },1500);
+                        }else{
+                            if(res.code==2){
+                                $.confirm({
+                                    title: '标题',
+                                    text: res.msg,
+                                    onOK: function () {
+                                        //点击确认
+                                        window.location.href="/index.php/Dcworld/Member/account_list";
+                                    },
+                                    onCancel: function () {
+                                    }
+                                });
+                            }else{
+                                $.toast(res.msg, "cancel");
+                            }
+                        }
+                    }
+                });
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+        $('#weui-prompt-input').attr('type','password');
+        $('#weui-prompt-input').attr('placeholder','请输入交易密码');
+    }
+
+</script>
+<script>
+    var data={$account_list};
+    $("#sel_zz").select({
+        title: "请选择转账方式",
+        items: data,
+        closeText:'',
+        onClose:function(e){
+            var pay_type = e.data.values;
+            $('input[name=pay_type]').val(pay_type);
+        }
+    });
+</script>
+</body>
+</html>

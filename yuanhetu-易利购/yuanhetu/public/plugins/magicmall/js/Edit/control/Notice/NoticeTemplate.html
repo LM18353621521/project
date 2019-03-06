@@ -1,0 +1,214 @@
+﻿
+<!--图片广告控件-->
+
+<script type="text/template" id="NoticeListControl">
+    <li class="draggable" data-id="$${Model.ID}">
+        <a href="" class="LinkTo" title="">
+            <img src="/images/zhuangxiu/imgad.jpg" style="width: 100%; ">
+        </a>
+    </li>
+</script>
+<!--图片广告控件项-->
+<script type="text/template" id="NoticeEdit-template">
+
+    <!--标题设置-->
+
+    <div class="configurator" id="NoticeItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">背景颜色：</label>
+                        <div class="col-sm-8">
+                            <input type="color" style="width: 100px;float: left;margin-right: 10px;" class="form-control input-sm diy-bind color" data-bind="background" value="#ffffff"/>
+                            <span style="width: 100px"  class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">清除</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">文本颜色：</label>
+                        <div class="col-sm-8">
+                            <input type="color" style="width: 100px;float: left;margin-right: 10px;" class="form-control input-sm diy-bind color" data-bind="background" value="#dddddd"/>
+                            <span style="width: 100px"  class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">公告内容：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" value="Notice" checked="" name="listType" class="tabType" data-type="0"> 读取商城公告
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="Notice" name="listType" class="tabType" data-type="1"> 手动填写
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="noticeNum">
+                        <label class="col-sm-2">读取数量：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" value="Notice" checked="" name="showWay"> 5条
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="Notice" name="showWay"> 10条
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="Notice" name="showWay"> 20条
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <ul class="diy-media-list ui-sortable" id="ItemList" style="display: none">
+                    {@each Model.Item as m, k}
+                    <li id="$${Model.ID}" class="Item" style="" data-id="$${m.ID}">
+                        <header class="acts-header">
+                            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+                            <a href="#"><i class="icon icon-trash"></i></a>
+                        </header>
+                        <div class="media">
+                            <div class="media-body">
+                                <div class="form-horizontal ">
+                                    <div class="form-group selectInfo" >
+
+                                        <label class="col-sm-2">文字：</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="这里是第一条自定义公告的标题" name="Link" value="$${m.Link}" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group selectInfo" >
+                                        <label class="col-sm-2">链接地址：</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="请选择链接或输入链接地址(http://开头)" name="Link" value="$${m.Link}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                    </li>
+
+                    {@/each}
+                </ul>
+                <a href="#" class="addbtn-block" style="display: none"><i class="icon icon-plus"></i> 增加一个导航</a>
+            </div>
+        </div>
+    </div>
+
+</script>
+<!--图片广告控件项-->
+
+<script type="text/template" id="NoticeItem-template">
+
+    <li id="$${Model.ID}" class="Item" style="" data-id="$${Model.ID}">
+        <header class="acts-header">
+            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+            <a href="#"><i class="icon icon-trash"></i></a>
+        </header>
+        <div class="media">
+            <div class="media-body">
+                <div class="form-horizontal">
+                            <div class="form-group selectInfo">
+                                    <label class="col-sm-2">文字：</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" placeholder="这里是第一条自定义公告的标题" name="Name" value="$${m.Link}" class="form-control">
+                                    </div>
+                                </div>
+
+                            <div class="form-group selectInfo" >
+                                <label class="col-sm-2">链接地址：</label>
+                                <div class="col-sm-6">
+                                    <input type="text" placeholder="请选择链接或输入链接地址(http://开头)" name="Link" value="$${m.Link}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </li>
+
+</script>
+<!--图片广告控件项-->
+
+
+
+<script type="text/template" id="NoticePhoneControl">
+
+    <div class="view">
+        {@if Model.ShowWay=="Notice"}
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {@each Model.Item as m, k}
+                <div class="swiper-slide"><a href="$${m.Link}"><img src="$${m.Img}" style="width: 100%; "></a></div>
+                {@/each}
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+        {@else}
+        <div class="diy-swipe swipe-df">
+            <ul class="clearfix picList">
+                {@each Model.Item as m, k}
+                <li class="draggable" data-id="$${m.ID}">
+                    <a href="$${m.Link}" class="LinkTo" title="">
+                        <img src="$${m.Img}" style="width: 100%; ">
+                    </a>
+                </li>
+                {@/each}
+            </ul>
+
+        </div>
+        {@/if}
+
+    </div>
+
+
+
+
+</script>
+
+<!--图片广告控件-->
+<script type="text/template" id="NoticeControl">
+    <div class="box box-element ui-draggable" data-type="NoticeControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">图片广告</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            {@if Model.ShowWay=='Notice'}
+            <div class="diy-swipe swipe-df">
+                {@else}
+                <div class="diy-swipe ">
+                    {@/if}
+
+                    <ul class="clearfix picList">
+                        {@each Model.Item as m, k}
+                        <li class="draggable" data-id="$${m.ID}">
+                            <a href="javascript:void(0)" class="LinkTo" title="">
+                                <img src="$${m.Img}" style="width: 100%; ">
+                            </a>
+                        </li>
+                        {@/each}
+                    </ul>
+                    {@if Model.ShowWay=='Notice'}
+                    <section class="diy-swipe_time">
+                        {@else}
+                        <section class="diy-swipe_time" style="display:none">
+                            {@/if}
+
+                            {@each Model.Item as m, k}
+                            {@if k==0}
+                            <span class="cur"></span>
+                            {@else}
+                            <span></span>
+                            {@/if}
+                            {@/each}
+                        </section>
+                </div>
+        </div>
+    </div>
+
+
+
+</script>

@@ -1,0 +1,88 @@
+<include file="common/header" title="添加资产" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">添加资产</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells qb_list">
+            <foreach name="wallet_list" item="vo">
+                <div class="weui-cell pt_pb36">
+                    <div class="weui-cell__hd">
+                        <img src="{$vo.image}" alt="">
+                    </div>
+                    <div class="weui-cell__bd">
+                        <h4 class="weui-cell__bd__title">{$vo.name}</h4>
+                        <p class="weui-cell__bd__desc">{$vo.desc}</p>
+                    </div>
+                    <div class="weui-cell__ft"  >
+                        <input id="checkbox{$vo.id}" name="ids" class="weui-switch" type="checkbox"  value="{$vo.id}"  onchange="change_wallet(this,{$vo.id})"    <in name="vo.id" value="$user['wallet_ids']">checked</in>  >
+                    </div>
+                </div>
+            </foreach>
+
+            <!--<div class="weui-cell pt_pb36">-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<img src="__PUBLIC__/images/qb_img1.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<h4 class="weui-cell__bd__title">以太坊(ETH)</h4>-->
+                    <!--<p class="weui-cell__bd__desc">虚拟宝物交易平台</p>-->
+                <!--</div>-->
+                <!--<div class="weui-cell__ft">-->
+                    <!--<input class="weui-switch" type="checkbox">-->
+                <!--</div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+</div>
+<style>
+    .weui-toast p{ color: #FFF}
+</style>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    can_click=1;
+    $(document).ready(function(){
+        $('input[name=ids]').on("change",'',function(){
+            if(can_click==0){return false}
+            can_click=0;
+            var id = this.value;
+            var checked = this.checked;
+            var data={
+                id:id,
+                has:checked,
+            }
+            $.ajax({
+                type : "POST",
+                dataType:"JSON",
+                url:"/index.php/Dcworld/Member/add_assets",
+                data : data,// 你的formid
+                success: function(res){
+                    can_click=1;
+                    console.log(res);
+                    if(res.code==0){
+                        $.toast("操作成功",1000,function(){
+                        });
+                    }else{
+                        $.toast(res.msg, "cancel");
+                    }
+                }
+            });
+        })
+    })
+
+</script>
+
+</body>
+</html>

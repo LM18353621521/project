@@ -1,0 +1,211 @@
+<include file="common/main" title="资产" body=""/>
+        <input type="hidden" id="type" value="{$type}">
+        <input type="hidden" id="currency" value="{$currency}">
+        <input type="hidden" id="trans_type" value="{$trans_type}">
+        <input type="hidden" id="bankcount" value="{$bankcount}">
+        <div class="nav_top flex">
+            <a id="returnUrl" href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                <select ng-change="getAll()" ng-model="currency" ng-value="{{res.currency}}">
+                    <volist name="currencylist" id="vo">
+                        <option value="{$vo.id}">{$vo.china_name}</option>
+                    </volist>
+                </select>
+            </div>
+            <a  href="javascript:void(0)">
+
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="flex ex_t">
+            <div class="flex1">
+                <label>{{res.payvir}}</label>
+                <p>{{res.payname}}资产</p>
+            </div>
+            <div></div>
+            <div class="flex1">
+                <label>{{res.balance}}</label>
+                <p>余额</p>
+            </div>
+        </div>
+        <div class="order_l">
+            <div>
+                <label>
+                    当前价格：
+                </label>
+                <input type="text" name="" value="{{res.curprice}}" readonly="readonly">
+            </div>
+            <div>
+                <label>
+                    购买价格：
+                </label>
+                <input type="text" name="price" ng-model="price" ng-value="res.curprice">
+            </div>
+            <div>
+                <label>
+                    购买数量：
+                </label>
+                <input type="text" name="entrustNum" ng-model="entrustNum" ng-value="entrustNum||0">
+            </div>
+            <!--<div>
+                <label>
+                    购买总额：
+                </label>
+                <input type="text" name="" value="0">
+            </div>-->
+            <button ng-disabled="disabled" id="confirm_btn" ng-click="publish()">
+                发布
+            </button>
+        </div>
+    </body>
+
+        <script type="text/javascript">
+            $(function () {
+                if($("#type").val()==1 && $("#bankcount").val()==0){
+                    layer.confirm('请添加银行卡！', {
+                        btn: ['确认','取消'] //按钮
+                    }, function(){
+                        window.location.href="/index.php/Home/Virtualcurrency/addBankCard?type="+$("#type").val()+"&currency="+$("#currency").val()+"&trans_type="+$("#trans_type").val();
+                    }, function(){
+                        layer.close();
+                    });
+                }
+            });
+            var app = getApp('myApp', []);
+            app.controller('Ctrl', function ($scope, $http) {
+                // 当前页数
+                $scope.p = 0;
+                // 加载完毕标志
+                $scope.endflg = 0;
+                // 防止重复加载
+                $scope.busy = false;
+                // 存放列表数据
+                $scope.logs = [];
+                //存放所有数据
+                $scope.res = "";
+                // 请求数据方法
+                $scope.loadMore = function () {
+                    //交易类型
+                    $scope.type = $("#type").val();
+                    //交易类型
+                    $scope.currency = $("#currency").val();
+                    //交易类型
+                    $scope.trans_type = $("#trans_type").val();
+
+                    if ($scope.endflg == 0) {
+                        if ($scope.busy) {
+                            return false;
+                        }
+                        $scope.busy = true;
+                        $http({
+                            method: 'POST',
+                            data: {
+                                "p": $scope.p,
+                                "type": $scope.type,
+                                "currency": $scope.currency,
+                                "trans_type": $scope.trans_type
+                            },
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            transformRequest: function (obj) {
+                                var str = [];
+                                for (var p in obj) {
+                                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                }
+                                return str.join("&");
+                            },
+                            url: "/index.php/Home/Virtualcurrency/sell_order",
+                        }).then(function successCallback(response) {
+                            $scope.busy = false;
+                            if (response.data.data != '' && response.data.data != null) {
+                                if ($scope.p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time: 500});
+                                $scope.endflg = 1;
+                                return false;
+                            }
+                            $scope.p++;
+                            if (response.data.code == -1) {
+                                layer.msg(response.data.msg, {time: 1500})
+                            } else {
+                                if (response.data.data == null) {
+                                    layer.msg(response.data.msg, {time: 1500});
+                                } else {
+                                    $scope.res = response.data.data;
+                                }
+                            }
+                        }, function errorCallback(response) {
+                            errorHandle(response);
+                        });
+                    } else {
+                        layer.msg("已经全部加载完了...", {time: 500});
+                    }
+                };
+                // 进页面先加载一次数据
+                $scope.loadMore();
+                $scope.getAll=function () {
+                    //更改input
+                    $("#currency").val($scope.currency);
+                    $("#returnUrl").attr("href","/index.php/Home/Virtualcurrency/xpay?type="+$("#type").val()+"&currency="+$("#currency").val()+"&trans_type="+$("#trans_type").val());
+                    $("#returnUrl").removeAttr("onclick");
+                    //交易记录
+                    $scope.p=0;
+                    // 加载完毕标志
+                    $scope.endflg = 0;
+                    // 防止重复加载
+                    $scope.busy = false;
+                    // 存放列表数据
+                    $scope.logs = [];
+                    //存放所有数据
+                    $scope.res = "";
+                    $scope.loadMore();
+                }
+                //监听input值的改变
+                $scope.$watch('entrustNum', function(newValue, oldValue) {
+                    if($scope.entrustNum==0){
+                        return false;
+                    }
+                    /*if($scope.entrustNum>$scope.res.payvir){
+                        $("#confirm_btn").attr("disabled",true);
+                        layer.msg("出售数量不能大于资产数量！", {time: 1500});
+                    }else{
+                        $("#confirm_btn").attr("disabled",false);
+                    }*/
+                });
+                //发布
+                $scope.publish=function () {
+                    $http({
+                        method: 'POST',
+                        data: {
+                            "type": $scope.type,
+                            "currency": $scope.currency,
+                            "trans_type": $scope.trans_type,
+                            "price": $("input[name='price']").val(),
+                            "entrustNum": $("input[name='entrustNum']").val()
+                        },
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        transformRequest: function (obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/buyPublish",
+                    }).then(function successCallback(response) {
+                        if (response.data.code == -1) {
+                            layer.msg(response.data.msg, {time: 1500})
+                        } else {
+                            layer.msg(response.data.msg, {time: 1500});
+                            $scope.returnData=response.data.data;
+                            window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.returnData.type+"&currency="+$scope.returnData.currency+"&trans_type="+$scope.returnData.trans_type+"&status="+$scope.returnData.status;
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+                }
+            })
+        </script>

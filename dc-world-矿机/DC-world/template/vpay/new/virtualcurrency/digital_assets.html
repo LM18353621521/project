@@ -1,0 +1,300 @@
+<include file="common/main" title="数字资产" body=""/>
+        <div class="nav_top flex">
+            <a  href="{:U('Index/index')}">
+                <i></i>
+            </a>
+            <div class="flex1">
+                数字资产
+            </div>
+            <a class="show_text" href="{:U('Virtualcurrency/transaction_record')}">
+               交易记录
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="turn_hed" >
+            <div class="turn_icon">
+                <if condition="$user.profilePhoto eq ''">
+                    <img src="__PUBLIC__/images/shezhi_icon_head.png">
+                    <else/>
+                    <img src="{$user.profilePhoto}">
+                </if>
+            </div>
+            <div class="turn_name">
+                当前价格：{$system.vpay}
+            </div>
+        </div>
+        <div class="da_desc clearfix">
+            <div class="clearfix">
+                <label>
+                    <i></i>
+                    {$name}资产
+                </label>
+                <p>
+                    {$vir.vpay}
+                </p>
+            </div>
+            <div class="clearfix">
+                <label>
+                    <i></i>
+                    钱包地址
+                </label>
+                <p class="copy"  onclick="execClick();">复制地址</p>
+            </div>
+            <p id="textDiv">
+                {$user['wallet']}
+            </p>
+        </div>
+        <div class="dnav_list">
+            <ul>
+                <li>
+                    <a href="{:U('Virtualcurrency/dturn_out')}">
+                        <i></i>
+                        <div>
+                            转出
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="Unopen1()">
+                        <i></i>
+                        <div>
+                            众筹
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="Unopen2()">
+                        <i></i>
+                        <div>
+                            U宝
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>1,'trans_type'=>2))}"><!--余额交易-->
+                        <i></i>
+                        <div>
+                            交易
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="dig_list">
+            <ul>
+                <li>
+                    <label class="d_top">
+                        <i></i>
+                        {$name}
+                    </label>
+                    <div class="clearfix d_desc">
+                        <div class="fleft">
+                            <label>
+                                {$vir.vpay}
+                            </label>
+                            <p>
+                                {$name}资产
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <label>
+                                {$system.vpay}
+                            </label>
+                            <p>
+                                当前价格
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>1,'currency'=>1,'trans_type'=>2))}">
+                                现金交易
+                            </a>
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>1,'trans_type'=>2))}">
+                                余额交易
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label class="d_top">
+                        <i></i>
+                        比特币
+                    </label>
+                    <div class="clearfix d_desc">
+                        <div class="fleft">
+                            <label>
+                                {$vir.bitcoin}
+                            </label>
+                            <p>
+                                比特币资产
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <label>
+                                {$system.bitcoin}
+                            </label>
+                            <p>
+                                当前价格
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>1,'currency'=>2,'trans_type'=>2))}">
+                                现金交易
+                            </a>
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>2,'trans_type'=>2))}">
+                                余额交易
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label class="d_top">
+                        <i></i>
+                        莱特币
+                    </label>
+                    <div class="clearfix d_desc">
+                        <div class="fleft">
+                            <label>
+                                {$vir.litecoin}
+                            </label>
+                            <p>
+                                莱特币资产
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <label>
+                                {$system.litecoin}
+                            </label>
+                            <p>
+                                当前价格
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>1,'currency'=>3,'trans_type'=>2))}">
+                                现金交易
+                            </a>
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>3,'trans_type'=>2))}">
+                                余额交易
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label class="d_top">
+                        <i></i>
+                        以太坊
+                    </label>
+                    <div class="clearfix d_desc">
+                        <div class="fleft">
+                            <label>
+                                {$vir.ethereum}
+                            </label>
+                            <p>
+                                以太坊资产
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <label>
+                                {$system.ethereum}
+                            </label>
+                            <p>
+                                当前价格
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>1,'currency'=>4,'trans_type'=>2))}">
+                                现金交易
+                            </a>
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>4,'trans_type'=>2))}">
+                                余额交易
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label class="d_top">
+                        <i></i>
+                        狗狗币
+                    </label>
+                    <div class="clearfix d_desc">
+                        <div class="fleft">
+                            <label>
+                                {$vir.dogecoin}
+                            </label>
+                            <p>
+                                狗狗币资产
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <label>
+                                {$system.dogecoin}
+                            </label>
+                            <p>
+                                当前价格
+                            </p>
+                        </div>
+                        <div class="fleft">
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>1,'currency'=>5,'trans_type'=>2))}">
+                                现金交易
+                            </a>
+                            <a href="{:U('Virtualcurrency/xpay',array('type'=>2,'currency'=>5,'trans_type'=>2))}">
+                                余额交易
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </body>
+
+        <script type="text/javascript">
+            function execClick(){
+                var input = document.createElement("input");
+                input.value = $("#textDiv").text();
+                document.body.appendChild(input);
+                input.select();
+                input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
+                document.body.removeChild(input);
+                layer.msg("钱包地址已经复制成功，快去粘贴吧！");
+            }
+
+            /*function execCopy(event,textDiv){
+                var thisDiv = document.getElementById(textDiv);
+                if(isIE()){
+                    if(window.clipboardData){
+                        window.clipboardData.setData("Text", thisDiv.textContent);
+                        // alert(window.clipboardData.getData("Text"));
+                        layer.msg("钱包地址已经复制成功，快去粘贴吧！");
+                    }
+                }else{
+                    event.preventDefault();
+                    if (event.clipboardData) {
+                        event.clipboardData.setData("text/plain", thisDiv.textContent);
+                        // alert(event.clipboardData.getData("text"));
+                        layer.msg("钱包地址已经复制成功，快去粘贴吧！");
+                    }
+                }
+            }*/
+
+            function isIE(){
+                var input = window.document.createElement ("input");
+                //"!window.ActiveXObject" is evaluated to true in IE11
+                if (window.ActiveXObject === undefined) return null;
+                if (!window.XMLHttpRequest) return 6;
+                if (!window.document.querySelector) return 7;
+                if (!window.document.addEventListener) return 8;
+                if (!window.atob) return 9;
+                //"!window.document.body.dataset" is faster but the body is null when the DOM is not
+                //ready. Anyway, an input tag needs to be created to check if IE is being
+                //emulated
+                if (!input.dataset) return 10;
+                return 11;
+            }
+
+            function Unopen1() {
+                layer.msg("众筹暂未开放，即将呈现敬请期待！", {time: 1500});
+            }
+
+            function Unopen2() {
+                layer.msg("U宝暂未开放，即将呈现敬请期待！", {time: 1500});
+            }
+        </script>

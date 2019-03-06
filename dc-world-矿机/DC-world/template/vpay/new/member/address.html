@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <style>
+        .enter {
+            background: url("__PUBLIC__/images/enter-right.png") no-repeat right center;
+            background-size: auto 50%;
+        }
+
+        .address {
+            margin-top: 5px;
+        }
+
+        .cart .mui-input-row {
+            height: 50px;
+        }
+
+        .cart .mui-checkbox input[type='checkbox']:before {
+            line-height: 42px;
+        }
+
+        /*    .seladd{
+                display: none;
+            }*/
+        .useadd {
+            width: 15%;
+            height: 42px;
+            font-size: 14px;
+            line-height: 42px;
+            color: red;
+        }
+
+        .deal {
+            background: #ef373b;
+            padding: 0 25px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            width: 33.33%;
+            margin-bottom: 0;
+            height: 50px;
+            text-align: center;
+        }
+
+        .cart-total .mui-media-body p {
+            padding: 0 5px;
+        }
+
+        .edit_address p:nth-child(1) {
+            display: inline-block;
+            width: 50%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .edit_address p:nth-child(2) {
+            display: inline-block;
+            width: 20%;
+            text-align: right;
+            background: url("__PUBLIC__/images/adress_icon_edit.png") no-repeat center 20px;
+            background-size: auto 80%;
+            background-position: 10px;
+            font-size: 13px;
+        }
+
+        .edit_address p:nth-child(3) {
+            display: inline-block;
+            width: 20%;
+            text-align: right;
+            background: url("__PUBLIC__/images/adress_icon_del.png") no-repeat center 20px;
+            background-size: auto 80%;
+            background-position: 10px;
+            font-size: 13px;
+        }
+
+        .add_address {
+            background: #fff;
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 38px;
+            z-index: 100;
+        }
+
+        .newadd {
+            width: 80%;
+            margin: 2px auto;
+            display: block;
+        }
+
+        .newaddimg {
+            background: url("__PUBLIC__/images/adress_btn_add.png") no-repeat;
+            background-size: auto 80%;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 35%;
+            top: 10px;
+            z-index: 10;
+        }
+
+    </style>
+    <script>
+
+        $(function () {
+
+            $(".newadd").click(function () {
+                $(".seladd").toggle();
+            })
+        })
+
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+
+<!--header-->
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" style="color: white" ng-hide="flg == 2"
+       href="/index.php/Home/member/member"></a>
+    <a class="mui-icon mui-icon-left-nav mui-pull-left" style="color: white" ng-show="flg == 2"
+       href="/index.php/Home/Cart/docart"></a>
+    <h1 class="mui-title">收货地址 </h1>
+</header>
+
+<!--购物车-->
+<div class="add_address">
+    <div class="newaddimg"></div>
+    <button class="mui-btn  mui-btn-danger newadd ">新建地址</button>
+</div>
+<div class="mui-content seladd" style="display: none;">
+    <form class="mui-input-group">
+        <div class="mui-input-row">
+            <label>姓名:</label>
+            <input id='password' type="text" class="mui-input-clear mui-input" placeholder=""
+                   data-rule="required;length(2~10)" maxlength="10" ng-model="name">
+        </div>
+        <div class="mui-input-row">
+            <label>手机:</label>
+            <input id='password_confirm' type="text" class="mui-input-clear mui-input" placeholder=""
+                   data-rule="required;mobile" ng-model="phone" maxlength="11">
+        </div>
+        <div class="mui-input-row">
+            <label>所在地区:</label>
+            <select id='proive' style="width:21%;float: left;" ng-change="getcity()" ng-model="prov">
+                <option value="请选择">请选择</option>
+                <option ng-repeat=" x in province" value="{{x.id}}">{{x.name}}</option>
+            </select>
+            <select id='city' style="width:21%;float: left " ng-change="getxian()" ng-model="cty">
+                <option value="请选择">请选择</option>
+                <option ng-repeat=" y in city" value="{{y.id}}">{{y.name}}</option>
+            </select>
+            <select id='xian' style="width:21%;float: left" ng-model="xian">
+                <option value="请选择">请选择</option>
+                <option ng-repeat="z in subcity" value="{{z.id}}">{{z.name}}</option>
+            </select>
+        </div>
+        <div class="mui-input-row">
+            <label>详细地址:</label>
+            <input id='account' type="text" class="mui-input-clear mui-input" placeholder="楼道、街牌号等"
+                   data-rule="required;length(2~100)" ng-model="newaddress" maxlength="50">
+        </div>
+
+
+    </form>
+
+    <div class="mui-content-padded">
+        <p>请核对您的个人信息无误后再点击确定</p>
+    </div>
+    <div class="mui-content-padded">
+        <button id='reg' style="color: white;background: #ef373b;" class="mui-btn mui-col-xs-12 " ng-click="save()">保存
+        </button>
+    </div>
+</div>
+<div class="mui-content cart">
+
+    <ul class="mui-table-view address">
+        <li class="mui-table-view-cell mui-media cart-goods" style="position: relative" ng-repeat="add in address"
+            ng-hide="{{add.isdelete==1}}">
+            <div class="mui-input-row mui-checkbox" ng-click="selectone(add)">
+                <input name="checkbox" value="Item 1" type="checkbox" class="self-checkbox" ng-value="{{add.id}}"
+                       ng-model="add.checkbox" ng-hide="flg == 2">
+                <input name="checkbox" value="Item 1" type="checkbox" class="self-checkbox" ng-value="{{add.id}}"
+                       ng-model="add.checkbox" ng-change="setDefault(add.id)" ng-show="flg == 2">
+            </div>
+            <div class="mui-media-body" style="width: 70%;float: left">
+                <span style="width: 90%">{{add.name}}<label style="margin-left: 2em">{{add.phone}}</label></span>
+                <span style="width: 90%">{{add.name_path}} {{add.address}} </span>
+
+            </div>
+            <div class="mui-media-body useadd" ng-show="{{add.isdefault==1}}">默认</div>
+            <div ng-show="(ischeck == true&&add.checkbox) || flg == 2"
+                 style="height: 10px;border-bottom:solid 1px #e4e3e6;width: 100%;margin-bottom:10px;clear: both;"></div>
+            <div class="edit_address" ng-show="(ischeck == true&&add.checkbox) || flg == 2">
+                <p ng-click="setDefault(add.id)">设为默认</p>
+                <p ng-click="editadd(add.id)">编辑</p>
+                <p ng-click="del(add.id)">删除</p>
+            </div>
+            <!-- <div class="edit_address"  ng-show="ischeck == false">
+                 <p>设为默认</p>
+                 <p>编辑</p>
+                 <p>删除</p>
+              </div>-->
+        </li>
+    </ul>
+
+
+</div>
+
+<div style="height:50px">
+</div>
+<!--结算&删除-->
+<!--<div class="cart-total " style="bottom:0;" >
+    <ul class="mui-table-view">
+        <li class=" mui-media ">
+            <div class="mui-media-body  do-cart" style="display: flex" ng-show="ischeck == true">
+                <p class="deal" style="background: dodgerblue" ng-click="del()">删除</p>
+                <p class="deal" style="background: orange"><a style="color: white;display: block;width: 100%;height: 100%" ng-click="editadd()">编辑</a> </p>
+                <p class="deal" ng-click="setDefault()">设为默认</p>
+            </div>
+            <div class="mui-media-body  do-cart" style="display: flex" ng-show="ischeck == false">
+                <p class="deal" style="background: dodgerblue" disabled>删除</p>
+                <p class="deal" style="background: orange"><a style="color: white;display: block;width: 100%;height: 100%" disabled>编辑</a> </p>
+                <p class="deal" disabled>设为默认</p>
+            </div>
+        </li>
+    </ul>
+
+</div>-->
+
+</body>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function ($scope, $http) {
+        $scope.flg = getUrlParam('flg');
+        $scope.prov = '请选择';
+        $scope.cty = '请选择';
+        $scope.xian = '请选择';
+        $http({
+            method: 'POST',
+            url: "/index.php/Home/address/index"
+        }).then(function successCallback(response) {
+            //console.log(response)
+            $scope.province = response.data.data.province;
+            $scope.address = response.data.data.address_list
+            for (var i in response.data.data.address_list) {
+                response.data.data.address_list[i].checkbox = false;
+            }
+            $scope.ischeck = false;
+        }, function errorCallback(response) {
+        });
+
+        $scope.getcity = function () {
+            $http({
+                method: 'POST',
+                data: {pid: $scope.prov},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/Tool/getCityAjax"
+            }).then(function successCallback(response) {
+                $scope.city = response.data
+            }, function errorCallback(response) {
+            });
+        }
+
+        $scope.getxian = function () {
+            $http({
+                method: 'POST',
+                data: {pid: $scope.cty},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/Tool/getxianAjax"
+            }).then(function successCallback(response) {
+                $scope.subcity = response.data;
+            }, function errorCallback(response) {
+            });
+        }
+
+        $scope.save = function () {
+            $http({
+                method: 'POST',
+                data: $scope,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/address/save"
+            }).then(function successCallback(response) {
+                if (response.data.code == -1) {
+                    layer.msg(response.data.msg, {time: 1000})
+                } else {
+                    layer.msg(response.data.data, {time: 1000})
+                    setTimeout(function () {
+                        window.location.href = window.location.href
+                    }, 1000)
+                }
+            }, function errorCallback(response) {
+            });
+        }
+
+        $scope.del = function (id) {
+            $http({
+                method: 'POST',
+                data: {id: id},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/Address/remove"
+            }).then(function successCallback(response) {
+                layer.msg(response.data.data, {time: 1000})
+                setTimeout(function () {
+                    window.location.href = window.location.href
+                }, 1200)
+            }, function errorCallback(response) {
+
+            });
+        }
+
+        $scope.selectone = function (add) {
+            for (var x in $scope.address) {
+                if ($scope.address[x].id != add.id) {
+                    $scope.address[x].checkbox = false;
+                }
+            }
+            $scope.checkischeck();
+        }
+        //checkbox选择判断
+        $scope.checkischeck = function () {
+            var flag = false;
+            for (var c in $scope.address) {
+                if ($scope.address[c].checkbox == true)
+                    flag = true
+            }
+            $scope.ischeck = flag;
+        }
+
+        $scope.editadd = function (id) {
+            if (id) {
+                if ($scope.flg == null || $scope.flg == '') {
+                    window.location.href = "/index.php/home/member/addressedit?id=" + id;
+                } else if ($scope.flg == 2) {
+                    window.location.href = "/index.php/home/member/addressedit?id=" + id + "&flg=" + $scope.flg;
+                }
+            } else {
+                layer.msg('请选择地址');
+            }
+        }
+
+        //设为默认，flg为2返回订单确认页
+        $scope.setDefault = function (id) {
+            $http({
+                method: 'POST',
+                data: {id: id},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/Address/setDefault"
+            }).then(function successCallback(response) {
+                if (response.data.code == -1) {
+                    layer.msg(response.data.msg, {time: 1000})
+                } else {
+                    layer.msg(response.data.data, {time: 1000})
+                    setTimeout(function () {
+                        if ($scope.flg == 2) {
+                            window.location.href = "/index.php/Home/Cart/docart"
+                        } else {
+                            window.location.href = window.location.href
+                        }
+                    }, 500)
+                }
+            }, function errorCallback(response) {
+            });
+        }
+    })
+</script>
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+</html>

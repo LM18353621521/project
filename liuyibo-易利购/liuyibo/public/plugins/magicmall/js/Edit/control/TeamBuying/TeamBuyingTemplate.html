@@ -1,0 +1,145 @@
+﻿
+<!--拼团控件-->
+<script type="text/template" id="TeamBuyingControl">
+    <div class="box box-element ui-draggable" data-type="TeamBuyingControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/Second.png"></i>
+            <span class="module-tit">拼团活动</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="weui-cell weui-cell_access backr">
+                <div class="weui-cell__bd mag_left">
+                    <span activityname>$${Model.ActivityName}</span>
+
+                </div>
+                <div class="weui-cell__ft mag_right">
+                    <div class="qguo-right">
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="backr glyr">
+                <ul productlist>
+                    {@@each Model.Item as m, k}
+
+                    <li><a href="#">
+                        <div class="imge" style="background-image:url($${m.Img})"></div>
+                        <div class="glyr_text">
+                            <div class="glyr_text_top">$${m.ProductName}</div>
+                            <div class="glyr_text_fg">
+                                <div class="glyr_text_left"><span>￥</span>$${m.Price}</div>
+                                <div class="glyr_text_right">￥$${m.OldPrice}</div>
+                            </div>
+                        </div></a>
+                    </li>
+                    {@@/each}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="TeamBuyingListItem">
+
+    <li>
+        <div class="imge" style="background-image:url($${Model.Img})"></div>
+        <div class="glyr_text">
+            <div class="glyr_text_top">$${Model.ProductName}</div>
+            <div class="glyr_text_fg">
+                <div class="glyr_text_left"><span>￥</span>$${Model.Price}</div>
+                <div class="glyr_text_right">￥$${Model.OldPrice}</div>
+            </div>
+        </div>
+    </li>
+
+</script>
+
+<script type="text/template" id="TeamBuyingPhoneControl">
+
+    <div class="weui-panel trushbuy1 view">
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__bd fs30 grah">
+                <span>$${Model.ActivityName}</span>
+             
+            </div>
+            <div class="weui-cell__ft">
+                <div class="qguo-right">
+                  
+                </div>
+            </div>
+        </div>
+        <div class="swiper-containerSecondKill gunt trushbuy4 ">
+            <div class="swiper-wrapper" productlist>
+                {@@each Model.Item as m, k}
+                <div class="swiper-slide">
+                 
+                        <div class="backt">
+                            <div class="weui-grid">
+                                <a href="/Views/Product/TeamProductInfo.html?shopID=$${Model.ObjectID}&productid=$${m.ProductID}">
+                                    <div class="probox">
+                                        <div class="proimg">
+
+                                            <img src="$${m.Img}" alt="">
+
+                                        </div>
+                                        <div class="protitle">$${m.ProductName}</div>
+                                        <div class="proprice">
+                                            <div class="proprice_wt"><span>￥</span><b>$${m.Price}</b></div>
+                                            <div class="proprice_rig">￥$${m.OldPrice}</div>
+                                        </div>
+                                    </div>
+                                </a>
+</div>
+                        </div>
+                 
+                </div>
+                {@@/each}
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div>
+
+</script>
+
+<script type="text/template" id="TeamBuyingEdit-template">
+    <div class="configurator" id="TeamBuyingItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">活动标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" placeholder="请输入活动标题" name="activityName" value="$${Control.ActivityName}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">显示上限：</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" shownum>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                              
+
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</script>
+<!--拼团控件-->

@@ -1,0 +1,99 @@
+<include file="common/header" title="助记词" body=""/>
+<style>
+    .weui-cell__bd{
+        color: #666666;
+    }
+    .weui-flex {
+        flex-wrap: wrap;
+        background-color: #fff;
+        margin: .2rem;
+        border-radius: .1rem;
+        border: 2px solid #EEEEEE;
+        padding-top: .08rem;
+    }
+    .weui-flex .weui-flex__item {
+        width: 33.333%;
+        flex: auto;
+        text-align: center;
+        padding: .2rem;
+        box-sizing: border-box;
+        padding: 0px .1rem;
+        margin-bottom: .1rem;
+    }
+    .weui-flex .weui-flex__item .text{
+        border-bottom: 2px solid #EEEEEE;
+    }
+    .weui-flex .weui-flex__item .num {
+        color: #dddddd;
+        font-size: .19rem;
+    }
+</style>
+
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">助记词</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells__title fs24 text-gray">
+            <p class="mb10 fs34 fw500" style="color: #282c37;">请备份助记词</p>
+            <p style="color: red;">{$memorizing_word_tips}</p>
+        </div>
+        
+       	<div class="weui-flex">
+            <foreach  name="$user.memorizing_word" item="vo" key="k">
+                <div class="weui-flex__item">
+                    <p class="fs34 fw500 text">{$vo}</p>
+                    <p class="num">{$k+1}</p>
+                    <!--<p class="num">{$k + 1}</p>-->
+                </div>
+             </foreach>
+		</div>
+        <div class="weui-btn-area mt20">
+            <a href="{:U('Member/my_wallet')}" class="weui-btn weui-btn_primary">确定</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sel_page {
+
+        position: fixed;
+        top: 5px;
+        right: 10px;
+    }
+    .sel_page select {
+        width: 100px;
+        height: 30px;
+        border-radius: 3px;
+        background-color: #EEEEEE;
+    }
+</style>
+<script>
+
+    $(".sel_page select option").each(function(index,e){
+
+        if($(e).val() == decodeURI(window.location.search.split("=")[1])){
+           $(e).attr("selected","selected")
+        }
+    })
+    $(".sel_page select").change(function () {
+        window.location.href='http://192.168.5.59:8080/pages/'+$(this).val()+'.html?sel='+$(this).val();
+
+
+    })
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<include file="common/main" title="添加银行卡" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            增加银行卡
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+     <div class="login l_left">
+         <input type="hidden" name="memberid" value="{$memberId}">
+        <div>
+            <label>
+                <span class="red">*</span> 持卡人姓名
+            </label>
+            <input type="text" name="realname" placeholder="输入姓名">
+        </div>
+         <div>
+             <label>
+                 <span class="red">*</span> 手机号码
+             </label>
+             <input type="text" maxlength="11" name="mobile" placeholder="输入手机号码">
+         </div>
+        <div>
+            <label><span class="red">*</span> 银行卡账号</label>
+            <input type="text" name="no" placeholder="输入银行卡账号">
+        </div>
+        <div class="clearfix">
+            <label><span class="red">*</span> 开户行</label>
+            <select id="bankid">
+                <option value="0">选择开户行</option>
+                <volist name="banklist" id="vo">
+                    <option value="{$vo.bankId}">{$vo.bankName}</option>
+                </volist>
+            </select>
+        </div>
+        <div>
+            <label>支行</label>
+            <input type="text" name="branch" placeholder="输入支行">
+        </div>
+    </div>
+    <div class="xz_blank">  
+        <div class="mui-checkbox mbtn">
+            <input type="checkbox" name="isDefault">
+        </div>
+        <label>设置成默认银行卡</label>
+    </div>
+    <input type="hidden" id="jump" value="{$type}">
+    <span class="tips" style="color: #FC2B2B;">     
+        <span>*</span> 请绑定持卡人本人的银行卡，姓名一经填写不可修改
+    </span>
+    <input type="button" class="login_btn" value="确认" id="addCard">
+
+        <script type="text/javascript">
+            $("#addCard").click(function(){
+                $.ajax({
+                    url: "{:U('Transaction/addBankCard')}",
+                    type: "post",
+                    dataType: "json",
+                    data:{
+                        "memberid" : $("input[name='memberid']").val(),
+                        "mobile"   : $("input[name='mobile']").val(),
+                        "realname" : $("input[name='realname']").val(),
+                        "no" : $("input[name='no']").val(),
+                        "bankid" : $("#bankid").val(),
+                        "branch" : $("input[name='branch']").val(),
+                        "isdefault" : $("input[name='isDefault']").is(':checked')
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    success: function (data) {
+                        if(data.code==0){
+                            layer.msg(data.data);
+                            var type = $("#jump").val();
+                            setTimeout(function () {
+                                if ('purchase'==type) {
+                                    window.location.href = "/index.php/Vpay/Transaction/bankList_purchase";
+                                } else if('sell' == type) {
+                                    window.location.href = "/index.php/Vpay/Transaction/bankList_sell";
+                                }
+                            }, 1000);
+                        }else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function (result) {
+                    }
+                })
+            });
+        </script>

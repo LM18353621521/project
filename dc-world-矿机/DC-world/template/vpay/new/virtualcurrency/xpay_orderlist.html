@@ -1,0 +1,433 @@
+<include file="common/main" title="订单" body=""/>
+    <style type="text/css">
+        .list_show ul li div button{
+            font-size: 0.14rem;
+            text-align: center;
+            line-height: 0.4rem;
+            width: 100%;
+        }
+    </style>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                订单
+            </div>
+            <a class="more_show" href="javascript:void(0)">
+                <i></i>
+            </a>
+            <div class="list_xz">
+                <ul>
+                    <volist name="currencys" id="cur">
+                        <li>
+                            <a href="javascript:void(0)" ng-click="changeCur({$cur.id})">
+                                {$cur.china_name}
+                            </a>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="xpay_m">
+            <ul>
+                <li ng-if="status==1" class="active8" style="width: 33%">
+                    未完成
+                </li>
+                <li ng-if="status!=1" style="width: 33%" ng-click="change_status(1)">
+                    未完成
+                </li>
+                <li ng-if="status!=1 && status!=4" class="active8" style="width: 33%">
+                    待处理
+                </li>
+                <li ng-if="status==1 || status==4" style="width: 33%" ng-click="change_status(2)">
+                    待处理
+                </li>
+                <li class="active8" ng-if="status==4" style="width: 33%">
+                    已完成
+                </li>
+                <li ng-if="status!=4" style="width: 33%" ng-click="change_status(4)">
+                    已完成
+                </li>
+            </ul>
+        </div>
+        <div class="ba_list clearfix">
+            <ul ng-if="status==1">
+                <li style="width: 33%">数量</li>
+                <li style="width: 33%">类型</li>
+                <li style="width: 33%">操作</li>
+            </ul>
+            <ul ng-if="status!=1 && status!=4">
+                <li style="width: 25%">对方昵称</li>
+                <li style="width: 25%">数量</li>
+                <li style="width: 25%">类型</li>
+                <li style="width: 25%">操作</li>
+            </ul>
+            <ul  ng-if="status==4">
+                <li style="width: 25%">对方昵称</li>
+                <li style="width: 25%">数量</li>
+                <li style="width: 25%">类型</li>
+                <li style="width: 25%">状态</li>
+            </ul>
+        </div>
+        <div style="height: 0.4rem;"></div>
+        <div class="list_show">
+            <ul class="clearfix"  ng-if="status==1">
+                <li ng-repeat=" log in logs">
+                    <div style="width: 33%">
+                        {{log.entrustnum}}
+                    </div>
+                    <div style="width: 33%" ng-if="log.trans_type==1">
+                        购买
+                    </div>
+                    <div style="width: 33%" ng-if="log.trans_type==2">
+                        出售
+                    </div>
+                    <div style="width: 33%">
+                        <button style="color: #00a0e9;" ng-click="cancel(log.id)">
+                            取消
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <ul class="clearfix"  ng-if="status!=1 && status!=4">
+                <li ng-repeat=" log in logs">
+                    <div style="width: 25%" ng-if="user.id==log.buyerid">
+                        <span style="background-color: #00c900" ng-click="sellBankDetail(log.id)">{{log.snickname}}</span>
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.sellerid">
+                        {{log.bnickname}}
+                    </div>
+                    <div style="width: 25%">
+                        {{log.entrustnum}}
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.buyerid">
+                        购买
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.sellerid">
+                        出售
+                    </div>
+                    <!--<div style="width: 25%;" ng-if="log.type==1 && log.trans_type==1 ">--><!--购买和出售的逻辑是一样的-->
+                    <div style="width: 25%;" ng-if="log.type==1">
+                        <button style="color: #00a0e9;" ng-if="log.status==2 && user.id==log.buyerid" ng-click="confirm_order(log.id)">
+                            确认打款
+                        </button>
+                        <button style="color: white;background-color: #8B91A0" ng-if="log.status==2 && user.id==log.sellerid">
+                            待处理
+                        </button>
+                        <button style="color: #00a0e9;" ng-if="log.status==3 && user.id==log.sellerid" ng-click="confirm_receive(log.id)">
+                            确认收款
+                        </button>
+                        <button style="color: white;background-color: #8B91A0" ng-if="log.status==3 && user.id==log.buyerid">
+                            待处理
+                        </button>
+                    </div>
+                   <!-- <div style="width: 25%;" ng-if="log.type==1 && log.trans_type==2 ">&lt;!&ndash;出售&ndash;&gt;
+                        <button style="color: #00a0e9;" ng-if="log.status==2 && user.id==log.buyerid" ng-click="confirm_order(log.id)">
+                            确认打款
+                        </button>
+                        <button style="color: white;background-color: #8B91A0" ng-if="log.status==2 && user.id==log.sellerid">
+                            待处理
+                        </button>
+                        <button style="color: #00a0e9;" ng-if="log.status==3 && user.id==log.sellerid" ng-click="confirm_receive(log.id)">
+                            确认收款
+                        </button>
+                        <button style="color: white;background-color: #8B91A0" ng-if="log.status==3 && user.id==log.buyerid">
+                            待处理
+                        </button>
+                    </div>-->
+                </li>
+            </ul>
+            <ul class="clearfix"  ng-if="status==4 || status==5">
+                <li ng-repeat=" log in logs">
+                    <div style="width: 25%" ng-if="user.id==log.buyerid">
+                        {{log.snickname}}
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.sellerid">
+                        {{log.bnickname}}
+                    </div>
+                    <div style="width: 25%">
+                        {{log.entrustnum}}
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.buyerid">
+                        购买
+                    </div>
+                    <div style="width: 25%" ng-if="user.id==log.sellerid">
+                        出售
+                    </div>
+                    <div style="width: 25%" ng-if="log.status==5">
+                        &nbsp;
+                    </div>
+                    <div style="width: 25%" ng-if="log.status==4">
+                        已完成
+                    </div>
+                    <div style="width: 25%" ng-if="log.status==5">
+                        已取消
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </body>
+
+        <script>
+            $(".more_show").click(function(){
+                $(".list_xz").slideToggle();
+            });
+        </script>
+        <script type="text/javascript">
+            var app = getApp('myApp', []);
+            app.controller('Ctrl', function ($scope, $http) {
+                $scope.type="{$type}";//交易类型
+                $scope.currency="{$currency}";//币种
+                $scope.trans_type="{$trans_type}";//流通类型
+                $scope.status="{$status}";//订单状态
+                $scope.user=JSON.parse('{$user}');
+                // 当前页数
+                $scope.p = 0;
+                // 加载完毕标志
+                $scope.endflg = 0;
+                // 防止重复加载
+                $scope.busy = false;
+                // 存放列表数据
+                $scope.logs = [];
+                //存放所有数据
+                $scope.res = "";
+                // 请求数据方法
+                $scope.loadMore = function () {
+                    if ($scope.endflg == 0) {
+                        if ($scope.busy) {
+                            return false;
+                        }
+                        $scope.busy = true;
+                        $http({
+                            method: 'POST',
+                            data: {
+                                "p": $scope.p,
+                                "type": $scope.type,
+                                "currency": $scope.currency,
+                                "trans_type": $scope.trans_type,
+                                "status": $scope.status
+                            },
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            transformRequest: function (obj) {
+                                var str = [];
+                                for (var p in obj) {
+                                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                }
+                                return str.join("&");
+                            },
+                            url: "/index.php/Home/Virtualcurrency/xpay_orderlist",
+                        }).then(function successCallback(response) {
+                            $scope.busy = false;
+                            if (response.data.data != '' && response.data.data != null) {
+                                if ($scope.p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time: 500});
+                                $scope.endflg = 1;
+                                return false;
+                            }
+                            $scope.p++;
+                            if (response.data.code == -1) {
+                                layer.msg(response.data.msg, {time: 1500})
+                            } else {
+                                if(response.data.data == null){
+                                    layer.msg(response.data.msg,{time:1500});
+                                } else {
+                                    // 组织数据
+                                    for (var i in response.data.data) {
+                                        $scope.logs.push(response.data.data[i]);
+                                    }
+                                }
+                            }
+                        }, function errorCallback(response) {
+                            errorHandle(response);
+                        });
+                    } else {
+                        layer.msg("已经全部加载完了...", {time: 500});
+                    }
+                };
+                // 进页面先加载一次数据
+                $scope.loadMore();
+                
+                $scope.change_status=function (obj) {
+                    $scope.status=obj;   //2-代表订单状态的2和3,4代表订单状态的4和5
+                    // 当前页数
+                    $scope.p = 0;
+                    // 加载完毕标志
+                    $scope.endflg = 0;
+                    // 防止重复加载
+                    $scope.busy = false;
+                    // 存放列表数据
+                    $scope.logs = [];
+                    //存放所有数据
+                    $scope.res = "";
+                    $scope.loadMore();
+                }
+                //确认打款
+                $scope.confirm_order=function (obj) {
+                    $http({
+                        method:'POST',
+                        data:{
+                            "id":obj,
+                            "type": $scope.type,
+                            "currency": $scope.currency,
+                            "trans_type": $scope.trans_type
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/confirm_order"
+                    }).then(function successCallback(response) {
+                        if(response.data.code==0){
+                            $scope.confirmData = response.data.data;
+                            setTimeout(function () {
+                                //window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&trans_type="+$scope.confirmData.trans_type+"&status="+$scope.confirmData.status;
+                                window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&status="+$scope.confirmData.status;
+                            }, 1000);
+                        }else {
+                            layer.msg(response.data.msg)
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+                }
+
+                //确认打款
+                $scope.confirm_receive=function (obj) {
+                    $http({
+                        method:'POST',
+                        data:{
+                            "id":obj,
+                            "type": $scope.type,
+                            "currency": $scope.currency,
+                            "trans_type": $scope.trans_type
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/confirm_receive"
+                    }).then(function successCallback(response) {
+                        if(response.data.code==0){
+                            $scope.confirmData = response.data.data;
+                            setTimeout(function () {
+                                //window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&trans_type="+$scope.confirmData.trans_type+"&status="+$scope.confirmData.status;
+                                window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&status="+$scope.confirmData.status;
+                            }, 1000);
+                        }else {
+                            layer.msg(response.data.msg)
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+                }
+
+                //取消
+                $scope.cancel=function (obj) {
+                    $http({
+                        method:'POST',
+                        data:{
+                            "id":obj,
+                            "type": $scope.type,
+                            "currency": $scope.currency,
+                            "trans_type": $scope.trans_type
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/cancel"
+                    }).then(function successCallback(response) {
+                        if(response.data.code==0){
+                            $scope.confirmData = response.data.data;
+                            setTimeout(function () {
+                                //window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&trans_type="+$scope.confirmData.trans_type+"&status="+$scope.confirmData.status;
+                                window.location.href = '/index.php/Home/Virtualcurrency/xpay_orderlist?type='+$scope.confirmData.type+"&currency="+$scope.confirmData.currency+"&status="+$scope.confirmData.status;
+                            }, 1000);
+                        }else {
+                            layer.msg(response.data.msg)
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+                }
+
+                //变换币种
+                $scope.changeCur=function (obj) {
+                    $scope.currency=obj;
+                    // 当前页数
+                    $scope.p = 0;
+                    // 加载完毕标志
+                    $scope.endflg = 0;
+                    // 防止重复加载
+                    $scope.busy = false;
+                    // 存放列表数据
+                    $scope.logs = [];
+                    //存放所有数据
+                    $scope.res = "";
+                    $scope.loadMore();
+
+                    $(".list_xz").slideToggle();
+                }
+
+                //查看卖出者的银行卡信息
+                $scope.sellBankDetail=function (id) {
+                    $http({
+                        method:'POST',
+                        data:{
+                            id : id
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/sellBankDetail"
+                    }).then(function successCallback(response) {
+                        if(response.data.code==0){
+                            var data=response.data.data;
+                            layer.tips('<div style="background-color: #0ce1c2;"><div style="text-align: left"><label style="width: 100px;">姓名:<label>'+data.realname+'</div>' +
+                                    '<div style="text-align: left">银行名称:'+data.bankname+'</div>' +
+                                    '<div style="text-align: left">银行卡号:'+data.no+'</div></div>', '#tips', {tips: [3,'#0ce1c2']});
+                            /* layer.open({
+                             type: 1,
+                             shadeClose: true,
+                             title: false, //不显示标题
+                             area: ['200px', '50%'],
+                             content: '<div style="background-color: #0ce1c2"><div style="text-align: left"><label style="width: 100px;">姓名:<label>'+data.realname+'</div>' +
+                             '<div style="text-align: left">银行名称:'+data.bankname+'</div>' +
+                             '<div style="text-align: left">银行卡号:'+data.no+'</div></div>',
+                             cancel: function(){
+
+                             }
+                             });*/
+                        }else {
+                            layer.msg(response.data.msg)
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+
+                }
+            });
+        </script>

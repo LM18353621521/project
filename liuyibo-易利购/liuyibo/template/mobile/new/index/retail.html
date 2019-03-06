@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/assets/css/all.css"/>
+<script src="__STATIC__/assets/assets/js/page.js"></script>
+<style type="text/css" media="screen">
+ .bottom-tabbar__item .label {
+    font-size: .6rem;
+}   
+</style>
+    <title>消费专区</title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">消费专区</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd" style="margin-bottom: .4rem">
+        <!-- 页面内容-->
+        <div class="back-no">
+                <volist name="list" id="v">
+                  <input type="hidden" id="agentend_time" value="{$v.agentend_time}">
+                <div class="weui-cell__by <if condition="$v[stocks] eq 0">active</if>" >
+                <a href="{:U('Mobile/goods/goodsInfo',array('id'=>$v['goods_id']))}">
+                   <div class="img-100"><img src="{$v.original_img|default='__STATIC__/assets/assets/images/01_03.png'}"></div>
+                   <div class="fs-26 color-32 font-w600">{$v[goods_name]}</div>
+                    <div class="fs-26 font-w500 color-f0 pg-t10"><span class="fs-18">￥</span>{$v['shop_price']}</div>
+                   </a>
+
+               </div>
+                </volist>
+  <div class="bottom-tabbar">
+    <a  <if condition="CONTROLLER_NAME eq 'Index'">class="bottom-tabbar__item @@item1 active " <else/>class="bottom-tabbar__item @@item1" </if> href="{:U('Index/index')}" >
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon01.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon01_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .18rem;">首页</p>
+    </a>
+    <a href="{:U('Cart/index')}"  <if condition="CONTROLLER_NAME eq 'Cart'">class="bottom-tabbar__item @@item2 active " <else/>class="bottom-tabbar__item @@item2"</if>>
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon02.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon02_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .18rem;">购物车</p>
+    </a>
+    <a href="{:U('Goods/categoryList')}" class="bottom-tabbar__item @@item3">
+        <span class="icon">
+            <img src="__STATIC__/assets/images/bottom_icon03.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon03_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .18rem;">商品分类</p>
+    </a>
+    <a href="{:U('User/index')}" <if condition="CONTROLLER_NAME eq 'User'">class="bottom-tabbar__item @@item4 active"<else/>class="bottom-tabbar__item @@item4"</if> >
+        <span class="icon">
+            <img src="__STATIC__/assets/images/tabbar_icon04.png"/>
+            <img class="lhimg" src="__STATIC__/assets/images/tabbar_icon04_lh.png"/>
+        </span>
+        <p class="label" style="font-size: .18rem;">我的</p>
+    </a>
+</div>
+</div>
+</div>
+<script src="__STATIC__/assets/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script type="text/javascript">  
+    // function countTime() {
+    //     //获取当前时间
+    //     var date = new Date();
+    //     var now = date.getTime();
+    //     //设置截止时间
+    //     var str=$('#agentend_time').val();//"2018/12/14 12:00:00";
+    //     //console.log(str);
+    //     var endDate = new Date(str);
+    //     var end = endDate.getTime();
+    //
+    //     //时间差
+    //     var leftTime = end-now;
+    //     //定义变量 d,h,m,s保存倒计时的时间
+    //     var d,h,m,s;
+    //     if (leftTime>=0) {
+    //         d = Math.floor(leftTime/1000/60/60/24);
+    //         h = Math.floor(leftTime/1000/60/60%24);
+    //         m = Math.floor(leftTime/1000/60%60);
+    //         s = Math.floor(leftTime/1000%60);
+    //     }
+    //     //将0-9的数字前面加上0，例1变为01
+    //     d = checkTime(d);
+    //     h = checkTime(h);
+    //     m = checkTime(m);
+    //     s = checkTime(s);
+    //     function checkTime(i){
+    //         if (i<10) {
+    //             i = "0"+i;
+    //         }
+    //         return i;
+    //     }
+    //     //将倒计时赋值到div中
+    //     $("._d").text(d+"天");
+    //     $("._h").text(h+":");
+    //     $("._m").text(m+":");
+    //     $("._s").text(s+"");
+    //     //递归每秒调用countTime方法，显示动态时间效果
+    //     setTimeout(countTime,1000);
+    //     countTime2();
+    // }
+    // function countTime2() {
+    //     //获取当前时间
+    //     var date = new Date();
+    //     var now = date.getTime();
+    //     //设置截止时间
+    //     var str=$('#agentend_time2').val();//"2018/12/15 12:00:00";
+    //     //console.log(str);
+    //     var endDate = new Date(str);
+    //     var end = endDate.getTime();
+    //
+    //     //时间差
+    //     var leftTime = end-now;
+    //     //定义变量 d,h,m,s保存倒计时的时间
+    //     var d,h,m,s;
+    //     if (leftTime>=0) {
+    //         d = Math.floor(leftTime/1000/60/60/24);
+    //         h = Math.floor(leftTime/1000/60/60%24);
+    //         m = Math.floor(leftTime/1000/60%60);
+    //         s = Math.floor(leftTime/1000%60);
+    //     }
+    //     //将0-9的数字前面加上0，例1变为01
+    //     d = checkTime(d);
+    //     h = checkTime(h);
+    //     m = checkTime(m);
+    //     s = checkTime(s);
+    //     function checkTime(i){
+    //         if (i<10) {
+    //             i = "0"+i;
+    //         }
+    //         return i;
+    //     }
+    //     //将倒计时赋值到div中
+    //     $("._d2").text(d+"天");
+    //     $("._h2").text(h+":");
+    //     $("._m2").text(m+":");
+    //     $("._s2").text(s+"");
+    //
+    //     //递归每秒调用countTime方法，显示动态时间效果
+    //     //setTimeout(countTime2,1000);
+    //
+    // }
+</script> 
+
+</body>
+</html>

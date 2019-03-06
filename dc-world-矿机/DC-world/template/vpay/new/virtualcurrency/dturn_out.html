@@ -1,0 +1,60 @@
+<include file="common/main" title="转出" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                转出
+            </div>
+            <a class="show_text" href="{:U('Virtualcurrency/transaction_record')}">
+               记录
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="login">
+            <div>
+                <label>{$name}</label>
+                <input style="text-align: right;" type="text" id="entrustNum" name="entrustNum" placeholder="输入转出数量（如有小数保留2位）" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+            </div>
+            <div>
+                <label>转出地址</label>
+                <input style="text-align: right;" type="text" id="toUser" name="toUser" placeholder="手机/UID/钱包地址">
+            </div>
+        </div>
+        <input class="login_btn" id="confirm_btn" type="button" name="" value="确认">
+    </body>
+
+        <script type="text/javascript">
+            // $(function () {
+            //     $("#confirm_btn").click(function () {
+            //          ajax_post("/index.php/Home/Virtualcurrency/dturn_out",{"entrustNum":$("#entrustNum").val(),"toUser":$("#toUser").val()},"/index.php/Home/Virtualcurrency/transaction_record");
+            //      });
+            // });
+
+            $(function () {
+                $("#confirm_btn").click(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/index.php/Vpay/Virtualcurrency/dturn_out",
+                        data: {
+                            "entrustNum":$("#entrustNum").val(),
+                            "toUser":$("#toUser").val()
+                        },
+                        dataType: "json",
+                        success: function(data){
+                            console.log(data);
+                            if (-1 == data.code) {
+                                layer.msg(data.msg);
+                            } else {
+                                layer.msg("操作成功！");
+                                window.location.href = '/index.php/Vpay/Virtualcurrency/transaction_record';
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                });
+            });
+
+        </script>

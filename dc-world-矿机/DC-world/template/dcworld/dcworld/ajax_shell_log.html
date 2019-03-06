@@ -1,0 +1,12 @@
+<foreach name="data" item="vo">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p class="fs28">{$vo.desc}：<span class="fw500">{$vo.number}</span></p>
+            <p class="fs24 text-muted">{$vo.change_time || date='Y-m-d H:m:s',###}</p>
+        </div>
+        <div class="weui-cell__ft">
+            <p class="fs30 text-main fw500"><if condition="$vo.dc_number gt 0">+</if>{$vo.dc_number}DC</p>
+            <p class="fs26"> ≈{$vo.cny}CNY</p>
+        </div>
+    </div>
+</foreach>

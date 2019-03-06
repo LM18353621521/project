@@ -1,0 +1,191 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>直推报表统计</h3>
+                <h5>直推报表统计查询及管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style=" width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>查看操作可以查看报表数据, 包括分佣详细信息, 会员详情等</li>
+            <li>可执行删除编辑操作</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>报表统计列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline" method="get" action="{:U('Team/team_list')}" target="_self">
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_begin" name="add_time_begin" value="{$add_time_begin}" class="qsbox"  placeholder="开始时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_end" name="add_time_end" value="{$add_time_end}" class="qsbox"  placeholder="结束时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="order_sn" class="qsbox" value="{$Request.param.order_sn}" placeholder="会员ID/昵称">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="submit" class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="left" axis="col3" class="">
+                            <div style="text-align: center; width: 40px;" class="">会员ID</div>
+                        </th>
+                        <th align="center" axis="col5" class="">
+                            <div style="text-align: center; width: 80px;" class="">会员头像</div>
+                        </th>
+                        <th align="center" axis="col5" class="">
+                            <div style="text-align: center; width: 150px;" class="">会员昵称</div>
+                        </th>
+                        <th align="center" axis="col5" class="">
+                            <div style="text-align: center; width: 80px;" class="">手机号码</div>
+                        </th>
+                        <th align="left" axis="col4" class="">
+                            <div style="text-align: center; width: 80px;" class="">身份等级</div>
+                        </th>
+                        <th align="left" axis="col4" class="">
+                            <div style="text-align: center; width: 80px;" class="">当前下线个数</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; width: 200px;" class="">描述</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; width: 200px;" class="">数据统计</div>
+                        </th>
+                        <th align="left" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid">
+                <table>
+                    <tbody>
+                    <empty name="userInfo">
+                        <tr data-id="0">
+                            <td class="no-data" align="center" axis="col0" colspan="50">
+                                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                            </td>
+                        </tr>
+                        <else/>
+                        <volist name="userInfo" id="item">
+                            <tr>
+                                <td class="sign" axis="col0">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="left" axis="col3" class="">
+                                    <div style="text-align: center; width: 40px;" class="">{$item[user_id]}</div>
+                                </td>
+                                <td align="left" axis="col4" class="">
+
+                                        <img src="{$item.head_pic}" alt="" style="width: 60px;height: 60px;    padding: 10px 20px;"/>
+
+                                </td>
+                                <td align="center" axis="col5" class="">
+                                    <div style="text-align: center; width: 150px;" class="">
+                                        <p>{$item.nickname}</p>
+                                    </div>
+                                </td>
+                                <td align="center" axis="col6" class="">
+                                    <div style="text-align: center; width: 80px;" class="">
+                                        <p>{$item.mobile}</p>
+                                    </div>
+                                </td>
+                                <td align="center" axis="col6" class="">
+                                    <div style="text-align: center; width: 80px;" class="">
+                                        <p>{$item.level_name}</p>
+                                    </div>
+                                </td>
+                                <td align="center" axis="col6" class="">
+                                    <div style="text-align: center; width: 80px;" class="">
+                                        <p>{$item.underling_number}人</p>
+                                    </div>
+                                </td>
+                                <td align="center" axis="col6" class="">
+                                    <div style="text-align: center; width: 200px;" class="">
+                                        <p>{$item.desc}</p>
+                                    </div>
+                                </td>
+                                <td align="center" axis="col6" class="">
+                                    <p style="width: 200px;text-align: left;text-indent: 28px;">
+                                        累积直推获得金额：{$item.total_money}
+                                    </p>           <p style="width: 200px;text-align: left;text-indent: 28px;">
+                                        累积直推受获：{$item.total_num}次
+                                    </p>           <p style="width: 200px;text-align: left;text-indent: 28px;">
+                                        当前余额：{$item.user_money}
+                                    </p>           <p style="width: 200px;text-align: left;text-indent: 28px;">
+                                        累积佣金：{$item.distribut_money}
+                                    </p>
+
+
+                                </td>
+                                <td align="left" axis="col1" class="handle">
+                                    <div style="text-align: center; width: 170px; max-width:170px;">
+                                        <a href="{:U('Supplier.Supplier/supplier_info',array('suppliers_id'=>$vo['suppliers_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>查看</a>
+                                        <a class="btn red" href="javascript:void(0)" data-url="{:U('Supplier.Supplier/supplierHandle')}" data-id="{$vo.suppliers_id}" ><i class="fa fa-trash-o"></i>导出</a>
+                                    </div>
+                                </td>
+                                <td style="width: 100%;">
+                                    <div></div>
+                                </td>
+                            </tr>
+                        </volist>
+                    </empty>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6 text-left"></div>
+                    <div class="col-sm-6 text-right">{$page}</div>
+                </div>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+    </div>
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#add_time_begin').layDate();
+        $('#add_time_end').layDate();
+    });
+</script>
+</html>

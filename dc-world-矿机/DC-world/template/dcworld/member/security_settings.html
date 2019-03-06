@@ -1,0 +1,70 @@
+<include file="common/header" title="安全设置" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">安全设置</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+
+        <!-- <div class="weui-cells__title fw500">安全中心设置</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请设置一段文案，由客户提供" rows="4"></textarea>
+                </div>
+            </div>
+        </div> -->
+        <div class="weui-cells" style="background-color: #ffffff;">
+            <a href="{:U('Member/edit_nickname')}">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">修改用户昵称</div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+            </a>
+            <a href="{:U('Member/edit_walletname')}">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">修改钱包名称</div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+            </a>
+            <a href="{:U('Member/edit_payword')}">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">修改支付密码</div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+            </a>
+            <a href="{:U('Member/edit_password')}">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">修改登录密码</div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+            </a>
+            <a href="{:U('Member/memorizing_word')}">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">备份钱包助记词</div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+
+</script>
+</body>
+</html>

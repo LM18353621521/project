@@ -1,0 +1,165 @@
+<include file="common/header" title="DC世界" body=""/>
+<style>
+    .header {
+        background-color: #000;
+
+    }
+    .header .header-title {
+        color: #fff!important;
+    }
+    .left-arrow:before{
+        border-color: #fff;
+    }
+    .guize-box_bd ol{
+        width: 100% !important;
+    }
+    .weui-toast {
+        width:auto;
+        padding: .15rem;
+    }
+    .weui-toast--text {
+        font-size: .19rem;
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="{:U('Dcworld/Index/index')}"  class="left-arrow"></a>
+    </div>
+    <div class="header-title">DC世界</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd" id="dc-box">
+        <!-- 页面内容-->
+        <div class="dc-box_hd weui-cell">
+            <div class="weui-cell__hd">
+                <img src="{$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'}" alt="">
+            </div>
+            <div class="weui-cell__bd">
+                <p class="name">{$user.nickname}</p>
+                <p class="nums">
+                    DC:{$user.dc_coin}
+                </p>
+                <p class="lever">{$user.level_name}</p>
+            </div>
+            <div class="weui-cell__ft">
+                <a href="javascript:;" class="open-popup" data-target="#guize">规则说明</a>
+            </div>
+        </div>
+        <div class="dc-box_bd">
+            <ul class="clearfix">
+                <li>
+                    <a href="{:U('Dcworld/Dcworld/sandy_beach')}">
+                    <img src="__PUBLIC__/images/dc_img1.png" alt="">
+                    <p class="name">新大陆</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Dcworld/Dcworld/mine_field')}">
+                        <img src="__PUBLIC__/images/dc_img2.png" alt="">
+                        <p class="name">迪拉姆矿场</p>
+                    </a>
+                </li>
+                <li class="c_disabled" onclick='f_toast()'>
+                    <a href="javascript:;">
+                    <img src="__PUBLIC__/images/dc_img3.png" alt="">
+                    <p class="name">资产贸易站</p>
+                    </a>
+                </li>
+                <li class="c_disabled" onclick='f_toast()'>
+                    <a href="#">
+                    <img src="__PUBLIC__/images/dc_img4.png" alt="">
+                    <p class="name">族群工会</p>
+                    </a>
+                </li>
+                <li onclick='f_toast()'>
+                    <a href="#">
+                    <img src="__PUBLIC__/images/dc_img5.png" alt="">
+                    <p class="name">敬请期待</p>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+       
+    </div>
+     <div class="dc-box_ft">
+            <a href="#" onclick='f_toast()'>
+                <img src="__PUBLIC__/images/dc_icon1.png" alt="">
+                <p>云商城</p>
+            </a>
+            <a href="{:U('Dcworld/Dcworld/trading_center')}">
+                <img src="__PUBLIC__/images/dc_icon2.png" alt="">
+                <p>交易所</p>
+            </a>
+            <a href="#" onclick='f_toast()'>
+                <img src="__PUBLIC__/images/dc_icon3.png" alt="">
+                <p>游乐城</p>
+            </a>
+            <a href="#" onclick='f_toast()'>
+                <img src="__PUBLIC__/images/dc_icon4.png" alt="">
+                <p>穿越门</p>
+            </a>
+        </div>
+    
+</div>
+<div id="guize" class="weui-popup__container alert_box">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal guize-box">
+        <div class="guize-box weui-popup__modal_box" style="background-image: url('__PUBLIC__/images/dc_alert.png')">
+            <div class="guize-box_hd">
+                {$article.title}
+            </div>
+            <div class="guize-box_bd">
+            {$article.content|htmlspecialchars_decode}
+                <!-- <ul>
+                    <li>
+                        <span class="num" style="background-color: #9752de;">1</span>
+                        <p class="text">
+                            活动时间：3月6日-9月30日；
+                        </p>
+                    </li>
+                    <li>
+                        <span class="num" style="background-color: #9752de;">2</span>
+                        <p class="text">
+                            通过本活动页面邀请好友领取投资红包，单个好友通过连接注册并使用该红包后，您即可获得一笔现金红包简历，金额随机（5~88元）                    </p>
+                    </li>
+                    <li>
+                        <span class="num" style="background-color: #9752de;">3</span>
+                        <p class="text">
+                            活动期间，邀请人通过本活动最多可获得400元现金红奖励，于每天24点前发放至邀请人的宝箱，可于10天内领取，过期失效，不予补发；
+                        </p>
+                    </li>
+                    <li>
+                        <span class="num" style="background-color: #9752de;">4</span>
+                        <p class="text">
+                            本活动不与邀请第四重礼同享。
+                        </p>
+                    </li>
+                </ul> -->
+            </div>
+            <div class="guize-box_ft">
+                <img src="__PUBLIC__/images/icon_del.png" alt="" class="close-popup">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	function f_toast(){
+		$.toast("此功能开发中，敬请期待", "cancel");
+	}
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+
+</script>
+</body>
+</html>

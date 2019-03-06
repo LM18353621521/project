@@ -1,0 +1,396 @@
+<include file="common/head" title="首页" body=""/>
+    <style>
+        body{ text-align: left;}
+        .big_width100{background: #FBF8EF;margin: 0;}
+    </style>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/swiper.min.css">
+    <style type="text/css">
+        .sgin{
+            position: absolute;
+            top: 15%;
+            z-index: 111;
+            height: 85%;
+        }
+        .sgin div{
+            position: relative;
+        }
+        .sgin div p{
+            position: absolute;
+            font-size: 0.6rem;
+            top: 18%;
+            left: 50%;
+            width: 2rem;
+            margin-left: -1rem;
+            text-align: center;
+            color: #e4503e;
+            font-weight: 600;
+        }
+        .sgin div label{
+            position: absolute;
+            font-size: 0.54rem;
+            bottom: 30%;
+            left: 36%;
+            width: 4rem;
+            margin-left: -1rem;
+            text-align: center;
+            color: #ffdf4c;
+
+        }
+        .sgin a{
+            background: #e4503e;
+            position: absolute;
+            bottom: 20%;
+            z-index: 111;
+            display: block;
+            text-align: center;
+            width: 3rem;
+            left: 40%;
+            margin-left: -1rem;
+            color: #ffdf4c;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            border-radius: 20px;
+            font-size: 0.36rem;
+        }
+        .layui-layer{
+            left: 45px;
+        }
+    </style>
+<div class="big_width100" style="background: #fff">
+    <div class="nav_top flex" style="background: none">
+        <a  href="javascript:void(0)" style="color: #fff;line-height: 0.44rem;font-size: 0.12rem;text-indent: 0.12rem;">
+            {$userInfo.level_name}
+        </a>
+        <div class="flex1" style="width: 70%">
+
+        </div>
+        <a class="set_up" href="{:U('Member/index')}">
+            <i></i>
+        </a>
+    </div>
+    <div>
+        <div class="wen-header">
+            <if condition="$userInfo[profilephoto]">
+            <div ng-if="userInfo.profilephoto != null" class="header-info">
+                <a href="{:U('Member/index')}">
+                    <img ng-src="{{$userInfo.profilephoto}}">
+                </a>
+            </div>
+            <else />
+                <div ng-if="userInfo.profilephoto == null" class="header-info">
+                    <a href="{:U('Member/index')}">
+                        <img src="__PUBLIC__/images/icon.png" class="icon">
+                    </a>
+                </div>
+            </if>
+            <ul class="header-money flex">
+                <li>
+                    <a href="{:U('Member/balanceRecord')}">
+                        <p>余额</p>
+                        <span>{$userInfo.balance}</span>
+                    </a>
+                </li>
+                <li class="center">
+                    <a href="{:U('Member/index')}">
+                        <p>{$userInfo.nickname}</p>
+                        <span>UID:{$userInfo.id}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Member/integral_record')}">
+                        <p>积分</p>
+                        <span>{$userInfo.integral}</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="header-btn flex">
+                <li>
+                    <a  href="javascript:user_sao()" class="shaom">
+                        <i class="iconfont icon-saoyisao"></i>
+                        <p>扫一扫</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Transfer/change_into')}">
+                        <i class="iconfont icon-erweima"></i>
+                        <p>收款码</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Transfer/turn_out')}">
+                        <i class="iconfont icon-zhuanzhang"></i>
+                        <p>转账</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Transaction/purchase')}">
+                        <i class="iconfont icon-jiaoyi"></i>
+                        <p>交易</p>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="swiper-container t1 imgbox">
+        <div class="swiper-wrapper">
+            <volist name="showImg" id="vo">
+                <div class="swiper-slide">
+                    <a href="{$vo.url}" target="_blank"><img src="{$vo.img}"></a>
+                </div>
+            </volist>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="user_list clearfix">
+        <ul>
+            <li>
+                <a href="{:U('Transfer/turn_out')}">
+                    <i></i>
+                    <div>
+                        转出
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Transfer/change_into')}">
+                    <i></i>
+                    <div>
+                        转入
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Transaction/purchase')}">
+                    <i></i>
+                    <div>
+                        买入
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Transaction/sellOut')}">
+                    <i></i>
+                    <div>
+                        卖出
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="Unopened()">
+                    <i></i>
+                    <div>
+                        数字资产
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="Unopened()">
+                    <i></i>
+                    <div>
+                        商城
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="Unopened()">
+                    <i></i>
+                    <div>
+                        公益
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="Unopened()">
+                    <i></i>
+                    <div>
+                        信货
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="Unopened()">
+                    <i></i>
+                    <div>
+                        信用
+                    </div>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="masks" style="" onclick="signOut();"></div>
+    <div class="sgin" style="display: none" onclick="signIn();">
+        <div>
+            <img src="__PUBLIC__/images/qiandao_icon_kaibao.png">
+            <p id="sign_balance">
+
+            </p >
+            <label>
+                BMI签到红包
+            </label>
+        </div>
+        <a href="javascript:void(0);">
+            存入余额
+        </a>
+    </div>
+</div>
+<div style="height: .92rem; clear: both"></div>
+<div class="footer-fan">
+    <a href="{:U('Vpay/Index/index')}" class="active">
+        <i class="iconfont icon-shouye"></i>
+        <p>首页</p>
+    </a>
+    <a href="javascript:void(0)" onclick="Unopened()">
+        <i class="iconfont icon-money"></i>
+        <p>资产</p>
+    </a>
+    <a href="javascript:void(0)" onclick="Unopened()">
+        <i class="iconfont icon-shangcheng"></i>
+        <p>商城</p>
+    </a>
+    <a href="{:U('Member/index')}">
+        <i class="iconfont icon-jingjirenjinglikehuxianxingcopy"></i>
+        <p>我的</p>
+    </a>
+</div>
+<div class="money-pag" style="display: none;">
+    <div class="qindHB_bg"></div>
+
+    <div class="qindHB">
+        <div class="qindHB_nb">
+            <img src="/hongbaoyem.png" class="qinb_imga">
+            <a href="javascript:void(0);" id="hide">
+                <img src="/cunryue.png">
+            </a>
+            <div class="qiandHB_wz">
+                <h3><span class="getnums">0.15</span>元</h3>
+                <p>天天签到红包不断</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/swiper.min.js"></script>
+<script>
+    // 轮播图
+    $(function(){
+        var mySwiper = $('.t1').swiper({
+            prevButton: '.t1 .swiper-button-prev',
+            nextButton: '.t1 .swiper-button-next',
+            pagination: '.swiper-pagination',
+            loop:true,
+            grabCursor: true,
+            paginationClickable: true,
+            autoplay: 3000,
+        });
+        $(".masks").click(function () {
+            $(".sgin").hide();
+        });
+    })
+</script>
+<!--扫一扫调用-->
+<script>
+    function user_sao(){
+        window.auc.Scavenging();
+    }
+
+    function qr_text(qr_text) {
+
+        if (qr_text == '' || qr_text == 'null' || qr_text == null || qr_text == undefined || qr_text == 'undefined') {
+            layer.msg("扫码失败！");
+            return;
+        }
+
+        $.ajax({
+            url: "{:U('Transfer/qr_text')}",
+            type: "post",
+            dataType: "json",
+            data: {
+                qr_text: qr_text,
+            },
+            timeout: 5000,
+            success: function (result) {
+                if (0 == result.code) {
+                    window.location.href = result.data.url;
+                } else {
+                    layer.msg(result.msg);
+                }
+            },
+            error: function (result) {
+            }
+        })
+    }
+</script>
+<script>
+    usermessage();
+    function usermessage(){
+        $.ajax({
+            type: "GET",
+            url: "{:U('Vpay/Index/usermessage')}",
+            dataType: "json",
+            success: function(data){
+                if (data.code == -1) {
+                    layer.msg(data.msg, {time: 1000})
+                    setTimeout(function () {
+                        window.location.href = "/index.php/Vpay/Login/login";
+                    }, 1000)
+                } else if (data.code == 0) {
+                    var userInfo = data.data;
+                    if(!userInfo.sign){
+                        $("#sign_balance").text(userInfo.sign_balance);
+                        $(".masks").show();
+                        $(".sgin").show();
+                    }
+                }
+            }
+        });
+    }
+
+    function signIn(){
+        $.ajax({
+            type: "POST",
+            url: "{:U('Vpay/Index/sign_balance')}",
+            dataType: "json",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(data){
+                if (data.code == -1) {
+                    $(".masks").hide();
+                    $(".sgin").hide();
+                    layer.msg(data.msg, {time: 1500})
+                } else {
+                    $(".masks").hide();
+                    $(".sgin").hide();
+                    layer.msg(data.msg, {time: 1500});
+                }
+                window.location.reload();
+            }
+        });
+    }
+    function signOut(){
+        $.ajax({
+            type: "POST",
+            url: "{:U('Vpay/Index/signOut')}",
+            dataType: "json",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(data){
+                if (data.code == -1) {
+                    $(".masks").hide();
+                    $(".sgin").hide();
+                    layer.msg(data.msg, {time: 1500})
+                } else {
+                    $(".masks").hide();
+                    $(".sgin").hide();
+                    layer.msg(data.msg, {time: 1500});
+                }
+                window.location.reload();
+            }
+        });
+    }
+
+    function Unopened () {
+        layer.msg("该功能暂未开放，即将呈现敬请期待！", {time: 1500});
+    }
+</script>
+
+</body></html>

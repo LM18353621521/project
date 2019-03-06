@@ -1,0 +1,124 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<!-- <a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a> -->
+			<div class="subject">
+				<h3>菜单选择</h3>
+				<h5>菜单选择管理</h5>
+			</div>
+		</div>
+	</div>
+	<form class="form-horizontal" action="{:U('Admin/Systems.Selectmenu/menuList')}" id="roleform" method="post">
+		<div class="ncap-form-default">
+			<dl class="row">
+				<!-- <dt class="tit">
+					<label for="cls_full">菜单列表</label>
+				</dt> -->
+				<dd style="margin-left:30px;">
+					<div class="ncap-account-container" style="border-top:none;">
+						<h4>
+							<input id="cls_full" onclick="choosebox(this)" type="checkbox">
+							<label>全选</label>
+						</h4>
+					</div>
+					<foreach name="menuList" item="menu" key="kk">
+						<div class="ncap-account-container" style="border-top:none;">
+							<h4>
+								<label>{$menu['name']}</label>
+								<input  cka="mod-{$kk}"  type="checkbox" <if condition="$menu.is_select eq 1">checked</if>>
+								<label>全部</label>
+							</h4>
+							<foreach name="$menu['child']" item="twoList" key="twoKey">
+								<ul class="ncap-account-container-list" style="padding-left: 12rem;border-left-color: #FFF;margin-bottom: 10px;">
+									<li>
+										<label>
+											<input class="checkbox" <if condition="$twoList.is_select eq 1">checked</if> ck="mod-{$kk}" c="mod-{$twoList.id}"  type="checkbox">
+											<span style="color: #2cbca3;font-size: 1rem;">
+												{$twoList['name']}
+											</span>
+										</label>
+									</li>
+
+									<li style="width:80%">
+										<foreach name="$twoList['child']" item="threeList" key="threeKey">
+											<label style="margin-right: 15px;">
+												<input class="checkbox" name="{$threeList.id}" value="{$threeList.id}" <if condition="$threeList.is_select eq 1">checked</if> ck="mod-{$kk}" s="mod-{$twoList.id}" type="checkbox">{$threeList['name']}
+											</label>
+										</foreach>
+									</li>	
+								</ul>
+							</foreach>
+						</div>
+					</foreach>
+				</dd>
+			</dl>
+
+			<div class="bot" style="margin-left: 25%;">
+				<a href="JavaScript:void(0);" onclick="roleSubmit();" class="ncap-btn-big ncap-btn-green" id="submitBtn" >确认提交</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(":checkbox[cka]").click(function(){
+			var $cks = $(":checkbox[ck='"+$(this).attr("cka")+"']");
+			if($(this).is(':checked')){
+				$cks.each(function(){$(this).prop("checked",true);});
+			}else{
+				$cks.each(function(){$(this).removeAttr('checked');});
+			}
+		});
+
+		$(":checkbox[c]").click(function(){
+			var $cks = $(":checkbox[s='"+$(this).attr("c")+"']");
+			if($(this).is(':checked')){
+				$cks.each(function(){$(this).prop("checked",true);});
+			}else{
+				$cks.each(function(){$(this).removeAttr('checked');});
+			}
+		});
+
+		/*$(":checkbox[s]").click(function(){
+			var $cks = $(":checkbox[c='"+$(this).attr("s")+"']");
+			if($(this).is(':checked')){
+				$cks.each(function(){$(this).prop("checked",true);});
+			}else{
+				$cks.each(function(){$(this).removeAttr('checked');});
+			}
+		});
+		$(":checkbox[ck]").click(function(){
+			var $cks = $(":checkbox[cka='"+$(this).attr("ck")+"']");
+			if($(this).is(':checked')){
+				$cks.each(function(){$(this).prop("checked",true);});
+			}else{
+				$cks.each(function(){$(this).removeAttr('checked');});
+			}
+		});*/
+
+	});
+
+	function choosebox(o){
+		var vt = $(o).is(':checked');
+		if(vt){
+			$('input[type=checkbox]').prop('checked',vt);
+		}else{
+			$('input[type=checkbox]').removeAttr('checked');
+		}
+	}
+
+	function roleSubmit(){
+		if($('#role_name').val() == '' ){
+			layer.alert('角色名称不能为空', {icon: 2});
+			return false;
+		}
+		$('#roleform').submit();
+	}
+</script>
+</body>
+</html>

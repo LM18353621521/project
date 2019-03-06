@@ -1,0 +1,165 @@
+<include file="common/header" title="我要买入" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="{:U('Dcworld/Dcworld/trading_center')}" class="left-arrow"></a>
+            </div>
+            <div class="header-title">我要买入</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <form action="{:U('Dcworld/Dcworld/buy_in')}" method="post">
+            <input type="hidden"  name="id" value="{$data.id}">
+        <div class="weui-cells weui-cells_form" style="background-color: #fff;">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">买入价格</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;">{$data.dc_cny_rate}CNY</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">买入数量</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <span style="color: #606470;">{$data.number}</span>
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">买入金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input"  type="text"  name="total_price"  value="{$data.total_price}"  readonly  placeholder="根据数量量算出购买价格">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="weui-cells" style="background-color: #fff;">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">转账方式</label>
+                    <input type="hidden" name="pay_type" value="{$data.pay_type}">
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text"   value="{$data.pay_type_name}"  readonly  placeholder="请选择转账方式">
+                </div>
+                <div class="weui-cell__ft">
+
+                </div>
+            </div>
+            <!--<div class="weui-cell">-->
+            <!--<div class="weui-cell__hd">-->
+            <!--<label class="weui-label">买入数量</label>-->
+            <!--</div>-->
+            <!--<div class="weui-cell__bd">-->
+            <!--<input class="weui-input" type="text"  placeholder="请输入卖出数量">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="weui-cell">-->
+            <!--<div class="weui-cell__hd">-->
+            <!--<label class="weui-label">剩余数量</label>-->
+            <!--</div>-->
+            <!--<div class="weui-cell__bd">-->
+            <!--<input class="weui-input" type="text"  placeholder="根据数量量算出购买价格">-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div class="weui-btn-area">
+            <input type="hidden" name="pwd" value="">
+            <button type="button" class="weui-btn weui-btn_primary" onclick="check_form()">确认购买</button>
+            <!--<a href="{:U('Dcworld/Dcworld/Confirm_the_money')}" class="weui-btn weui-btn_primary">确认购买</a>-->
+        </div>
+
+        </form>
+    </div>
+</div>
+<style>
+    .weui-toast p{ color: #FFF}
+</style>
+
+<script src="__PUBLIC__/js/lib/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/js/lib/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+    can_click=1;
+    function check_form(){
+        //如果参数过多，建议通过 object 方式传入
+        $.prompt({
+            title: '输入支付密码',
+            input: '',
+            empty: false, // 是否允许为空
+            onOK: function (input) {
+                $('input[name=pwd]').val(input);
+                //点击确认
+                $.ajax({
+                    type : "POST",
+                    dataType:"JSON",
+                    url:"/index.php/Dcworld/Dcworld/buy_dc",
+                    data : $('form').serialize(),// 你的formid
+                    success: function(res){
+                        console.log(res);
+                        if(res.code==0){
+                            $.toast("下单成功，请尽快付款",1000,function(){
+                                window.location.href="/index.php/Dcworld/Dcworld/confirm_the_money/id/"+res.data.id;
+                            });
+                        }else if(res.code==-2){
+                            $.toast(res.msg, "forbidden");
+                            setTimeout(function(){
+                                check_form();
+                            },1500);
+                        }else{
+                            $.toast(res.msg, "cancel");
+                        }
+                    }
+                });
+
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+        $('#weui-prompt-input').attr('type','password');
+        $('#weui-prompt-input').attr('placeholder','请输入交易密码');
+
+    }
+
+</script>
+<script>
+    data0=[
+        {
+            title: "iPhone 3GS",
+            value: "001",
+        },
+        {
+            title: "iPhone 3GS",
+            value: "001",
+        }];
+    var data={$account_list};
+        $("#sel_zz").select({
+        title: "请选择转账方式",
+        items: data,
+//        items: ["微信", "支付宝"],
+        closeText: '',
+        onClose:function(e){
+            var pay_type = e.data.values;
+            $('input[name=pay_type]').val(pay_type);
+        }
+    });
+</script>
+</body>
+</html>

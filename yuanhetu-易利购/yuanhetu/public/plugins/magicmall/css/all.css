@@ -1,0 +1,140 @@
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1.6;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  background-color: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+.ticket {
+  padding: 0.486667rem 0.266667rem;
+}
+
+.ticket .line {
+  border-top: 0.02rem dashed #333333;
+  text-align: center;
+}
+
+.ticket .line span {
+  position: relative;
+  top: -0.166667rem;
+  background: #fff;
+  padding: 0 0.1rem;
+  font-size: 0.2rem;
+  font-weight: 600;
+}
+
+.ticket .ticket_num {
+  padding: 0.133333rem 0 0.266667rem 0;
+  border-bottom: dashed 0.02rem #333333;
+}
+
+.ticket .ticket_num p {
+  font-size: 0.173333rem;
+  line-height: 0.333333rem;
+  color: #999999;
+}
+
+.ticket .ticket_title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ticket .ticket_title span {
+  font-size: 0.186667rem;
+  font-weight: 600;
+  color: #333333;
+}
+
+.ticket .ticket_title1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0.066667rem;
+  background-color: #f9f9f9;
+}
+
+.ticket .ticket_title1 span {
+  font-size: 0.186667rem;
+  font-weight: 600;
+  color: #333333;
+}
+
+.ticket .titket_list {
+  border-bottom: dashed 0.02rem #333333;
+}
+
+.ticket .titket_list .ticker_price {
+  padding: 0.2rem 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  text-align: center;
+}
+
+.ticket .titket_list .ticker_price p {
+  font-size: 0.16rem;
+  color: #323232;
+  width: 33%;
+}
+
+.ticket .titket_list .ticker_price span {
+  font-size: 0.16rem;
+  color: #999999;
+}
+
+.ticket .section {
+  background-color: #f9f9f9;
+  border-radius: 0.033333rem;
+  margin: 0.186667rem 0;
+  padding: 0.266667rem;
+}
+
+.ticket .section label {
+  display: block;
+  font-size: 0.173333rem;
+  line-height: 0.333333rem;
+  color: #333333;
+}
+
+.ticket .section1 {
+  margin: 0.266667rem;
+}
+
+.ticket .section1 label {
+  display: block;
+  font-size: 0.173333rem;
+  line-height: 0.333333rem;
+  color: #333333;
+}
+
+.ticket .ticket_postage {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  font-size: 0.173333rem;
+  color: #333333;
+}

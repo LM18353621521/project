@@ -1,0 +1,74 @@
+<include file="common/header" title="贝壳记录" body=""/>
+
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">贝壳记录</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells" id="loadlist">
+         
+
+
+        </div>
+        <div class="weui-loadmore" style="height:20px;display:none;">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+        <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+            已经到底了
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+        loadlist();
+    });
+
+    //加载更多商品
+    var pages = 1;
+    var loading = false;  //状态标记
+
+    $(".page-bd").infinite().on("infinite", function () {
+        if (loading) return;
+        loading = true;
+        pages++; //页数
+        $('.weui-loadmore').show();
+        setTimeout(function () {
+            loadlist();
+            loading = false;
+        }, 1500);   //模拟延迟
+    });
+    function loadlist() {
+        var html = "";
+        $.ajax({
+            type: 'GET',
+            url: "/index.php?m=dcworld&c=Dcworld&is_ajax=1&a=shell_log&p=" + pages,
+            success: function (data) {
+                if (data) {
+                    $('#loadlist').append(data);
+
+                    $(".weui-loadmore").hide();
+                } else {
+                    loading = true;
+                    $(".weui-loadmore").hide();
+                    $(".weui-nodate").show();
+                    // $('#getmore').remove();
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

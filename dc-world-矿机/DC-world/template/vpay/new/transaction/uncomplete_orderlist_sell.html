@@ -1,0 +1,167 @@
+<include file="common/main" title="订单" body=""/>
+
+    <div class="nav_top flex">
+        <a  href="/index.php/Vpay/Transaction/sellOut">
+            <i></i>
+        </a>
+        <div class="flex1">
+            订单
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="xpay_m">
+        <ul>
+            <a href="/index.php/Vpay/Transaction/unOrderListSell">
+                <li <if condition="$src eq 1">class="active8"</if>>
+                    未完成
+                </li>
+            </a>
+            <a href="/index.php/Vpay/Transaction/confirmOrderListSell">
+                <li <if condition="$src eq 2">class="active8"</if>>
+                    进行中
+                </li>
+            </a>
+            <a href="/index.php/Vpay/Transaction/completeOrderListSell">
+                <li <if condition="$src eq 3">class="active8"</if>>
+                    已完成
+                </li>
+            </a>
+        </ul>
+    </div>
+    <div style="height: 0.1rem;"></div>
+        <div class="pay_list" id="tpls">
+            <script id="tpl" type="text/html">
+                <ul>
+                    {{each data as log i}}
+                    <li class="flex" ng-repeat="log in logs">
+                        <div>
+                            {{if log.profilephoto}}
+                            <img ng-src="{{log.profilephoto}}" style="width: 100%;height: 100%;border-radius: 50%">
+                            {{else}}
+                            <img src="__PUBLIC__/images/shezhi_icon_head.png">
+                            {{/if}}
+                        </div>
+                        <div class="flex1">
+                            <label>
+                                {{log.entrustNum}}
+                            </label>
+                            <p>
+                                时间：{{log.createTime}}
+                            </p>
+                        </div>
+                        <div style="width: 0.7rem;overflow: hidden">
+                            <label>{{log.entrustnum}}</label>
+                            {{if log.status}}
+                                <button onclick="cancelOrderSell({{log.id}})">
+                                    取消
+                                </button>
+                            {{/if}}
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </script>
+        </div>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+    // 当前页数
+    var p = 0;
+    // 加载完毕标志
+    var endflg = 0;
+    // 防止重复加载
+    var busy = false;
+    // 存放数据
+    var logs = [];
+
+    function loadMore(){
+        if(endflg == 0){
+            if(busy){
+                return false;
+            }
+            busy = true;
+            $.ajax({
+                url: "/index.php/Vpay/Transaction/unOrderListSell?p="+ p,
+                type: "post",
+                dataType: "json",
+                data:{
+                    "p" : p
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                success: function (data) {
+                    busy = false;
+                    if(data.data != '' && data.data != null){
+                        if(p > 0) {
+                            layer.msg("正在加载...", {time: 500});
+                        }
+                    } else {
+                        layer.msg("已经全部加载完了...", {time:500});
+                        endflg = 1;
+                        return false;
+                    }
+                    p++;
+                    if(data.code == -1){
+                        layer.msg(data.msg,{time:1500})
+                    }else{
+                        if(data.data == null){
+                            layer.msg(data.msg,{time:1500});
+                        } else {
+                            // 组织数据
+                            var html = template('tpl',data);
+                            document.getElementById("tpls").innerHTML = html;
+                        }
+                    }
+                },
+                error: function (result) {
+                }
+            })
+        }else{
+            layer.msg("已经全部加载完了...", {time:500});
+        }
+    };
+    loadMore();
+
+    $(window).scroll(function(){
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        if(scrollTop + windowHeight == scrollHeight){
+            loadMore();
+        }
+    });
+
+
+    function cancelOrderSell(id){
+        console.log(id)
+        layer.confirm('确认取消订单？', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.ajax({
+                method:'POST',
+                dataType: "json",
+                data:{
+                    id : id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: "/index.php/Vpay/Transaction/cancelOrderSell",
+                success: function (data) {
+                    if(data.code==0){
+                        layer.msg("已取消！");
+                        location.reload();
+                    }else {
+                        layer.msg(data.msg)
+                    }
+                },error: function (result) {
+                }
+            })
+        }, function() {
+            layer.msg('已取消');
+        })
+
+    }
+</script>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="Keywords" content=""/>
+    <meta name="description" content=""/>
+    <title>[title]</title>
+
+    <link rel="stylesheet" href="__PUBLIC__/css/zpui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/css/all.css"/>
+
+    <script src="__PUBLIC__/js/lib/jquery-2.1.4.js"></script>
+    <script src="__PUBLIC__/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/js/page.js"></script>
+    <script src="__PUBLIC__/js/lib/fastclick.js"></script>
+    <style>
+        .weui-toast p{ color: #FFF}
+    </style>
+    <script>
+        $(function(){
+            $(document).on("focus","input",function(){
+            }).on("blur","input",function(){
+                document.querySelector(".page-bd").scrollIntoView(true);
+            })
+        })
+    </script>
+</head>
+<body>

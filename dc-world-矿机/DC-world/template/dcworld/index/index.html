@@ -1,0 +1,440 @@
+<include file="common/header" title="首页" body=""/>
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/h_bg2.png") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+    }
+
+    .header .header-title {
+        color: #fff;
+    }
+
+    .left-arrow:before {
+        display: none;
+    }
+
+    .header {
+        font-size: 0.213333rem;
+        align-items: center;
+    }
+
+    .header .header-left, .header .header-right {
+        width: 150px;
+    }
+
+    .header .header-left {
+        color: #fff;
+        font-size: 0.186667rem;
+        padding-left: 0.19rem;
+    }
+
+    .header a {
+        color: #ffffff;
+    }
+
+    .header .header-right {
+        color: #ffffff;
+        font-size: 0.186667rem;
+        padding-right: 0.19rem;
+    }
+
+    .marquee {
+        　　white-space: nowrap;
+        　　 /* 文字不折行 */ 　　overflow: -webkit-marquee;
+        　　 /* 只有设置为marquee才有滚动效果 */ 　　width: 170px;
+        　　 /* 不是必须的 */ 　　-webkit-marquee-direction: left;
+        　　 /* 文字滚动方向 可选值为left | right | up | down */ 　　-webkit-marquee-speed: normal;
+        　　 /* 文字滚动速度 可选值为slow | normal | fast */ 　　-webkit-marquee-style: scroll;
+        　　 /* 文字滚动方式 可选值为scroll | slide | alternate */ 　　-webkit-marquee-repetition: 1;
+        　　 /* 文字滚动次数 number | infinite ， infinite即无限次循环滚动 */
+    }
+
+    .page-right {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        box-sizing: border-box;
+        padding-bottom: .7rem;
+    }
+
+    .page.active {
+        left: 3rem;
+    }
+
+    .page-left {
+        position: absolute;
+        height: 100%;
+        background: #fff;
+        z-index: 999;
+        width: 3rem;
+        left: -3rem;
+    }
+</style>
+<div class="page fs28">
+    <div class="page-left">
+        <div class="u_box">
+            <div class="weui-cell">
+                <form id="head_pic" method="post" enctype="multipart/form-data">
+                    <label class="file" style="cursor:pointer;" for="head_picss">
+                        <div class="weui-cell__hd" id="fileList">
+                            <img src="{$uinfo['profilePhoto']|default='__PUBLIC__/images/u_icon1.png'}" alt="">
+                            <input id="head_picss" type="file" accept="image/jpg,image/jpeg,image/png" name="head_pic"
+                                   onchange="handleFiles(this)" style="display:none">
+                            <input type="hidden" id="head_img" name="head_img" value="">
+                        </div>
+                    </label>
+                </form>
+                <div class="weui-cell__bd">
+                    <p class="name fs28 fw500">{$uinfo.nickname}</p>
+                    <p class="yid">ID：{$uinfo.id}</p>
+                    <p class="lever fs26">当前等级：{$uinfo.level_name}</p>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/user_assets')}" class="fs28 fw500" style="display: block;">我的资产</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/account_list')}" class="fs28 fw500" style="display: block;">支付管理</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/security_settings')}" class="fs28 fw500" style="display: block;">安全设置</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/message_notification',array('is_read'=>1))}" class="fs28 fw500"
+                       style="display: block;">消息通知</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="{:U('Member/help_center')}" class="fs28 fw500" style="display: block;">帮助中心</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell ">
+                <div class="weui-cell__bd">版本信息</div>
+                <div class="weui-cell__ft">{$app_version|default=0}</div>
+            </div>
+
+        </div>
+        <div class="weui-cells">
+
+        </div>
+
+        <div class="weui-btn-area">
+            <a href="javascript:void(0)" onClick="logout()" class="weui-btn bor-1px fs30" style="color: #282c37;">退出</a>
+        </div>
+    </div>
+    <div class="page-right">
+        <div class="page-hd">
+            <div class="header">
+                <div class="header-left">
+                    <a href="javascript:;" class='tz_user'>个人管理</a>
+                </div>
+                <div class="header-title"></div>
+                <div class="header-right">
+                    <a href="{:U('Dcworld/Member/my_wallet')}">钱包</a>
+                </div>
+            </div>
+        </div>
+        <div class="page-bd pb30">
+            <!-- 页面内容-->
+            <div class="index-top">
+                <div class="index-top_data">
+                    <div class="d_items">
+                        <div class="d_item">
+                            <p class="num" onclick="window.location.href = '{:U('Dcworld/Dcworld/mine_field')}'">
+                                {$day_data.wait_income_dc|default='0.00'}</p>
+                            <p>今日待收取DC</p>
+                            <p>≈{$day_data.wait_income_cny|default='0.00'}CNY</p>
+                        </div>
+                        <div class="d_item">
+                            <p class="num" onclick="window.location.href = '{:U('Dcworld/Index/world_power')}'">
+                                {$uinfo.powers|default='0.00'}</p>
+                            <p>矿机总算力</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="input-top_btn mt30">
+                    <a href="{:U('Dcworld/Dcworld/index')}" class="weui-btn">DC世界</a>
+                    <a href="{:U('Dcworld/Member/share')}" class="weui-btn">分享</a>
+                </div>
+            </div>
+            <a class="new-notice weui-cell"
+               href="{:U('Dcworld/Member/article_detail',array('article_id'=>$news['article_id']))}">
+                <div class="weui-cell__hd">
+                    <img src="__PUBLIC__/images/icon_lb.jpg" alt="">
+                </div>
+                <div class="weui-cell__bd"> {$news.title}</div>
+            </a>
+            <div class="index-list">
+                <div class="index-list_item">
+                    <a href="{:U('Dcworld/Dcworld/my_miner')}">
+                        <div class="i_tlt">
+                            我的矿机
+                        </div>
+                        <div class="weui-cell border-befor_none">
+                            <div class="weui-cell__hd">
+                                <img src="__PUBLIC__/images/icon_2.jpg" alt="">
+                            </div>
+                            <div class="weui-cell__bd">
+                                <p class="num">
+                                    {$day_data.today_income|default="0.00"}
+                                </p>
+                                <p class="text fs26" style="color: #81879a;">当日挖矿收益</p>
+                            </div>
+                            <div class="weui-cell__ft fs26" style="color: #282c37;">
+                                <span class="color1">{$day_data.miner_total_num}台</span>运行中
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{:U('Dcworld/Dcworld/my_mineral_pool')}">
+                        <div class="index-list_item">
+                            <div class="i_tlt"> 我的矿池</div>
+                            <div class="weui-cell border-befor_none">
+                                <div class="weui-cell__hd">
+                                    <img src="__PUBLIC__/images/icon_3.jpg" alt="">
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <p class="num">{$day_data.speed_income|default="0.00"}</p>
+                                    <p class="text fs26" style="color: #81879a;">当日激励收益</p>
+                                </div>
+                                <div class="weui-cell__ft fs26" style="color: #282c37;">
+                                <span class="color1">
+                                    <if condition="$day_data.miner_amount">
+                                        {$day_data.miner_amount}
+                                        <else/>
+                                        0
+                                    </if>
+                                    台
+                                </span>运行中
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                var bool = true;
+                $(".tz_user").click(function () {
+
+                    if (bool) {
+                        $(".page-left").stop().animate({"left": "0rem"}, 300).next(".page-right").animate({
+                            "left": "3rem"
+                        }, 300)
+                    }
+                    else {
+                        $(".page-left").stop().animate({
+                            "left": "-3rem"
+                        }, 300).next(".page-right").animate({
+                            "left": "0rem"
+                        }, 300)
+
+                    }
+                    bool = !bool;
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "{:U('Index/check_new_notice')}",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 0) {
+                            var id = data.data.id;
+                            var union_id = data.data.union_id;
+                            var type = data.data.type;
+                            var jump_url="";
+                            var title="有新的交易订单";
+                            if (type == 1) {
+                                jump_url= "/Dcworld/Dcworld/confirm_the_money/notice_id/" + id + "/id/" + union_id;
+                            }
+                            if (type == 3) {
+                                jump_url= "/Dcworld/Member/user_assets/notice_id/" + id + "/id/" + union_id;
+                            }
+                            if (type == 2) {
+                                jump_url = "/Dcworld/Dcworld/my_miner/notice_id/" + id + "/id/" + union_id;
+                            }
+
+                            $.modal({
+                                title: "",
+                                text: "<span class='fs30' style='color: #323232;'>"+title+"</span>",
+                                buttons: [
+                                    {
+                                        text: "<span style='color: #323232;'>查看订单</span>", onClick: () => {
+                                            window.location.href=jump_url;
+                                        }
+                                    },
+                                    {
+                                        text: "更多消息", onClick: () => {
+                                            window.location.href = "/Dcworld/Member/message_notification/notice_id/" + id + "/id/" + id + "/is_read/" + 2;
+                                        }
+                                    },
+                                ]
+                            });
+                        }
+                    }
+                });
+
+
+            })
+            $(function () {
+                FastClick.attach(document.body);
+            });
+        </script>
+        <script>
+            function logout() {
+                $.ajax({
+                    type: "post",
+                    url: "{:U('Login/exitLogin')}",
+                    dataType: 'json',
+                    success: function (data) {
+                        // $.toptip('退出成功', 'success');
+                        $.toast("退出成功", "text");
+                        setTimeout(function () {
+                            window.location.href = "/Dcworld/Index/index";
+                        }, 1000);
+                    }
+                });
+            }
+
+            (function (win) {
+                // upload_img(1);
+                var callMobile = function (handlerInterface, handlerMethod, parameters) {
+                    var dic = {
+                        'handlerInterface': handlerInterface,
+                        'function': handlerMethod,
+                        'parameters': parameters
+                    };
+                    win.webkit.messageHandlers[handlerInterface].postMessage(dic);
+                }
+                var init = function () {
+                    if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                        var instruct = {};
+                        if (!win.app || typeof win.app.Scavenging !== 'function') {
+                            instruct.Scavenging = function () {  //获取微信开放平台code
+                                callMobile('Photo', 'AppReturnBase64Image', {});
+                            }
+                        }
+                        win.app = instruct;
+                    }
+                }
+                win.init_ISO = init;
+            })(window);
+
+            function AppReturnBase64Image(base64imag) {
+                // var html = '';
+                // html += '< img style="width: 100%;height: 90%;" src="' + base64imag + '" alt="" class="">';
+                $('#fileList').find('img').attr('src', base64imag);
+                $('#head_img').val(base64imag);
+                var datas = $("#head_pic").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('Dcworld/Index/baseUploadImg')}",
+                    data: datas,
+                    success: function (data) {
+                        $.toast("头像更改成功");
+                    }
+                });
+            }
+
+            //显示上传照片
+            window.URL = window.URL || window.webkitURL;
+
+            function handleFiles(obj) {
+                fileList = document.getElementById("fileList");
+                var files = obj.files;
+                img = new Image();
+                if (window.URL) {
+                    img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+                    img.width = 60;
+                    img.height = 60;
+                    img.onload = function (e) {
+                        window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+                    }
+                    if (fileList.firstElementChild) {
+                        fileList.removeChild(fileList.firstElementChild);
+                    }
+                    $('#fileList').find('img').remove();
+                    fileList.appendChild(img);
+                } else if (window.FileReader) {
+                    //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+                    var reader = new FileReader();
+                    reader.readAsDataURL(files[0]);
+                    reader.onload = function (e) {
+                        img.src = this.result;
+                        img.width = 60;
+                        img.height = 60;
+                        $('#fileList').find('img').remove();
+                        fileList.appendChild(img);
+                    }
+                } else {
+                    //ie
+                    obj.select();
+                    obj.blur();
+                    var nfile = document.selection.createRange().text;
+                    document.selection.empty();
+                    img.src = nfile;
+                    img.width = 60;
+                    img.height = 60;
+                    img.onload = function () {
+
+                    }
+                    $('#fileList').find('img').remove();
+                    fileList.appendChild(img);
+                }
+                $('#asubmit').show();
+                $('#logout').hide();
+                $('#head_pic').submit();
+
+                // ajax上传图片
+                /*var upload_img = new FormData();
+                upload_img.append('profilePhoto',files[0]);
+                upload_img.append('file_name','profilePhoto');
+
+                $.showLoading('图片上传中'); // Loading
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('Dcworld/Member/uploadImg')}",
+                    data: upload_img,
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    success: function (data) {
+                        $.hideLoading();
+                        if(data.data.status == 1){
+                            //将地址存入input框
+                            $('input[name=account_code]').val(data.data.data);
+                        }else if(data.data.status == -1) {
+                            $.toptip(data.data.data, 'error');
+                            return false;
+                        }else{
+                            $.toptip('网络开小差啦，请重新提交', 'error');
+                            return false;
+                        }
+                    }
+                });*/
+
+            }
+        </script>
+        </body>
+        </html>

@@ -1,0 +1,191 @@
+<include file="common/header" title="我的矿机" body=""/>
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/h_bg1.png") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+    }
+
+    .header .header-title {
+        color: #fff;
+    }
+
+    .left-arrow:before {
+        border-color: #fff;
+    }
+
+    .header {
+        font-size: 0.213333rem;
+        align-items: center;
+    }
+
+    .header .header-left, .header .header-right {
+        width: 150px;
+    }
+
+    .header .header-left {
+        color: #fff;
+        font-size: 0.186667rem;
+        padding-left: 0.19rem;
+    }
+
+    .header a {
+        color: #ffffff;
+    }
+
+    .header .header-right {
+        color: #ffffff;
+        font-size: 0.186667rem;
+        padding-right: 0.19rem;
+    }
+
+
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">我的矿机</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd">
+        <!-- 页面内容-->
+
+        <div class="user-top">
+            <div class="user-top__hd weui-cell">
+                <div class="weui-cell__hd">
+                    <img src={$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'} alt="">
+                </div>
+                <div class="weui-cell__bd">
+                    <p class="name fs28 fw500">{$user.nickname}</p>
+                    <p class="lever fs26">当前等级：{$user.level_name}</p>
+                </div>
+            </div>
+            <div class="user-top_bd">
+                <div class="item">
+                    当前总算力：
+                    <span>{$count.total_surplus|default="0.00"}</span>
+                </div>
+                <div class="item">
+                    矿机运行数量：<span>{$count.total_num|default="0"}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="user-ul" id="data_show">
+
+            <foreach name="user_miner" item="vo">
+                <div class="user-ul_li">
+                    <if condition="$vo.type eq 1">
+                        <a href="{:U('Dcworld/Dcworld/my_miner_list',array('miner_id'=>$vo['miner_id']))}">
+                            <div class="weui-cell bor-1px-b border-after_none">
+                                <div class="weui-cell__hd">
+                                    <img src="{$vo.original_img}" alt="">
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <p>型号：<span>{$vo.miner_name}</span></p>
+                                    <p>数量：<span>{$vo.total_num}台</span>
+                                    </p>
+                                </div>
+                                <div class="weui-cell__ft">
+                                    <p>累计产值：<span>{$vo.total_income|default="0.00"}DC</span></p>
+                                    <p>剩余算力：<span>{$vo.total_surplus|default="0.00"}</span></p>
+                                </div>
+                            </div>
+                        </a>
+                        <else/>
+                        <a href="{:U('Dcworld/Dcworld/my_miner_list',array('miner_id'=>$vo['miner_id']))}">
+                            <div class="weui-cell bor-1px-b border-after_none">
+                                <div class="weui-cell__hd">
+                                    <img src="{$vo.original_img}" alt="">
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <p>型号：<span>{$vo.miner_name}</span></p>
+                                    <p>&nbsp;</span>
+                                    </p>
+                                </div>
+                                <div class="weui-cell__ft">
+                                    <p>累计产值：<span>{$vo.total_income|default="0.00"}DC</span></p>
+                                    <p>剩余算力：<span>{$vo.total_surplus|default="0.00"}</span></p>
+                                </div>
+                            </div>
+                        </a>
+                    </if>
+                </div>
+        </foreach>
+        <!--<div class="user-ul_li">
+             <div class="weui-cell bor-1px-b border-after_none">
+                 <div class="weui-cell__hd">
+                     <img src="__PUBLIC__/images/icon_1.png" alt="">
+                 </div>
+                 <div class="weui-cell__bd">
+                     <p>型号：<span>D1240</span></p>
+                     <p>剩余算力：<span>126</span></p>
+                 </div>
+                 <div class="weui-cell__ft">
+                     <p>累计收益：<span>1.52DC</span></p>
+                     <p>累计收益：<span>0.25DC</span></p>
+                 </div>
+             </div>
+         </div>-->
+    </div>
+    <!--<div class="weui-loadmore" style="height:20px;display:none;">-->
+    <!--<i class="weui-loading"></i>-->
+    <!--<span class="weui-loadmore__tips">正在加载</span>-->
+    <!--</div>-->
+    <!--<div class="weui-nodate "-->
+    <!--style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">-->
+    <!--已到底啦啦啦~-->
+    <!--</div>-->
+</div>
+</div>
+
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+//        loadlist();
+    });
+    //加载更多商品
+    var pages = 1;
+    var loading = false;  //状态标记
+
+    $(".page-bd").infinite().on("infinite", function () {
+        if (loading) return;
+        loading = true;
+        pages++; //页数
+        $('.weui-loadmore').show();
+        setTimeout(function () {
+//            loadlist();
+            loading = false;
+        }, 1500);   //模拟延迟
+    });
+
+    function loadlist() {
+
+        var html = "";
+        $.ajax({
+            type: 'GET',
+            url: "/index.php?m=dcworld&c=dcworld&is_ajax=1&a=my_miner&p=" + pages,
+            success: function (data) {
+
+                if (data) {
+                    $('#data_show').append(data);
+                } else {
+                    loading = true;
+                    $(".weui-loadmore").hide();
+                    $(".weui-nodate").show();
+                    // $('#getmore').remove();
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

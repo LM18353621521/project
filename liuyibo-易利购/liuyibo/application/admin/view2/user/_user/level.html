@@ -1,0 +1,283 @@
+<include file="public/layout" />
+<style>
+    .tab-content , .tab-content2{
+        display: none;
+        height: 350px;
+        overflow:auto;
+    }
+    .btn{
+        display: inline-block;
+        background: #00a0e9;
+        color:#FFFFFF;
+        border-radius: 5px;
+        padding: 5px;
+        margin-left: 5px;
+        cursor: default;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>会员等级管理 - 编辑会员等级</h3>
+                <h5>网站系统会员等级管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="level_id" value="{$info.level_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>等级名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="level_name" value="{$info.level_name}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置会员等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>累计购买金额（元）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="amount" value="{$info.amount}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置累计购买老师专区产品金额（元）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>团队流水（元）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="discount" value="{$info.discount}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置团队（所有下线总和）流水达到（）元（个）</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>直推代理商（个）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="region_code" value="{$info.region_code}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置直推代理商（个）</p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>一个消费商不低于（元）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="is_promote" value="{$info.is_promote}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">其中一个消费商自然月不低于（）元</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>其他所有消费商不低于（元）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="is_region_agent" value="{$info.is_region_agent}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">其他所有消费商的总和业绩不低于（）元</p>
+                </dd>
+            </dl> -->
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>总的下级不低于（个）</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="region_code" value="{$info.region_code}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置总的下级不低于（个）</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    等级描述
+                </dt>
+                <dd class="opt">
+                    <textarea  name="describe" class="tarea" rows="6">{$info.describe}</textarea>
+                    <span class="err" id="err_describe"></span>
+                    <p class="notic">会员等级描述信息</p>
+                </dd>
+            </dl>
+            <div class="bot">
+                <a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').show();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/User.User/levelHandle')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    //location.href = "{:U('Admin/Distribut.Distribut/index',['inc_type'=>'role_info'])}";
+                    location.href = "{:U('Admin/User.User/levelList')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+    //改变达成条件显示/隐藏状态
+    function alter_condition(status){
+        if(status == 'show'){
+            $('#alter_condition').show();
+            $('#alter_condition_button').hide();
+            $('input[name="IsQualificationTab2"]').val('1');//使用条件二
+        }else if(status == 'hide'){
+            $('#alter_condition').hide();
+            $('#alter_condition_button').show();
+            $('input[name="IsQualificationTab2"]').val('0');//不使用条件二
+        }
+    }
+    //改变角色条件的tab
+    function alter_qualification_tab(that,cid){
+        $($(that).siblings().find('a')).removeClass('current');
+        $(that).find('a').addClass('current');
+        $('.tab-content').hide();
+        var tab_content_id = '#tab-content-'+cid;
+        $(tab_content_id).show();
+    }
+    //改变角色条件2的tab
+    function alter_qualification_tab2(that,cid){
+        $($(that).siblings().find('a')).removeClass('current');
+        $(that).find('a').addClass('current');
+        $('.tab-content2').hide();
+        var tab_content_id = '#tab-content2-'+cid;
+        $(tab_content_id).show();
+    }
+    //添加金额条件
+    function add_accumulative_currency(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_accumulative_currency'+type).html();
+        }else{
+            add_html = $('.add_accumulative_currency').html();
+        }
+        var del_button = '<span><a onclick="del_accumulative_currency(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除金额条件
+    function del_accumulative_currency(that){
+        $(that).parent().parent().remove();
+    }
+    //添加直推条件
+    function add_direct_grade(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_direct_grade'+type).html();
+        }else{
+            add_html = $('.add_direct_grade').html();
+        }
+        var del_button = '<span><a onclick="del_direct_grade(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除直推条件
+    function del_direct_grade(that){
+        $(that).parent().parent().remove();
+    }
+    //添加推荐层条件
+    function add_recommend_level(that,type){
+        var add_html = '';
+        if(type){
+            add_html = $('.add_recommend_level'+type).html();
+        }else{
+            add_html = $('.add_recommend_level').html();
+        }
+        var del_button = '<span><a onclick="del_recommend_level(this);" style="color: red; text-decoration: underline;">删除</a></span>';
+        $(that).parent().append('<div><div class="clear"></div>'+add_html+del_button+'</div>');
+    }
+    //删除推荐层条件
+    function del_recommend_level(that){
+        $(that).parent().parent().remove();
+    }
+    //将点击的商品类别添加到显示中
+    function input_appoint(that,type){
+        //获取商品类别信息
+        var identity_id = $(that).val();//商品类别id
+        if(identity_id == 0)return;
+        var identity_name = $(that).find('option:selected').text();//商品类别名称
+        //数据初始化
+        var show_appoint = '';//显示的数据
+        var hide_appoint = '';//隐藏提交的数据
+        var is_repeat = false;//是否重复
+        //页面显示
+        if(type == 1){
+            show_appoint = $('#show_appoint');
+            hide_appoint = $('#hide_appoint');
+        }else{
+            show_appoint = $('#show_appoint2');
+            hide_appoint = $('#hide_appoint2');
+        }
+        //当前值
+        var appoint_hide_now = hide_appoint.val();
+        if(appoint_hide_now != '' && appoint_hide_now != 0 && appoint_hide_now != '0'){
+            var appoint_arr = appoint_hide_now.split(',');
+            //检查重复
+            for(var i=0;i<appoint_arr.length;i++){
+                if(appoint_arr[i] == identity_id){
+                    is_repeat = true;break;
+                }
+            }
+            if(is_repeat == false){
+                //插入新的商品分类id
+                appoint_arr.push(identity_id);
+                var temp = appoint_arr.join(",");
+                hide_appoint.val(temp);
+            }
+        }else{
+            hide_appoint.val(identity_id);
+        }
+        //插入新的button
+        if(is_repeat == false){
+            //插入的button
+            var appoint_button = "<span><span class='btn'>"+identity_name+"</span><i class='fa fa-remove' onclick='remove_appoint(this,"+type+","+identity_id+")'></i></span>";
+            show_appoint.append(appoint_button);
+        }
+        //归位
+        $(that).val(0);
+    }
+    //移除商品类别
+    function remove_appoint(that,type,gid){
+        var appoint_remove = '';
+        if(type == 1){
+            appoint_remove = $('#hide_appoint');
+        }else{
+            appoint_remove = $('#hide_appoint2');
+        }
+        //移除当前button
+        $(that).parent().remove();
+        //删去隐藏提交数据中的id
+        var appoint_arr = appoint_remove.val().split(',');
+        appoint_arr.splice($.inArray(gid,appoint_arr),1);
+        var temp = appoint_arr.join(",");
+        appoint_remove.val(temp);
+    }
+</script>
+</body>
+</html>

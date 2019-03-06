@@ -1,0 +1,253 @@
+<include file="common/header" title="消息通知" body=""/>
+
+<style>
+    .weui-form-preview__label {
+        float: right!important;
+    }
+    .weui-form-preview__hd .weui-form-preview__value {
+        text-align: left;
+        font-size: 0.186667rem;
+    }
+    .tl {
+        text-align: left!important;
+    }
+    .weui-form-preview__hd:after {
+        display: none;
+    }
+    .weui-form-preview:before {
+        display: none;
+    }
+    .weui-form-preview__hd,.weui-form-preview__bd{
+        padding: 0rem;
+    }
+    .weui-form-preview {
+        padding: .2rem;
+    }
+    .weui-navbar .weui-navbar__item {
+        font-size: .18rem;
+    }
+    .weui-tab__bd .weui-tab__bd-itema {
+        display: none;
+
+        overflow: auto;
+    }
+    .weui-tab__bd .weui-tab__bd-itema.weui-tab__bd-item--active {
+        display: block;
+    }
+</style>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">消息通知</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-tab bor-1px-t">
+            <div class="weui-navbar">
+                <a class="weui-navbar__item <if condition="$is_read eq 1">weui-bar__item--on</if>" href="#tab1" is_read="1">
+                    已读消息
+                </a>
+                <a class="weui-navbar__item <if condition="$is_read eq 0">weui-bar__item--on</if>" href="#tab2" is_read="0">
+                    未读消息
+                </a>
+            </div>
+            <div class="weui-tab__bd">
+                <div id="tab1" class="weui-tab__bd-itema <if condition="$is_read eq 1">weui-tab__bd-item--active</if>">
+
+
+                </div>
+                <div id="tab2" class="weui-tab__bd-itema <if condition="$is_read eq 0">weui-tab__bd-item--active</if>">
+
+
+                </div>
+                <div class="weui-loadmore" style="height:20px;display:none;">
+                    <i class="weui-loading"></i>
+                    <span class="weui-loadmore__tips">正在加载</span>
+                </div>
+                <div class="weui-nodate " style="display:none;padding-bottom:30px;height:20px;margin: 1.5em auto;width: 65%;text-align: center;font-size: 14px;">
+                    已经到底了
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<style>
+    .sel_page {
+
+        position: fixed;
+        top: 5px;
+        right: 10px;
+    }
+    .sel_page select {
+        width: 100px;
+        height: 30px;
+        border-radius: 3px;
+        background-color: #EEEEEE;
+    }
+</style>
+<!--<div class="sel_page">-->
+    <!--<select name="" id="">-->
+        <!--<option value="首页">首页</option>-->
+        <!--<option value="c沙滩">c沙滩</option>-->
+        <!--<option value="DC世界">DC世界</option>-->
+        <!--<option value="DC转账">DC转账</option>-->
+        <!--<option value="个人中心">个人中心</option>-->
+        <!--<option value="买家付款">买家付款</option>-->
+        <!--<option value="买家确认放款">买家确认放款</option>-->
+        <!--<option value="交易中心">交易中心</option>-->
+        <!--<option value="交易成功">交易成功</option>-->
+        <!--<option value="修改密码">修改密码</option>-->
+        <!--<option value="修改支付密码">修改支付密码</option>-->
+        <!--<option value="兑换DC">兑换DC</option>-->
+        <!--<option value="创建钱包">创建钱包</option>-->
+        <!--<option value="安全设置">安全设置</option>-->
+        <!--<option value="微信账户信息">微信账户信息</option>-->
+        <!--<option value="我的矿机">我的矿机</option>-->
+        <!--<option value="我的矿池">我的矿池</option>-->
+        <!--<option value="我的资产">我的资产</option>-->
+        <!--<option value="我的钱包">我的钱包</option>-->
+        <!--<option value="我要买入">我要买入</option>-->
+        <!--<option value="我的卖出">我的卖出</option>-->
+        <!--<option value="支付宝账户信息">支付宝账户信息</option>-->
+        <!--<option value="收款码">收款码</option>-->
+        <!--<option value="添加资产">添加资产</option>-->
+        <!--<option value="矿场">矿场</option>-->
+        <!--<option value="矿机交易">矿机交易</option>-->
+        <!--<option value="确认打款">确认打款</option>-->
+        <!--<option value="等待放款">等待放款</option>-->
+        <!--<option value="订单取消">订单取消</option>-->
+        <!--<option value="贝壳记录">贝壳记录</option>-->
+        <!--<option value="账户列表">账户列表</option>-->
+        <!--<option value="邀请分享">邀请分享</option>-->
+        <!--<option value="银行卡信息">银行卡信息</option>-->
+    <!--</select>-->
+<!--</div>-->
+<script>
+
+    $(".sel_page select option").each(function(index,e){
+
+        if($(e).val() == decodeURI(window.location.search.split("=")[1])){
+           $(e).attr("selected","selected")
+        }
+    })
+    $(".sel_page select").change(function () {
+        window.location.href='http://192.168.5.59:8080/pages/'+$(this).val()+'.html?sel='+$(this).val();
+
+
+    })
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $(function () {
+        $('.weui-tab__bd').on('click','.detail_do',function(){
+            var type = $(this).attr('type');
+            var id=$(this).attr('data_id');
+            var union_id=$(this).attr('union_id');
+
+            if (type == 1) {
+                jump_url= "/Index.php/Dcworld/Dcworld/confirm_the_money/notice_id/" + id + "/id/" + union_id;
+            }
+            if (type == 2) {
+                jump_url= "/Index.php/Dcworld/Member/user_assets/notice_id/" + id + "/id/" + union_id;
+            }
+            if (type == 3) {
+                jump_url = "/Index.php/Dcworld/Dcworld/my_miner/notice_id/" + id + "/id/" + union_id;
+            }
+            window.location.href=jump_url;
+        })
+
+        loadlist();
+    });
+    $(".weui-navbar").find('.weui-navbar__item').click(function(){
+        event.preventDefault();
+        is_read =  $(this).attr('is_read');
+        is_dump = 1;
+        pages = 1;
+        loading = false;
+
+        $(".weui-loadmore").hide();
+        $(".weui-nodate").hide();
+        console.log(is_dump+'-1');
+        loadlist();
+    });
+
+    var pages = 1;
+    var loading = false;  //状态标记
+    var is_read = {$is_read};
+    var is_dump = 1;
+    $(".page-bd").infinite().on("infinite", function () {
+
+        if (loading) return;
+        loading = true;
+        pages++; //页数
+        is_dump = 0;
+
+        $('.weui-loadmore').show();
+        setTimeout(function () {
+            loadlist();
+            loading = false;
+        }, 1500);   //模拟延迟
+    });
+    function loadlist() {
+        console.log(is_dump+'-2');
+        var html = "";
+        $.ajax({
+            type: 'GET',
+            url: "/index.php?m=dcworld&c=Member&is_ajax=1&a=message_notification&p=" + pages +'&is_read='+is_read,
+           // async: false,
+            success: function (data) {
+                if (data) {
+
+                    console.log(is_dump+'-3');
+                    if(is_read == 1){
+                        if(is_dump) $('#tab1').html('');
+                        $('#tab1').append(data);
+                    }else{
+
+                        if(is_dump) $('#tab2').html('');
+                        $('#tab2').append(data);
+                    }
+
+                } else {
+                    loading = true;
+
+                    $(".weui-loadmore").hide();
+                    $(".weui-nodate").show();
+                    // $('#getmore').remove();
+                }
+            }
+        })
+    }
+    // $(()=>{
+    //     $.modal({
+    //         title: "",
+    //         text: "<span class='fs30' style='color: #323232;'>有新的交易订单</span>",
+    //         buttons: [
+    //             { text: "<span style='color: #323232;'>查看订单</span>", onClick:()=>{
+    //                     alert(111)
+    //                 }},
+    //             { text: "更多消息", onClick:()=>{
+    //                     alert(222)
+    //                 }},
+    //         ]
+    //     });
+    // })
+</script>
+</body>
+</html>

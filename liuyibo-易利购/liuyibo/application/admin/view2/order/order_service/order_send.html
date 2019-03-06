@@ -1,0 +1,223 @@
+<!-- 接单中 -->
+<if condition="($order_status eq 0 )">
+	<notempty name="$order['shipping_code']">
+		<h3>寄修处理</h3>
+		<dl class="row">
+			<dt  class="tit"></dt>
+			<dd class="opt" style="margin-left:10px">
+				<input type="hidden" name="order_status" value="">
+				<input type="hidden" name="action" value="5">
+				<a href="javascript:void(0)" onClick="change_order(1)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">确认</a>
+				<a href="javascript:void(0)" onClick="change_order(5)"  class="ncap-btn-big ncap-btn-green" id="submitBtn">无效</a>
+			</dd>
+		</dl>
+	</notempty>
+</if>
+<!-- 维修中 -->
+<if condition="($order_status eq 1 )">
+	<!-- 分配工程师 -->
+	<notempty name="engineer">
+	    <h3>工程师分配</h3>
+	    <div class="goods-info">
+	        <dl class="row">
+	             <dt class="tit">
+	             </dt>
+	             <dd class="opt" style="margin-left:10px">
+	                <input type="hidden" name="action" value="4">
+	                <select name="engineer_id" id="engineer">
+	                    <option value="">---请选择---</option>
+	                    <volist name="engineer" id="en">
+	                        <option value="{$en.user_id}">{$en.nickname}</option>
+	                    </volist>
+	                </select>
+	             </dd>
+	        </dl>
+	        <dl class="row">
+	            <dt class="tit">
+	            </dt>
+	            <dd class="opt" style="margin-left:10px">
+	                <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">提交</a>
+	            </dd>
+	        </dl>
+	    </div>
+	</notempty>
+	<!-- 工程师已鉴定完毕，可修改金额 -->
+	<if condition="($pay_status eq 0 )">
+		<notempty name="$order['engineer_judge']">
+            <h3>寄修处理</h3>
+			<dl class="row">
+				<dt class="tit">
+					<label>订单信息：</label>
+				</dt>
+				<dd class="opt" style="margin-left:10px">
+					<label>  重新修改订单金额</label>
+				</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">现实付金额：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="paid_price">
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">调整价格幅度：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="discount" >
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt class="tit">
+			    <label for="note">订单总价：</label>
+			</dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="text" style="width:200px" name="total_price">
+			</dd>
+			</dl>
+			<dl class="row">
+			<dt  class="tit"></dt>
+			<dd class="opt" style="margin-left:10px">
+			    <input type="hidden" name="action" value="1">
+			    <input type="hidden" id="status" >
+			    <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+			    <a href="JavaScript:;" onClick="cancelOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">无效</a>
+			    <empty name="$su">
+				    <if condition="$order['pay_status'] eq 0">
+					    <a href="JavaScript:;" onClick="pay_order();" class="ncap-btn-big ncap-btn-green" id="submitBtn">付款</a>
+				    </if>
+			    </empty>
+			</dd>
+			</dl>
+		</notempty>
+	</if>
+</if>
+
+<!-- 已完成  -->
+<if condition="($order_status eq 2)">
+	<!-- 物流单号为空 -->
+	<empty name="$order['platform_code']">
+		<h3>寄修处理</h3>
+		<dl class="row">
+		     <dt class="tit">
+		         <label>收货人1:</label>
+		     </dt>
+		     <dd class="opt" style="margin-left:10px"> 
+		         <input type="text" name="consignee" value="{$order.consignee}"  name="consignee">
+		     </dd>
+		</dl>
+		<dl class="row refund_type">
+		     <dt class="tit">
+		         <label>联系方式:</label>
+		     </dt>
+		    <dd class="opt" style="margin-left:10px">
+		         <input type="text" name="mobile" value="{$order.mobile}"  name="mobile">
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">物流名称:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		        <select name="platform_name" id="platform_name">
+		            <option value="">--请选择--</option>
+		            <option value="shentong">--申通快递--</option>
+		            <option value="zhongtong">--中通快递--</option>
+		            <option value="yuantong">--圆通快递--</option>
+		            <option value="shunfeng">--顺丰快递--</option>
+		            <option value="yunda">--韵达快递--</option>
+		            <option value="baishi">--百世快递--</option>
+		            <option value="ems">--邮政快递--</option>
+		        </select>
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">物流单号:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		         <input type="text" style="width:400px" name="platform_code" value="{$order.platform_code}" name="platform_code">
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">订单备注:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		        <textarea id="admin_note" name="order_note" style="width:400px" rows="6"  placeholder="请输入操作备注" class="tarea">{$order.order_note}</textarea>
+		    </dd>
+		</dl>
+		    <dl class="row">
+		      	<dt  class="tit"></dt>
+		      	<dd class="opt" style="margin-left:10px">
+		        <input type="hidden" name="action" value="2">
+		        <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+		  </dd>
+		</dl>
+	</empty>
+</if>
+
+<!-- 失效订单 -->
+<if condition="($order_status eq 5)">
+	<empty name="$order['platform_code']">
+		<h3>寄修处理</h3>
+		<dl class="row">
+		     <dt class="tit">
+		         <label>收货人1:</label>
+		     </dt>
+		     <dd class="opt" style="margin-left:10px"> 
+		         <input type="text" name="consignee" value="{$order.consignee}"  name="consignee">
+		     </dd>
+		</dl>
+		<dl class="row refund_type">
+		     <dt class="tit">
+		         <label>联系方式:</label>
+		     </dt>
+		    <dd class="opt" style="margin-left:10px">
+		         <input type="text" name="mobile" value="{$order.mobile}"  name="mobile">
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">物流名称:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		        <select name="platform_name" id="platform_name">
+		            <option value="">--请选择--</option>
+		            <option value="shentong">--申通快递--</option>
+		            <option value="zhongtong">--中通快递--</option>
+		            <option value="yuantong">--圆通快递--</option>
+		            <option value="shunfeng">--顺丰快递--</option>
+		            <option value="yunda">--韵达快递--</option>
+		            <option value="baishi">--百世快递--</option>
+		            <option value="ems">--邮政快递--</option>
+		        </select>
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">物流单号:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		         <input type="text" style="width:400px" name="platform_code" value="{$order.platform_code}" name="platform_code">
+		    </dd>
+		</dl>
+		<dl class="row">
+		    <dt class="tit">
+		      <label for="note">订单备注:</label>
+		    </dt>
+		    <dd class="opt" style="margin-left:10px">
+		        <textarea id="admin_note" name="order_note" style="width:400px" rows="6"  placeholder="请输入操作备注" class="tarea">{$order.order_note}</textarea>
+		    </dd>
+		</dl>
+		    <dl class="row">
+		      	<dt  class="tit"></dt>
+		      	<dd class="opt" style="margin-left:10px">
+		        <input type="hidden" name="action" value="6">
+		        <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+		  </dd>
+		</dl>
+	</empty>
+</if>

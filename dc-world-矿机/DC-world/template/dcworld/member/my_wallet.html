@@ -1,0 +1,149 @@
+<include file="common/header" title="钱包" body=""/>
+
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="{:U('Dcworld/Index/index')}" class="left-arrow"></a>
+    </div>
+    <div class="header-title">钱包</div>
+    <div class="header-right">
+        <a href="javascript:;" onclick="user_sao()"><img src="__PUBLIC__/images/icon_ss.png" alt="" style="width: .3rem;vertical-align: middle;"></a>
+    </div>
+</div>
+<!--扫一扫调用-->
+<script>
+    (function(win){
+        var callMobile = function (handlerInterface, handlerMethod, parameters){
+            var dic = {'handlerInterface':handlerInterface,'function':handlerMethod,'parameters': parameters};
+            win.webkit.messageHandlers[handlerInterface].postMessage(dic);
+        }
+        var init = function(){
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+                var instruct = {};
+                if ( !win.app || typeof win.app.Scavenging !== 'function') {
+                    instruct.Scavenging = function () {  //获取微信开放平台code
+                        callMobile('Scan','qr_text',{});
+                    }
+                }
+                win.app = instruct;
+            }
+        }
+        win.init_ISO = init;
+    })(window);
+
+    function user_sao(){
+        init_ISO();
+        if(navigator.userAgent.match(/(Android)/i)){
+            window.auc.Scavenging();
+        }
+        if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
+            window.app.Scavenging();
+        }
+        // window.app.Scavenging();
+    }
+
+//    function user_sao(){
+//        window.auc.Scavenging();
+//    }
+
+    function qr_text(qr_text) {
+        window.location.href = qr_text;
+        if (qr_text == '' || qr_text == 'null' || qr_text == null || qr_text == undefined || qr_text == 'undefined') {
+            layer.msg("扫码失败！");
+            return;
+        }
+//        $.ajax({
+//            url: "{:U('Transfer/qr_text')}",
+//            type: "post",
+//            dataType: "json",
+//            data: {
+//                qr_text: qr_text,
+//            },
+//            timeout: 5000,
+//            success: function (result) {
+//                if (0 == result.code) {
+//                    window.location.href = result.data.url;
+//                } else {
+//                    layer.msg(result.msg);
+//                }
+//            },
+//            error: function (result) {
+//            }
+//        })
+    }
+</script>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <a href="{:U('Dcworld/Member/receivables_code')}">
+        <div class="bank_card">
+                <div class="card_top">
+                    <div class="jianshe">
+                        <span>{$user.wallet_name}</span>
+                    </div>
+                </div>
+                <div class="card_bottom">
+                    <p class="font_number fs45 fw500" style="color: #fff;">￥<span class="fs60">{$user.cny_all}</span></p>
+                    <p class="fs26" style="color: #fff;">总资产(CNY)</p>
+                </div>
+        </div>
+        </a>
+        <div class="weui-cells qb_list">
+            <a href="{:U('Dcworld/Dcworld/transfer_accounts_dc')}">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <img src="{$dc_wallet.image}" alt="">
+                </div>
+                <div class="weui-cell__bd">{$dc_wallet.name}</div>
+                <div class="weui-cell__ft">
+                    <span class="fs28" style="color: #282c37;">{$dc_wallet.dc_coin}</span>
+                </div>
+            </div>
+            </a>
+            <foreach name="wallet_list" item="vo">
+                <in name="vo['id']" value="$user['wallet_ids']">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <img src="{$vo.image}" alt="">
+                    </div>
+                    <div class="weui-cell__bd">
+                        {$vo.name}
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span class="fs28" style="color: #282c37;">0.00</span>
+                    </div>
+                </div>
+                </in>
+             </foreach>
+
+            <!--<div class="weui-cell">-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<img src="__PUBLIC__/images/qb_img1.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--以太坊(ETH)-->
+                <!--</div>-->
+                <!--<div class="weui-cell__ft">-->
+                    <!--<span class="fs28" style="color: #282c37;">0.236</span>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+    <div class="bottom_btn_box">
+        <a href="{:U('Dcworld/Member/add_assets')}" class="weui-btn tjyhk_btn">+</a>
+        
+    </div>
+
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+
+</body>
+</html>

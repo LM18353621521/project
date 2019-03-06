@@ -1,0 +1,3 @@
+﻿.validform-tip { display: table; position: absolute; height: auto; width: auto; background-color: #808080; color: #FFF; border-color: #faebcc; top: -40px; padding: 4px 10px; z-index: 187; font-size: 12px; border-radius: 2px; }
+    .validform-tip::after { border-style: solid; border-color: transparent #F6BD12; border-width: 10px 10px 10px 0px; border-width: 8px 8px 8px 0px; content: ""; display: block; position: absolute; width: 0; z-index: 188; left: -7px; bottom: 4px; }
+.Validform_error { border: 1px solid #c12e2a; }

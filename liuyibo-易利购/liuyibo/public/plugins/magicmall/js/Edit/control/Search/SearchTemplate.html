@@ -1,0 +1,47 @@
+﻿
+<!--商品搜索控件-->
+<script type="text/template" id="SearchPhoneControl">
+
+    <div class="view">
+        <div class="diy-search-bar">
+            {@if Model.ObjectType==2  }
+            <input type="search" class="diy-search__input search_input" id="searchInput" value="$${Model.Text}" readonly placeholder="搜索" required=""><a class="gofl" href="/views/product/ProductClassify.html?shopID=$${Model.ObjectID}"></a>
+                {@else}
+            <input type="search" class="diy-search__input search_input" id="searchInput" value="$${Model.Text}" readonly placeholder="搜索" required=""><a class="gofl" href="/views/product/ProductClassify.html"></a>
+                    {@/if}
+                 
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="SearchControl">
+    <div class="box box-element ui-draggable" data-type="SearchControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">商品搜索</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-search-bar">
+                <input type="search" class="diy-search__input" id="searchInput" value="$${Model.Text}" placeholder="搜索" required=""><a class="gofl" href="javascript:void(0)"></a>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script type="text/template" id="SearchEdit-template">
+    <div class="configurator" id="config_36">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                可随意插入任何页面和位置，方便会员快速搜索商品。
+            </div>
+        </div>
+    </div>
+</script>
+<!--商品搜索控件-->

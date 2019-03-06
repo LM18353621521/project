@@ -1,0 +1,104 @@
+<include file="public/layout"/>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<style>
+    .editable-tarea, .editable-tarea2, textarea{
+        width: 320px;
+        height: 60px;
+    }
+</style>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>矿机设置</h3>
+                <h5>矿机提示语/广告语设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('World.World/system',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>请在对应地方设置相关信息</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" name="form1" action="{:U('World.World/handle')}">
+        <input type="hidden" name="inc_type" value="{$inc_type}">
+        <div class="ncap-form-default">
+
+            <!--<dl class="row">-->
+                <!--<dt class="tit">-->
+                    <!--<label for="news">首页广告：</label>-->
+                <!--</dt>-->
+                <!--<dd class="opt">-->
+                    <!--<textarea  id="news"  name="news" cols="30" rows="15">{$config.news}</textarea>-->
+                    <!--<p class="notic"></p>-->
+                <!--</dd>-->
+            <!--</dl>-->
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="confirm_pay_tips">买家确认打款提示语：</label>
+                </dt>
+                <dd class="opt">
+                    <textarea  id="confirm_pay_tips"  name="confirm_pay_tips" cols="30" rows="15">{$config.confirm_pay_tips}</textarea>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="seller_loan_tips">卖家放款提示语：</label>
+                </dt>
+                <dd class="opt">
+                    <textarea  id="seller_loan_tips"  name="seller_loan_tips" cols="30" rows="15">{$config.seller_loan_tips}</textarea>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="add_wallet_tips">创建钱包提示语：</label>
+                </dt>
+                <dd class="opt">
+                    <textarea  id="add_wallet_tips"  name="add_wallet_tips" cols="30" rows="15">{$config.add_wallet_tips}</textarea>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="memorizing_word_tips">助记词提示语：</label>
+                </dt>
+                <dd class="opt">
+                    <textarea  id="memorizing_word_tips"  name="memorizing_word_tips" cols="30" rows="15">{$config.memorizing_word_tips}</textarea>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+
+
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+</script>
+<div id="goTop">
+    <a href="JavaScript:void(0);" id="btntop">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <a href="JavaScript:void(0);" id="btnbottom">
+        <i class="fa fa-angle-down"></i>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿
+
+
+<!--分割线控件-->
+<script type="text/template" id="PartinglineControl">
+    <div class="box box-element ui-draggable" data-type="PartinglineControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">分割线</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-hr"><hr style="margin:$${Model.Height}px auto;border-color:$${Model.BorderColor};border-style:$${Model.LineType};"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="PartinglinePhoneControl">
+    <div class="view">
+        <div class="diy-hr"><hr style="margin:$${Model.Height}px auto;border-color:$${Model.BorderColor};border-style:$${Model.LineType};"></div>
+    </div>
+
+</script>
+
+<script type="text/template" id="PartinglineEdit-template">
+    <div class="configurator" id="PartinglineItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">颜色：</label>
+                        <div class="col-sm-6">
+                            <div data-color-format="rgb" data-color="$${Model.BorderColor}" class="input-append colorpicker-default color">
+                                <input type="text" name="color" value="$${Model.BorderColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                <span class="input-group-btn add-on">
+                                    <i style="background-color: #9f8f8f;">颜色选择</i>
+                                   
+                                </span>
+                                <input type="text" style="width:68px" class="form-control" name="colorInput" value="$${Model.BorderColor}">
+                            </div>
+
+                           
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">线型：</label>
+                        <div class="col-sm-10">
+                            {@if Model.LineType=='dotted'}
+                            <label class="radio-inline">
+
+                                <input type="radio" value="dotted" checked="" name="rdline"> 虚线
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="solid" name="rdline"> 实线
+                            </label>
+                            {@else}
+                            <label class="radio-inline">
+
+                                <input type="radio" value="dotted" name="rdline"> 虚线
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="solid" checked="" name="rdline"> 实线
+                            </label>
+                            {@/if}
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">高度：</label>
+                        <div class="col-sm-10">
+                            <div class="form-control text"><input type="range" name="hrange" value="$${Model.Height}"> <span class="rangeval">$${Model.Height}</span></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+<!--分割线控件-->

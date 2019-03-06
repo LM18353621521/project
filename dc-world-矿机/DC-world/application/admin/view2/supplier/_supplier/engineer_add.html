@@ -1,0 +1,178 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>工程师管理 - 添加工程师</h3>
+                <h5>网站系统工程师管理</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span></div>
+        <ul>
+            <li>1.手机号可以是已(未)注册的手机号码，若是已注册的手机号则可不填写密码</li>
+            <li>2.若该手机号已是工程师身份，则不可继续操作</li>
+        </ul>
+    </div>
+
+    <form class="form-horizontal" id="add_form" action="{:U('Supplier.Supplier/engineer_add')}" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="mobile"><em>*</em>手机号码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="mobile" id="mobile" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">前台登陆账号，请填写手机号码</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="nickname"><em>*</em>会员昵称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="nickname" id="nickname" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password"><em>*</em>登录密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="password" id="password" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">6-16位字母数字符号组合 <span id="has_mobile" style="color: red; display: none">已有账号，不修改密码可不填</span> </p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="suppliers_name"><em>*</em>隶属门店</label>
+                </dt>
+                <dd class="opt">
+                    <if condition="$suppliers_id gt 0">
+                        <input type="text" name="" value="{$mysuppliers.suppliers_name}" readonly>
+                        <input type="hidden" name="suppliers_id" value="{$mysuppliers.suppliers_id}">
+                        <else/>
+                        <select name="suppliers_id" id="suppliers_name" >
+                            <option value="">请选择门店</option>
+                            <foreach name="suppliers" id="vo">
+                                <option value="{$vo.suppliers_id}" <eq name="suppliers_id" value="$vo.suppliers_id">selected</eq>  >{$vo.suppliers_name}</option>
+                            </foreach>
+                        </select>
+                    </if>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>工程师状态</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="suppliers_show1" class="cb-enable <if condition=" $info[is_check] eq   1">selected</if>">正常</label>
+                        <label for="suppliers_show0" class="cb-disable <if condition=" $info[is_check] eq  0">selected</if>">禁用</label>
+                        <input id="suppliers_show1" name="engineer_status" value="1" type="radio"   <if condition="$info[is_check] eq 1"> checked="checked"</if> >
+                        <input id="suppliers_show0" name="engineer_status" value="0" type="radio"  <if condition="$info[is_check] eq 0"> checked="checked"</if>  >
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkUserUpdate();"
+                                class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+        <input type="hidden" name="step" value="0">
+    </form>
+    <div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('Admin/Supplier.Supplier/check_engineer_add')}">
+</div>
+<script type="text/javascript">
+        var suppliers_id ="{$suppliers_id}";
+    $(document).ready(function(){
+        $("input[name=mobile]").blur(function(){
+            var mobile = $('input[name="mobile"]').val();
+            if (checkMobile(mobile) && mobile != '') {
+                //检查手机号码
+                $.ajax({
+                    url: $('#flexigrid').data('url'),
+                    type:'post',
+                    data:{mobile:mobile},
+                    dataType:'JSON',
+                    success: function (data) {
+                        if (data.status == 1){
+                            layer.msg(data.msg, {icon: 2, time: 2000},function(){
+                                location.reload();
+                            });
+                        }else if(data.status==2){
+                            layer.confirm(data.msg, {
+                                btn: ['确定', '取消'] //按钮
+                            }, function () {
+                                $('input[name=nickname]').val(data.data.nickname);
+                                $('input[name=step]').val(1);
+                                $('#has_mobile').show();
+                                layer.closeAll();
+                            }, function (index) {
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    })
+
+    function checkUserUpdate() {
+        var mobile = $('input[name="mobile"]').val();
+        var password = $('input[name="password"]').val();
+        var nickname = $.trim($('input[name="nickname"]').val());
+        var step = $.trim($('input[name="step"]').val());
+
+        var error = '';
+        if (!checkMobile(mobile) && mobile != '') {
+            error += "手机号码填写有误\n";
+        }
+        if (nickname == '') {
+            error += "昵称不能为空\n";
+        }
+        if(step==0){
+            if(password == ''){
+                error += "密码不能为空\n";
+            }
+            if(password.length<6 || password.length>16){
+                error += "密码长度不正确\n";
+            }
+        }else{
+            if (password != '') {
+                if (password.length < 6 || password.length > 16) {
+                    error += "密码长度不正确\n";
+                }
+            }
+        }
+
+        if(suppliers_id==0){
+            var sel_suppliers = $.trim($('select[name=suppliers_id]').val());
+            if (sel_suppliers=='') {
+                error += "请选择隶属门店\n";
+            }
+        }
+
+        if (error) {
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        $('#add_form').submit();
+    }
+</script>
+</body>

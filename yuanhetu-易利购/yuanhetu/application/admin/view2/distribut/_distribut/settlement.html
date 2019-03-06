@@ -1,0 +1,208 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>商城设置</h3>
+                <h5>分销基本配置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Distribut.Distribut/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>若开启分销，可设置分销结算规则设定</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Distribut.Distribut/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+            <div id="switch_on_off">
+                <dl class="row"><dt class="tit"><label><b>分销模式设置</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="distribut_date">补助阀值</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="share_price"  value="{$config[share_price]}">
+                        <p class="notic">设置每位会员分红达到（?）元</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="distribut_date">网红基金池</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="funds" readonly value="{$config[funds]}">
+                        <p class="notic">该值现佣金金额, 切勿更改</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                <dt class="tit">
+                    <label for="prize_begin_time"><em>*</em>分红开始时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="prize_begin_time" value="{$config['prize_begin_time']}" id="prize_begin_time" class="input-txt">
+                    </select>
+                    <p class="notic">分红开始时间:奖项从哪天开始进行</p>
+                </dd>
+            </dl>                 
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="distribut_date">佣金计算方式</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="pattern" id="distribut_pattern">
+                            <option value="0" <if condition="$config['pattern'] eq 0">selected="selected"</if>>按商品设置的分成金额</option>
+                            <option value="1" <if condition="$config['pattern'] eq 1">selected="selected"</if>>按商品实际支付金额</option>
+                        </select>
+                        <p class="notic">默认方式: 按商品设置的佣金分成金额进行分佣<br/>实际支付方式: 按实际支付价格分佣（包含折扣之类）</p>
+                    </dd>
+                </dl>
+                <dl class="row"><dt class="tit"><label><b>返佣条件设置</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>分佣未完成时</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="commission" id="distribut_commission">
+                            <option value="0" <if condition="$config['commission'] eq 0">selected="selected"</if>>平台</option>
+                            <option value="1" <if condition="$config['commission'] eq 1">selected="selected"</if>>上级</option>
+                            <option value="2" <if condition="$config['commission'] eq 2">selected="selected"</if>>购买者</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">分佣规则</dt>
+                    <dd class="opt">
+                        <input type="radio" name="maid_time" value="0" <if condition="$config[maid_time] eq 0">checked="checked"</if>>订单支付产生分佣 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="maid_time" value="1" <if condition="$config[maid_time] eq 1">checked="checked"</if>>确认发货产生分佣 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="maid_time" value="2" <if condition="$config[maid_time] eq 2">checked="checked"</if>>确认收货产生分佣 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<input type="radio" name="condition" value="2" <if condition="$config[condition] eq 2">checked="checked"</if>>需提交申请审核 &nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <p class="notic">订单支付产生分佣: 佣金根据订单支付时间进行(分成时间返佣)<br/>确认收货产生分佣: 佣金根据订单确认收货时间进行(分成时间返佣)</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">结算形式</dt>
+                    <dd class="opt">
+                        <input type="radio" name="clearing" value="0" <if condition="$config[clearing] eq 0">checked="checked"</if>>支付后 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="clearing" value="1" <if condition="$config[clearing] eq 1">checked="checked"</if>>发货后 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="clearing" value="2" <if condition="$config[clearing] eq 2">checked="checked"</if>>收货后 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <p class="notic">结算形式: 根据所选结算形式进行相应选项规则结算佣金</p>
+                    </dd>
+
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="distribut_date">结算天数</label>
+                    </dt>
+                    <dd class="opt">
+                        <select name="date" id="distribut_date">
+                            <for start="0" end="31" name="i" >
+                                <option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}天</option>
+                            </for>
+                        </select>
+                        <p class="notic">订单收货确认后多少天可以分成</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">是否开启运费分佣</dt>
+                    <dd class="opt">
+                        <input type="radio" name="freight" value="1" <if condition="$config[freight] eq 1">checked="checked"</if>>开启 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="freight" value="0" <if condition="$config[freight] eq 0">checked="checked"</if>>不开启 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<input type="radio" name="condition" value="2" <if condition="$config[condition] eq 2">checked="checked"</if>>需提交申请审核 &nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <p class="notic">推荐:</p>
+                    </dd>
+                </dl>
+                <dl class="row"><dt class="tit"><label><b>返佣结算规则设定</b></label></dt></dl>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label>提现方式</label>
+                        </dt>
+                        <dd class="opt">
+                            <input type="checkbox" name="withdrawal" value="1"  <if condition="$config[withdrawal] eq 1"> checked </if> >提现到商城余额 &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="withdrawal" value="2" <if condition="$config[withdrawal] eq 2"> checked </if> >提现到微信钱包  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="withdrawal" value="3"<if condition="$config[withdrawal] eq 3"> checked </if> >手动提现到支付宝
+                            <p class="notic">提示: 提现方式支持多选</p>
+                        </dd>
+                    </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>提现额度</label>
+                    </dt>
+                    <dd class="opt">
+                        <input name="lines" value="{$config.lines|default=0}" class="input-txt" type="text">
+                        <p class="notic">购买者返佣比例 %</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>佣金提现手续费</label>
+                    </dt>
+                    <dd class="opt">
+                        <input name="poundage" value="{$config.poundage}" class="input-txt" type="text">
+                        <p class="notic">佣金提现时,扣除的提现手续费.空为不扣除提现手续费 %</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>免提现手续费金额区间</label>
+                    </dt>
+                    <dd class="opt">
+                        开始金额￥<input name="interval_start" value="{$config.interval_start}" class="input-txt" type="text"> &nbsp;&nbsp;&nbsp;&nbsp;结束金额￥<input name="interval_end" value="{$config.interval_end}" class="input-txt" type="text">
+                        <p class="notic">当提现手续费金额在此区间内时,不扣除提现手续费. 结束金额 必须大于 开始金额才能生效<br>
+                            例如 设置开始金额0元 结束金额5元,只有提现手续费金额高于5元时,才扣除</p>
+                    </dd>
+                </dl>
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $(document).ready(function(){
+        $('#prize_begin_time').layDate();
+    });
+    $('#distribut_pattern').change(function(){
+        if($(this).val() == 1)
+            $('#distribut_order_rate').show();
+        else
+            $('#distribut_order_rate').hide();
+    });
+
+    function adsubmit(){
+
+        $('#handlepost').submit();
+    }
+
+    function qr_back_call_back(fileurl_tmp)
+    {
+      $("#qr_back").val(fileurl_tmp);
+      $("#qr_back_a").attr('href', fileurl_tmp);
+      $("#qr_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function qr_big_back_call_back(fileurl_tmp)
+    {
+      $("#qr_big_back").val(fileurl_tmp);
+      $("#qr_big_back_a").attr('href', fileurl_tmp);
+      $("#qr_big_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

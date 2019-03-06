@@ -1,0 +1,102 @@
+<include file="public/layout" />
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>系统设置</h3>
+                <h5>关于系统设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Plugins.Vpay/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>前台会员中心关于显示板块</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Plugins.Vpay/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+            <div id="switch_on_off" >
+                <dl class="row">
+                    <dt class="tit">登录页显示链接</dt>
+                    <dd class="opt">
+                        <div class="onoff">
+                            <label for="regis_sms_enable1" class="cb-enable <if condition='$config[app_status] eq 1'>selected</if>">开启</label>
+                            <label for="regis_sms_enable0" class="cb-disable <if condition='$config[app_status] eq 0'>selected</if>">关闭</label>
+                            <input id="regis_sms_enable1" name="app_status" <if condition="$config['app_status'] eq 1">checked="checked"</if> value="1" type="radio">
+                            <input id="regis_sms_enable0" name="app_status" <if condition="$config['app_status'] eq 0">checked="checked"</if> value="0" type="radio">
+                        </div>
+                        <p class="notic">是否开启登录页推广链接</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="">推广下载APPURL链接</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="url" class="input-txt"  value="{$config[url]}">
+                        <p class="notic">填写有效下载APP下载链接</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>关于</label>
+                    </dt>
+                    <dd class="opt">
+                        <textarea class="span12 ckeditor" id="post_content" name="content" title="">
+                            {:base64_decode($config.content)}
+                        </textarea>
+                        <span class="err"  id="err_content"></span>
+                        <p class="notic"></p>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script type="text/javascript">
+
+
+
+    var url="{:url('Ueditor.Ueditor/index',array('savePath'=>'article'))}";
+    var ue = UE.getEditor('post_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "80%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+
+    function adsubmit(){
+
+        $('#handlepost').submit();
+    }
+
+</script>
+</body>
+</html>

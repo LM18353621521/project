@@ -1,0 +1,253 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>赠送名额管理</h3>
+                <h5>网站系统赠送名额记录索引与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+        	<li>会员在购买相应的身份产品，会获得一定数量的赠送名额</li>
+        	<li>赠送名额初始时未激活，激活后方可赠送他人</li>
+			<li></li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>会员提现申请记录列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><a href=""><i class="fa fa-refresh"></i></a></div>
+            <form class="navbar-form form-inline"  id="search-form2" onsubmit="return false">
+                <input type="hidden" name="create_time" id="create_time" value="{$create_time}">
+                <div class="sDiv">
+                    <!--<div class="sDiv2" style="margin-right: 10px;">-->
+                        <!--<input type="text" size="30" id="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">-->
+                        <!--<input type="button" class="btn" value="起始时间">-->
+                    <!--</div>-->
+                    <!--<div class="sDiv2" style="margin-right: 10px;">-->
+                        <!--<input type="text" size="30" id="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">-->
+                        <!--<input type="button" class="btn" value="截止时间">-->
+                    <!--</div>-->
+
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input size="30" placeholder="用户昵称" value="" name="nickname" class="qsbox" type="text">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="submit" class="btn" onclick="ajax_get_table('search-form2',1)" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">申请ID</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 50px;" class="">用户id</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">用户昵称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">订单id</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">名额等级</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">状态</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">创建时间</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 250px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="tDiv">
+            <!--<div class="tDiv2">-->
+                <!--<div class="fbutton">-->
+                    <!--<a onclick="act_submit(1)">-->
+                        <!--<div class="add" title="审核通过">-->
+                            <!--<span><i class="fa fa-check"></i>审核通过</span>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<div class="fbutton">-->
+                    <!--<a onclick="act_submit(-1)">-->
+                        <!--<div class="add" title="拒绝提现">-->
+                            <!--<span><i class="fa fa-ban"></i>审核失败</span>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<div class="fbutton">-->
+                    <!--<a onclick="act_submit(-2)">-->
+                        <!--<div class="add" title="无效作废">-->
+                            <!--<span><i class="fa fa-close"></i>无效作废</span>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;" id="ajax_return">
+        </div>
+        <!--分页位置-->
+        {$show}
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        // $('#start_time').layDate();
+        // $('#end_time').layDate();
+
+        ajax_get_table('search-form2',1);
+    });
+    //选中全部
+    $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    })
+
+    // ajax 抓取页面
+    function ajax_get_table(tab,page){
+        var search_key = $.trim($('#search_key').val());
+        if(search_key.length > 0){
+            if(checkEmail(search_key)){
+                $('#input-email').val(search_key);
+            }else if(checkMobile(search_key)){
+                $('#input-mobile').val(search_key);
+            }else{
+                layer.alert('请输入正确的邮箱或者手机号码', {icon: 2});
+            }
+        }
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/user/ajax_quota_management/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#ajax_return").html('');
+                $("#ajax_return").append(data);
+            }
+        });
+    }
+
+
+
+    
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#create_time').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#create_time').val('');
+        }
+
+        return true;
+    }
+
+    //批量操作提交
+    function act_submit(wst) {
+        var chks = [];
+    $('input[name*=selected]').each(function(i,o){
+        if($(o).is(':checked')){
+            chks.push($(o).val());
+        }
+    })
+    if(chks.length == 0){
+        layer.alert('少年，请至少选择一项', {icon: 2});return;
+    }
+    var can_post = false;
+    var remark = "审核通过";
+    if(wst != 1 ){
+        layer.prompt({title: '请填写备注', formType: 2}, function(text, index){
+            layer.close(index);
+            remark = text;
+            audit(chks , wst ,  remark);
+        });
+    }else{
+        audit(chks , wst ,  remark);
+    }
+    }
+        
+    function audit(chks , wst ,  remark){
+    	$.ajax({
+            type: "POST",
+            url: "/index.php?m=Admin&c=User&a=withdrawals_update",//+tab,
+            data: {id:chks,status:wst,remark:remark},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == 1){
+                    layer.alert(data.msg, {
+                        icon: 1,
+                        closeBtn: 0
+                    }, function(){
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert(data.msg, {icon: 2,time: 3000});
+                }
+            },
+            error:function(){
+                layer.alert('网络异常', {icon: 2,time: 3000});
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

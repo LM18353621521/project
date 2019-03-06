@@ -1,0 +1,253 @@
+<include file="common/header" title="银行卡信息" body=""/>
+<style>
+    .weui-label{
+        color: #292828;
+    }
+</style>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">银行卡信息</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <form method="post" id="form1" enctype="multipart/form-data">
+        <div class="page-bd black_bg">
+            <!-- 页面内容-->
+            <input type="hidden" name="id" value="{$bank_card['id']}"/>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">银行卡账号</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="number" name="account" value="{$bank_card['account']}" placeholder="请输入银行卡账号">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">收款人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="account_name" value="{$bank_card['account_name']}" placeholder="请输入收款人姓名">
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">开户银行</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="bank_name" name="bank_name" value="{$bank_card['bank_name']}" placeholder="请选择开户银行">
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">支行</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="bank_branch" value="{$bank_card['bank_branch']}" placeholder="请输入支行名称">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <!-- <a href="javascript:;" class="weui-btn weui-btn_primary">保存</a> -->
+                <button type="button" onclick="submit_btn()" class="weui-btn weui-btn_primary">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $('#bank_name').picker({
+
+        title: "请选择开户银行",
+        cols: [
+            {
+                textAlign: 'center',
+                // values: ['中国建设银行', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
+                // values: value
+                values: {$bank_info}
+            }
+        ],
+        onChange: function(p, v, dv) {
+            console.log(p, v, dv);
+        },
+        onClose: function(p, v, d) {
+            console.log("close");
+        }
+    });
+    function submit_btn(){
+        var id = $('input[name="id"]').val();
+        // 姓名不为空
+        var account_name = $('input[name="account_name"]').val();
+        if (account_name == '' || account_name == null || account_name == undefined) {
+            $.toast('请输入收款人姓名','cancel');
+            return false;
+        }
+        //验证银行卡号
+        var account = $('input[name="account"]').val();
+        if (account == '' || account == null || account == undefined) {
+            // layer.open({content: '请填写手机号码', time: 2});
+            $.toast('请填写银行卡号', 'cancel');
+            return false;
+        }
+
+        //验证银行卡号
+        var number_rule = CheckBankNo(account);
+        if(!number_rule){
+            return false;
+        }
+        //验证卡号格式
+        var card_type = luhnCheck(account);
+        if(!card_type){
+            return false;
+        }
+
+        //验证支行名称
+        var bank_branch = $('input[name="bank_branch"]').val();
+        if (bank_branch == '' || bank_branch == null || bank_branch == undefined) {
+            $.toast('请填写支行名称','cancel');
+            return false;
+        }
+        //验证联系方式
+        var bank_name = $('input[name="bank_name"]').val();
+        if (bank_name == '' || bank_name == null || bank_name == undefined) {
+            $.toast('请填写支行名称','cancel');
+            return false;
+        }
+
+        //loading
+        // layer.open({
+        //     type: 2,
+        //     content: '提交中',
+        //     shadeClose: false
+        // });
+        //验证后ajax提交数据
+        // e.preventDefault();
+
+        var data = {id:id,account_name:account_name,account:account,bank_name:bank_name,bank_branch:bank_branch}
+        $.ajax({
+            url: "{:U('Dcworld/Member/bank_card_edit')}",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                if(data.data.status == 1){
+                    //跳转
+                    $.toast('操作成功');
+                    window.location.href = "{:U('Dcworld/Member/account_list')}";
+                }else {
+                    $.toast('操作失败', 'cancel');
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+<script>
+    function luhnCheck(bankno){
+        var lastNum=bankno.substr(bankno.length-1,1);//取出最后一位（与luhn进行比较）
+
+        var first15Num=bankno.substr(0,bankno.length-1);//前15或18位
+        var newArr=new Array();
+        for(var i=first15Num.length-1;i>-1;i--){    //前15或18位倒序存进数组
+            newArr.push(first15Num.substr(i,1));
+        }
+        var arrJiShu=new Array();  //奇数位*2的积 <9
+        var arrJiShu2=new Array(); //奇数位*2的积 >9
+
+        var arrOuShu=new Array();  //偶数位数组
+        for(var j=0;j<newArr.length;j++){
+            if((j+1)%2==1){
+                if(parseInt(newArr[j])*2<9){
+                    arrJiShu.push(parseInt(newArr[j])*2);
+                }else{
+                    arrJiShu2.push(parseInt(newArr[j])*2);
+                }
+            }else{
+                arrOuShu.push(newArr[j]);
+            }
+        }
+
+        var jishu_child1=new Array();//奇数位*2 >9 的分割之后的数组个位数
+        var jishu_child2=new Array();//奇数位*2 >9 的分割之后的数组十位数
+        for(var h=0;h<arrJiShu2.length;h++){
+            jishu_child1.push(parseInt(arrJiShu2[h])%10);
+            jishu_child2.push(parseInt(arrJiShu2[h])/10);
+        }
+
+        var sumJiShu=0; //奇数位*2 < 9 的数组之和
+        var sumOuShu=0; //偶数位数组之和
+        var sumJiShuChild1=0; //奇数位*2 >9 的分割之后的数组个位数之和
+        var sumJiShuChild2=0; //奇数位*2 >9 的分割之后的数组十位数之和
+        var sumTotal=0;
+        for(var m=0;m<arrJiShu.length;m++){
+            sumJiShu=sumJiShu+parseInt(arrJiShu[m]);
+        }
+
+        for(var n=0;n<arrOuShu.length;n++){
+            sumOuShu=sumOuShu+parseInt(arrOuShu[n]);
+        }
+
+        for(var p=0;p<jishu_child1.length;p++){
+            sumJiShuChild1=sumJiShuChild1+parseInt(jishu_child1[p]);
+            sumJiShuChild2=sumJiShuChild2+parseInt(jishu_child2[p]);
+        }
+        //计算总和
+        sumTotal=parseInt(sumJiShu)+parseInt(sumOuShu)+parseInt(sumJiShuChild1)+parseInt(sumJiShuChild2);
+
+        //计算luhn值
+        var k= parseInt(sumTotal)%10==0?10:parseInt(sumTotal)%10;
+        var luhn= 10-k;
+
+        if(lastNum==luhn){
+            console.log("验证通过");
+            return true;
+        }else{
+            $.toast('请填写正确的银行卡','cancel');
+            return false;
+        }
+    }
+
+    //检查银行卡号
+    function CheckBankNo(bankno) {
+        var bankno = bankno.replace(/\s/g,'');
+        if(bankno == "") {
+            $.toast('请填写银行卡号','cancel');
+            return false;
+        }
+        if(bankno.length < 16 || bankno.length > 19) {
+            $.toast('银行卡号长度必须在16到19之间','cancel');
+            return false;
+        }
+        var num = /^\d*$/;//全数字
+        if(!num.exec(bankno)) {
+            $.toast('银行卡号必须全为数字','cancel');
+            return false;
+        }
+        //开头6位
+        var strBin = "10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99";
+        if(strBin.indexOf(bankno.substring(0, 2)) == -1) {
+            $.toast('银行卡号开头6位不符合规范','cancel');
+            return false;
+        }
+        //Luhn校验
+        if(!luhnCheck(bankno)){
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

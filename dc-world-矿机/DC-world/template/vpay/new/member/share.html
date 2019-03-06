@@ -1,0 +1,64 @@
+<include file="common/main" title="分享好友" body=""/>
+    <style>
+        /* body{ background: #48b1a4;margin-top: .92rem;} */
+        html{width: 100%;height: 100%;}
+        body{background: url(__PUBLIC__/images/main_bg.png) no-repeat;background-position: center;background-size: 100% 100%;}
+        .big_width{margin-top: 1.8rem;}
+        .qrCodeGro{width: 100%;margin: .4rem auto 0;}
+    </style>
+    <body>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            分享好友
+        </div>
+        <a class="show_text" href="javascript:void(0)">
+           <!-- 保存二维码-->
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="er_w">
+        <div>
+            <img src="{$qrcodeImg}" width='60%'>
+        </div>
+        <div style="margin-top: 40px;">
+            <span>扫描二维码即可分享给好友哟</span>
+        </div>
+    </div>
+        <!--<input name="input" type="button" id="copyButton" value="复制链接"/><span style="display: none" id="textDiv">{$code}</span>-->
+        <a class="c_into" href="javascript:void(0);" id="copyButton" onclick="copy();" style="text-decoration: underline;width: 25%;margin-top: 0.2rem;">
+            复制{$system.name}地址<span style="display: none" id="textDiv">{$code}</span>
+        </a>
+
+    <a class="c_into" href="{:U('Member/share_detail')}" style="margin-top: 0.5rem;">
+        分享记录
+    </a>
+    </body>
+    <script type="text/javascript">
+        function copyStr(str){
+            var save = function(e){
+                e.clipboardData.setData('text/plain', str);
+                e.preventDefault();
+            }
+            document.addEventListener('copy', save);
+            alert(document.execCommand('copy'));
+            document.removeEventListener('copy',save);
+        }
+
+        function copy()
+        {
+            var input = document.createElement("input");
+            input.value = $("#textDiv").text();
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
+            document.body.removeChild(input);
+            alert("复制成功");
+        }
+    </script>
+</block>
+
+
+

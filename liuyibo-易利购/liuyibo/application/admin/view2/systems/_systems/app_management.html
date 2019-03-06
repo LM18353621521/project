@@ -1,0 +1,205 @@
+<include file="public/layout" />
+<!--以下是在线编辑器 代码 -->
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--以上是在线编辑器 代码  end-->
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>APP管理</h3>
+                <h5>配置APP基本信息</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>配置APP下载所有相关信息。</li>
+        </ul>
+    </div>
+    <form method="post" id="handlepost" action="{:U('Systems.Systems/app_management')}" enctype="multipart/form-data" name="form1">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>URL(模板地址)</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" style="background-color: #d2d6de" readonly placeholder="请先以下信息保存后显示" value="{$apiurl}" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo"><em>*</em>LOGO</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" class="nyroModal" rel="gal" href="{$app_info.logo}">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$app_info.logo}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="logo" name="logo" value="{$app_info.logo}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_name">APP名称</label>
+                </dt>
+                <dd class="opt">
+                    <input id="app_name" name="app_name" value="{$app_info.app_name}" class="input-txt" type="text" />
+                    <p class="notic">设置前台APP显示名称</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo"><em>*</em>安卓推广二维码</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="userimg_a" class="nyroModal" rel="gal" href="{$app_info.android_code}">
+                                <i id="userimg_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$app_info.android_code}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+           	            <span class="type-file-box">
+                            <input type="text" id="android_code" name="android_code" value="{$app_info.android_code}" class="type-file-text">
+                            <input type="button" name="button" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','user_img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="Android"><em>*</em>Android链接</label>
+                </dt>
+                <dd class="opt">
+                    <input type="file" class="btn" name="android_link">
+                    <!--<input id="android_link" name="android_link" value="{$app_info.android_link}" class="input-txt" type="text" />-->
+                    <p class="notic">设置Android下载链接</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo"><em>*</em>苹果推广二维码</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="codeimg_a" class="nyroModal" rel="gal" href="{$app_info.ios_code}">
+                                <i id="codeimg_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$app_info.ios_code}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="ios_code" name="ios_code" value="{$app_info.ios_code}" class="type-file-text">
+                            <input type="button" name="button" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','code_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="IOS"><em>*</em>IOS链接</label>
+                </dt>
+                <dd class="opt">
+                    <input id="ios_link" name="ios_link" value="{$app_info.ios_link}" class="input-txt" type="text" />
+                    <p class="notic">设置IOS下载链接</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">详情描述</label>
+                </dt>
+                <dd class="opt">
+                    <textarea class="span12 ckeditor" id="details" name="details" title="">{$app_info.details}</textarea>
+                    <span class="err" id="err_goods_content" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <div class="bot">
+                <input type="hidden" name="type" value="1">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="verification()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+<script type="text/javascript">
+    var url="{:url('Admin/Ueditor.Ueditor/index',array('savePath'=>'goods'))}";
+    var ue = UE.getEditor('details',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "100%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+    //网站首页logo
+    function img_call_back(fileurl_tmp)
+    {
+        $("#logo").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    //网站用户中心logo
+    function user_img_call_back(fileurl_tmp)
+    {
+        $("#android_code").val(fileurl_tmp);
+        $("#userimg_a").attr('href', fileurl_tmp);
+        $("#userimg_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    //网站用户中心logo
+    function code_call_back(fileurl_tmp)
+    {
+        $("#ios_code").val(fileurl_tmp);
+        $("#codeimg_a").attr('href', fileurl_tmp);
+        $("#codeimg_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+
+    function verification(){
+        var logo = $('#logo').val();
+        var qr_code = $('#qr_code').val();
+        var android_link = $('#android_link').val();
+        var ios_link = $('#ios_link').val();
+        if(logo == '' || qr_code == '' || android_link == '' || ios_link == ''){
+            layer.msg('请填写所有必填选项', {
+                icon: 2,   // 成功图标
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            });
+        }
+        $('#handlepost').submit();
+    }
+</script>
+</html>

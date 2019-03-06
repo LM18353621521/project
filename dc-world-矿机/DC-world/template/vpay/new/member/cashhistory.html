@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <style>
+    .cart .media-object {
+        line-height: 40px;
+        max-width: 40px;
+        height: 40px;
+        margin-left:  15px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+    .cart .mui-input-row {
+        height:42px;
+        width: 75px;
+        float: right;
+    }
+    .cart .cart-goods {
+        margin-bottom: 1px;
+    }
+    .cart .mui-media-body span {
+        font-size: 13px;
+        width: 85%;
+        display: block;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    .discribe{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+
+<!--header-->
+<header class="mui-bar mui-bar-nav" >
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+    <h1 class="mui-title">积分劵记录</h1>
+</header>
+<div style="height: 10px;background:#efeff4; "></div>
+<div class="mui-content cart">
+    <ul class="mui-table-view" id="list" >
+        <li class="mui-table-view-cell mui-media cart-goods" ng-repeat="ag in message">
+            <a href="javascript:;">
+                <div class="mui-input-row mui-checkbox">
+                    <span style="font-size: 18px;line-height: 21px;color: #02C442;"  ng-show="ag.beforemoney>ag.aftermoney">-{{ag.changemoney}}</span>
+                    <span style="font-size: 18px;line-height: 21px;color:#F2373B;"  ng-show="ag.beforemoney<ag.aftermoney">+{{ag.changemoney}}</span>
+                    <span style="font-size: 18px;line-height: 21px;"  ng-show="ag.beforemoney==ag.aftermoney">{{ag.changemoney}}</span>
+                    <p class="discribe" style="text-align: right">{{ag.stname}}</p>
+                </div>
+                <div class="mui-media-body">
+                    <p style="text-align: left;color: #000;">{{ag.info}}</p>
+                    <p style="text-align: left;">{{ag.createtime.substring(0,10)}}</p>
+                </div>
+                <div style="height: 4px;"></div>
+                <div style="height: 2px;background:#efeff4; "></div>
+                <div style="height: 4px;"></div>
+                <div style="font-size: 12px;">
+                    <label style="margin-left:15px;">来源单号：</label><label style="float: right">{{ag.sn}}</label>
+                </div>
+                <div style="font-size: 12px;">
+                    <label style="margin-left:15px;">会员账号：</label><label style="float: right">{{ag.account}}</label>
+                </div>
+                <!--<div style="font-size: 12px;">
+                    <label style="margin-left:15px;">会员姓名：</label><label style="float: right">{{ag.name}}</label>
+                </div>-->
+            </a>
+        </li>
+    </ul>
+</div>
+<!--footer-->
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        scrolldownload($scope,$http,'/index.php/Home/Member/moneyLog');
+    });
+
+</script>
+</html>

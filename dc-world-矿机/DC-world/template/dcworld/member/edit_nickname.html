@@ -1,0 +1,57 @@
+<include file="common/header" title="修改昵称" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">修改昵称</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <form method="post" id="payform">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">修改昵称</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="nickname" value="{$user['nickname']}" placeholder="请确认新昵称">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_primary" onclick="submitverify()">确定</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function submitverify(){
+            $.ajax({
+            type: "POST",
+            url: "{:U('Member/edit_nickname')}",
+            data: {"nickname" : $("input[name='nickname']").val()},
+            dataType: "json",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(data){
+                if (data.code == -1) {
+                    $.toast(data.msg, 'cancel');
+                } else if (data.code == 0) {
+                    $.toast(data.msg);
+                    setTimeout(function () {
+                        window.location.href = "{:U('Member/security_settings')}"
+                    }, 1000)
+                }
+            }
+        });
+    }
+        
+</script>

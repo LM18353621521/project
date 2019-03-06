@@ -1,0 +1,114 @@
+<include file="common/header" title="兑换DC" body=""/>
+
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">兑换DC</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells__title fs24 text-gray">
+            <p class="mb10">当前汇率：1DC={$proportion}贝壳</p>
+            <p>当前贝壳数量：{$user.shell}</p>
+        </div>
+        <div class="weui-cells weui-cells_form" style="background-color: #f9f9f9;">
+            <div class="weui-cell mb20 bor-1px-t bor-1px-b border-after_none border-befor_none" style="background-color: #fff;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">兑换数量</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="shell_number" type="text"  placeholder="请输入转账数量" onKeyUp="clearNoNum(this)">
+                </div>
+            </div>
+            <div class="weui-cell bor-1px-t bor-1px-b border-after_none border-befor_none" style="background-color: #fff;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">兑换成</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" id="DcValue" name="DC_number" type="text"  placeholder="自动计算出兑换多少个DC" disabled="disabled">
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="Submitted()">兑换</a>
+            <!--修改钱包-->
+            <a href="javascript:;" class="weui-btn weui-btn_primary" style="display: none;">提交</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+
+    //比例
+    var proportion = {$proportion};
+
+
+    function clearNoNum(that){
+        //清除"数字"和"."以外的字符
+        var value =that.value;
+        value = value.replace(/[^\d.]/g,"");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g,"");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g,".");
+        value = value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        value = value.substring(0,10);
+        that.value=value;
+
+        var DcValue = value/proportion;
+            DcValue = Math.floor(DcValue*1000)/1000;
+        $('#DcValue').val(DcValue);
+    }
+
+    PreventMultipleClicks = 1;
+    function Submitted(){
+        var DC_number = $('#DcValue').val();
+        var shell_number = $('input[name="shell_number"]').val();
+
+        if(DC_number == 0 || DC_number == ''){
+            $.toast("请输入正确的贝壳数量", "forbidden");
+            return false;
+        }
+        if(PreventMultipleClicks == 0){
+            return false;
+        }
+        PreventMultipleClicks = 0;
+
+        $.ajax({
+            type : "POST",
+            url  : "{:U('Dcworld/Dcworld/exchange_dc')}",
+            data : {shell_number:shell_number,DC_number:DC_number},
+            dataType : 'json',
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function(response) {
+                if(response.code==0){
+                    $.toast(response.data);
+                    setTimeout(function(){
+                        window.location.reload();
+                    },2000);
+
+                }else{
+                    $.toast(response.msg, "forbidden");
+                }
+                PreventMultipleClicks = 1;
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<include file="public/header" title="等级升级申请" body="g4"/>
+<include file="public/header_nav" title="等级升级申请" href="javascript:history.back(-1)"/>
+<style type="text/css" media="screen">
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 40px;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+</style>
+<form id="recharge_form" enctype="multipart/form-data">
+<div class="loginsingup-input mobil_topup">
+        <div class="lsu">
+            <span>申请等级：<span class="red">{$level.level_name}</span></span>
+            <!--<input type="text" name="account" id="add_money" value=""  placeholder="0.00">-->
+        </div>
+        <div class="lsu lsu-recharge">
+            <span>缴纳金额：</span>
+            <input type="text" name="account" id="add_money" value="{$data.pay_money}"  readonly placeholder="0.00">
+        </div>
+    <div class="lsu lsu-recharge">
+        <span>备注信息：</span>
+        <input type="text" name="remark" id="remark" value=""  placeholder="请输入备注">
+    </div>
+        <!--<div class="lsu lsu-recharge">上传打款凭证</div>-->
+            <!--<div>-->
+                    <!--<div id="img2" style="padding:20px;">-->
+                        <!--<a href="javascript:;" class="file">选择文件<input type="file" name="img" onchange="fileReader(this)"></a>-->
+                    <!--</div>-->
+                    <!--<div style="display:none;padding:20px;text-align: center;" id="imgs"><img id="img" src="" style="width: 80%;"/></div>-->
+            <!--</div>-->
+        <div class="lsu-submit">
+            <input type="submit" onclick="recharge_submit();return false;" value="提交申请">
+        </div>
+</div>
+<!--充值方式-s-->
+<div class="chooseebitcard" style="display: none;">
+    <div class="maleri30">
+        <div class="choose-titr">
+            <span>选择充值方式</span>
+            <i class="gb-close"></i>
+        </div>
+        <foreach name="paymentList" item="v"  key="k">
+        <div class="card">
+                <leable>
+                <div class="card-list">
+                    <input type="radio" style="display: none;" value="{$v['code']}" <if condition="$k eq 'weixin'">checked</if> >
+                    <div class="radio fl">
+                        <span name="{$v[name]}"  class="che  <if condition="$k eq 'weixin'">check_t</if>" >
+                            <i></i>
+                        </span>
+                    </div>
+                    <p class="fl">&nbsp;&nbsp;<span><img src="/plugins/{$v['type']}/{$v['code']}/{$v['icon']}" width="110" height="40" /></span></p>
+                </div>
+                </leable>
+            </div>
+        </foreach>
+        <p class="teuse"><span class="red"></span><span>确定</span></p>
+    </div>
+</div>
+</form>
+<!--充值方式-e-->
+<div class="mask-filter-div" style="display: none;"></div>
+
+<script type="text/javascript">
+    //提交表单
+    function recharge_submit(){
+        var account = $('#add_money').val();
+        if(isNaN(account) || parseInt(account)<=0 || account==''){
+            layer.open({content:'请输入正确的充值数量',time:2});
+            return false;
+        }
+        uploadImage();
+    }
+    function changediv(num){
+        if(num==2){
+            $('#div2').show();
+            $('#div1').hide();
+            $('#div3').hide();
+        }else if(num==3){
+            $('#div3').show();
+            $('#div1').hide();
+            $('#div2').hide();
+        }else{
+            $('#div1').show();
+            $('#div2').hide();
+            $('#div3').hide();
+        }
+    }
+    function fileReader(obj){
+        var file = obj.files;
+        var img = document.getElementById("img");
+        var reader = new FileReader();// 操作图片
+        if(/image/.test(file[0].type)){
+            reader.readAsDataURL(file[0]);
+        }else {
+            layer.open({content:'请选择图片',time:2});
+            obj.value = "";
+            return;
+        }
+        // 图片加载错误
+        reader.onerror = function(){
+            document.write("图片加载错误");
+        }
+        // 图片加载完成
+        reader.onload = function(){
+            img.src = reader.result;
+            $('#imgs').show();
+            $('#img2').hide();
+        }
+    }
+    // 文件上传
+    function uploadImage(){
+        // FormData对象，来发送二进制文件。
+        var formdata = new FormData($('#recharge_form')[0]);
+        $.ajax({
+            type: "POST",
+            url: "/index.php/Mobile/User/level_apply",
+            data:formdata,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            // 告诉jQuery不要去设置Content-Type请求头
+            contentType: false,
+            dataType: "json",
+            success: function(data){
+                if (data.status == 1) {
+                    layer.open({content:data.msg,time:2});
+                    window.location.href='/index.php/Mobile/User/index';
+                }else{
+                    layer.open({content:data.msg,time:2});
+                }
+            },
+            error: function(data){
+                layer.open({content:'系统异常',time:2});
+            },
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+﻿原名：daterangepicker
+缩写：drp
+
+地址:http://www.daterangepicker.com/

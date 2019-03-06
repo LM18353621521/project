@@ -1,0 +1,100 @@
+<include file="common/main" title="找回支付密码" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            找回支付密码
+        </div>
+        <a href="javascript:void(0)">
+            <i></i>
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <form action="" method="post">
+        <div class="login">
+            <div>
+                <label>手机号</label>
+                <input type="text" name="account" placeholder="手机号" onInput ="returnNum(this)" maxlength="11">
+            </div>
+            <div>
+                <label>验证码</label>
+                <input type="text" name="code" placeholder="验证码" onInput ="returnNum(this)" >
+                <button class="get_yzm" id="getcode" onclick="getnum()">
+                    获取验证码
+                </button>
+            </div>
+        </div>
+        <div class="login">
+            <div>
+                <label>新密码</label>
+                <input type="password" name="password" placeholder="新支付密码" maxlength="6">
+            </div>
+        </div>
+        <input class="login_btn" type="button" onclick="sub()" value="确认">
+    </form>
+    </body>
+
+        <script>
+            function getnum() {
+                var time = 60;
+                var t;
+                var type=1; //reg
+
+                $("#getcode").attr("disabled", true);
+                $.post("{:U('Register/sendCode')}", {account: $("input[name='account']").val(), type: 3}, function (data) {
+                    if (data.code == 0) {
+                        $("#getcode").html(time + "s");
+                        t = setInterval(countdown, 1000);
+                    } else {
+                        layer.msg(data.msg,{time:1000});
+                        $("#getcode").attr("disabled", false);
+                    }
+                },'json');
+
+                function countdown() {
+                    time = time - 1;
+                    $("#getcode").html(time + "s");
+                    $("#getcode").attr("disabled", true);
+                    if (time == 0) {
+                        $("#getcode").html("获取验证码");
+                        clearInterval(t);
+                        $("#getcode").attr("disabled", false);
+                    }
+                }
+            }
+
+
+            function returnNum(_this) {
+                _this.value = _this.value.replace(/[^0-9]/g, '');
+            }
+        </script>
+        <script>
+
+
+                sub=function () {
+                    $.ajax({
+                        method:'POST',
+                        dataType:'JSON',
+                        data:{
+                            "account" : $("input[name='account']").val(),
+                            "code" : $("input[name='code']").val(),
+                            "password" : $("input[name='password']").val(),
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Member/forget_pay",
+                        success: function (data) {
+                        if(data.code==0){
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                window.location.href="/index.php/Vpay/Member/index"
+                            },1500)
+                        }else {
+                            layer.msg(data.msg)
+                        }
+                        }, error: function (result) {
+                        }
+                    });
+                }
+    
+        </script>

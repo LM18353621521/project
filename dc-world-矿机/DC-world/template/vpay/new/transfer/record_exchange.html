@@ -1,0 +1,106 @@
+<include file="common/main" title="兑换记录" body=""/>
+
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                兑换记录
+            </div>
+            <a href="javascript:void(0)">
+                <i></i>
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="ba_list clearfix">
+            <ul>
+                <li style="width: 25%">余额</li>
+                <li style="width: 25%">兑换积分</li>
+                <li style="width: 50%;">兑换时间</li>
+            </ul>
+        </div>
+        <div style="height: 0.4rem;"></div>
+        <div class="list_show" id="tpls">
+            <script id="tpl" type="text/html">
+            <ul class="clearfix" ng-repeat="log in logs">
+                {{each data as log i}}
+                    <li>
+                        <div style="width: 25%">
+                            {{log.balance}}
+                        </div>
+                        <div style="width: 25%">
+                            {{log.integral}}
+                        </div>
+                        <div style="width: 50%">
+                            {{log.create_time}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+            </script>
+        </div>
+    </body>
+
+<script type="text/javascript">
+    // 当前页数
+    var p = 0;
+    // 加载完毕标志
+    var endflg =  0;
+    // 防止重复加载
+    var busy = false;
+    // 存放数据
+    var logs = [];
+
+    loadMore();
+    // 请求数据方法
+    function loadMore(){
+
+        if(endflg == 0){
+            if(busy){
+                return false;
+            }
+            busy = true;
+            $.ajax({
+                method:'POST',
+                data:{
+                    "p" : p
+                },
+                dataType: "json",
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                url: "/index.php/Vpay/Transfer/record_exchange",
+                success: function(data){
+
+                    var busy = false;
+                    if(data.data != '' && data.data != null){
+                        if( p > 0) {
+                            layer.msg("正在加载...", {time: 500});
+                        }
+                    } else {
+                        layer.msg("已经全部加载完了...", {time:500});
+                        var endflg = 1;
+                        return false;
+                    }
+                    p++;
+                    if(data.code == -1){
+                        layer.msg(data.msg,{time:1500})
+                    }else{
+                        if(data.data == null){
+                            layer.msg(data.msg,{time:1500});
+                        } else {
+                            // 组织数据
+
+                            var html = template('tpl',data);
+                            document.getElementById("tpls").innerHTML = html;
+                            //$("#tpls").html(html);
+                        }
+                        console.log(logs);
+                    }
+                }
+            });
+        }else{
+            layer.msg("已经全部加载完了...", {time:500});
+        }
+    };
+
+
+</script>

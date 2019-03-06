@@ -1,0 +1,44 @@
+
+.waterfull{ margin:0 auto;}
+.waterfull ul{
+ padding:0;
+}
+.waterfull ul li{
+	float: left;
+	width: 240px;
+	padding: 8px;
+	box-sizing:border-box;
+	margin-bottom:10px;
+	background: #fff;
+	border-radius: 2px;
+	position: relative;
+	overflow: hidden;
+	border:solid 1px #e6e6e6;
+}
+.waterfull ul li .a-img{
+	width: 100%;
+	display: block;
+	position: relative;
+	margin-bottom:8px;
+}
+.waterfull ul li .a-img img{
+	width: 100%;
+	display: block;	
+}
+
+.waterfull .a-time{ border-bottom:1px dotted #e6e6e6; height:40px; line-height:40px; margin-bottom:8px; margin-top:-5px;}
+.waterfull .t-title{ margin-bottom:8px; font-size:12px;}
+.waterfull .b-desc{ color:#c1c0c0; font-size:12px; margin-bottom:8px;}
+.waterfull .b-act{border-top:1px solid #e6e6e6; height:48px; line-height:48px; font-size:0; margin-left:-8px;  margin-right:-8px;  margin-bottom:-8px;}
+.waterfull .b-act a:last-child{ border-left: 1px solid #e6e6e6;}
+.waterfull .b-act a{ font-size:14px; width:50%; text-align:center;  display:inline-block; }
+.waterfull .b-act .icon-trash:before{ font-size:18px;}
+.waterfull .b-act .icon-edit:before{ font-size:18px;}
+.items .item{ border-bottom:1px dotted #e6e6e6;}
+.items .item:last-child{ border-bottom:none;}
+.a-img-title{ background-color:rgba(0,0,0,0.5); color:#fff; position:absolute; left:0; right:0; bottom:0; font-size:12px; padding:10px; }
+
+
+.pbl-warp{ height:400px; overflow-y:auto;  position:relative; border-top:1px  dotted #e6e6e6; padding:20px;}
+
+.water_item.selected:after{ position:absolute; content:"\e60d"; font-family:ZenIcon; font-size:30px; left:0; top:0; right:0; bottom:0; text-align:center; background-color:rgba(0,0,0,0.5); color:#fff; padding-top:50%;}

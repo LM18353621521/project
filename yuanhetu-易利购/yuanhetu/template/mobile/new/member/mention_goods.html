@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 提货办理 </title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">提货办理</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+<input type="hidden" id="type" value="{$Think.get.type}">
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells vux-1px-t">
+            <a href="{:U('Mobile/User/address_list',array('source'=>'mention_goods','goods_id'=>$goods_list['goods_id'],'consignment_id'=>$Request.param.consignment_id))}" class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <div class="fs26 font-w500"><span>{$address.consignee}</span> <span>{$address.mobile}</span></div>
+                    <div class="fs26 text-gray">{$address.address}</div>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <form action="">
+       <div class="weui-cells weui-cells_form vux-1px-t">
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
+                <div class="weui-cell__bd">
+                        {$goods_list['goods_name']}
+                </div>
+            </div>
+            <div class="weui-cell fs26 weui-cell_access">
+                <div class="weui-cell__hd"><label class="weui-label">提货套餐</label></div>
+                <div class="weui-cell__bd">
+                    <if condition="$consignment">
+                        <input class="weui-input" type="text" id="mobile" readonly  value="{$t_name}" placeholder="请选择提货档次">
+                        <else/>
+                        <input class="weui-input taocan" type="text" id="mobile"  placeholder="请选择提货档次">
+                    </if>
+
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">可提货量</label></div>
+                <div class="weui-cell__bd" id="sell_num">
+                    <if condition="$consignment">{$consignment.surplus_num}</if>
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">提货数量</label></div>
+                <div class="weui-cell__bd">
+                    <if condition="$consignment">
+                        <input class="weui-input" name="num" value="{$consignment.surplus_num}" readonly type="text" id="num" placeholder="请输入提取数量">
+                    <else/>
+                        <input class="weui-input" name="num" value="" type="text" id="num" placeholder="请输入提取数量">
+                    </if>
+                </div>
+            </div>
+            <!--<div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">安全密码</label></div>
+                <div class="weui-cell__bd">
+                        <input class="weui-input" name="paypwd" type="password" placeholder="请输入安全密码">
+                </div>
+            </div>-->
+       </div>
+        <input type="hidden" name="goods_id" value="{$goods_list['goods_id']}" id="goods_id">
+            <input type="hidden" name="address_id" value="{$address.address_id}">
+            <input type="hidden" name="consignment_id" value="{$Request.param.consignment_id}">
+        </form>
+<!--
+       <div class="weui-cells weui-cells_form vux-1px-t">
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
+                <div class="weui-cell__bd">
+                        美素佳儿奶粉
+                </div>
+            </div>
+            <div class="weui-cell fs26 weui-cell_access">
+                <div class="weui-cell__hd"><label class="weui-label">提货套餐</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请选择提货档次">
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">可提货量</label></div>
+                <div class="weui-cell__bd">
+                        256
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">提货数量</label></div>
+                <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入提取数量">
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">安全密码</label></div>
+                <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入安全密码">
+                </div>
+            </div>
+       </div> -->
+        <div class="weui-btn-area">
+                <a href="###" class="weui-btn weui-btn_primary">保存</a>
+        </div>
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+var swiper = new Swiper('.swiper-container', {
+    pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction',
+    },
+});
+
+$(".taocan").picker({
+            title: "请选择类型",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['套餐1', '套餐2', '套餐3','套餐4']
+                }
+            ],
+            onChange: function(p, v, dv) {
+
+
+            },
+            onClose: function(p, v, d) {
+                var name = p.value[0];
+                $.ajax({
+                    type: 'post',
+                    url: "{:U('Mobile/Member/mention_goods')}",
+                    dataType: 'JSON',
+                    data: {'goods_id': $('#goods_id').val(),'name':name},
+                    success: function (data) {
+                        $('#sell_num').html(data);
+                        //console.log(data);
+                    },
+                    error: function(){
+                        //alert(1)
+                    }
+                })
+                /*console.log(v);
+                console.log(d);
+                console.log("close");*/
+            }
+        });
+        $('.weui-btn').click(function(){
+            var t = $('form').serializeArray();
+            //console.log(t);
+            if($('#mobile').val() == ''){
+                $.alert('请选择提货套餐！');return false;
+            }
+            if(t[0].value == ''){
+                $.alert('填写提货数量！');return false;
+            }
+            /*if(t[1].value == ''){
+                $.alert('填写安全密码！');return false;
+            }*/
+            console.log($('#sell_num').html());
+            if(t[0].value == 0 || t[0].value > parseInt($('#sell_num').html())){
+                $.alert('填写正确的提货数量！');return false;
+            }
+            var arr = {name:'name',value:$('#mobile').val(),'type':$('#type').val()};
+            t.push(arr);
+            $.ajax({
+                type: 'post',
+                url: "{:U('Mobile/Member/self_mention')}",
+                dataType: 'JSON',
+                data: t,
+                success: function (data) {
+                    if(data.code == 1){
+                        $.toast(data.msg,1000,function(){
+                            //撤销提货
+                            var consignment_id = $('input[name=consignment_id]').val();
+                            if(consignment_id>0){
+                                window.location.href="{:U('Member/entrust_list')}";
+                            }else{
+                                location.reload();
+                            }
+                        });
+                    }else{
+                        $.toast(data.msg);
+                    }
+                },
+                error: function(){
+                    //alert(1)
+                }
+            })
+        });
+</script>
+
+</body>
+</html>

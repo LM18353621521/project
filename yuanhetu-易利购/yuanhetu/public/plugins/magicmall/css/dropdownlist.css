@@ -1,0 +1,44 @@
+﻿.hywo .dropdown-submenu>a:after {
+    position: absolute;
+    right: 5px;
+    top:18%;
+}
+.hywo .dropdown-menu>li>a {
+    position: relative;
+}
+.hywo .dropdown-menu {
+    text-align: center;
+}
+.hywo .dropdown-submenu>a:after {
+    margin-right: 0px;
+}
+.hywo .dropdown-menu li {
+    padding:0!important;
+}
+.hywo .dropdown-menu>li>a {
+    padding:5px 0;
+    text-decoration: none;
+}
+.hywo .dropdown-menu>li>a:hover {
+    background: #0087f1!important;
+    color: #fff;
+}
+.dropdown-submenu:focus>a, .dropdown-submenu:hover>a {
+    background: #0087f1!important;
+}
+.width100 {
+    width: 100%!important;
+    background: url(../images/56_09.png) no-repeat center right #fff;
+}
+.hywo {
+    width: 100%;
+    text-align: left!important;
+    line-height: 32px;
+    position: relative;
+}
+.hywo .caret {
+    display: none;
+} 
+.hywo .dropdown-menu {
+    width: 100%;
+}

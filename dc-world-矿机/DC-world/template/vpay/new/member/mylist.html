@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/new_z.css">
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/js/jquery.qrcode.min.js"></script>
+    <style>
+        .cart .cart-goods{
+            margin-bottom: 0;
+        }
+        .cart .media-object {
+            line-height: 50px;
+            max-width: 50px;
+            height: 50px
+        }
+        .cart .mui-media-body span {
+            font-size: 13px;
+            width: 100%;
+            display: block;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+        html{
+            height: 85%;
+        }
+        body{
+            height: 100%;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+
+<!--header-->
+<header class="mui-bar mui-bar-nav" >
+    <a class="mui-icon mui-icon-left-nav mui-pull-left"style="color: white" href="/index.php/Home/member/member"></a>
+    <h1 class="mui-title">我的订单</h1>
+</header>
+
+<!--购物车-->
+<div class="nav_order clearfix">
+    <ul>
+        <li id="all">
+            <a href="/Home/Member/mylist" >
+                全部
+            </a>
+        </li>
+        <li id="pending_payment">
+            <a href="/Home/Member/mylist?status=1" >
+                待付款
+            </a>
+        </li>
+        <li id="to_receive">
+            <a href="/Home/Member/mylist?status=3" >
+                待收货
+            </a>
+        </li>
+        <li id="complete">
+            <a href="/Home/Member/mylist?status=4" >
+                已完成
+            </a>
+        </li>
+    </ul>
+</div>
+<div style="height: 50px;"></div>
+<div class="mui-content cart" style="margin-bottom: 50px;">
+    <ul class="mui-table-view" style="margin-bottom: 10px" ng-repeat="li in message">
+        <li class="mui-table-view-cell mui-media cart-goods" style="padding: 2px 1em;font-size: 13px;" >
+            订单号:{{li.no}}
+        </li>
+        <div style="width: 100%;height: 1px;background: #c8c7cc;-webkit-transform: scaleY(.5);transform: scaleY(.5);"></div>
+        <li class="mui-table-view-cell mui-media cart-goods" style="padding: 2px 1em;font-size: 13px" >
+            下单时间:{{li.createtime}}
+            <button  class="mui-btn mui-btn-primary mui-pull-right" style="width: auto" ng-click="orderdetail(li.id)">详情</button>
+        </li>
+        <li class="mui-table-view-cell mui-media cart-goods" ng-repeat="product in li.goods" >
+            <a ng-click="details(product.pid)" style="background:#F6F6F6;">
+                <img class="media-object mui-pull-left" ng-src="{{product.img}}">
+                <div class="mui-media-body" >
+                    <span>{{product.name}}</span>
+                    <!--此处数字可传每箱盒数-->
+                    <p class=' money'style="margin-top: 12px;font-weight: normal"><span class="mui-pull-right"style="text-align: right" >
+                        <span ng-hide="product.num>=product.boxnum">{{product.num}}盒</span>
+                        <span ng-show="product.num>=product.boxnum">{{floor(product.num/product.boxnum)}}箱{{product.num%product.boxnum}}盒</span></span>单价:￥<b style="font-weight: normal">{{product.price}}</b></p>
+                </div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media cart-goods">
+            <div style="width: 40%;float: left;height: 33px;line-height: 33px;font-size: 15px;color: #ef373b;font-weight: bold">总价:￥{{li.total}}</div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 1}}">
+                <button  class="mui-btn  mui-btn-danger mui-pull-right" style="width: 45%" ng-click="toPay(li.id)">立即支付</button>
+                <button  class="mui-btn   mui-pull-right" style="width: 45%;margin-right: 5%" ng-click="cancel(li.id)">取消订单</button>
+            </div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 2}}">
+                <button  class="mui-btn mui-pull-right" style="width: 90%;margin-right: 5%" disabled>已支付，等待发货</button>
+            </div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 3}}">
+                <button  class="mui-btn  mui-btn-danger mui-pull-right" style="width: 45%" ng-click="receive(li.id)">确认收货</button>
+                <!--<button  class="mui-btn   mui-pull-right" style="width: 45%;margin-right: 5%" ng-click="logistics(li.logistics,li.logisticscom,li.id)">查看物流</button>-->
+            </div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 4}}">
+                <button  class="mui-btn   mui-pull-right" style="width: 90%;margin-right: 5%" disabled>已收货，订单完成</button>
+            </div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 5}}">
+                <button  class="mui-btn   mui-pull-right" style="width: 45%;margin-right: 5%" disabled>已取消</button>
+            </div>
+            <div  class="mui-content login-tab" style="background: white;width: 60%;float: left" ng-show="{{li.status == 6}}">
+                <button  class="mui-btn   mui-pull-right" style="width: 45%;margin-right: 5%" disabled>已驳回</button>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="mui-content" style="margin-bottom: 50px;height: 100%;" ng-show="kdflg==1">
+    <ul class="mui-table-view" style="margin-bottom: 2px">
+        <li class="mui-table-view-cell mui-media">
+            <div class="mui-content" style="background: white;width: 70%;float: left">
+                <button  class="mui-btn  mui-btn-danger mui-pull-right" style="width: 50%;" ng-click="logisticsback()">返回</button>
+            </div>
+        </li>
+    </ul>
+    <li class="mui-table-view-cell">
+        <a>收货人姓名<span class="mui-pull-right">{{lgsts.receivename}}</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a>收货人电话<span class="mui-pull-right">{{lgsts.phone}}</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a>收货人地址<span class="mui-pull-right">{{lgsts.namepath}}</span></a>
+    </li>
+    <li class="mui-table-view-cell">
+        <a>收货人详细地址<span class="mui-pull-right">{{lgsts.address}}</span></a>
+    </li>
+    <div style="height: 4px;background:#efeff4; "></div>
+    <iframe src="" frameborder="0" id="kdshow" name="kdshow" style="width: 100%;height: 100%;" ></iframe>
+</div>
+</body>
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+<script>
+    var app = getApp('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        $scope.floor = function(number) {
+            return Math.floor(number);
+        }
+        //订单状态
+        $scope.status = getUrlParam("status");
+        if('null' == $scope.status || null == $scope.status) {
+            $scope.status=0;
+        }
+        if (0 == $scope.status) {
+            $("#all").addClass("order_active").siblings().removeClass("order_active");
+        } else if (1 == $scope.status) {
+            $("#pending_payment").addClass("order_active").siblings().removeClass("order_active");
+        } else if (3 == $scope.status) {
+            $("#to_receive").addClass("order_active").siblings().removeClass("order_active");
+        } else if (4 == $scope.status) {
+            $("#complete").addClass("order_active").siblings().removeClass("order_active");
+        }
+        // 查看物流flg
+        $scope.kdflg = 0;
+        // 当前页数
+        $scope.p = 0;
+        // 加载完毕标志
+        $scope.endflg =  0;
+        // 防止重复加载
+        $scope.busy = false;
+        // 存放数据
+        $scope.message = [];
+        // 请求数据方法
+        $scope.loadMore = function(){
+//            console.log($scope.p)
+            if($scope.endflg == 0){
+                if($scope.busy){
+                    return false;
+                }
+                $scope.busy = true;
+                $http({
+                    method:'POST',
+                    data:$scope,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    },
+                    url: "/index.php/Home/OnlineOrder/myOrderList?p=" + $scope.p +"&status=" + $scope.status,
+                }).then(function successCallback(response) {
+                    $scope.busy = false;
+                    if(response.data.data != '' && response.data.data != null){
+                        if($scope.p > 0) {
+                            layer.msg("正在加载...", {time: 500});
+                        }
+                    } else {
+                        layer.msg("已加载完毕", {time:500});
+                        $scope.endflg = 1;
+                        return false;
+                    }
+                    $scope.p++;
+                    if(response.data.code == -1){
+                        layer.msg(response.data.msg,{time:1500})
+                    }else{
+                        if(response.data.data == null){
+                            layer.msg(response.data.msg,{time:1500});
+                        } else {
+                            // 组织数据
+                            for (var i in response.data.data) {
+                                $scope.message.push(response.data.data[i]);
+                            }
+
+                        }
+                    }
+                }, function errorCallback(response) {
+                    errorHandle(response);
+                });
+            }else{
+                layer.msg("已加载完毕", {time:500});
+            }
+        };
+        // 进页面先加载一次数据
+        $scope.loadMore();
+
+        $(window).scroll(function(){
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(this).height();
+            if(scrollTop + windowHeight == scrollHeight){
+                $scope.loadMore();
+            }
+        });
+
+        //立即支付
+        $scope.toPay=function (id) {
+            layer.msg("暂未开放第三方支付！");return;
+            layer.confirm('是否要支付？', {
+                btn: ['确认','取消'] //按钮
+            }, function() {
+                //微信-Jsapi支付；非微信-二维码支付
+                if($scope.isWeiXin()){
+                    console.log('wx');
+                    $scope.getJsapiPay(id);
+                } else {
+                    console.log('notwx');
+                    $scope.getQrPay(id);
+                }
+            }, function(){
+                layer.msg('已取消');
+            })
+        }
+
+        //取消订单
+        $scope.cancel=function (id) {
+            layer.confirm('是否要取消？', {
+                btn: ['否','是'] //按钮
+            }, function(){
+                layer.msg('未取消该订单');
+            }, function(){
+                $http({
+                    method:'POST',
+                    data:{'id':id},
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    },
+                    url: "/index.php/Home/OnlineOrder/cancel"
+                }).then(function successCallback(response) {
+                    //console.log(response.data);
+                    //successHandle(response, function () {
+                    if(response.data.code==-1){
+                        layer.msg(response.data.msg,{time:1000})
+                    } else if(response.data.code==0){
+                        layer.msg(response.data.data,{time:1000})
+                        setTimeout(function () {
+                            window.location.href = "/index.php/Home/Member/mylist"
+                        },1000)
+                    }
+                    //});
+                }, function errorCallback(response) {
+                    errorHandle(response);
+                });
+            });
+
+        }
+
+        //商品详情
+        $scope.details=function (id) {
+            window.location.href= "/index.php/Home/Product/goodinfo?id="+id
+        }
+
+        //订单详情
+        $scope.orderdetail=function (id) {
+            window.location.href= "/index.php/Home/Index/orderdetail?id="+id+"&flg=1"
+        }
+
+        //确认收货
+        $scope.receive=function (id) {
+            layer.confirm('是否确认收货？', {
+                btn: ['取消','确认'] //按钮
+            }, function(){
+                layer.msg('已取消');
+            }, function() {
+                //layer.msg('已确认收货');
+                $http({
+                    method: 'POST',
+                    data: {'id': id},
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    transformRequest: function (obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    },
+                    url: "/index.php/Home/OnlineOrder/receive"
+                }).then(function successCallback(response) {
+                    //console.log(response.data);
+                    if(response.data.code==-1){
+                        layer.msg(response.data.msg,{time:1000})
+                    } else if(response.data.code==0){
+                        layer.msg(response.data.data,{time:1000})
+                        setTimeout(function () {
+                            window.location.href = "/index.php/Home/Member/mylist"
+                        },1000)
+                    }
+                }, function errorCallback(response) {
+                    errorHandle(response);
+                });
+            })
+        }
+
+        // 查看物流
+        $scope.logistics=function (logistics,com,id) {
+            var url = "https://m.kuaidi100.com/index_all.html?type="+com+"&postid="+logistics;
+            $('#kdshow').attr('src',url);
+            for(var x in $scope.message){
+                if($scope.message[x].id == id){
+                    $scope.lgsts = $scope.message[x];
+                }
+            }
+            $scope.kdflg = 1;
+        }
+
+        // 查看物流返回
+        $scope.logisticsback=function () {
+            $scope.kdflg = 0;
+        }
+
+        //接入微信扫码支付
+        $scope.getQrPay = function (orderid) {
+            //用ajax获取到支付的二维码
+            var payQrcode = '';
+            var payPrice = '';
+            var reqsn = '';
+            $.post('/index.php/Home/PayWx/getQrcode',{"orderid":orderid},function(result) {
+                var obj = result.data;
+                //console.log(obj);
+                if (obj.status == 'success') {
+                    payQrcode = obj.code;
+                    payPrice = obj.price;
+                    reqsn = obj.sn;
+                    //console.log(payQrcode);
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-demo', //样式类名
+                        closeBtn: 0, //不显示关闭按钮
+                        title: false,
+                        anim: 2,
+                        area: ['300px', '450px'],
+                        shadeClose: true, //开启遮罩关闭
+                        content: '<div style="color: #666;margin: 5px 0 0 10px;position: absolute;right:.5rem;" onclick="layer.closeAll()">X</div>' + '<div style="text-align: center;"><img style="width: 4rem;padding:2rem 0 1rem 0;" src="__PUBLIC__/images/wx.png" alt="" /><br><b style="font-weight: 100;color: #888;">请打开微信 扫码进行支付 </b><div class="blank"></div>支付金额：<span style="color: red;">' + payPrice + '</span> 元</div><div class="blank"></div>' + '<div style="text-align: center"><div id="code" style="margin-left: 5px;margin-top: 10px"></div></div><div id="myDiv" style="width: 100%;height: 1.5rem;bottom: 2rem;position:absolute;text-align:center;font-size: 1.2rem;color: #04BE02;"></div><div id="timer" style="display:none;">0</div>'
+                    });
+                    $("#code").qrcode({
+                        render: "canvas",
+                        width: 220, //宽度
+                        height: 220, //高度
+                        text: payQrcode //任意内容
+                    });
+
+                    // 设置每隔3000毫秒执行一次查询方法
+                    var myIntval = setInterval(function () {
+                        orderQuery(reqsn)
+                    }, 3001);
+                    //查询订单状态
+                    function orderQuery(reqsn) {
+                        //layer.closeAll();
+                        $.ajax({
+                            url: "{:U('PayWx/orderQuery')}",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                reqsn: reqsn
+                            },
+                            timeout: 5000,
+                            success: function (result) {
+                                var obj = result.data;
+                                if (obj.result_code == "SUCCESS") {
+                                    var status = obj.trade_state;
+                                    var statusdesc = obj.trade_state_desc;
+                                    //console.log(status);
+                                    if (status == 'SUCCESS') {
+                                        document.getElementById("myDiv").innerHTML = '支付完成';
+                                        clearInterval(myIntval);
+                                        console.log("支付成功");
+                                        setTimeout(function () {
+                                            window.location.href = "/index.php/Home/Member/mylist"
+                                        },1000)
+                                    } else if (status == 'USERPAYING') {
+                                        document.getElementById("myDiv").innerHTML = '正在支付';
+                                        clearInterval(myIntval);
+                                    } else if (status == 'CLOSED') {
+                                        document.getElementById("myDiv").innerHTML = '交易已关闭';
+                                        clearInterval(myIntval);
+                                    } else if (status == 'PAYERROR') {
+                                        document.getElementById("myDiv").innerHTML = '交易失败';
+                                        clearInterval(myIntval);
+                                    } else if (status == 'NOTPAY') {
+                                        document.getElementById("myDiv").innerHTML = '交易处理中';
+                                    } else if (status == 'REVOKED') {
+                                        document.getElementById("myDiv").innerHTML = '交易已撤销';
+                                        clearInterval(myIntval);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                            }
+                        })
+                    }
+                }
+            })
+        }
+
+        //接入微信JSAPI支付
+        $scope.getJsapiPay = function (orderid) {
+            //用ajax获取到支付信息
+            $.post('/index.php/Home/PayWx/getJsapi', {"orderid": orderid}, function (ret) {
+                // 如果有错误
+                if(ret.code != 0){
+                    layer.msg(ret.msg);
+                    return;
+                }
+
+                $scope.jsapipara = JSON.parse(ret.data);
+                //console.log($scope.jsapipara.appId)
+                $scope.callWxpay(orderid);
+            });
+        }
+
+        //判断是不是微信
+        $scope.isWeiXin = function(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        //发起微信JSapi支付并接受回调
+        $scope.jsApiCall = function(orderid){
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                        "appId":$scope.jsapipara.appId,     //公众号名称，由商户传入
+                        "timeStamp":$scope.jsapipara.timeStamp,         //时间戳，自1970年以来的秒数
+                        "nonceStr":$scope.jsapipara.nonceStr, //随机串
+                        "package":$scope.jsapipara.package,
+                        "signType":$scope.jsapipara.signType,         //微信签名方式：
+                        "paySign":$scope.jsapipara.paySign //微信签名
+                    },
+                    function(res){
+                        WeixinJSBridge.log(res.err_msg);
+                        //支付回调
+                        if(res.err_msg == "get_brand_wcpay_request:ok"){
+                            console.log("支付成功");
+                            //$scope.paySuccess(orderid);
+                            setTimeout(function () {
+                                window.location.href = "/index.php/Home/Member/mylist"
+                            },1000)
+                        }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+                            layer.msg("用户取消支付!");
+                        }else{
+                            console.log(res);
+                            layer.msg("支付失败!");
+                        }
+                        //alert(res.err_code+res.err_desc+res.err_msg);
+                    }
+            );
+        }
+
+        //调用微信JSapi支付
+        $scope.callWxpay = function(orderid){
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', $scope.jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', $scope.jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', $scope.jsApiCall);
+                }
+            }else{
+                $scope.jsApiCall(orderid);
+            }
+        }
+    })
+</script>
+<script>
+    $(".nav_order ul li").click(function(){
+        $(this).addClass("order_active").siblings().removeClass("order_active");
+    });
+</script>
+</html>

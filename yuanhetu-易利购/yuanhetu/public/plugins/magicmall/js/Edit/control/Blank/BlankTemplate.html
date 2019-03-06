@@ -1,0 +1,63 @@
+﻿
+
+<!--辅助空白控件-->
+<script type="text/template" id="BlankControl">
+    <div class="box box-element ui-draggable" data-type="BlankControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">辅助空白</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-space" style="background-color: $${Model.BackgroundColor}; height: $${Model.Height}px;"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="BlankPhoneControl">
+
+    <div class="view">
+        <div class="diy-space" style="background-color: $${Model.BackgroundColor}; height: $${Model.Height}px;"></div>
+    </div>
+
+</script>
+
+
+
+<script type="text/template" id="BlankEdit-template">
+    <div class="configurator" id="BlankItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">颜色：</label>
+                        <div class="col-sm-6">
+                            <div data-color-format="rgb" data-color="$${Model.BackgroundColor}" class="input-append colorpicker-default color">
+                                <input type="text" name="color" value="$${Model.BackgroundColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                <span class="input-group-btn add-on">
+                                    <i style="background-color: rgb(255, 227, 214);">颜色选择</i>
+                                   
+                                </span>
+                                <input type="text" style="width:68px" class="form-control" name="colorInput" value="$${Model.BackgroundColor}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">高度：</label>
+                        <div class="col-sm-10">
+                            <div class="form-control text"><input type="range" name="hrange" value="$${Model.Height}"> <span class="rangeval">$${Model.Height}</span></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</script>
+<!--辅助空白控件-->

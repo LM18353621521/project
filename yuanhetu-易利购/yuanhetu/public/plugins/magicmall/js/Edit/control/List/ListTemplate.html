@@ -1,0 +1,292 @@
+﻿
+
+<!--商品列表控件-->
+<script type="text/template" id="ListControl">
+    <div class="box box-element ui-draggable" data-type="ListControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">商品列表</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+
+        <div class="view">
+            <div class="diy-goods">
+                <ul class="goods-list-type$${Model.ShowWay} picList">
+                    {@each Model.Item as m, k}
+                    <li data-id="$${m.ID}">
+                        <a href="javascript:void(0)" class="LinkTo">
+                            <div class="goods-img"><img src="$${m.Img}"></div>
+                            <div class="goods-text">
+                                {@if Model.ShowProductName==1}
+                                <div class="goods-name" style="display: block;">$${m.ProductName}</div>
+                                {@else}
+                                <div class="goods-name" style="display: none;">$${m.ProductName}</div>
+                                {@/if}
+
+
+                                <div class="goods-price">
+                                    {@if Model.ShowPrice==1}
+                                    <span class="now-price" style="display: inline;">￥$${m.Price}</span>
+                                    {@else}
+                                    <span class="now-price" style="display: none;">￥$${m.Price}</span>
+                                    {@/if}
+
+                                    {@if Model.ShowOldPrice==1}
+                                    <span class="old-price" style="display:inline">￥$${m.OldPrice}</span>
+                                    {@else}
+                                    <span class="old-price" style="display:none">￥$${m.OldPrice}</span>
+                                    {@/if}
+
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {@/each}
+                </ul>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+</script>
+<!--商品列表控件-->
+
+<script type="text/template" id="ListPhoneControl">
+    <div class="view">
+        <div class="diy-goods">
+            <ul class="goods-list-type$${Model.ShowWay} picList">
+                {@each Model.Item as m, k}
+                <li data-id="$${m.ID}">
+                    {@if Model.ObjectType==2  }
+                    <a href="/Views/Product/ProductInfo.html?productId=$${m.ProductID}&shopID=$${Model.ObjectID}" class="LinkTo">
+                        {@else}
+                        <a href="/Views/Product/ProductInfo.html?productId=$${m.ProductID}" class="LinkTo">
+                            {@/if}
+
+                            <div class="goods-img"><img src="$${m.Img}"></div>
+                            <div class="goods-text">
+                                {@if Model.ShowProductName==1}
+                                <div class="goods-name" style="display: block;">$${m.ProductName}</div>
+                                {@else}
+                                <div class="goods-name" style="display: none;">$${m.ProductName}</div>
+                                {@/if}
+
+
+                                <div class="goods-price">
+                                    {@if Model.ShowPrice==1}
+                                    <span class="now-price" style="display: inline;">￥$${m.Price}</span>
+                                    {@else}
+                                    <span class="now-price" style="display: none;">￥$${m.Price}</span>
+                                    {@/if}
+
+                                    {@if Model.ShowOldPrice==1}
+                                    <span class="old-price" style="display:inline">￥$${m.OldPrice}</span>
+                                    {@else}
+                                    <span class="old-price" style="display:none">￥$${m.OldPrice}</span>
+                                    {@/if}
+
+                                </div>
+                            </div>
+                        </a>
+                </li>
+                {@/each}
+            </ul>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/template" id="ListListControl">
+    <li data-id="$${Model.ID}">
+        <a href="javascript:void(0)" class="LinkTo">
+            <div class="goods-img"><img src="$${Model.Img}"></div>
+            <div class="goods-text">
+                {@if Control.ShowProductName==1}
+                <div class="goods-name" style="display: block;">$${Model.ProductName}</div>
+                {@else}
+                <div class="goods-name" style="display: none;">$${Model.ProductName}</div>
+                {@/if}
+
+
+                <div class="goods-price">
+                    {@if Control.ShowPrice==1}
+                    <span class="now-price" style="display: inline;">￥$${Model.Price}</span>
+                    {@else}
+                    <span class="now-price" style="display: none;">￥$${Model.Price}</span>
+                    {@/if}
+
+                    {@if Control.ShowOldPrice==1}
+                    <span class="old-price" style="display:inline">￥$${Model.OldPrice}</span>
+                    {@else}
+                    <span class="old-price" style="display:none">￥$${Model.OldPrice}</span>
+                    {@/if}
+
+                </div>
+            </div>
+        </a>
+    </li>
+
+
+</script>
+<!--商品列表控件项-->
+<script type="text/template" id="ListEdit-template">
+
+    <!--标题设置-->
+
+    <div class="configurator" id="ListItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">选择商品：</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='1'}
+                                <input type="radio" value="1" checked="" name="ShowWay"> 小图
+                                {@else}
+                                <input type="radio" value="1" name="ShowWay"> 小图
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='2'}
+                                <input type="radio" value="2" checked="" name="ShowWay"> 大图
+                                {@else}
+                                <input type="radio" value="2" name="ShowWay"> 大图
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='4'}
+                                <input type="radio" value="4" checked="" name="ShowWay"> 列表
+                                {@else}
+                                <input type="radio" value="4" name="ShowWay"> 列表
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='3'}
+                                <input type="radio" value="3" checked="" name="ShowWay"> 一大一小
+                                {@else}
+                                <input type="radio" value="3" name="ShowWay"> 一大一小
+                                {@/if}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">显示参数：</label>
+                        <div class="col-sm-10">
+                            <label class="checkbox-inline">
+                                {@if Model.ShowProductName==1}
+                                <input type="checkbox" checked="" name="ShowProductName"> 显示商品名称
+                                {@else}
+                                <input type="checkbox" name="ShowProductName"> 显示商品名称
+                                {@/if}
+
+                            </label>
+                            <label class="checkbox-inline">
+                                {@if Model.ShowPrice==1}
+                                <input type="checkbox" checked="" name="ShowPrice"> 显示商品销售价格
+                                {@else}
+                                <input type="checkbox" name="ShowPrice"> 显示商品销售价格
+                                {@/if}
+
+
+                            </label>
+                            <label class="checkbox-inline">
+                                {@if Model.ShowOldPrice==1}
+                                <input type="checkbox" checked name="ShowOldPrice"> 显示商品原价
+                                {@else}
+                                <input type="checkbox" name="ShowOldPrice"> 显示商品原价
+                                {@/if}
+
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <ul class="diy-media-list ui-sortable" id="ItemList">
+                    {@each Model.Item as m, k}
+                    <li id="$${m.ID}" class="Item" style="" data-id="$${m.ID}">
+                        <header class="acts-header">
+                            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+                            <a href="#"><i class="icon icon-trash"></i></a>
+                        </header>
+                        <div class="media">
+                            <div class="media-left">
+                                <label class="MyImageBox openFile image"><img src="$${m.Img}" width="78" height="78" /></label>
+                            </div>
+                            <div class="media-body">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>$${m.ProductName}</div>
+                                                <div class="text-muted">商品编号：$${m.Code}</div>
+                                            </td>
+                                            <td class="text-center" style="width: 100px;">$${m.Platform}</td>
+                                            <td>￥$${m.Price}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+
+                    {@/each}
+                </ul>
+                <a href="javascript:void(0)" data-toggle="modal" data-target="#ModalGoods" class="addbtn-block"><i class="icon icon-plus"></i> 增加一个导航</a>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+<script type="text/template" id="ListItem-template">
+
+    <li id="$${Model.ID}" class="Item" style="" data-id="$${Model.ID}">
+
+        <header class="acts-header">
+            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+            <a href="#"><i class="icon icon-trash"></i></a>
+        </header>
+        <div class="media">
+            <div class="media-left">
+                <label class="MyImageBox openFile image"><img src="$${Model.Img}" width="78" height="78" /></label>
+            </div>
+            <div class="media-body">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>$${Model.ProductName}</div>
+                                <div class="text-muted">商品编号：$${Model.Code}</div>
+                            </td>
+                            <td class="text-center" style="width: 100px;">$${Model.Platform}</td>
+                            <td>￥$${Model.Price}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </li>
+
+
+</script>
+<!--商品列表结束-->
+
+
+
+

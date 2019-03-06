@@ -1,0 +1,88 @@
+<include file="common/header" title="{$title}" />
+<include file="common/header_nav"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/weui/weui.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/comm.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/assets/css/fenxiao.css">
+<script type="text/javascript">
+    $(document).ready(function(){
+        get_dist('{$list[0][id]}');
+    })
+</script>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">{$title}</div>
+            <div class="header-right"><a href="#"></a> </div>
+        </div>
+    </div>
+    <div class="page-bd">
+        <div class="weui-cells vux-1px-t tc mt0">
+            <div class="topbox">
+                <div><img class="avatar" src="{$user['head_pic']|default='__STATIC__/images/user68.jpg'}"></div>
+
+                <div class="fs12 mt5">{$user['nickname']}</div>
+            </div>
+            <div class="weui-cell after-left__0" style="padding-left:0; padding-right:0;">
+                <div class="weui-cell__bd">
+                    <div class="weui-flex cell-flex">
+                        <a href="###" class="weui-flex__item vux-1px-r">
+                            <div><b class="fs13">{$quarter_money}</b></div>
+                            <div class="fs8 text-muted">奖金总收入</div>
+                        </a>
+                        <!--<a href="###" class="weui-flex__item vux-1px-r">-->
+                            <!--<div><b class="fs13">{$user['pay_points']}</b></div>-->
+                            <!--<div class="fs8 text-muted">积分</div>-->
+                        <!--</a>-->
+                        <!--<a href="###" class="weui-flex__item">-->
+                            <!--<div><b class="fs13" style="position: relative">{$purchase}</b></div>-->
+                            <!--<div class="fs8 text-muted">已购人数</div>-->
+                        <!--</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells mb10">
+            <div class="weui-cell fansbox">
+                <div class="weui-cell__hd">
+                    <ul>
+                        <!-- <li class="active" href="#tab1" id="all" onclick="get_dist(0)" data-click="0" data-tab="1">
+                            <div>
+                                所有代理
+                                <p>{$countList}项</p>
+                            </div>
+                        </li> -->
+                        <foreach name="list" item="v" key="k">
+                            <li href="#tab2" id="{$v.id}" onclick="get_dist('{$v.id}')"  style="border-bottom: 1px solid #eee;">
+                                <div>{$v.name}</div>
+                            </li>
+                        </foreach>
+                    </ul>
+                </div>
+                <div class="weui-cell__bd" style="padding: 0.1rem 0.5rem">
+                    <div id="tab" class="search" style="padding-top:0rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function get_dist(city){
+        var data = {id:city};
+        $("#"+city).addClass('active').siblings().removeClass();
+        
+        $.ajax({
+            url: "{:U('Mobile/user/ajax_agency_area')}",
+            type: 'post',
+            data:data,
+            success:function(data){
+                $("#tab").html(data);
+            },
+            error:function(){
+                alert('网络错误');
+            }
+        });
+     }
+</script>

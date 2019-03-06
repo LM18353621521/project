@@ -1,0 +1,42 @@
+<extend name="Public:main" />
+<block name="title">XTU下载</block>
+<block name="body">
+    <body class="dowm_bg">
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                下载
+            </div>
+            <a href="javascript:void(0)">
+                <i></i>
+            </a>
+        </div>
+        <div class="down_img">
+            <img src="__PUBLIC__/vpay/images/code.png" width="50%">
+            <p>
+                XTUcoin
+            </p>
+        </div>
+        <div class="down_app" style="text-align: center">
+            扫描二维码下载
+            <if condition="$invitecode neq  '' && $invitecode neq  null">
+                <p>
+                    邀请码：{$invitecode}
+                </p>
+            </if>
+            <!--<a href="javascript:void(0)">
+                点击下载IOS
+            </a>-->
+        </div>
+        <div class="down_desc">
+            让流通产生价值
+        </div>
+    </body>
+    <block name="custom_js">
+        <script type="text/javascript">
+
+        </script>
+    </block>
+</block>

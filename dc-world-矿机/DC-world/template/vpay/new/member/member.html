@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/user.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/new_z.css">
+</head>
+<style>
+    .mui-bar-nav {
+        background: url("__PUBLIC__/images/me_bg_top@2x.png") no-repeat;
+        background-size: cover;
+    }
+</style>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<!--header-->
+<header class="mui-bar mui-bar-nav" style="height: 145px;">
+    <!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+    <div class="user-icon mui-pull-left mui-col-xs-3">
+        <img class="media-object " src="__PUBLIC__/images/user.jpg">
+    </div>
+    <div class="mui-media-body user-info mui-pull-left mui-col-xs-7">
+        <p class='mui-ellipsis money'>用户：{{message.name}}</p>
+        <p class='mui-ellipsis money'>{{message.account}}</p>
+    </div>
+    <div class="sign mui-pull-left mui-col-xs-2">
+        <button onclick="sign()" ng-if="message.has_sign == 0">
+            签到
+        </button>
+        <button ng-if="message.has_sign == 1">
+            已签到
+        </button>
+    </div>
+
+</header>
+<div style="height: 100px"></div>
+<!--banner-->
+<div style="height: 5px;background:#efeff4; "></div>
+<div class="mui-content user">
+    <ul class="mui-table-view mui-grid-view mui-grid-9 item" style="margin-top: 0">
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 invite"><a href="/Home/Index/article?src=mem">
+            <div class="user-bg"></div>
+            <div class="mui-media-body">我的公告</div>
+        </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4"><a href="{:U('Member/mylist')}">
+            <div class="user-bg"></div>
+            <div class="mui-media-body">我的订单</div>
+        </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4"><a href="{:U('Member/my_custom')}">
+            <div class="user-bg"></div>
+            <div class="mui-media-body">我的定制</div>
+        </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4"><a href="{:U('Member/my_repayment')}">
+            <div class="user-bg"></div>
+            <div class="mui-media-body">我的还款</div>
+        </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 "><a href="{:U('Member/my_activity')}">
+            <div class="user-bg"></div>
+            <div class="mui-media-body">我的活动</div>
+        </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 ">
+            <a href="{:U('Member/alertpassword')}">
+                <div class="user-bg"></div>
+                <div class="mui-media-body">修改密码</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 ">
+            <a href="{:U('Member/perfect_infor')}">
+                <div class="user-bg"></div>
+                <div class="mui-media-body">完善资料</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4" onclick="exit()" id="confirmBtn">
+            <a href="javascript:void(0)">
+                <div class="user-bg"></div>
+                <div class="mui-media-body">退出登录</div>
+            </a>
+        </li>
+
+    </ul>
+</div>
+<div style="height: 50px"></div>
+<!--footer-->
+<include file="./Application/Home/View/pub/foot.html" name="m"/>
+</body>
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+<script>
+
+</script>
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    var slider = mui("#slider");
+    slider.slider({
+        interval: 1500
+    });
+
+    $(function () {
+        $(".mui-tab-item").click(function () {
+            window.location.href = $(this).attr("href")
+        })
+    })
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function ($scope, $http) {
+        $http({
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+                return str.join("&");
+            },
+            url: "/index.php/Home/member/usermessage"
+        }).then(function successCallback(response) {
+            $scope.message = response.data.data;
+            // console.log($scope.message)
+            if (response.data.data == "" || response.data.data == null) {
+                window.location.href = "/index.php/home/index/login"
+            }
+        }, function errorCallback(response) {
+        })
+
+        $scope.exit = function () {
+            var btnArray = ['否', '是'];
+            mui.confirm('', '退出登录？', btnArray, function (e) {
+                if (e.index == 1) {
+
+                    $http({
+                        method: 'POST',
+                        data: {id: $scope.$id},
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        transformRequest: function (obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Login/exitlogin"
+                    }).then(function successCallback(response) {
+                        //console.log(response)
+                        if (response.data.code == -1) {
+                            layer.msg(response.data.msg, {time: 1000})
+                        }
+                        else if (response.data.code == 0) {
+                            layer.msg("退出成功", {time: 1000})
+                            setTimeout(function () {
+                                window.location.href = "/index.php/Home/index/login"
+                            }, 1500)
+                        }
+
+                    }, function errorCallback(response) {
+
+                    });
+                } else {
+                    layer.msg("取消", {time: 1000})
+                }
+            })
+        }
+
+        //签到
+        $scope.sign = function () {
+            $http({
+                method: 'GET',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/Home/Member/sign",
+            }).then(function successCallback(response) {
+                // console.log(response);
+                if (0 == response.data.code) {
+                    layer.msg("签到成功！");
+                    location.reload();
+                } else {
+                    layer.msg(response.data.msg);
+                }
+            }, function errorCallback(response) {
+                errorHandle(response);
+            });
+        }
+    })
+</script>
+</html>

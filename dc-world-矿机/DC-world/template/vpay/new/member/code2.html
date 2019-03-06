@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/code2.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+
+<!--header-->
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+    <h1 class="mui-title">推广二维码</h1>
+
+</header>
+<img class="bg_erwei" src="__PUBLIC__/images/erwei.png"/>
+<div style="text-align: center;margin-top: 175px">
+    <div id="qrcode" style="width: 60%;height: 60vw;margin: 0 auto">
+        <p style=" bottom: 5%;margin-left:5%;left: 5% ;text-align: center;width: 90%">
+            <a href="javascript:void(0)"  url="{{name.url}}" id="tuiguangurl"> 长按复制推广链接：<br/><span style="word-wrap: break-word;">{{name.url}}</span> </a>
+        </p>
+    </div>
+    <a id="download" download="qrcode.jpg"></a>
+    <!--<button id="save" class="mui-btn mui-btn-danger">保存到本地</button>-->
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('Ctrl', function ($scope, $http) {
+            $http({
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/Member/getMemberTuiGuangUrl"
+            }).then(function successCallback(response) {
+                $scope.name = response.data.data;
+                $scope.name.url = response.data.data.url;
+                jQuery('#qrcode').qrcode({width: 160, height: 160, text: response.data.data.url});
+                $scope.agent = response.data.data;
+            }, function errorCallback(response) {
+
+            });
+        })
+        /*   jQuery('#qrcode').qrcode({width:200,height: 200,text: "http://www.baidu.com"});*/
+        $("#save").click(function () {
+            var canvas = $('#qrcode').find("canvas").get(0);
+            var url = canvas.toDataURL('image/jpeg');
+            $("#download").attr('href', url).get(0).click();
+            return false;
+        });
+    </script>
+</div>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,146 @@
+﻿
+<!--秒杀控件-->
+<script type="text/template" id="SecondKillControl">
+    <div class="box box-element ui-draggable" data-type="SecondKillControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/Second.png"></i>
+            <span class="module-tit" >秒杀活动</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="weui-cell weui-cell_access backr">
+                <div class="weui-cell__bd mag_left">
+                    <span activityname>$${Model.ActivityName}</span>
+                   
+                </div>
+                <div class="weui-cell__ft mag_right">
+                    <div class="qguo-right">
+                        <span class="tit">距活动结束</span><span class="time">08天</span><span class="mh">:</span><span class="time">18</span><span class="mh">:</span><span class="time">37</span><span class="mh">:</span><span class="time">23</span>
+                    </div>
+                </div>
+            </div>
+            <div class="backr glyr">
+                <ul productlist>
+                    {@each Model.Item as m, k}
+
+                    <li>
+                        <div class="imge" style="background-image:url($${m.Img})"></div>
+                        <div class="glyr_text">
+                            <div class="glyr_text_top">$${m.ProductName}</div>
+                            <div class="glyr_text_fg">
+                                <div class="glyr_text_left"><span>￥</span>$${m.Price}</div>
+                                <div class="glyr_text_right">￥$${m.OldPrice}</div>
+                            </div>
+                        </div>
+                    </li>
+                    {@/each}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="SecondKillListItem">
+ 
+    <li>
+        <div class="imge" style="background-image:url($${Model.Img})"></div>
+        <div class="glyr_text">
+            <div class="glyr_text_top">$${Model.ProductName}</div>
+            <div class="glyr_text_fg">
+                <div class="glyr_text_left"><span>￥</span>$${Model.Price}</div>
+                <div class="glyr_text_right">￥$${Model.OldPrice}</div>
+            </div>
+        </div>
+    </li>
+   
+</script>
+
+<script type="text/template" id="SecondKillPhoneControl">
+    <div class="weui-panel trushbuy1 view  SecondKill">
+        <div class="weui-cell weui-cell_access grah" onclick="javascript: window.location = '/Views/Product/SecondkillProductList.html?shopID=$${Model.ObjectID}'">
+          
+                <div class="weui-cell__bd fs30">
+                    <span>$${Model.ActivityName}</span>
+                    <span class="fs20" nextschedule style="display:none">0点档</span>
+                </div>
+                <div class="weui-cell__ft">
+                    <div class="qguo-right" timer timestart="2018-06-14 18:50:40" timeout="2018-06-14 18:50:40">
+                        <span class="tit" discribe>距活动结束</span><span class="mh">&nbsp;<span class="time" data-date="">0天</span><span class="mh">:</span></span><span class="time" style="font-size:0.5rem;" data-hour="">00</span><span class="mh">:</span><span class="time" style="font-size:0.5rem" data-minute="">00</span><span class="mh">:</span><span class="time" style="font-size:0.5rem" data-second="">00</span>
+                    </div>
+                </div>
+          
+        </div>
+        <div class="swiper-containerSecondKill gunt trushbuy4 ">
+            <div class="swiper-wrapper" productlist >
+                {@each Model.Item as m, k}
+                <div class="swiper-slide">
+                    <div class="backt">
+                        <div class="weui-grid">
+                            <a href="/Views/Product/SecKillProductInfo.html?productid=${m.ProductID}&shopID=${Model.ObjectID}">
+                                <div class="probox">
+                                    <div class="proimg">
+                                       
+                                            <img src="$${m.Img}" alt="">
+                                       
+                                    </div>
+                                    <div class="protitle">$${m.ProductName}</div>
+                                    <div class="proprice">
+                                        <div class="proprice_wt"><span>￥</span><b>$${m.Price}</b></div>
+                                        <div class="proprice_rig">￥$${m.OldPrice}</div>
+                                    </div>
+                                </div>
+                                </a>
+</div>
+                    </div>
+                </div>
+                {@/each}
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div>
+
+
+</script>
+
+<script type="text/template" id="SecondKillEdit-template">
+    <div class="configurator" id="SecondKillItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">活动标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" placeholder="请输入活动标题" name="activityName" value="$${Control.ActivityName}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">显示上限：</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" shownum>
+                              
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+<!--秒杀编辑控件-->

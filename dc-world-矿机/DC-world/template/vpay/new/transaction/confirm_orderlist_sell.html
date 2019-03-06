@@ -1,0 +1,255 @@
+<include file="common/main" title="订单" body=""/>
+    <div class="nav_top flex">
+        <a  href="/index.php/Vpay/Transaction/sellOut">
+            <i></i>
+        </a>
+        <div class="flex1">
+            订单
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="xpay_m">
+        <ul>
+            <a href="/index.php/Vpay/Transaction/unOrderListSell">
+                <li <if condition="$src eq 1">class="active8"</if>>
+                    未完成
+                </li>
+            </a>
+            <a href="/index.php/Vpay/Transaction/confirmOrderListSell">
+                <li <if condition="$src eq 2">class="active8"</if>>
+                    进行中
+                </li>
+            </a>
+            <a href="/index.php/Vpay/Transaction/completeOrderListSell">
+                <li <if condition="$src eq 3">class="active8"</if>>
+                    已完成
+                </li>
+            </a>
+        </ul>
+    </div>
+    <div style="height: 0.1rem;"></div>
+    <div class="pay_list" id="tpls">
+    <script id="tpl" type="text/html">
+        <ul>
+            {{each data as log i}}
+            <li class="flex" ng-repeat="log in logs">
+                <div>
+                    {{if log.profilephoto}}
+                    <img src="{{log.profilephoto}}" style="width: 100%;height: 100%;border-radius: 50%">
+                    {{else}}
+                    <img src="__PUBLIC__/images/shezhi_icon_head.png">
+                    {{/if}}
+                </div>
+                <div class="flex1">
+                    <label>
+                        {{log.seller}}
+                        {{if log.status == 2 || log.status == 3}}
+                        <button id="tips" ng-if="log.status == 2 || log.status == 3" style="display: inline-block;background-color: #00c900;color: white;" onclick="sellBankDetail({{log.id}})">
+                            银行卡信息
+                        </button>
+                        {{/if}}
+                    </label>
+                    <p>
+                        时间：{{log.createTime}}
+                    </p>
+                </div>
+                <div style="width: 0.7rem;overflow: hidden">
+                    <label>{{log.entrustnum}}</label>
+                    <!--<button ng-if="log.status == 3 && log.type == 2" style="background: grey;">
+                        等待确认
+                    </button>-->
+                    {{if log.status == 3 && log.type == 1}}
+                    <button ng-if="log.status == 3 && log.type == 1" onclick="confirm_cashin_sell({{log.id}})">
+                        确认收款
+                    </button>
+                    {{/if}}
+                    {{if log.status == 3 && log.type == 2}}
+                    <button ng-if="log.status == 3 && log.type == 2" onclick="confirm_cashin({{log.id}})">
+                        确认收款
+                    </button>
+                    {{/if}}
+                    {{if log.status == 2 && log.type == 1}}
+                    <button ng-if="log.status == 2 && log.type == 1" style="background: grey">
+                        等待确认
+                    </button>
+                    {{/if}}
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    </div>
+    </div>
+</body>
+
+    <script>
+
+            // 当前页数
+            p = 0;
+            // 加载完毕标志
+            endflg = 0;
+            // 防止重复加载
+            busy = false;
+            // 存放数据
+            logs = [];
+            // 请求数据方法
+            loadMore = function(){
+
+                if(endflg == 0){
+                    if(busy){
+                        return false;
+                    }
+                    busy = true;
+                    $.ajax({
+                        method:'POST',
+                        dataType:"json",
+                        data:{
+                            "p" : p
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Transaction/confirmOrderListSell?p="+p,
+                        success: function (data) {
+                            busy = false;
+                            if(data.data != '' && data.data != null){
+                                if(p > 0) {
+                                    layer.msg("正在加载...", {time: 500});
+                                }
+                            } else {
+                                layer.msg("已经全部加载完了...", {time:500});
+                                endflg = 1;
+                                return false;
+                            }
+                            p++;
+                            if(data.code == -1){
+                                layer.msg(data.msg,{time:1500})
+                            }else{
+                                if(data.data == null){
+                                    layer.msg(data.msg,{time:1500});
+                                } else {
+                                    // 组织数据
+                                    var html = template('tpl',data);
+                                    document.getElementById("tpls").innerHTML = html;
+                                }
+                            }
+                    }, error: function (result) {
+                        }
+                    });
+                }else{
+                    layer.msg("已经全部加载完了...", {time:500});
+                }
+            };
+            // 进页面先加载一次数据
+            loadMore();
+
+            $(window).scroll(function(){
+                var scrollTop = $(this).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(this).height();
+                if(scrollTop + windowHeight == scrollHeight){
+                    loadMore();
+                }
+            });
+
+            //确认卖出收款
+            confirm_cashin_sell=function (id) {
+                layer.confirm('确认收款？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        method:'POST',
+                        dataType:"json",
+                        data:{
+                            id : id
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Transaction/confirm_cashin_sell",
+                        success: function (data) {
+                            if(data.code==0){
+                                layer.msg("已确认收款！");
+                                window.location.href="/index.php/Vpay/Transaction/completeOrderListSell";
+                            }else {
+                                layer.msg(data.msg)
+                            }
+                        }, error: function (result) {
+
+                        }
+                    });
+                }, function() {
+                    layer.msg('已取消');
+                })
+            }
+
+            //确认收款
+            confirm_cashin=function (id) {
+                layer.confirm('确认收款？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        method:'POST',
+                        dataType:"json",
+                        data:{
+                            id : id
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Transaction/confirm_cashin",
+                        success: function (data) {
+                            if(data.code==0){
+                                layer.msg("已确认收款！");
+                                window.location.href="/index.php/Vpay/Transaction/completeOrderListSell";
+                            }else {
+                                layer.msg(data.msg)
+                            }
+                        }, error: function (result) {
+
+                        }
+                    });
+                }, function() {
+                    layer.msg('已取消');
+                })
+            }
+
+            //查看银行卡信息
+            sellBankDetail=function (id) {
+                $.ajax({
+                    method:'POST',
+                    dataType:"json",
+                    data:{
+                        id : id
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    url: "/index.php/Vpay/Transaction/sellBankDetail",
+                    success: function (data) {
+                    if(data.code==0){
+                        var data=data.data;
+                        layer.tips('<div style="background-color: #0ce1c2;">' +
+                                '<div style="text-align: left"><label style="width: 100px;">uid:<label>'+data.id+'</div>'+
+                                '<div style="text-align: left"><label style="width: 100px;">姓名:<label>'+data.realName+'</div>' +
+                                '<div style="text-align: left">手机号:'+data.account+'</div>' +
+                                '<div style="text-align: left">银行名称:'+data.bankName+'</div>' +
+                                '<div style="text-align: left">银行卡号:'+data.no+'</div></div>', '#tips', {tips: [3,'#0ce1c2']});
+                        /* layer.open({
+                         type: 1,
+                         shadeClose: true,
+                         title: false, //不显示标题
+                         area: ['200px', '50%'],
+                         content: '<div style="background-color: #0ce1c2"><div style="text-align: left"><label style="width: 100px;">姓名:<label>'+data.realName+'</div>' +
+                         '<div style="text-align: left">银行名称:'+data.bankName+'</div>' +
+                         '<div style="text-align: left">银行卡号:'+data.no+'</div></div>',
+                         cancel: function(){
+
+                         }
+                         });*/
+                    }else {
+                        layer.msg(data.msg)
+                    }
+                    }, error: function (result) {
+
+                    }
+                });
+
+            }
+
+    </script>

@@ -1,0 +1,113 @@
+﻿
+div.appmsg_edit_mask {
+    top: auto;
+    bottom: -10px;
+    height: 40px;
+    line-height: 40px;
+    background: rgba(0,0,0,0.5) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000',endcolorstr = '#80000000');
+    text-align: right;
+    float: left;
+    width: 100%;
+    position: absolute;
+}
+
+.icon20_common.sort_up_white {
+    background: url(/images/base_z36f5e3.png) 0 -4804px no-repeat;
+    float: left;
+    margin-top: 10px;
+}
+
+.icon20_common.sort_down_white {
+    background: url(/images/base_z36f5e3.png) 0 -4828px no-repeat;
+    float: left;
+    margin-top: 10px;
+}
+
+.icon20_common.del_media_white {
+    background: url(/images/base_z36f5e3.png) 0 -4876px no-repeat;
+    float: left;
+    margin-top: 10px;
+}
+
+.icon20_common {
+    width: 27%;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 100px;
+    overflow: hidden;
+}
+
+a.icon20_common {
+    margin-left: 6%;
+    /*margin-right: 8px;*/
+    text-align: right;
+}
+.js_readonly {
+    display: none;
+}
+#tabContent2 .items .item:hover .appmsg_edit_mask {
+    display: block;
+}
+.show-border {
+    border: 2px solid #43b548;
+    border-bottom: 2px solid #43b548 !important;
+}
+.unclick {
+    color: #e5e5e5;
+}
+
+
+.fileupload-new {
+    float: left;
+    width: 110px;
+    height: 110px;
+    position: relative;
+    margin-right: 10px;
+    background: url(/images/add-img.png) no-repeat center center;
+}
+
+.btn-del, .removebtn, .btn-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    color: #ff0700;
+}
+    .btn-del .icon {
+       font-size: 18px;
+    }
+
+
+.file-act-bar {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28px;
+    line-height: 28px;
+    background-color: #fff;
+}
+
+    .file-act-bar .btn-prev, .file-act-bar .btn-next {
+        color: #497cd4;
+        vertical-align: middle;
+        display: inline-block;
+        width: 32px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .file-act-bar .btn-next {
+        color: #497cd4;
+    }
+
+.fileupload-new .imgclass {
+   border:none;
+}

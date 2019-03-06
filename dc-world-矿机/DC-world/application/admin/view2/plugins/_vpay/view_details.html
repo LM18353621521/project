@@ -1,0 +1,431 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <if condition="$type eq 1"><h3>VPAY - 余额明细</h3><h5>余额明细</h5></if>
+                <if condition="$type eq 2"><h3>VPAY - 积分明细</h3><h5>积分明细</h5></if>
+                <if condition="$type eq 3"><h3>VPAY - 释放明细</h3><h5>释放明细</h5></if>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div>
+            <a href="{:url('World.World/view_details',['id' => $id,'type' => 1])}"><button type="button" style="width: 80px;line-height: 25px;text-align: center;font-weight: bold;<if condition="$type eq 1">color: red;</if>">余额明细</button></a>
+            <a href="{:url('World.World/view_details',['id' => $id,'type' => 2])}"><button type="button" style="width: 80px;line-height: 25px;text-align: center;font-weight: bold;<if condition="$type eq 2">color: red;</if>">积分明细</button></a>
+            <a href="{:url('World.World/view_details',['id' => $id,'type' => 3])}"><button type="button" style="width: 80px;line-height: 25px;text-align: center;font-weight: bold;<if condition="$type eq 3">color: red;</if>">释放明细</button></a>
+ 
+    </div>
+    <input type="hidden" id="tabName" <if condition="$type eq 1">value="balancelog"</if> <if condition="$type eq 2">value="integrallog"</if> <if condition="$type eq 3">value="releaselog"</if> >
+
+    <if condition="$type eq 1">
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>余额明细</h3>
+                <h5>(共{$count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">编号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">账号</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">用户</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">转入/转出人</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">业务类型</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">数额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更前</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更后</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">变更时间</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">{$v.id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.account}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.nickname}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.operator}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.type_str}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.num}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.before}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.after}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.createTime}</div>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                    <a class="btn red"   data-url="" data-id="{$vo.link_id}"  onClick="delfun({$v.id},this)" ><i class="fa fa-trash-o"></i>删除</a>
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+    </if>
+    
+    <if condition="$type eq 2">
+        <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>积分明细</h3>
+                <h5>(共{$count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">编号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">账号</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">用户</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">转入/转出人</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">业务类型</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">数额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更前</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">变更后</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">变更时间</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">{$v.id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.account}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.nickname}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.operator}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.type_str}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.num}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.before}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.after}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.createTime}</div>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                    <a class="btn red"   data-url="" data-id="{$vo.link_id}"  onClick="delfun({$v.id},this)" ><i class="fa fa-trash-o"></i>删除</a>
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+    </if>
+
+    <if condition="$type eq 3">
+        <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>释放明细</h3>
+                <h5>(共{$count}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 50px;" class="">编号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">账号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">转出/转入账号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">卖出/买入账号</div>
+                        </th>
+                        <!-- <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 90px;" class="">兑换账号</div>
+                        </th> -->
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">用户</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">业务类型</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">业务类型</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">数额</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 200px;" class="">变更时间</div>
+                        </th>
+                        <th align="center" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <volist name="list" id="v">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 50px;">{$v.id}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 150px;">{$v.saccount}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 180px;">{$v.detail.account} 转 {$v.detail.toUserAccount}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 180px;">{$v.detail.seller} 卖 {$v.detail.buyer}</div>
+          <!--                   <td align="center" class="">
+                                <div style="text-align: center; width: 90px;">{$v.detail.m_account}</div>
+                            </td> -->
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.sname}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.type_str}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">
+                                    <if condition="$v[status]">
+                                       团队奖释放
+                                    <else />
+                                       流通释放
+                                    </if>
+                                </div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$v.num}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 200px;">{$v.createTime}</div>
+                            </td>
+                            <td align="center" class="handle">
+                                <div style="text-align: center; width: 170px; max-width:170px;">
+                                    <a class="btn red"   data-url="" data-id="{$vo.link_id}"  onClick="delfun({$v.id},this)" ><i class="fa fa-trash-o"></i>删除</a>
+                                </div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        {$page} </div>
+    </if>
+</div>
+<script>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#ctime').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#ctime').val('');
+        }
+        return true;
+    }
+    function delfun(id,obj){
+        var tabName=$('#tabName').val();
+      layer.confirm('确认删除？', {
+                btn: ['确定','取消'] //按钮
+              }, function(){
+                da = {
+                    'tabName' : tabName,
+                    'idName' : 'id',
+                    'id' : id,
+                };
+                // 确定
+                $.ajax({
+                  type : 'post',
+                  url : "{:url('Systems.Admin/delDate')}",
+                  data : da,
+                  dataType : 'json',
+                  success : function(data){
+                    layer.closeAll();
+                    if(data.status==1){
+                      layer.msg(data.msg, {icon: 1});
+                      $(obj).parent().parent().parent('tr').remove();
+                    }else{
+                      layer.msg(data.msg, {icon: 2,time: 2000});
+                    }
+                  }
+                })
+              }, function(index){
+                layer.close(index);
+              }
+      );
+    }
+</script>
+</body>
+</html>

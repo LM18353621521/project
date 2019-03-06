@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 收益汇总</title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">收益汇总</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="pmgeyt">
+            <div class="weui-cells tr oveterm erom">
+                <div class="weui-celly">
+                    <div class="weui-cell__hd">时间 </div>
+                    <foreach name="arr" item="a" key="b">
+                    <div class="weui-cell__hd">{$a}</div>
+                    </foreach>
+                </div>
+                <div class="weui-celly">
+                    <div class="weui-cell__hd">直推收益提成 </div>
+                    <foreach name="arr" item="a" key="b">
+                    <div class="weui-cell__hd">
+                     <foreach name="list" item="l">
+                    <if condition="$l['createTime2'] eq $a">{$l['snum']}</if>
+                    </foreach>
+                   </div>
+                    </foreach>
+                    
+                </div>
+                <div class="weui-celly">
+                    <div class="weui-cell__hd">收益兑换积分</div>
+                    <foreach name="arr" item="a" key="b">
+                    <div class="weui-cell__hd">
+                     <foreach name="list2" item="li">
+                    <if condition="$li['createTime2'] eq $a">{$li['snum']}</if>
+                    </foreach>
+
+                    </div>
+                    </foreach>
+
+                   
+                </div>
+                <div class="weui-celly">
+                    <div class="weui-cell__hd">寄售收益</div>
+                    <foreach name="arr" item="a" key="b">
+                     <foreach name="list3" item="la">
+                    <div class="weui-cell__hd">
+                    <if condition="$la['createTime2'] eq $a">{$la['snum']}</if>
+                    </div>
+                    </foreach>
+                   
+                    </foreach>
+                    
+                </div>
+            </div>
+        </div>
+  
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+
+</script>
+
+</body>
+</html>

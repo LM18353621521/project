@@ -1,0 +1,45 @@
+﻿
+
+<!--富文本编辑控件-->
+<script type="text/template" id="RichEditControl">
+    <div class="box box-element ui-draggable" data-type="RichEditControl" data-id="$${Model.ID}" style="display: block; }">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">富文本</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-fulltext">$${DisplayText}</div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="RichEditPhoneControl">
+
+
+    <div class="view">
+        <div class="diy-fulltext">$${DisplayText}</div>
+    </div>
+
+</script>
+
+<script type="text/template" id="RichEditEdit-template">
+    <div class="configurator" id="RichEditItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <form>
+                    <textarea name="content" class="form-control kindeditor" style="height:600px;"></textarea>
+                    <button type="button" class="btn btn-primary mt10" id="gethtml">确定</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+<!--富文本编辑控件-->

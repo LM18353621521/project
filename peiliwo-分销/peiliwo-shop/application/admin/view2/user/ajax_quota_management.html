@@ -1,0 +1,105 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <tbody>
+        <volist name="data_list" id="list">
+            <tr data-id="{$list['user_id']}">
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">{$list.id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">{$list.user_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$list.nickname}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$list.order_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">VIP{$list.level_id-2}</div>
+                </td>
+                <td align="left" class="">
+
+                        <if condition="$list.status eq 0">
+                            <div style="text-align: center; width: 100px; color: red">未激活</div>
+                            <elseif condition="$list.status eq 1"/>
+                            <div style="text-align: center; width: 100px; color: green">已激活</div>
+                            <elseif condition="$list.status eq 4"/>
+                            <div style="text-align: center; width: 100px; color: black">已禁用</div>
+                            <else />
+                            <div style="text-align: center; width: 100px; color: #565353">已赠送</div>
+                        </if>
+
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 150px;">{$list.create_time|date='Y-m-d H:i',###}</div>
+                </td>
+
+
+                <td align="center" class="handle">
+                    <div style="text-align: center; width: 170px; max-width:250px;">
+                        <!--<a class="btn blue" href="{:U('Admin/user/detail',array('id'=>$list['user_id']))}"><i class="fa fa-pencil-square-o"></i>详情</a>-->
+                        <if condition="$list.status eq 0">
+                            <a class="btn green"  href="javascript:void(0)" data-id="{$list['id']}" data-type="status" data-text="确认执行该操作吗？"  data-status="1"  data-url="{:U('Admin/user/card_operation')}" onClick="delfun(this)"><i class="fa fa-check-circle-o"></i>激活</a>
+                            <a class="btn red"  href="javascript:void(0)" data-id="{$list['id']}" data-type="status" data-text="确认执行该操作吗？"   data-status="4"    data-url="{:U('Admin/user/card_operation')}" onClick="delfun(this)"><i class="fa fa-times-circle"></i>禁用</a>
+
+                        </if>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+{$page}
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+    function delfun(obj) {
+        // 删除按钮
+        text = $(obj).attr('data-text');
+        layer.confirm(text, {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            type = $(obj).attr('data-type');
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id'),type:$(obj).attr('data-type'),status:$(obj).attr('data-status')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {icon: 1,time:1500},function(){
+                            if(type=='del'){
+                                $(obj).parent().parent().parent().remove();
+                            }else{
+                                window.location.reload();
+                            }
+
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+</script>

@@ -1,0 +1,181 @@
+<include file="public/layout" />
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<div class="subject">
+				<h3>工程师管理</h3>
+				<h5>系统工程师索引与管理</h5>
+			</div>
+		</div>
+	</div>
+	<!-- 操作说明 -->
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		<ul>
+			<li>"状态"栏可控制某工程师的操作权限</li>
+			<li>"删除"栏，删除后该会员将失去工程师的权限并与隶属门店解除关系</li>
+		</ul>
+	</div>
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>工程师列表</h3>
+				<h5></h5>
+			</div>
+			<a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
+			<form class="navbar-form form-inline"  method="post" name="search-form2" id="search-form2">
+				<div class="sDiv">
+					<div class="sDiv2">
+						<select name="status" class="select">
+							<option value="">所有状态</option>
+							<option value="1">正常</option>
+							<option value="0">禁用</option>
+						</select>
+					</div>
+					<div class="sDiv2">
+						<input type="text" size="30" name="username" class="qsbox" placeholder="昵称">
+					</div>
+					<div class="sDiv2">
+						<input type="text" size="30" name="keyword" class="qsbox" placeholder="搜索姓名/手机">
+					</div>
+					<div class="sDiv2">
+						<input type="button" onClick="ajax_get_table('search-form2',1)"  class="btn" value="搜索">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col0" >
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th align="left" abbr="order_sn" axis="col3" class="">
+							<div style="text-align: left; width: 100px;" class="">会员昵称</div>
+						</th>
+						<th align="left" abbr="order_sn" axis="col3" class="">
+							<div style="text-align: left; width: 100px;" class="">归属门店</div>
+						</th>
+						<th align="left" abbr="consignee" axis="col4" class="">
+							<div style="text-align: left; width: 120px;" class="">姓名</div>
+						</th>
+						<th align="left" abbr="article_show" axis="col5" class="">
+							<div style="text-align: left; width: 200px;" class="">手机号码</div>
+						</th>
+						<!--<th align="center" abbr="article_time" axis="col6" class="">-->
+							<!--<div style="text-align: center; width: 120px;" class="">申请时间</div>-->
+						<!--</th>-->
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class=""> 状态</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 160px;" class=""> 操作</div>
+						</th>
+						<th style="width:100%" axis="col7">
+							<div></div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="tDiv">
+			<div class="tDiv2">
+				<div class="fbutton">
+                    <a href="{:U('supplier/engineer_add')}">
+                        <div class="add" title="添加工程师">
+                            <span><i class="fa fa-plus"></i>添加工程师</span>
+                        </div>
+				    </a>
+                </div>
+                <div class="fbutton">
+                    <a onclick="send_message();">
+                        <div class="add" title="发送站内信">
+                            <span><i class="fa fa-send"></i>发送站内信</span>
+                        </div>
+                    </a>
+                </div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('Admin/Supplier.Supplier/engineerHandle')}">
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		ajax_get_table('search-form2',1);
+	});
+
+	// ajax 抓取页面
+	function ajax_get_table(tab,page){
+		cur_page = page; //当前页面 保存为全局变量
+		$.ajax({
+			type : "POST",
+			url:"/index.php/Admin/Supplier.Supplier/ajaxengineer_list/p/"+page,//+tab,
+			data : $('#'+tab).serialize(),// 你的formid
+			success: function(data){
+			//	console.log(data);
+				$("#flexigrid").html('');
+				$("#flexigrid").append(data);
+
+				// 表格行点击选中切换
+				$('#flexigrid > table>tbody >tr').click(function(){
+					$(this).toggleClass('trSelected');
+				});
+
+
+			}
+		});
+	}
+    /**
+     * 回调函数
+     */
+    function call_back(v) {
+        layer.closeAll();
+        if (v == 1) {
+            layer.msg('发送成功',{icon:1});
+        } else {
+            layer.msg('发送失败',{icon:2});
+        }
+    }
+    //发送站内信
+    function send_message()
+    {
+        var obj = $('.trSelected');
+        var url = "{:U('Admin/Supplier.Supplier/sendMessage')}";
+        if(obj.length > 0){
+            var check_val = [];
+            obj.each(function(){
+                check_val.push($(this).attr('data-id'));
+            });
+            url += "?user_id_array="+check_val;
+            layer.open({
+                type: 2,
+                title: '站内信',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['580px', '480px'],
+                content: url
+            });
+        }else{
+            layer.msg('请选择会员',{icon:2});
+        }
+
+    }
+</script>
+</body>
+</html>

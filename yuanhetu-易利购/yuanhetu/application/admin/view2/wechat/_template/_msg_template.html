@@ -1,0 +1,83 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>消息配置模板 - 编辑模板</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="addEditSmsTemplate" method="post">
+        <div class="ncap-form-default">
+           
+            <dl class="row">
+                <dt class="tit">
+                    <label for="type"><em>*</em>发送场景</label>
+                </dt>
+                <dd class="opt">
+                    <if condition="$type_id gt 0 ">
+                        {$send_name}
+                        <input type="hidden" value="{$type_id}" name="type" id="type" class="form-control" style="width:250px;"/>
+                        <else />
+                        <select  class="small form-control" name="type" id="type" onblur="changeContent(this.value);">
+                            <option value="-1">请选择使用场景</option>
+                            <foreach name="type" item="v" key="k">
+                                <option value="{$k}" <if condition=" $k eq $smsTpl.type ">selected="selected"</if>>{$v[0]}</option>
+                            </foreach>
+                        </select>
+                        <span class="err" id="err_type" style="display:none;">请选择使用场景</span>
+                    </if>
+                    <span class="err"></span>
+                    <p class="notic">使用场景</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="content"><em>*</em>消息内容</label>
+                </dt>
+                <dd class="opt">
+                    <textarea id="content" name="content" class="tarea" rows="6" readonly="readonly">{$smsTpl.content}</textarea>
+                    <span class="err" id="err_content" style="display:none;">消息内容不能为空</span>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkForm();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+        <input type="hidden" name="tpl_id" value="{$smsTpl.tpl_id}"></label>
+    </form>
+</div>
+<script type="text/javascript">
+    function changeContent(scene){
+        if(scene == -1){
+            $("#addEditSmsTemplate").find("textarea[name='content']").val('');
+            return;
+        }
+        var scenes = <?php echo json_encode($type); ?>;//{$type} //""<php>echo json_encode($type); </php>;
+        var txt = scenes[scene][1];
+
+        $("#addEditSmsTemplate").find("textarea[name='content']").val(txt);
+    }
+    // 判断输入框是否为空
+    function checkForm(){ 
+        var tplContent = $("#addEditSmsTemplate").find("textarea[name='content']").val();			//模板内容
+
+        var sendscene = $("#type option:selected").val();
+
+        if($.trim(tplContent) == '')
+        {
+            $("#err_content").show();
+            return false;
+        }
+
+        if(sendscene == -1){
+            $("#err_type").show();
+            return false;
+        }
+        $('#addEditSmsTemplate').submit();
+    }
+</script>
+</body>
+</html>

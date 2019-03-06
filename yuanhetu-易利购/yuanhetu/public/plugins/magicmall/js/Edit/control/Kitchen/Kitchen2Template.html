@@ -1,0 +1,166 @@
+﻿
+
+<!--厨仓2-->
+<script type="text/template" id="Kitchen2Control">
+    <div class="box box-element ui-draggable" data-type="Kitchen2Control" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">厨仓2</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+        <div class="view">
+            <div class="diy-showcase">
+                {@each Model.Item as m, k}
+                <div class="big" data-id="$${m.ID}">
+                    <a href="javascript:void(0)" class="LinkTo" data-id="$${m.ID}"> <img src="$${m.Img}" /></a>
+                </div>
+                {@/each}
+            </div>
+        </div>
+
+
+    </div>
+
+</script>
+
+<script type="text/template" id="Kitchen2PhoneControl">
+    <div class="view">
+        <div class="diy-showcase">
+            {@each Model.Item as m, k}
+            <div class="big" data-id="$${m.ID}">
+                <a href="$${m.Link}" class="LinkTo" data-id="$${m.ID}"> <img src="$${m.Img}" /></a>
+            </div>
+            {@/each}
+        </div>
+    </div>
+</script>
+
+
+<script type="text/template" id="Kitchen2Edit-template">
+
+    <!--标题设置-->
+
+    <div class="configurator" id="Kitchen2ItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+
+
+                <ul class="diy-media-list ui-sortable" id="ItemList">
+                    {@each Model.Item as m, k}
+                    <li id="$${Model.ID}" class="Item" style="" data-id="$${m.ID}">
+                        <header class="acts-header">
+                            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+
+                        </header>
+                        <div class="media">
+                            <div class="media-left">
+                                <label class="MyImageBox uploading" style="display:none"><img src="/images/uploading.gif" /></label>
+                                {@if m.Img!=null && m.Img!=""}
+                                <label class="addbtn openFile" style="display:none"></label>
+                                <label class="MyImageBox openFile image"><img src="$${m.Img}" width="78" height="78" /></label>
+                                {@else}
+                                <label class="addbtn openFile"></label>
+                                <label class="MyImageBox openFile image" style="display:none"><img src="" width="78" height="78" /></label>
+                                {@/if}
+
+                            </div>
+                            <div class="media-body">
+                                <div class="form-horizontal">
+
+
+                                    {@if m.DIVLink!="1"}
+                                    <div class="form-group selectInfo">
+                                        {@else}
+                                        <div class="form-group selectInfo" style="display:none">
+                                            {@/if}
+
+                                            <label class="col-sm-2">链接地址：</label>
+
+
+                                            <div class="col-sm-6">
+                                                <div class="dropdown dropdown-hover">
+                                                    <span class="form-control text" data-toggle="dropdown">
+                                                        {@if m.DisplayText!=null && m.DisplayText!=""}
+                                                        <span class="text-info">$${m.DisplayText}</span>
+                                                        {@else}
+                                                        <span class="text-info">选择链接地址</span>
+                                                        {@/if}
+
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="javascript:void(0)" data-Url="-3" data-toggle="modal" data-target="#ModalGoods">选择商品</a></li>
+                                                        <li><a href="javascript:void(0)" data-Url="-4" data-toggle="modal" data-target="#ModalCategory">选择分类</a></li>
+                                                        {@each DataModel.PageNavigate as pn, n}
+                                                        <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                                        {@/each}
+                                                        <li><a href="javascript:void(0)" data-Url="-2" data-toggle="modal" data-target="#ModalDIVPage">自定义页面</a></li>
+                                                        <li><a href="javascript:void(0)" data-Url="-1">自定义链接</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {@if m.DIVLink!="1"}
+                                        <div class="form-group inputInfo" style="display:none">
+                                            {@else}
+                                            <div class="form-group inputInfo">
+                                                {@/if}
+
+                                                <label class="col-sm-2">链接地址：</label>
+                                                <div class="col-sm-6">
+                                                    {@if m.DIVLink!="1"}
+                                                    <input type="text" placeholder="" name="Link" value="" class="form-control">
+                                                    {@else}
+                                                    <input type="text" placeholder="" name="Link" value="$${m.Link}" class="form-control">
+                                                    {@/if}
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="dropdown dropdown-hover">
+                                                        <span class="form-control text" data-toggle="dropdown">
+                                                           
+                                                            <span class="text-info">修改</span>
+                                                           
+                                                            <span class="caret"></span>
+                                                        </span>
+
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="javascript:void(0)" data-Url="-3" data-toggle="modal" data-target="#ModalGoods">选择商品</a></li>
+                                                            <li><a href="javascript:void(0)" data-Url="-4" data-toggle="modal" data-target="#ModalCategory">选择分类</a></li>
+                                                            {@each DataModel.PageNavigate as pn, n}
+                                                            <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                                            {@/each}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2">建议尺寸：</label>
+                                                <div class="col-sm-6">
+
+                                                    <span class="form-control text text-muted"> 建议300*300</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                    </li>
+
+                    {@/each}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+
+<!--厨仓-->

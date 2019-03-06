@@ -1,0 +1,20 @@
+<ul>
+    <foreach name="list" item="v" key="k">
+        <li>
+            <span class="tree_span" data-tab="{$v[user_level]}" data-id="{$v[user_id]}">
+                 <!-- <i class="icon-folder-open"></i> -->
+                 ID：{$v['user_id']}；
+                账号：
+                 <if condition="$v['nickname'] neq null">
+                     {$v['mobile']}
+                     <elseif condition="$v['mobile'] neq null"/>
+                     {$v['mobile']}
+                     <elseif condition="$v['email'] neq null"/>
+                     {$v['email']}
+                 </if>；
+                  直推人数：{$v['num1']}；
+                  伞下人数：{$v['num2']}
+             </span>
+        </li>
+    </foreach>
+</ul>

@@ -1,0 +1,66 @@
+<include file="common/head" title="登录" body=""/>
+<style>
+    .body_bg{width: 100%;height:100%;z-index: -1;background: url(__PUBLIC__/images/login_bg.png) no-repeat;background-position: center;background-size: cover;position: fixed;top: 0;bottom: 0;}
+    .body_bg img{width: 100%;}
+</style>
+<div class="body_bg"><img src="__PUBLIC__/images/login_bg.png" alt=""></div>
+<div class="login-container">
+
+    <div class="formbox">
+        <form name="formlogin" id="loginForm" class="formlogin" method="post">
+            <div class="input_box">
+                <span class="iconfont icon-dianhua"></span>
+                <input type="text" name="account" class="username" placeholder="请输入手机号" autocomplete="off" onInput ="returnNum(this)" maxlength="11">
+            </div>
+            <div class="input_box">
+                <span class="iconfont icon-mima"></span>
+                <input type="password" name="password" class="password" placeholder="请输入密码" oncontextmenu="return false" onpaste="return false">
+            </div>
+            <div class="inde-btn">
+                <button id="submit" type="button">登录</button>
+            </div>
+            <div class="extra_btn">
+                <a href="{:U('Register/register')}">立即注册</a>
+                <a href="{:U('Register/forgetPasswd')}">忘记密码</a>
+            </div>
+        </form>
+    </div>
+    <if condition="$config.app_status">
+    <div style="text-align: right;width: 88.8%;margin-top: 0.5rem;">
+        <a style="color: #00a2d4;text-decoration: underline" href="{$config.url}">我已有账号，直接下载APP</a>
+    </div>
+    </if>
+</div>
+</body>
+
+<script>
+    function returnNum(_this) {
+        _this.value = _this.value.replace(/[^0-9]/g, '');
+    }
+</script>
+<script>
+    $("#submit").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "{:U('Login/login')}",
+            data: {
+                "account" : $("input[name='account']").val(),
+                "password" : $("input[name='password']").val()
+            },
+            dataType: "json",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(data){
+                if (data.code == -1) {
+                    layer.msg(data.msg, {time: 1000})
+                } else if (data.code == 0) {
+                    layer.msg(data.data.msg, {time: 1000})
+                    setTimeout(function () {
+                        window.location.href = '/index.php/Vpay/Index/index'
+                    }, 1000)
+                }
+            }
+        });
+    });
+
+</script>
+

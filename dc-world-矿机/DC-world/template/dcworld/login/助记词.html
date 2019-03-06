@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 助记词 </title>
+	<style>
+		.weui-flex {
+			    flex-wrap: wrap;
+			    background-color: #fff;
+		}
+		.weui-flex .weui-flex__item {
+			width: 16.6%;
+			flex: auto;
+			text-align: center;
+			   padding: .2rem;
+    		box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">助记词</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells__title fs24 text-gray">
+            <p class="mb10 fs34 fw500" style="color: #282c37;">请备份助记词</p>
+            <p>请抄下您的钱包助记词，助记词可用于或者找回密码，钱包不保存助记词信息，一旦丢失，您将无法找回！</p>
+        </div>
+        
+       	<div class="weui-flex">
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		  <div class="weui-flex__item">weui</div>
+		</div>
+        
+       
+        <div class="weui-btn-area mt20">
+            <a href="兑换.html" class="weui-btn weui-btn_primary">确定</a>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<style>
+    .sel_page {
+
+        position: fixed;
+        top: 5px;
+        right: 10px;
+    }
+    .sel_page select {
+        width: 100px;
+        height: 30px;
+        border-radius: 3px;
+        background-color: #EEEEEE;
+    }
+</style>
+<!--<div class="sel_page">-->
+    <!--<select name="" id="">-->
+        <!--<option value="首页">首页</option>-->
+        <!--<option value="c沙滩">c沙滩</option>-->
+        <!--<option value="DC世界">DC世界</option>-->
+        <!--<option value="DC转账">DC转账</option>-->
+        <!--<option value="个人中心">个人中心</option>-->
+        <!--<option value="买家付款">买家付款</option>-->
+        <!--<option value="买家确认放款">买家确认放款</option>-->
+        <!--<option value="交易中心">交易中心</option>-->
+        <!--<option value="交易成功">交易成功</option>-->
+        <!--<option value="修改密码">修改密码</option>-->
+        <!--<option value="修改支付密码">修改支付密码</option>-->
+        <!--<option value="兑换DC">兑换DC</option>-->
+        <!--<option value="创建钱包">创建钱包</option>-->
+        <!--<option value="安全设置">安全设置</option>-->
+        <!--<option value="微信账户信息">微信账户信息</option>-->
+        <!--<option value="我的矿机">我的矿机</option>-->
+        <!--<option value="我的矿池">我的矿池</option>-->
+        <!--<option value="我的资产">我的资产</option>-->
+        <!--<option value="我的钱包">我的钱包</option>-->
+        <!--<option value="我要买入">我要买入</option>-->
+        <!--<option value="我的卖出">我的卖出</option>-->
+        <!--<option value="支付宝账户信息">支付宝账户信息</option>-->
+        <!--<option value="收款码">收款码</option>-->
+        <!--<option value="添加资产">添加资产</option>-->
+        <!--<option value="矿场">矿场</option>-->
+        <!--<option value="矿机交易">矿机交易</option>-->
+        <!--<option value="确认打款">确认打款</option>-->
+        <!--<option value="等待放款">等待放款</option>-->
+        <!--<option value="订单取消">订单取消</option>-->
+        <!--<option value="贝壳记录">贝壳记录</option>-->
+        <!--<option value="账户列表">账户列表</option>-->
+        <!--<option value="邀请分享">邀请分享</option>-->
+        <!--<option value="银行卡信息">银行卡信息</option>-->
+    <!--</select>-->
+<!--</div>-->
+<script>
+
+    $(".sel_page select option").each(function(index,e){
+
+        if($(e).val() == decodeURI(window.location.search.split("=")[1])){
+           $(e).attr("selected","selected")
+        }
+    })
+    $(".sel_page select").change(function () {
+        window.location.href='http://192.168.5.59:8080/pages/'+$(this).val()+'.html?sel='+$(this).val();
+
+
+    })
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+</html>

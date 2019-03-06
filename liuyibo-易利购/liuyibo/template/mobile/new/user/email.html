@@ -1,0 +1,87 @@
+<include file="public/header" title="银行卡信息" body=""/>
+<include file="public/header_nav" title="银行卡信息"  href="{:U('Mobile/User/userinfo')}"/>
+<style>
+    .fetchcode{
+        background-color: #ec5151;
+        border-radius: 0.128rem;
+        color: white;
+        padding: 0.55467rem 0.21333rem;
+        vertical-align: middle;
+        font-size: 0.59733rem;
+    }
+    #fetchcode{
+        background:#898995;
+        border-radius: 0.128rem;
+        color: white;
+        padding: 0.55467rem 0.21333rem;
+        vertical-align: middle;
+        font-size: 0.59733rem;
+    }
+</style>
+		<div class="loginsingup-input">
+			<form action="{:U('Mobile/User/userinfo')}" method="post">
+                <input type="hidden" name="bank" value="1">
+				<!-- <div class="reset-pwd-title">银行卡信息</div> -->
+				<div class="lsu bk">
+					<span style="float: left;">银行名称:</span>
+					<input type="text" name="bank_code" id="email" value="{$email.bank_code}" placeholder="请输入银行名称" />
+				</div>
+                <div class="lsu bk">
+                    <span style="float: left;">收款账号:</span>
+                    <input type="text" name="bank_num" id="email" value="{$email.bank_num}" placeholder="请输入收款账号" />
+                </div>
+                <div class="lsu bk">
+                    <span style="float: left;">开户名 :</span>
+                    <input type="text" name="bank_name" id="email" value="{$email.bank_name}" placeholder="请输入开户名" />
+                </div>
+				<div class="lsu-submit">
+                    <input type="submit" name="" id="" value="确认修改" />
+				</div>
+			</form>
+		</div>
+<script type="text/javascript">
+    //验证邮箱
+    /*function useremail(email){
+        if(email == ''){
+            layer.open({content:'请输入您的邮箱！',time:3});
+            return false;
+        }else if(checkEmail(email)){
+            $.ajax({
+                type : "GET",
+                url:"/index.php?m=Home&c=Api&a=issetMobileOrEmail",//+tab,
+//			url:"{:U('Mobile/User/comment',array('status'=>$_GET['status']),'')}/is_ajax/1/p/"+page,//+tab,
+                data :{mobile:email},// 你的formid 搜索表单 序列化提交
+                success: function(data)
+                {
+                    if(data == '0')
+                    {
+                        return true;
+                    }else{
+                        layer.open({content:'邮箱已存在！',time:3});
+                        return false;
+                    }
+                }
+            });
+        }else{
+            layer.open({content:'邮箱地址不正确！',time:3});
+            return false;
+        }
+    }
+
+    //提交前验证表单
+    function submitverify(obj){
+        var newemail2 = $.trim($('#email').val());
+        if(newemail2 == ''){
+            layer.open({content:'请输入您的邮箱！',time:3});
+            return false;
+        }
+//                var emailcode = $('#mobile_code').val();
+//                if(emailcode == ''){
+//                    layer.open({content:'验证码不能空！',time:3});
+//                    return false;
+//                }
+        $(obj).onsubmit();
+    }*/
+</script>
+</body>
+</html>

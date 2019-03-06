@@ -1,0 +1,95 @@
+<include file="common/main" title="增加银行卡" body=""/>
+    <input type="hidden" id="type" value="{$type}">
+    <input type="hidden" id="currency" value="{$currency}">
+    <input type="hidden" id="trans_type" value="{$trans_type}">
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                增加银行卡
+            </div>
+            <a  href="javascript:void(0)">
+
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+         <div class="login l_left">
+            <div>
+                <label>
+                    <span class="red">*</span> 持卡人姓名
+                </label>
+                <input type="text" name="realname" placeholder="输入姓名">
+            </div>
+            <div>
+                <label><span class="red">*</span> 银行卡账号</label>
+                <input type="text" name="no" placeholder="输入银行卡账号">
+            </div>
+            <div class="clearfix">
+                <label><span class="red">*</span> 开户行</label>
+                <select id="bankid">
+                    <option value="0">选择开户行</option>
+                    <volist name="banklist" id="vo">
+                        <option value="{$vo.bankid}">{$vo.bankname}</option>
+                    </volist>
+                </select>
+            </div>
+            <div>
+                <label>支行</label>
+                <input type="text" name="branch" placeholder="输入支行">
+            </div>
+        </div>
+        <div class="xz_blank">
+            <div class="mui-checkbox mbtn">
+                <input type="checkbox" name="isDefault" value="">
+            </div>
+            <label>设置成默认银行卡</label>
+        </div>
+
+        <span class="tips" style="color: #FC2B2B;">
+            <span>*</span> 请绑定持卡人本人的银行卡，姓名一经填写不可修改
+        </span>
+        <input type="button" name="" class="login_btn" value="确认" ng-click="addCard()">
+    </body>
+
+        <script type="text/javascript">
+            var app = getApp('myApp', []);
+            app.controller('Ctrl', function ($scope, $http) {
+                $scope.addCard = function (id) {
+                    $http({
+                        method:'POST',
+                        data:{
+                            "realname" : $("input[name='realname']").val(),
+                            "no" : $("input[name='no']").val(),
+                            "bankid" : $("#bankid").val(),
+                            "branch" : $("input[name='branch']").val(),
+                            "isdefault" : $("input[name='isDefault']").is(':checked')
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        },
+                        url: "/index.php/Home/Virtualcurrency/addBankCard"
+                    }).then(function successCallback(response) {
+                        if(response.data.code==0){
+                            layer.msg(response.data.data);
+                            setTimeout(function () {
+                                if($("#trans_type").val()==2){
+                                    window.location.href = "/index.php/Home/Virtualcurrency/sell_order?type="+$("#type").val()+"&currency="+$("#currency").val()+"&trans_type="+$("#trans_type").val();
+                                }else{
+                                    window.location.href = "/index.php/Home/Virtualcurrency/purchase_order?type="+$("#type").val()+"&currency="+$("#currency").val()+"&trans_type="+$("#trans_type").val();
+                                }
+                            }, 1000);
+                        }else {
+                            layer.msg(response.data.msg)
+                        }
+                    }, function errorCallback(response) {
+                        errorHandle(response);
+                    });
+                }
+            });
+        </script>

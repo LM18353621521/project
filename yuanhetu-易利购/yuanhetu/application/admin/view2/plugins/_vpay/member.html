@@ -1,0 +1,282 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>会员中心</h3>
+        <h5>广告索引与管理</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+      <!-- <li>只需要点击半透明广告图片即可更换广告.</li> -->
+      <!-- <li>预览广告所在页面中选择更换你的广告</li>       -->
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>会员列表</h3>
+        <h5>(共{$pager->totalRows}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>	   
+	  <form class="navbar-form form-inline" action="{:U('Plugins.Vpay/member')}" method="get" onsubmit="return check_form();">
+      <div class="sDiv">  
+                    <input type="hidden" name="ctime" id="ctime" value="{$ctime}">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" id="start_time" value="{$start_time}" placeholder="创建时间" class="qsbox">
+                        <input type="button" class="btn" value="创建时间">
+                    </div>           
+      <!--   <div class="sDiv2">
+         <select name="pid" class="form-control">
+              <option value="0">==查看所有==</option>
+              <volist name="ad_position_list" id="item" key="k">
+                <option value="{$item.position_id}">{$item.position_name}</option>
+              </volist>                  
+         </select>
+         <input type="text" name="keywords" class="qsbox" placeholder="请输入广告名称">         
+         <input type="submit" class="btn" value="搜索">
+        </div> -->
+
+          <div class="sDiv2">
+                      <select name="condition" id="condition">
+                          <option value="">--请选择--</option>
+                          <option value="1">账号</option>
+                          <!-- <option value="2">用户</option> -->
+                          <option value="2">ID</option>
+                      </select>
+                  </div>
+                  <div class="sDiv2">
+                      <input type="text" id="search_key" size="30" class="qsbox" name="search_key" placeholder="账号、ID">
+                      <input type="submit" class="btn"  value="搜索">
+                  </div>
+      </div>
+     </form>
+    </div>
+    <div class="hDiv">
+      <div class="hDivBox">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="sign" axis="col0">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: left; width: 50px;" class="">id</div>
+              </th>
+              <th align="center" abbr="article_show" axis="col5" class="">
+                <div style="text-align: center; width: 100px;" class="">账号</div>
+              </th>
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 100px;" class="">昵称</div>
+              </th>
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 100px;" class="">等级</div>
+              </th>
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 100px;" class="">推荐人用户</div>
+              </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 80px;" class="">余额</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width:80px;" class="">积分</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 50px;" class="">购币余额</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 50px;" class="">当天释放</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 50px;" class="">兑换数</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 50px;" class="">是否禁用</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 150px;" class="">创建时间</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 150px;" class="">更新时间</div>
+                </th>
+                <th align="center" axis="col3" >
+                <div style="text-align: center; width: 200px;">操作</div>
+              </th>
+              <th style="width:10%" axis="col7">
+                <div></div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="tDiv">
+      <div class="tDiv2">
+        <div class="fbutton"><a href="{:U('Plugins.Vpay/add_member')}"><div class="add" title="新增会员"><span><i class="fa fa-plus"></i>新增会员</span></div></a></div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        <table>
+          <tbody>
+            <foreach name="list" item="vo" key="k" >
+              <tr>
+                <td class="sign">
+                  <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 50px;">{$vo[id]}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 100px;">{$vo.account}</div>
+                </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 100px;">{$vo.nickname}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 100px;">{$vo.level_name}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 100px;">{$vo.parentAccount}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 80px;">{$vo.balance}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 80px;">{$vo.integral}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 50px;">{$vo.buy_balance}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 50px;">{$vo.vip_balance}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 50px;">{$vo.dh}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 50px;">
+                          <if condition="$vo[isDisable] eq 1">未启用</if>
+                          <if condition="$vo[isDisable] eq 2">启用</if>
+                      </div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: left; width: 150px;">{$vo.createTime}</div>
+                  </td>
+                  <td align="left" class="">
+                      <div style="text-align: center; width: 150px;">{$vo.updateTime}</div>
+                  </td>
+                <td align="center" >
+                  <div style="text-align: center; width: 300px;">                    
+                    <a class="btn red" onClick="delfun({$vo[id]}, this)" data-id="{$vo.ad_id}"><i class="fa fa-trash-o"></i>删除</a>                                                            
+                    <a  class="btn blue" href="{:url('Plugins.Vpay/detail',['id' => $vo['id']])}"><i class="fa fa-pencil-square-o"></i>编辑</a> 
+                    <a  class="btn blue" href="javascript:void(0)" onclick="selectUsers({$vo[id]})"><i class="fa fa-pencil-square-o"></i>积分余额</a>
+                    <a  class="btn blue" href="{:url('Plugins.Vpay/view_details',['id' => $vo['id'],'type' => 1])}"><i class="fa fa-pencil-square-o"></i>查看明细</a>  
+                  </div>
+                  </div>
+                </td>
+                <td align="" class="" style="width: 10%;">
+                  <div>&nbsp;</div>
+                </td>
+              </tr>
+            </foreach>
+          </tbody>
+        </table>
+	 <!--分页位置--> 
+    {$pager->show()} </div>        
+      </div>       
+    </div>    
+</div>
+<script>	
+    $(document).ready(function(){	
+	    // 表格行点击选中切换
+	    $('#flexigrid > table>tbody >tr').click(function(){
+		    $(this).toggleClass('trSelected');
+		});
+		
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+		$('#start_time').layDate();
+
+	});
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        // var end_time =  $.trim($('#end_time').val());
+        if(start_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== ''){
+            $('#ctime').val(start_time);
+        }
+        if(start_time == ''){
+            $('#ctime').val('');
+        }
+        return true;
+    }
+    function delfun(id,obj){
+      layer.confirm('确认删除？', {
+                btn: ['确定','取消'] //按钮
+              }, function(){
+                da = {
+                    'tabName' : 'member',
+                    'idName' : 'id',
+                    'id' : id,
+                    'isDelete':1,
+                };
+                // 确定
+                $.ajax({
+                  type : 'post',
+                  url : "{:url('Systems.Admin/delDate')}",
+                  data : da,
+                  dataType : 'json',
+                  success : function(data){
+                    layer.closeAll();
+                    if(data.status==1){
+                      layer.msg(data.msg, {icon: 1});
+                      $(obj).parent().parent().parent('tr').remove();
+                    }else{
+                      layer.msg(data.msg, {icon: 2,time: 2000});
+                    }
+                  }
+                })
+              }, function(index){
+                layer.close(index);
+              }
+      );
+    }
+    function selectUsers(id){
+        var url = "/index.php/Admin/Plugins.Vpay/updateBalanceIntegral/tpl/updateBalanceIntegral/id/"+id;
+        layer.open({
+            type: 2,
+            title: '选择用户',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+
+    function call_back(code){
+       if (code == 1) {
+            layer.closeAll('iframe');
+            window.location.reload();
+       }
+    }
+</script>
+</body>
+</html>

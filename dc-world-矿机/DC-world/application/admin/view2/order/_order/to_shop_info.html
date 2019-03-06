@@ -1,0 +1,219 @@
+<include file="public/layout" />
+ 
+<style type="text/css">
+html, body {
+	overflow: visible;
+}
+</style>  
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="{:U('Admin/Order.Order/to_shop')}" title="返回"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>服务订单详情</h3>
+        <h5>用户订单详情</h5>
+      </div>
+    </div>
+  </div>
+  <form class="form-horizontal" method="post" id="refund_form"  name="refund_form" action="{:url('Order/update_server_order_info')}">
+  <input type="hidden" name="order_id" value="{$order.order_id}">
+   <div class="ncap-order-style">
+    <div class="ncap-order-details">
+        <div class="tabs-panels">
+            <div class="misc-info">
+                <h3>基本信息</h3>
+                <dl>
+                    <dt>订单 ID：</dt>
+                    <dd>{$order.order_id}</dd>
+                    <dt>订单号：</dt>
+                    <dd>{$order.order_sn}</dd>
+                    <dt>会员：</dt>
+                    <dd>{$order.user_id.nickname}</dd>
+                </dl>
+                <dl>
+                    <dt>电话：</dt>
+                    <dd>{$order.mobile}</dd>
+                    <dt>应付金额：</dt>
+                    <dd>{$order.paid_price}</dd>
+                    <dt>发票抬头：</dt>
+                    <dd>{$order.invoice_title|default='N'}</dd>
+                </dl>
+                <dl>
+                    <dt>订单状态：</dt>
+                    <dd>{$order.order_type} / {$order.order_status}
+                        / {$order.order_state}
+                    </dd>
+                    <dt>下单时间：</dt>
+                    <dd>{$order.add_time}</dd>
+                    <dt>支付时间：</dt>
+                    <dd>
+                        <if condition="$order.pay_time neq 0">{$order.pay_time}
+                            <else/>
+                            N
+                        </if>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>支付方式：</dt>
+                    <dd>{$order.pay_name}</dd>
+                    <dt>工程师鉴定：</dt>
+                    <dd>{$order.engineer_judge}</dd>
+                </dl>
+            </div>
+        <notempty name="engineer_info">
+            <div class="addr-note">
+              <h4>工程师信息</h4>
+              <dl>
+                <dt>名称：</dt>
+                <dd>{$engineer_info.nickname}</dd>
+                <dt>联系方式：</dt>
+                <dd>{$engineer_info.mobile}</dd>
+              </dl>
+            </div>
+        </notempty>
+        <div class="addr-note">
+          <h4>门店信息</h4>
+          <dl>
+            <dt>门店：</dt>
+            <dd>{$door_info.suppliers_name}</dd>
+            <dt>联系方式：</dt>
+            <dd>{$door_info.suppliers_phone}</dd>
+          </dl>
+          <dl>
+            <dt>门店简介：</dt>
+            <dd>{$door_info.suppliers_desc}</dd>
+          </dl>
+          <dl>
+            <dt>区域：</dt>
+            <dd>{$door_info.province_id} / {$door_info.city_id}  /{$door_info.district_id}</dd>
+            <dt>收货地址：</dt>
+            <dd>{$door_info.address}</dd>
+          </dl>
+        </div>        
+        <div class="addr-note">
+          <h4>收货信息</h4>
+          <dl>
+            <dt>收货人：</dt>
+            <dd>{$order.consignee}</dd>
+            <dt>联系方式：</dt>
+            <dd>{$order.mobile}</dd>
+          </dl>
+          <dl>
+            <dt>收货地址：</dt>
+            <dd>{$order.address}</dd>
+          </dl>
+        </div>
+
+        <notempty name="goods">
+            <div class="goods-info">
+              <h4>商品信息</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th >商品名称</th>
+                    <th colspan="2">商品规格</th>
+                    <th>单品价格</th>
+                    <th>单品数量</th>
+                    <th>单品小计</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <volist name="goods" id="good">
+               	<tr>
+                    <td class="w60">{$good.goods_name}</td>
+                    <td class="w30"><div class="goods-thumb"><a href="{:U('Home/Goods/goodsInfo',array('id'=>$good['goods_id']))}" target="_blank"><img alt="" src="{$good['goods_id']|goods_thum_images=200,200}" /> </a></div></td>
+                    <td style="text-align: left;"><a href="{:U('Home/Goods/goodsInfo',array('id'=>$good['goods_id']))}" target="_blank">{$good.spec_key_name}</a><br/></td>
+                    <td class="w100">{$good.goods_price}</td>
+                    <td class="w100">{$good.goods_num}</td>
+                    <td class="w80">{$good.goods_num * $good.goods_price}</td>
+                  </tr>
+                  </volist>
+              </table>
+            </div>
+            <div class="total-amount contact-info">
+              <h3>订单总额：￥{$all_total_price}</h3>
+            </div>
+        </notempty>
+
+        <div class="contact-info">
+            <if condition="($order_type eq 0 )"><!-- 寄修 -->
+                <include file="/order/order_service/order_send" />
+            </if>
+            <if condition="($order_type eq 1 )"><!-- 上门 -->
+                <include file="/order/order_service/order_visit" />
+            </if>
+            <if condition="($order_type eq 2 )"><!-- 到店 -->
+                <include file="/order/order_service/order_to_shop" />
+            </if>
+        </div>
+
+        <div class="goods-info">
+          <h4>操作记录</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>操作时间</th>
+                <th>订单状态</th>
+                <th>付款状态</th>
+                <!-- <th>发货状态</th> -->
+                <th>描述</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+            <volist name="action_log" key="aid" id="log">
+                <tr>
+                     <td class="text-center">{$log.log_time|date='Y-m-d H:i:s',###}</td>
+                     <td class="text-center">
+                        <switch name="$log[order_status]" ><case value="0">接单中</case><case value="1">维修中</case><case value="2">已完成</case><case value="3">待评价</case><case value="4">已关闭</case><case value="5">已取消</case><default />---</switch>
+                    </td>
+                     <td class="text-center">
+                        <switch name="$log[pay_status]" ><case value="0">未支付</case><case value="1">已支付</case></switch>
+                    </td>
+                     <!-- <td class="text-center">{$shipping_status[$log[shipping_status]]}</td> -->
+                     <td class="text-center">{$log.status_desc}</td>
+                     <td class="text-center">{$log.action_note}</td>
+                 </tr>
+              </volist>
+          </table>
+        </div>
+      </div>
+  	</div>
+  	</div>
+  </form>
+</div>
+<script type="text/javascript">
+function refundOrder(){
+	$('#refund_form').submit();
+}
+//审核意见
+$(document).on('click','.pay_status',function(){
+    var pay_status = $(this).find('input[name="pay_status"]').val();
+    if(pay_status == 4){
+        $('.refund_type').hide()
+    }else{
+        $('.refund_type').show()
+    }
+})
+
+function change_order(num){
+    $('input[name="order_status"]').val(num)
+    $('#refund_form').submit();
+}
+function cancelOrder(num){
+    $('#status').attr('name', 'order_status');
+    $('#status').val('5');
+    $('input[name="action"]').val('5');
+    $('#refund_form').submit();
+}
+function pay_order(){
+    var id = $('input[name="order_id"]').val()
+    window.location.href="/index.php/Admin/Order.Order/pay_order/id/"+id;
+
+}
+</script>
+</body>
+</html>

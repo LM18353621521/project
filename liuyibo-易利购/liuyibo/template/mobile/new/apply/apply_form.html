@@ -1,0 +1,416 @@
+<include file="common/header" title="申请" />
+<include file="common/header_nav" title="申请" href="javascript:history.back(-1)"/>
+<style>
+    .identity input {
+        width: 1.2rem;
+    }
+    #province,#city,#district{
+        width: 3.5rem;
+    }
+    #suppliers_desc{
+        width: 12.2rem;
+        height: 1.5rem;
+    }
+    .page{
+        position: relative;
+    }
+    .custom-classname{
+        font-size: .7rem;
+    }
+    .avatar{
+        width: 60px;
+        height: 60px;
+    }
+</style>
+<form method="post" id="form1" enctype="multipart/form-data">
+    <div class="weui-cells weui-cells_form">
+        <div class="identity">
+            <foreach name="$level_info" item="vo" key="k">
+                <label><input type="radio" <if condition="$k == 0">checked</if> onclick="show_info('{$vo[\'level_id\']}')" name="level" value="{$vo['level_id']}">{$vo['level_name']}</label>
+            </foreach>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">姓名 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="user_name" id="user_name" value="" placeholder="您的姓名">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">手机 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="phone" id="phone" value="" placeholder="手机号码">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">身份证 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="identity" id="identity" value="" placeholder="您的身份证">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">银行卡 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="bank" id="bank" value="" placeholder="您的银行卡">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">邮箱</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="email" id="email" placeholder="请输入电子邮箱" value="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">省市区 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="selectAddr" type="text" placeholder="请选择所在地区" readonly>
+                <input type="hidden" value="" name="province" class="hiddle_area"/>
+                <input type="hidden" value="" name="city" class="hiddle_area"/>
+                <input type="hidden" value="" name="district" class="hiddle_area"/>
+            </div>
+            <div class="weui-cell-ft"></div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label fs28">详细地址 <span class="text-red" style="vertical-align: middle">*</span></label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="address" id="address" value="" placeholder="请输入详细的地址信息">
+            </div>
+        </div>
+        <div class="store_all_info" style="display:none;">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label fs28">门店名称 <span class="text-red" style="vertical-align: middle">*</span></label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="suppliers_name" id="suppliers_name" type="text" placeholder="请输入门店名称" value="">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label fs28">门店介绍 <span class="text-red" style="vertical-align: middle">*</span></label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" name="suppliers_desc" id="suppliers_desc" type="text" placeholder="" value="">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label fs28">门店照片 <span class="text-red" style="vertical-align: middle">*</span></label>
+                </div>
+                <div class="weui-cell__bd">
+                    <label class="file" style="cursor:pointer;">
+                        <div id="store_img">
+                            <img src="__STATIC__/assets/images/icon_cml.png" class="avatar"/>
+                            <input type="file" accept="image/*" onchange="uploadFile(this,'store_img')" style="display: none;">
+                            <input type="hidden" name="store_img" value=""/>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label fs28">付款凭证 <span class="text-red" style="vertical-align: middle">*</span></label>
+                </div>
+                <div class="weui-cell__bd">
+                    <label class="file" style="cursor:pointer;">
+                        <div id="payment_voucher">
+                            <img src="__STATIC__/assets/images/icon_cml.png" class="avatar"/>
+                            <input type="file" accept="image/*" onchange="uploadFile(this,'payment_voucher')" style="display: none;">
+                            <input type="hidden" name="payment_voucher" value=""/>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="region_code" style="display:none;">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label fs28">代理区域 <span class="text-red" style="vertical-align: middle">*</span></label>
+                </div>
+                <div class="weui-cell__bd">
+                    {$region_content}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <button type="submit" class="weui-btn weui-btn_primary">确定提交</button>
+    </div>
+</form>
+<script type="text/javascript">
+    //初始化
+    $(function () {
+        show_info(4);
+        //代理区域初始化
+        $('#province').val(1);
+        $('#province').trigger("change");
+    });
+    //提交表单
+    $('#form1').on('submit',(function(e){
+        //申请身份不为空
+        var level = $('input[name="level"]:checked').val();
+        if (level == '' || level == null || level == undefined) {
+            layer.open({content: '请选择申请的身份', time: 2});
+            return false;
+        }
+        // 验证姓名不为空
+        var user_name = $('input[name="user_name"]').val();
+        if (user_name == '' || user_name == null || user_name == undefined) {
+            layer.open({content: '请填写姓名', time: 2});
+            return false;
+        }
+        //验证联系方式
+        var phone = $('input[name="phone"]').val();
+        if (phone == '' || phone == null || phone == undefined) {
+            layer.open({content: '请填写手机号码', time: 2});
+            return false;
+        }
+        var phone_len = phone.length;
+        if (phone_len != 11) {
+            layer.open({content: '请填写有效的手机号码', time: 2});
+            return false;
+        }
+        //身份证
+        var identity = $('input[name="identity"]').val();
+        if (identity == '' || identity == null || identity == undefined) {
+            layer.open({content: '请填写身份证号', time: 2});
+            return false;
+        }
+        //银行卡
+        var bank = $('input[name="bank"]').val();
+        if (bank == '' || bank == null || bank == undefined) {
+            layer.open({content: '请填写银行卡', time: 2});
+            return false;
+        }
+        //邮箱
+        var email = $('input[name="email"]').val();
+        if(!checkEmail(email) && email != ''){
+            layer.open({content: '邮箱地址有误', time: 2});
+            return false;
+        }
+        //体验店
+        if (level == 4) {
+            var store_img = $('input[name="store_img"]').val();
+            var payment_voucher = $('input[name="payment_voucher"]').val();
+            if (store_img == '' || store_img == null || store_img == undefined) {
+                layer.open({content: '请上传门店照片', time: 2});
+                return false;
+            }
+            if (payment_voucher == '' || payment_voucher == null || payment_voucher == undefined) {
+                layer.open({content: '请上传付款凭证', time: 2});
+                return false;
+            }
+        }
+        //区域代理
+        if (level == 5){
+            var region_code_province = $('select[name="region_code_province"] option:selected').val();
+            var region_code_city = $('select[name="region_code_city"] option:selected').val();
+            var region_code_district = $('select[name="region_code_district"] option:selected').val();
+
+            if (region_code_province == 0 || region_code_city == 0 || region_code_district == 0) {
+                layer.open({content: '请选择申请代理的区域', time: 2});
+                return false;
+            }
+        }
+        //loading
+        layer.open({
+            type: 2,
+            content: '提交中',
+            shadeClose: false
+        });
+        //验证后ajax提交数据
+        e.preventDefault();
+        var upload_data = new FormData($(this)[0]);
+        $.ajax({
+            type: "POST",
+            url: "{:url('mobile/Apply/ajax_opera_apply')}",
+            data: upload_data,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function (data) {
+                if(data.status == 1){
+                    //跳转
+                    window.location.href = "{:url('mobile/apply/apply_success')}";
+                }else if(data.status == -1) {
+                    layer.open({
+                        content: data.msg,
+                        time: 2,
+                        end: function(index){
+                            layer.closeAll();
+                        }
+                    });
+                    return false;
+                }else{
+                    layer.open({
+                        content: '网络开小差啦，请重新提交',
+                        time: 2,
+                        end: function(index){
+                            layer.closeAll();
+                        }
+                    });
+                    return false;
+                }
+            }
+        });
+    }));
+    //用户地址
+    $("#selectAddr").on('click',function () {
+        //获取json数据
+        $.get("{:url('Home/Api/getAllArea')}",'',function(data){
+            // 级联picker
+            weui.picker(data, {
+                className: 'custom-classname',
+                defaultValue: [1, 3],
+                onChange: function (result) {
+                    $("input[name=province]").attr('value',result[0].value);
+                    var len = result.length;
+                    if (len >=2) {
+                        $("input[name=city]").attr('value',result[1].value);
+                    }
+                    if (len >= 3) {
+                        $("input[name=district]").attr('value',result[2].value);
+                    }
+                },
+                onConfirm: function (result) {
+                    var str = result[0].label;
+                    var len = result.length;
+                    if (len >=2) {
+                        str = result[0].label+'-'+result[1].label;
+                    }
+                    if (len >= 3) {
+                        str = result[0].label+'-'+result[1].label+'-'+result[2].label;
+                        
+                    }
+                    $('#selectAddr').attr('value',str);
+                },
+                id: 'doubleLinePicker'
+            });
+        },'json');
+    });
+    //显示/隐藏特殊字段
+    function show_info(action) {
+        if (action == 4) {
+            //体验店
+            $('.store_all_info').show();
+            $('.region_code').hide();
+        } else if (action == 5) {
+            //代理
+            $('.store_all_info').hide();
+            $('.region_code').show();
+        }else{
+            $('.store_all_info').hide();
+            $('.region_code').hide();
+        }
+    }
+</script>
+<script>
+    //图片上传
+    window.URL = window.URL || window.webkitURL;
+    function uploadFile(obj,name) {
+        //初始化
+        $('#'+name).find('img').attr('src','__STATIC__/assets/images/icon_cml.png');
+        $('input[name='+name+']').val('');
+        //显示上传照片
+        var fileList = document.getElementById(name);
+        var files = obj.files;
+        //没有图片上传
+        if(files[0] === undefined){return;}
+        img = new Image();
+        if(window.URL){
+            img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+            img.width = 60;
+            img.height = 60;
+            img.onload = function(e) {
+                window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+            };
+            $('#'+name).find('img').remove();
+            fileList.appendChild(img);
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function(e){
+                img.src = this.result;
+                img.width = 60;
+                img.height = 60;
+                $('#'+name).find('img').remove();
+                fileList.appendChild(img);
+            }
+        }else {
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+            img.width = 60;
+            img.height = 60;
+            img.onload=function(){
+            };
+            $('#'+name).find('img').remove();
+            fileList.appendChild(img);
+        }
+        //loading
+        layer.open({
+            type: 2,
+            content: '上传中',
+            shadeClose: false
+        });
+        //ajax上传图片
+        var upload_img = new FormData();
+        upload_img.append('img',files[0]);
+        upload_img.append('file_name','apply');
+        $.ajax({
+            type: "POST",
+            url: "{:url('home/Api/uploadPic')}",
+            data: upload_img,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function (data) {
+                if(data.status == 1){
+                    //将地址存入input框
+                    $('input[name='+name+']').val(data.result);
+                    //上传完成，关闭loading层
+                    layer.closeAll();
+                }else if(data.status == -1) {
+                    layer.open({
+                        content: data.msg,
+                        time: 2,
+                        end: function(index){
+                            layer.closeAll();
+                        }
+                    });
+                    return false;
+                }else{
+                    layer.open({
+                        content: '网络开小差啦，请重新提交',
+                        time: 2,
+                        end: function(index){
+                            layer.closeAll();
+                        }
+                    });
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

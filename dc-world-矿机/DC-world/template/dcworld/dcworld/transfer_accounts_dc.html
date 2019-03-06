@@ -1,0 +1,175 @@
+<include file="common/header" title="DC转账" body=""/>
+
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">DC转账</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <form id="dc_transfer">
+            <div class="weui-cells weui-cells_form pl_pr30" style="background-color: #f9f9f9;">
+                <div class="weui-cell mb20 border-radio20 bor-1px" style="background-color: #fff;">
+                    <div class="weui-cell__hd">
+                        <label for="wallet" class="weui-label">转出地址</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input"   id="wallet" type="text" name="wallet" value="{$to_user.wallet}"    placeholder="请输入转出地址">
+                    </div>
+                </div>
+                <div class="weui-cell mb20 border-radio20 bor-1px border-befor_none" style="background-color: #fff;">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">当前DC余额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <span style="color: #606470;">{$user.dc_coin}</span>
+                    </div>
+                </div>
+                <div class="weui-cell mb20 border-radio20 bor-1px border-befor_none" style="background-color: #fff;">
+                    <div class="weui-cell__hd">
+                        <label for="number" class="weui-label">转账数量</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" name="number" id="number" placeholder="请输入转账数量" onKeyUp="clearNoNum(this)" onblur="getFee()">
+                    </div>
+                </div>
+                <div class="weui-cell mb20 border-radio20 bor-1px" style="background-color: #fff;">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">转账手续费</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="dc_fee" readonly="readonly" placeholder="当前转账手续费为{$fee}%">
+                    </div>
+                </div>
+                <div class="weui-cell mb20 border-radio20 bor-1px border-befor_none" style="background-color: #fff;align-items: baseline;">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">备注信息</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <textarea class="weui-textarea" name="desc" placeholder="请输入备注信息" rows="4"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="weui-btn-area mt20">
+                <input type="hidden" name="pwd" value="">
+                <a href="javascript:void(0)" onClick="sub_transfer()" class="weui-btn weui-btn_primary">提交</a>
+                <a href="{:U('Member/user_assets')}" class="weui-btn" style="color: #9752de;">转账记录</a>
+            </div>
+        </div>
+    </form>
+</div>
+<style>
+    .weui-toast p{ color: #FFF}
+</style>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+
+    var wallet_status={$user.wallet_status};
+    if(wallet_status==0){
+        $.toast("禁止操作，您还没有创建钱包", "forbidden", function() {
+            window.location.href="/index.php/Dcworld/Member/add_wallet";
+        });
+    }
+
+    function clearNoNum(that){
+        //清除"数字"和"."以外的字符
+        var value =that.value;
+        value = value.replace(/[^\d.]/g,"");
+        //验证第一个字符是数字而不是
+        value = value.replace(/^\./g,"");
+        //只保留第一个. 清除多余的
+        value = value.replace(/\.{2,}/g,".");
+        value = value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        //只能输入两个小数
+        value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        value=value.substring(0,10);
+        that.value=value;
+    }
+    var fee_status = false;
+    // 获取手续费
+    function getFee(){
+        var data = $("input[name='number']").val();
+        if (fee_status) {return ;}
+        fee_status = true;
+        $.ajax({
+            type: "post",
+            url :"{:U('Dcworld/Dcworld/getDcFee')}",
+            dataType:'json',
+            data:{'number':data},
+            success: function(data)
+            {
+                $('#dc_fee').val(data.fee);
+                fee_status = false;
+            }
+        });
+    }
+
+    var ajax_status = false;
+    function sub_transfer(){
+        var wallet = $("input[name='wallet']").val();
+        if (!wallet) {
+            $.toast('请输入转出地址', "forbidden");
+            return ;
+        }
+
+        var number = $("input[name='number']").val();
+        if (!number) {
+            $.toast('请输入DC币数量', "forbidden");
+            return ;
+        }
+        
+        if (ajax_status) {return ;}
+        // ajax_status = true;
+        $.prompt({
+            title: '输入支付密码',
+            input: '',
+            empty: false, // 是否允许为空
+            onOK: function (input) {
+                $('input[name=pwd]').val(input);                //点击确认
+                $.ajax({
+                    type: "post",
+                    url :"{:U('Dcworld/Dcworld/transfer_accounts_dc')}",
+                    dataType:'json',
+                    data:$('#dc_transfer').serialize(),
+                    success: function(data)
+                    {
+                        console.log(data);
+                        if (data.code == 1) {
+                            $.toast('交易成功');
+                            setTimeout(function(){
+                                window.location.href=data.url;
+                            }, 1000);
+                        }else if(data.code==-2){
+                            $.toast(data.msg, "forbidden");
+                            setTimeout(function(){
+                                sub_transfer();
+                            },1500);
+                        }else{
+                            $.toast(data.msg, "forbidden");
+                        }
+                        ajax_status = false;
+
+                    }
+                });
+            },
+            onCancel: function () {
+                //点击取消
+            }
+        });
+        $('#weui-prompt-input').attr('type','password');
+    }
+</script>
+</body>
+</html>

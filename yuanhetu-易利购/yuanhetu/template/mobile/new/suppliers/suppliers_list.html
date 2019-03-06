@@ -1,0 +1,260 @@
+<include file="common/header_fta"  body=""/>
+<include file="common/header_nav" title="门店列表"  href="javascript:history.go(-1)"/>
+    <div class="search-bar">
+        <div class="search-bar__left">
+            <form action="" id="serch_form">
+                <input placeholder="请输入商家店名" id="search" class="weui-input" type="search">
+                <input style="display:none" type="submit">
+            </form>
+        </div>
+        <div class="search-bar__right">
+            <span>广州</span>
+        </div>
+    </div>
+    <div class="sort-bar bor-1px-t bor-1px-b">
+        <div class="sort-bar__left">
+            <span class="all">门店类型</span>
+            <span class="sort">排序</span>
+        </div>
+    </div>
+    <div class="page-bd">
+        <input type="hidden" name="where" value="{$where}">
+        <!-- 页面内容-->
+        <div id="suppliers_list_content">
+        </div>
+       <div class="weui-loadmore" style="padding-bottom:30px;height:20px">
+          <i class="weui-loading"></i>
+          <span class="weui-loadmore__tips">正在加载</span>
+      </div>
+
+        <!--分类弹框-->
+        <div class="fenlei_all">
+            <div class="overlay"></div>
+            <div class="fenlei">
+                <div class="weui-cells mt0 border-none">
+                    <div class="weui-cell border-none">
+                        <div class="weui-cell__bd">
+                            <p onclick="select_type(0, '全部')">全部({$count})</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </div>
+                    <foreach name="$type_info" item="vo">
+                        <div class="weui-cell border-none">
+                            <div class="weui-cell__bd">
+                                <p onclick="select_type({$vo['type_id']}, '{$vo['name']}')">{$vo['name']}</p>
+                            </div>
+                            <div class="weui-cell__ft"></div>
+                        </div>
+                    </foreach>
+                </div>
+            </div>
+        </div>
+        <!--排序弹框-->
+        <div class="sort_all">
+            <div class="overlay"></div>
+            <div class="fenlei">
+                <div class="weui-cells mt0 border-none">
+                    <div class="weui-cell border-none">
+                        <div class="weui-cell__bd">
+                            <p  onclick="suppliers_sort(2)">默认排序</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </div>
+                    <div class="weui-cell border-none active">
+                        <div class="weui-cell__bd">
+                            <p onclick="suppliers_sort(1)">离我最近</p>
+                        </div>
+                        <div class="weui-cell__ft"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    //排序
+    $(".sort-bar__left").on('click', 'span', function () {
+        var index = $(this).index();
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    $(".fenlei .weui-cell").on('click', function () {
+        var index = $(this).index();
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    $(".all").on('click', function () {
+        $('.fenlei_all').toggle();
+        $('.sort_all').hide();
+    });
+    $(".sort").on('click', function () {
+        $('.sort_all').toggle();
+        $('.fenlei_all').hide();
+    });
+    $(".overlay").on('click', function () {
+        $('.fenlei_all').hide();
+        $('.sort_all').hide();
+    });
+</script>
+<script>
+var page = 1;
+var loading = false;  //状态标记
+// 初始化页面
+function ini() {
+    var data = {
+        'p': page
+    }
+    ajax_supplier(data);
+    
+}
+ini();
+
+// 选择门店
+function select_type(type_id,type_name){
+    type_id = type_id || 0;
+    page = 1;
+    if (type_id) {
+        var data = {
+            'p': page,
+            'type_id': type_id
+        }
+    } else {
+        var data = {
+            'p': page,
+        }
+    }
+    
+    var data_res = ajax_supplier(data);
+    if (data_res) {
+        $(".all").html(type_name);
+        $('.fenlei_all').toggle();
+        $('.sort_all').hide();
+    }
+}
+
+/**
+ * 排序
+ * 1 默认 距离排序  2 添加时间排序
+ */
+function suppliers_sort(num) {
+    num = num || 1; // 默认排序 离我最近
+    page = 1;
+    if (num == 1) {
+        var data = {
+            'p' : page,
+            'where_action' : 1,
+            'orderby_action' : 'distance'
+            } 
+    } else {
+        var data = {
+            'p' : page,
+            'where_action' : 1,
+            'orderby_action' : 'add_time'
+            } 
+    }
+    var data_res = ajax_supplier(data);
+    $('.fenlei_all').hide();
+    $('.sort_all').hide();
+}
+
+/**
+ * 门店名称查询
+ */
+function search_suppliers(){
+    var name = $('#search').val();
+    if (name == '' && name == false && name == undefined) {
+        return false;
+    }
+    page = 1;
+    var data = {
+        'p' : page,
+        'where_action' : 2,
+        'suppliers_name' : name
+        } 
+    ajax_supplier(data);
+    
+}
+
+function ajax_supplier(data,clear_act){
+    clear_act = clear_act || 0;
+    var return_act = false;
+
+    $.ajax({
+        url: '{:url("Suppliers/ajax_getSupplier")}',
+        data:data,
+        async:false,
+        type:'POST',
+        dataType:'JSON',
+        success:function(res){
+            var data = res.data;
+            if (data.length > 0) {
+                if (clear_act == 0) {
+                    $('#suppliers_list_content').empty();
+                }
+
+                for(var i = 0; i<data.length; i++){
+                    var html = '<div class="weui-panel weui-panel_access"><div class="weui-panel__bd"><a href="/index.php/Mobile/Suppliers/suppliers_info/suppliers_id/'+data[i].suppliers_id+'" class="weui-media-box weui-media-box_appmsg"><div class="weui-media-box__hd zs_img"><img class="weui-media-box__thumb" src="'+data[i].suppliers_img+'"></div><div class="weui-media-box__bd"><h4 class="weui-media-box__title"><div class="weui-cell" style="padding: 0;"><div class="weui-cell__bd"><p>'+data[i].suppliers_name+'</p></div><div class="weui-cell__ft detail_address"><img src="__STATIC__/assets2/images/icon_address.png" alt=""><span>'+(data[i].distance / 1000)+'km</span></div></div></h4><p class="weui-media-box__desc mt10 mb10">'+data[i].suppliers_phone+'</p><p class="weui-media-box__desc mt10">'+data[i].address+'</p></div></a></div></div>';
+                    $('#suppliers_list_content').append(html);
+                    $('.weui-loadmore').hide();
+                }
+                loading = false;
+                page++;
+                return_act = true;
+            } else if(data.length <= 0) {
+                if (page == 1) {
+                    showMsg('无门店信息~');
+                } else {
+                    html = '<div class="weui-cell__hd wx_cells_01" style="width:100%;text-align:center;margin-top:1rem;"><img style="margin:0 auto;width:0.77rem;" src="/template/mobile/new2/static/images/none2.png"><label class="weui-label" style="margin:0.1rem auto;width:1.5rem;">无更多数据了哦</label></div>';
+                    $('.weui-loadmore').hide();
+                    $('#suppliers_list_content').append(html);
+                }
+            }
+        }
+    });
+    if (return_act) {
+        return true;
+    } else {
+        false;
+    }
+}
+
+// 加载更多门店
+$('.page-bd').infinite(30).on("infinite", function() {
+    if (loading) return;
+    loading = true;
+ 
+    $('.weui-loadmore').show();
+    setTimeout(function () {
+        var data = {
+            'p': page,
+            'where_action' : 1,
+        }
+       ajax_supplier(data, 1)
+    }, 1500);   //模拟延迟
+});
+
+
+$("#serch_form").submit(function(){
+    var name = $('#search').val();
+    if (name == '' && name == false && name == undefined) {
+        return false;
+    }
+    page = 1;
+    var data = {
+        'p' : page,
+        'where_action' : 2,
+        'suppliers_name' : name
+        } 
+    ajax_supplier(data);
+    
+    //  阻止表单提交
+    return false;
+});
+
+</script>
+</body>
+</html>

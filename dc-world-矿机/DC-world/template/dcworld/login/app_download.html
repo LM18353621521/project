@@ -1,0 +1,39 @@
+<include file="common/header" title="APP下载" body=""/>
+<style type="text/css">
+    .poster_title{
+        color: #717171;
+        text-align: center;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+        font-size: 0.2rem;
+        font-weight: 600;
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">APP下载</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd">
+        <div >
+            <a href="{$poster['poster_link']}">
+                <!-- <div class="poster_title" >{$poster['poster_title']}</div> -->
+                <img src="{$poster['poster_img']}" alt="" style="width: 100%;">
+            </a> 
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+</html>

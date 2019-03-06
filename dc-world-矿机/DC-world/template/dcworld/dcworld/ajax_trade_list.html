@@ -1,0 +1,256 @@
+<if condition="$type eq 1">
+    <foreach name="datalist" item="vo">
+        <div class="weui-media-box weui-media-box_text pd0" id="list{$vo.id}">
+            <h4 class="weui-media-box__title">
+                <div class="weui-cell" style="padding-bottom: 0.15rem;">
+                    <div class="weui-cell__hd mr15">
+                        <img src="{$vo.sprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                    </div>
+                    <div class="weui-cell__bd">
+                        <div class="weui-cell__bd__title">
+                            ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                        </div>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span style="color: #282c37;">交易笔数：{$vo.strade_num}</span>
+                    </div>
+                </div>
+                <div class="weui-cell border-befor_none pt0" style="align-items: center;">
+                    <div class="weui-cell__bd">
+                        <p>单价：{$vo.dc_cny_rate}CNY</p>
+                        <p class="mt5">总额：{$vo.total_price}CNY</p>
+                        <p class="mt5">数量：{$vo.number}DC</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <if condition="$vo.seller_user_id eq $user_id">
+                            <a href="javascript:;" onclick="cancel_trade({$vo.id},'sell')"
+                               class="weui-btn weui-btn_class1" style="color: #9752de;">取消</a>
+                            <else/>
+                            <a href="javascript:;" onclick="confirm_buy({$vo.id})" class="weui-btn weui-btn_primary weui-btn_class1">买入</a>
+                        </if>
+                    </div>
+                </div>
+            </h4>
+        </div>
+    </foreach>
+</if>
+
+<if condition="$type eq 2">
+    <foreach name="datalist" item="vo">
+        <div class="weui-media-box weui-media-box_text pd0" id="list{$vo.id}">
+            <h4 class="weui-media-box__title">
+                <div class="weui-cell" style="padding-bottom: 0.15rem;">
+                    <div class="weui-cell__hd mr15">
+                        <img  src="{$vo.bprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}"  alt="" class="img68">
+                    </div>
+                    <div class="weui-cell__bd">
+                        <div class="weui-cell__bd__title">
+                            ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                        </div>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span style="color: #282c37;">交易笔数：{$vo.btrade_num}</span>
+                    </div>
+                </div>
+                <div class="weui-cell border-befor_none pt0" style="align-items: center;">
+                    <div class="weui-cell__bd">
+                        <p>单价：{$vo.dc_cny_rate}CNY</p>
+                        <p class="mt5">总额：{$vo.total_price}CNY</p>
+                        <p class="mt5">数量：{$vo.number}DC</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <if condition="$vo.buyer_user_id eq $user_id">
+                            <a href="javascript:;" onclick="cancel_trade({$vo.id},'buy')"
+                               class="weui-btn weui-btn_class1" style="color: #9752de;">取消</a>
+                            <else/>
+                            <a href="javascript:;" onclick="confirm_sell({$vo.id})"
+                               class="weui-btn  weui-btn_class1" style="color: #9752de;">卖出</a>
+                        </if>
+                    </div>
+                </div>
+            </h4>
+        </div>
+    </foreach>
+</if>
+<if condition="$type eq 3">
+    <foreach name="datalist" item="vo">
+        <!--<a href="{:U('Dcworld/Dcworld/confirm_the_money',array('id'=>$vo['id']))}">-->
+            <div class="weui-media-box weui-media-box_text pd0" id="list{$vo.id}">
+                <h4 class="weui-media-box__title">
+                    <div class="weui-cell" style="padding-bottom: 0.15rem;">
+                        <div class="weui-cell__hd mr15">
+                            <if condition="$vo.seller_user_id eq $user_id">
+                                <img src="{$vo.sprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                                <else/>
+                                <img src="{$vo.bprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                            </if>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <div class="weui-cell__bd__title">
+                                <if condition="$vo.seller_user_id eq $user_id">
+                                    <!--{$vo.bnickname}-->
+                                    ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                                    <else/>
+                                    ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                                    <!--{$vo.snickname}-->
+                                </if>
+                            </div>
+                        </div>
+                        <div class="weui-cell__ft">
+                            <span style="color: #81879a;">{$vo.create_time|date="Y-m-d H:i:s",###}</span>
+                        </div>
+                    </div>
+                    <div class="weui-cell border-befor_none pt0" style="align-items: center;">
+                        <div class="weui-cell__bd">
+                            <p>成交价：{$vo.dc_cny_rate}CNY</p>
+                            <p class="mt5">交易数量：{$vo.number}DC</p>
+                            <p class="mt5">总价：{$vo.total_price}CNY</p>
+                        </div>
+                        <div class="weui-cell__ft">
+                                    <p class="color1 mb30">
+                                        <a href="javascript:;" onclick="cancel_trade({$vo.id},'buy')" class="weui-btn weui-btn_class1" style="color: #9752de; display: inline-block">取消</a>
+                                    </p>
+                        </div>
+                    </div>
+                </h4>
+            </div>
+        <!--</a>-->
+    </foreach>
+</if>
+<if condition="$type eq 4">
+    <foreach name="datalist" item="vo">
+        <!--<a href="{:U('Dcworld/Dcworld/confirm_the_money',array('id'=>$vo['id']))}">-->
+        <div class="weui-media-box weui-media-box_text pd0 detail_do" trade_id = "{$vo.id}">
+            <h4 class="weui-media-box__title">
+                <div class="weui-cell" style="padding-bottom: 0.15rem;">
+                    <div class="weui-cell__hd mr15">
+                        <if condition="$vo.seller_user_id eq $user_id">
+                            <img src="{$vo.sprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                            <else/>
+                            <img src="{$vo.bprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                        </if>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <div class="weui-cell__bd__title">
+                            <if condition="$vo.pid gt 0">
+                            <if condition="$vo.seller_user_id eq $user_id">
+                                <!--{$vo.bnickname}-->
+                                ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                                <else/>
+                                ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                                <!--{$vo.snickname}-->
+                            </if>
+                             <else/>
+                                <if condition="$vo.seller_user_id eq $user_id">
+                                    <!--{$vo.bnickname}-->
+                                    ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                                    <else/>
+                                    ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                                    <!--{$vo.snickname}-->
+                                </if>
+                             </if>
+                        </div>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span style="color: #81879a;">{$vo.create_time|date="Y-m-d H:i:s",###}</span>
+                    </div>
+                </div>
+                <div class="weui-cell border-befor_none pt0" style="align-items: center;">
+                    <div class="weui-cell__bd">
+                        <p>成交价：{$vo.dc_cny_rate}CNY</p>
+                        <p class="mt5">交易数量：{$vo.number}DC</p>
+                        <p class="mt5">总价：{$vo.total_price}CNY</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <if condition="$vo.pid gt 0">
+                        <if condition="$vo.seller_user_id eq $user_id">
+                            <if condition="$vo['status'] eq 2">
+                                <p class="color1 mb30">等待买家付款</p>
+                                <p style="height: 0.346667rem;"></p>
+                                <elseif condition="$vo['status'] eq 3"/>
+                                <p class="color2 mb30">买家已打款</p>
+                                <p href="{:U('Dcworld/Dcworld/Confirm_the_money')}"
+                                   class="weui-btn weui-btn_primary weui-btn_class1">确认付款</p>
+                            </if>
+                         <else/>
+                            <if condition="$vo['status'] eq 2">
+                                <p class="color1 mb30">等待付款给卖家</p>
+                                <p href="{:U('Dcworld/Dcworld/Confirm_the_money',array('step'=>3))}"
+                                   class="weui-btn weui-btn_class1 color1">付款</p>
+                                <elseif condition="$vo['status'] eq 3"/>
+                                <p class="color1 mb30">等待卖家确认收款</p>
+                                <p style="height: 0.346667rem;"></p>
+                            </if>
+                        </if>
+                         <else/>
+                            <p class="color1 mb30">
+                                <span  class="weui-btn weui-btn_class1 cancel_do" style="color: #9752de; display: inline-block">取消</span>
+                            </p>
+                          </if>
+                    </div>
+                </div>
+            </h4>
+        </div>
+        <!--</a>-->
+    </foreach>
+</if>
+<if condition="$type eq 5">
+    <foreach name="datalist" item="vo">
+        <a href="{:U('Dcworld/Dcworld/confirm_the_money',array('id'=>$vo['id']))}">
+        <div class="weui-media-box weui-media-box_text pd0">
+            <h4 class="weui-media-box__title">
+                <div class="weui-cell" style="padding-bottom: 0.15rem;">
+                    <div class="weui-cell__hd mr15">
+                        <if condition="$vo.seller_user_id eq $user_id">
+                            <img src="{$vo.sprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                            <else/>
+                            <img src="{$vo.bprofilePhoto|default='__PUBLIC__/images/profilePhoto.jpg'}" alt="" class="img68">
+                        </if>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <div class="weui-cell__bd__title">
+                            <if condition="$vo.pid gt 0">
+                                <if condition="$vo.seller_user_id eq $user_id">
+                                    <!--{$vo.bnickname}-->
+                                    ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                                    <else/>
+                                    ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                                    <!--{$vo.snickname}-->
+                                </if>
+                                <else/>
+                                <if condition="$vo.seller_user_id eq $user_id">
+                                    <!--{$vo.bnickname}-->
+                                    ID:{$vo.sid} 等级:{$level_list[$vo.slevel]}
+                                    <else/>
+                                    ID:{$vo.bid} 等级:{$level_list[$vo.blevel]}
+                                    <!--{$vo.snickname}-->
+                                </if>
+                            </if>
+                        </div>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span style="color: #81879a;">{$vo.create_time|date="Y-m-d H:i:s",###}</span>
+                    </div>
+                </div>
+                <div class="weui-cell border-befor_none pt0" style="align-items: center;">
+                    <div class="weui-cell__bd">
+                        <p>成交价：200.23CNY</p>
+                        <p class="mt5">交易数量：10DC</p>
+                        <p class="mt5">总价：1023.12CNY</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <if condition="$vo.status eq 4">
+                            <p class="color2 mb30">交易成功</p>
+                            <elseif condition="$vo.status eq -1"/>
+                            <p class="color1 mb30">订单已取消</p>
+                         </if>
+                         <p style="height: 0.346667rem;"></p>
+                    </div>
+                </div>
+            </h4>
+        </div>
+        </a>
+    </foreach>
+</if>
+
+

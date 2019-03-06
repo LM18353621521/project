@@ -1,0 +1,11 @@
+<foreach name="$list" item="vo">
+    <div class="weui-form-preview detail_do" data_id="{$vo.id}"  is_read="{$vo.is_read}" type="{$vo.type}" union_id="{$vo.union_id}">
+        <div class="weui-form-preview__hd">
+            <label class="weui-form-preview__label fs24">{$vo.create_time || date="Y-m-d H:i:s",###}</label>
+            <em class="weui-form-preview__value fs28 fw500">{$vo.title}</em>
+        </div>
+        <div class="weui-form-preview__bd">
+            <p class="tl fs26">{$vo.content}</p>
+        </div>
+    </div>
+</foreach>

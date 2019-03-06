@@ -1,0 +1,251 @@
+<include file="common/main" title="会员中心" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            设置
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="set_infor">
+        <div class="user_img" onclick="updataFile()">
+            <if condition="$uinfo['profilePhoto'] neq ''">
+                <img src="{$uinfo.profilePhoto}">
+            <else />
+                <a href="javascript:void(0)"><img src="__PUBLIC__/images/home_icon_head.png"></a>
+            </if>
+        </div>
+        <div hidden>
+            <input id="updataFile" name="updataFile" type="file" class="fi1le-loading">
+        </div>
+        <div class="suser_infor">
+            <div>
+                UID:{$uinfo.id}
+            </div>
+            <div>
+                身份:{$uinfo.level_name}
+                <!--信用-->
+                 <!--<ul>-->
+                     <!--<li>-->
+                         <!--<i></i>-->
+                     <!--</li>-->
+                     <!--<li>-->
+                         <!--<i></i>-->
+                     <!--</li>-->
+                     <!--<li>-->
+                         <!--<i></i>-->
+                     <!--</li>-->
+                     <!--<li>-->
+                         <!--<i></i>-->
+                     <!--</li>-->
+                     <!--<li>-->
+                         <!--<i></i>-->
+                     <!--</li>-->
+                 <!--</ul>-->
+            </div>
+        </div>
+    </div>
+    <div class="suser_list">
+        <div>
+            <a href="{:U('Member/setNickName')}">
+                <label>
+                    <i></i>
+                    昵称
+                </label>
+                <span style="display: inline-block;float: right;margin-right: 0.24rem;">{$uinfo['nickname']}</span>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="{:U('Member/bankList')}">
+                <label>
+                    <i></i>
+                    我的银行卡
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="{:U('Member/user_assets')}">
+                <label>
+                    <i></i>
+                    我的资产
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <div class="mt10">
+            <a href="{:U('Member/revisePassword')}">
+                <label>
+                    <i></i>
+                    登录密码
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="{:U('Member/revisePayment')}">
+                <label>
+                    <i></i>
+                    支付密码
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <!--<div class="mt10">-->
+            <!--<a href="{:U('Member/notice')}">-->
+                <!--<label>-->
+                    <!--<i></i>-->
+                    <!--公告-->
+                <!--</label>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<a href="{:U('Member/personal_news')}">-->
+                <!--<label>-->
+                    <!--<i></i>-->
+                    <!--个人消息-->
+                <!--</label>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="mt10">-->
+            <!--<a href="javascript:void(0)">-->
+                <!--<label>-->
+                    <!--<i></i>-->
+                    <!--我的店铺-->
+                <!--</label>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<a href="javascript:void(0)">-->
+                <!--<label>-->
+                    <!--<i></i>-->
+                    <!--订单-->
+                <!--</label>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<a href="address_list.html">-->
+                <!--<label>-->
+                    <!--<i></i>-->
+                    <!--地址管理-->
+                <!--</label>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</div>-->
+        <div class="mt10">
+            <a href="{:U('Member/complaint')}">
+                <label>
+                    <i></i>
+                    投诉建议
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="{:U('Member/share')}">
+                <label>
+                    <i></i>
+                    分享
+                </label>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="javascript:void(0)">
+                <label>
+                    <i></i>
+                    版本
+                </label>
+                <span style="float: right;padding-right: 20px;">{$appVersion}</span>
+                <i></i>
+            </a>
+        </div>
+        <div>
+            <a href="{:U('Member/about')}">
+                <label>
+                    <i></i>
+                    关于
+                </label>
+                <i></i>
+            </a>
+        </div>
+    </div>
+    <div class="sign_out" onclick="exit();">
+        退出登录
+    </div>
+</body>
+    <block name="custom_js">
+        <script src="/Public/admin/plugins/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
+        <script src="/Public/admin/plugins/bootstrap-fileinput/js/plugins/purify.min.js"></script>
+        <script src="/Public/admin/plugins/bootstrap-fileinput/js/fileinput.js"></script>
+        <script src="/Public/admin/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+        <script type="text/javascript">
+            //退出登录
+            function exit() {
+                var btnArray = ['确认', '取消'];
+                layer.confirm('退出登录？', btnArray, function () {
+                    ajax_post("/index.php/Vpay/Login/exitlogin",{},"/index.php/Vpay/Login/login");
+                },function () {
+                    layer.msg("取消", {time: 1000})
+                });
+            }
+
+            function updataFile(){
+                return  $("#updataFile").click();
+            }
+
+            $(function(){
+                var $imgFile = $("#" + "updataFile");
+                $imgFile.fileinput({
+                    language: 'zh',
+                    uploadUrl: "{:U('Member/uploadFaceImage')}",
+                    uploadAsync: true,
+                    minFileCount: 1,
+                    maxFileCount: 1,
+                    overwriteInitial: true,
+                    showUpload: false,
+                    layoutTemplates: {actionZoom:""},
+                    initialPreview: "",
+                    initialPreviewAsData: true,
+                    initialPreviewFileType: 'image',
+                    initialPreviewConfig: "",
+                    purifyHtml: true,
+                    uploadExtraData: {
+                        img_key: "1000",
+                        img_keywords: "happy, places",
+                    }
+                }).on("filebatchselected", function(event, files) {
+                    layer.msg("正在上传头像",{time:1000, icon: 6});
+                    // 自动上传
+                    $(this).fileinput("upload");
+                }).on('fileuploaded', function(event, data, id) {
+                    layer.msg("头像上传成功",{time:1000, icon: 6});
+                    if(data.response) {
+                        if (data.response.status == 0) {
+                            // console.log("成功！");
+                            //获取图像URL
+                            $(".user_img img").attr("src", data.response.url);
+                        }
+                    }
+                }).on('fileclear', function(event, id) {
+                }).on('filesuccessremove', function(e, id) {
+                }).on('filedeleted', function(e, id) {
+                }).on("filebatchuploadsuccess", function(event, data) {
+                    console.log(data);
+                }).on('fileerror', function(event, data, msg) {  //一个文件上传失败
+                    layer.msg('文件上传失败！'+msg);
+                });
+            });
+
+        </script>
+    </block>
+</block>

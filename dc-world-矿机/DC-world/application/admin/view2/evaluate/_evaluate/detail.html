@@ -1,0 +1,224 @@
+<include file="public/layout" />
+<style>
+.ncap-order-details .tabs-panels dt, .ncap-order-details .tabs-panels dd {
+        text-align:left;
+         font-size: 12px;
+        line-height: 28px;
+        vertical-align: top;
+        display: block;
+        width:100%;
+        margin-top:12px;
+}
+.ncap-order-details .tabs-panels dt div{
+    padding-right: 5px;
+    text-align: right;
+    width:89px;
+    float: left;
+}
+.ncap-order-details .tabs-panels dt span img{
+    vertical-align:top;
+    width:108px;
+}
+.bgg{
+    color:#1BBC9D;
+}
+.bgh{
+    color:#f30;
+}
+.ncap-order-details .tabs-panels dt b img, .ncap-order-details .tabs-panels dd b img{
+    width:28px;
+    vertical-align:top;
+}
+.ncm-goods-gift {
+	text-align: left;
+}
+.ncm-goods-gift ul {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: middle;
+}
+.ncm-goods-gift li {
+    display: inline-block;
+    letter-spacing: normal;
+    margin-right: 4px;
+    vertical-align: top;
+    word-spacing: normal;
+}
+.ncm-goods-gift li a {
+    background-color: #fff;
+    display: table-cell;
+    height: 30px;
+    line-height: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+}
+.ncm-goods-gift li a img {
+    max-height: 30px;
+    max-width: 30px;
+}
+
+a.green{
+	
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #f5f5f5;
+    border-radius: 4px;
+    color: #999;
+    cursor: pointer !important;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    height: 20px;
+    letter-spacing: normal;
+    line-height: 20px;
+    margin: 0 5px 0 0;
+    padding: 1px 6px;
+    vertical-align: top;
+}
+
+a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
+
+.ncap-order-style .ncap-order-details{
+	margin:20px auto;
+}
+.contact-info h3,.contact-info .form_class{
+  display: inline-block;
+  vertical-align: middle;
+}
+.form_class i.fa{
+  vertical-align: text-bottom;
+}
+</style>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>维修评论</h3>
+        <h5>维修评论详情</h5>
+      </div>
+
+    </div>
+      
+  </div>
+  <div class="ncap-order-style">
+    <div class="titile">
+      <h3></h3>
+    </div>
+ 
+    <div class="ncap-order-details">
+      <form id="order-action">
+        <div class="tabs-panels">
+            <div class="misc-info">
+                <h3>基本信息</h3>
+                <dl>
+                    <dt><div>用户名：</div><span>{$comment.username}</span></dt>
+                    <!--<dt><div>用户 ID：</div><span>{$comment.user_id}</span></dt>-->
+                    <dt><div>服务订单：</div><span>{$comment.order_sn}</span></dt>
+                    <dt><div>电话：</div><span>{$comment.mobile}</span></dt>
+                    <dt><div>ip地址：</div><span>{$comment.ip_address}</span></dt>
+                    <dt><div>评论内容：</div><span><textarea style="width:70%;height:69px;vertical-align:top;" disabled>{$comment.content}</textarea></span></dt>
+                    <dt valign="top"><div>评论图片：</div>
+                        <foreach name="images" item="v">
+                        <span><img src="{$v}"></span>
+                        </foreach>
+                    </dt>
+                    <dt><div>评论时间：</div><span>{$comment.add_time|date='Y-m-d H:i',###}</span></dt>
+                    <p style="clear: both;"></p>
+                </dl>
+
+            </div>
+        <div class="addr-note">
+          <h4>其他信息</h4>
+          <dl>
+            <dt><div>工程师评价：</div>
+                <if condition="!is_array($comment.user_rank)">
+                    <for start="0" end="5"  name="i" >
+                        <b><img src="/public/images/evaluate.png"></b>
+                    </for>
+                    <span>{$comment.user_rank}</span>
+                <else />
+                    <if condition ="$comment.user_rank eq 5">
+                        <for start="0" end="$comment.user_rank"  name="i" >
+                            <b><img src="/public/images/evaluate.png"></b>
+                        </for>
+                    <else />
+                        <foreach name="$comment.user_rank" item="vi" key="k">
+                            <for start="0" end="$vi"  name="i" >
+                                <eq name="k" value="ek">
+                                    <b><img src="/public/images/evaluatehui.png"></b>
+                                <else />
+                                    <b><img src="/public/images/evaluate.png"></b>
+                                </eq>
+                            </for>
+                        </foreach>
+                        <span>{$comment.user_rank.ev}</span>
+                    </if>
+
+                </if>
+            </dt>
+            <dt><div>服务订单评价：</div>
+                <if condition="!is_array($comment.order_rank)" >
+                    <for start="0" end="5"  name="i" >
+                        <b><img src="/public/images/evaluate.png"></b>
+                    </for>
+                    <span>{$comment.order_rank}</span>
+                <else />
+                    <if condition ="$comment.order_rank eq 5">
+                        <for start="0" end="$comment.order_rank"  name="i" >
+                            <b><img src="/public/images/evaluate.png"></b>
+                        </for>
+                        <else />
+                        <foreach name="$comment.order_rank" item="vi" key="k">
+                            <for start="0" end="$vi"  name="i" >
+                                <eq name="k" value="ek">
+                                    <b><img src="/public/images/evaluatehui.png"></b>
+                                    <else />
+                                    <b><img src="/public/images/evaluate.png"></b>
+                                </eq>
+                            </for>
+                        </foreach>
+                        <span>{$comment.order_rank.ev}</span>
+                    </if>
+                </if>
+
+            </dt>
+            <dt><div>是否匿名评论：</div>
+                <if condition="$comment.is_anonymous eq 1">
+                   <span class="bgg"><i class="fa fa-check-circle"></i> 是</span>
+                <else />
+                    <span class="bgh"><i class="fa fa-ban"></i> 否</span>
+                </if>
+            </dt>
+            <dt><div>是否显示评论：</div>
+                <if condition="$comment.is_show eq 1">
+                    <span class="bgg"> <i class="fa fa-check-circle"></i> 是</span>
+                <else />
+                    <span class="bgh"><i class="fa fa-ban"></i> 否</span>
+                </if>
+            </dt>
+              <p style="clear: both;"></p>
+          </dl>
+
+        </div>
+  
+         
+
+<script type="text/javascript">
+
+
+function delfun() {
+	// 删除按钮
+	layer.confirm('确认删除？', {
+		btn: ['确定'] //按钮
+	}, function () {
+		console.log("确定");
+	}, function () {
+		console.log("取消");
+	});
+}
+
+ 
+</script>
+</body>
+</html>

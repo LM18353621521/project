@@ -1,0 +1,404 @@
+﻿
+
+ <!--底部菜单控件-->
+<script type="text/template" id="BottomMenuControl">
+
+    <div class="box box-element ui-draggable" data-type="BottomMenuControl" data-id="$${Model.ID}" style="display: block;">
+        <div class="drag">
+            <i class="module-icon"><img src="/images/zhuangxiu/module-list_icon02.png"></i>
+            <span class="module-tit">底部菜单</span>
+        </div>
+        <div class="diy-conitem-action-btns">
+            <a href="javascript:;" class="diy-conitem-btn diy-move js-move drag"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-edit js-edit"></a>
+            <a href="javascript:;" class="diy-conitem-btn diy-del js-del"></a>
+        </div>
+
+        <div class="view">
+            <div class="diy-nav noicon">
+                <ul class="picList">
+                    {@each Model.Item as m, k}
+
+                    <li data-id="$${m.ID}" style="background-color:$${m.BackgroudColor}">
+                        <a href="javascript:void(0)" class="LinkTo">
+                            {@if Model.ShowWay=='ico' || Model.ShowWay=='both'}
+                            <i class="diy-nav__icon inline_show"><img src="$${m.Img}"></i>
+                            {@else}
+                            <i class="diy-nav__icon"><img src="$${m.Img}"></i>
+                            {@/if}
+
+                            {@if Model.ShowWay=='text' || Model.ShowWay=='both'}
+                            <span class="diy-nav__label" style="color:$${m.FontColor}">$${m.DisplayText}</span>
+                            {@else}
+                            <span class="diy-nav__label" style="display:none;color:$${m.FontColor}">$${m.DisplayText}</span>
+                            {@/if}
+
+                        </a>
+                    </li>
+                    {@/each}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</script>
+<!--底部菜单控件-->
+
+
+<script type="text/template" id="BottomMenuPhoneControl">
+            {@each Model.Item as m, k}
+            <a onclick="tools.location('$${m.Link}')"  class="bottom-tabbar__item " style="background-color:$${m.BackgroudColor}">
+
+                {@if Model.ShowWay=='ico' || Model.ShowWay=='both'}
+                <span class="icon">
+                    <img src="$${m.Img}">
+                    <img class="lhimg" src="$${m.Img}">
+                </span>
+               
+                {@/if}
+
+                {@if Model.ShowWay=='text' || Model.ShowWay=='both'}
+                <p class="label" style="color:$${m.FontColor}">$${m.DisplayText}</p>
+              
+                {@/if}
+
+             
+               
+            </a>
+            {@/each}
+            
+            </script>
+
+
+<script type="text/template" id="BottomMenuListControl">
+    <li data-id="$${Model.ID}">
+        <a href="javascript:void(0)" class="LinkTo">
+            {@if Control.ShowWay=='ico' || Control.ShowWay=='both'}
+            <i class="diy-nav__icon inline_show"><img src="$${Model.Img}"></i>
+            {@else}
+            <i class="diy-nav__icon"><img src="$${Model.Img}"></i>
+            {@/if}
+
+            {@if Control.ShowWay=='text' || Control.ShowWay=='both'}
+            <span class="diy-nav__label">$${Model.DisplayText}</span>
+            {@else}
+            <span class="diy-nav__label" style="display:none">$${Model.DisplayText}</span>
+            {@/if}
+
+        </a>
+    </li>
+
+
+</script>
+<!--底部菜单控件项-->
+<script type="text/template" id="BottomMenuEdit-template">
+
+    <!--标题设置-->
+
+    <div class="configurator" id="BottomMenuItemPanel">
+        <div class="popover right">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">导航类型：</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='text'}
+                                <input type="radio" value="text" checked="" name="showWay"> 纯文字导航
+                                {@else}
+                                <input type="radio" value="text" name="showWay"> 纯文字导航
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='ico'}
+                                <input type="radio" value="ico" checked name="showWay"> 图标导航
+                                {@else}
+                                <input type="radio" value="ico" name="showWay"> 图标导航
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.ShowWay=='both'}
+                                <input type="radio" value="both" checked name="showWay"> 文字+图标导航
+                                {@else}
+                                <input type="radio" value="both" name="showWay"> 文字+图标导航
+                                {@/if}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label class="col-sm-2">是否固定：</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {@if Model.Fixed=='yes'}
+                                <input type="radio" value="yes" checked="" name="rdfix"> 是
+                                {@else}
+                                <input type="radio" value="yes" name="rdfix"> 是
+                                {@/if}
+
+                            </label>
+                            <label class="radio-inline">
+                                {@if Model.Fixed=='yes'}
+                                <input type="radio" value="no" checked name="rdfix"> 否
+                                {@else}
+                                <input type="radio" value="no" name="rdfix"> 否
+                                {@/if}
+
+                            </label>
+                        </div>
+                    </div>
+                </form>
+
+                <ul class="diy-media-list ui-sortable" id="ItemList">
+                    {@each Model.Item as m, k}
+                    <li id="$${m.ID}" class="Item" style="" data-id="$${m.ID}">
+                        <header class="acts-header">
+                            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+                            <a href="#"><i class="icon icon-trash"></i></a>
+                        </header>
+                        <div class="media">
+                            <div class="media-left">
+                                <label class="MyImageBox uploading" style="display:none"><img src="/images/uploading.gif" /></label>
+                                {@if m.Img!=null && m.Img!=""}
+                                <label class="addbtn openFile" style="display:none"></label>
+                                <label class="MyImageBox openFile image"><img src="$${m.Img}" width="78" height="78" /></label>
+                                {@else}
+                                <label class="addbtn openFile"></label>
+                                <label class="MyImageBox openFile image" style="display:none"><img src="" width="78" height="78" /></label>
+                                {@/if}
+
+                            </div>
+                            <div class="media-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2">导航名称：</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="" name="DisplayText" value="$${m.DisplayText}" class="form-control">
+                                        </div>
+                                    </div>
+                                    {@if m.DIVLink!="1"}
+                                    <div class="form-group selectInfo">
+                                        {@else}
+                                        <div class="form-group selectInfo" style="display:none">
+                                            {@/if}
+
+                                            <label class="col-sm-2">链接地址：</label>
+
+
+                                            <div class="col-sm-6">
+                                                <div class="dropdown dropdown-hover">
+                                                    <span class="form-control text" data-toggle="dropdown">
+                                                        {@if m.LinkText!=null && m.LinkText!="选择链接地址"}
+                                                        <span class="text-info">$${m.LinkText}</span>
+                                                        {@else}
+                                                        <span class="text-info">选择链接地址</span>
+                                                        {@/if}
+
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <ul class="dropdown-menu">
+
+                                                        {@each DataModel.PageNavigate as pn, n}
+                                                        <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                                        {@/each}
+                                                        <li><a href="javascript:void(0)" data-Url="-2" data-toggle="modal" data-target="#ModalDIVPage">自定义页面</a></li>
+                                                        <li><a href="javascript:void(0)" data-Url="-1">自定义链接</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {@if m.DIVLink!="1"}
+                                        <div class="form-group inputInfo" style="display:none">
+                                            {@else}
+                                            <div class="form-group inputInfo">
+                                                {@/if}
+
+                                                <label class="col-sm-2">链接地址：</label>
+                                                <div class="col-sm-6">
+                                                    {@if m.DIVLink!="1"}
+                                                    <input type="text" placeholder="" name="Link" value="" class="form-control">
+                                                    {@else}
+                                                    <input type="text" placeholder="" name="Link" value="$${m.Link}" class="form-control">
+                                                    {@/if}
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="dropdown dropdown-hover">
+                                                        <span class="form-control text" data-toggle="dropdown">
+                                                           
+                                                            <span class="text-info">修改</span>
+                                                          
+                                                            <span class="caret"></span>
+                                                        </span>
+
+                                                        <ul class="dropdown-menu">
+                                                            {@each DataModel.PageNavigate as pn, n}
+                                                            <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                                            {@/each}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2">字体颜色：</label>
+                                                <div class="col-sm-6">
+                                                    <div data-color-format="rgb" data-color="$${m.FontColor}" class="input-append colorpicker-default color">
+                                                        <input type="text" name="FontColor" value="$${m.FontColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                                        <span class="input-group-btn add-on add-on-FontColor">
+                                                            <i style="">颜色选择</i>
+                                                           
+                                                        </span>
+                                                        <input type="text" style="width:68px" class="form-control" name="FontColorInput" value="$${m.FontColor}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2">背景颜色：</label>
+                                                <div class="col-sm-6">
+                                                    <div data-color-format="rgb" data-color="$${m.BackgroudColor}" class="input-append colorpicker-default color">
+                                                        <input type="text" name="BackgroudColor" value="$${m.BackgroudColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                                        <span class="input-group-btn add-on add-on-BackgroudColor">
+                                                            <i style="">颜色选择</i>
+                                                          
+                                                        </span>
+                                                        <input type="text" style="width:68px" class="form-control" name="BackgroudColorInput" value="$${m.BackgroudColor}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2">建议尺寸：</label>
+                                                <div class="col-sm-6">
+                                                    <span class="form-control text text-muted"> 建议45*45</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </li>
+
+                    {@/each}
+                </ul>
+                <a href="#" class="addbtn-block"><i class="icon icon-plus"></i> 增加一个导航</a>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+<script type="text/template" id="BottomMenuItem-template">
+
+    <li id="$${Model.ID}" class="Item" style="" data-id="$${Model.ID}">
+        <header class="acts-header">
+            <a href="#"><i class="icon icon-expand-full icon-rotate-45"></i></a>
+            <a href="#"><i class="icon icon-trash"></i></a>
+        </header>
+        <div class="media">
+            <div class="media-left">
+                <label class="MyImageBox uploading" style="display:none"><img src="/images/uploading.gif" /></label>
+
+                <label class="addbtn openFile"></label>
+                <label class="MyImageBox openFile image" style="display:none"><img src="" width="78" height="78" /></label>
+
+
+            </div>
+            <div class="media-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">导航名称：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="" name="DisplayText" value="$${Model.DisplayText}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group selectInfo">
+                        <label class="col-sm-2">链接地址：</label>
+                        <div class="col-sm-6">
+                            <div class="dropdown dropdown-hover">
+                                <span class="form-control text" data-toggle="dropdown">
+
+                                    <span class="text-info">选择链接地址</span>
+
+
+                                    <span class="caret"></span>
+                                </span>
+                                <ul class="dropdown-menu">
+
+                                    {@each DataModel.PageNavigate as pn, n}
+                                    <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                    {@/each}
+                                    <li><a href="javascript:void(0)" data-Url="-2" data-toggle="modal" data-target="#ModalDIVPage">自定义页面</a></li>
+                                    <li><a href="javascript:void(0)" data-Url="-1">自定义链接</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group inputInfo" style="display:none">
+
+
+                        <label class="col-sm-2">链接地址：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="" name="Link" value="" class="form-control">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="dropdown dropdown-hover">
+                                <span class="form-control text" data-toggle="dropdown">
+                                    <span class="text-info">修改</span>
+                                    <span class="caret"></span>
+                                </span>
+
+                                <ul class="dropdown-menu">
+                                    {@each DataModel.PageNavigate as pn, n}
+                                    <li><a href="javascript:void(0)" data-Url="$${pn.NavigateUrl}">$${pn.DisplayText}</a></li>
+                                    {@/each}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2">字体颜色：</label>
+                        <div class="col-sm-6">
+                            <div data-color-format="rgb" data-color="$${Model.FontColor}" class="input-append colorpicker-default color">
+                                <input type="text" name="FontColor" value="$${Model.FontColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                <span class="input-group-btn add-on add-on-FontColor">
+                                    <i style="">颜色选择</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">背景颜色：</label>
+                        <div class="col-sm-6">
+                            <div data-color-format="rgb" data-color="$${Model.BackgroudColor}" class="input-append colorpicker-default color">
+                                <input type="text" name="BackgroudColor" value="$${Model.BackgroudColor}" class="form-control" style="width: 0px; height: 0px; position:absolute;">
+                                <span class="input-group-btn add-on add-on-BackgroudColor">
+                                    <i style="">颜色选择</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2">建议尺寸：</label>
+                        <div class="col-sm-6">
+                            <span class="form-control text text-muted"> 建议45*45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+
+</script>
+<!--底部菜单结束-->
+

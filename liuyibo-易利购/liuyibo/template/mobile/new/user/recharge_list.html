@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 收入明细</title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">收入明细</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="pmgeyt">
+            <div class="weui-cells tr oveterm pmer">
+                <div class="weui-celly" id="div1">
+                    <div class="weui-cell__hd">支付方式</div>
+                </div>
+                <div class="weui-celly" id="div2">
+                    <div class="weui-cell__hd">充值金额</div>
+                </div>
+                <div class="weui-celly" id="div3">
+                    <div class="weui-cell__hd">充值时间</div>
+                </div>
+                <div class="weui-celly" id="div4">
+                    <div class="weui-cell__hd">状态</div>
+                </div>
+
+            </div>
+            <p id="zzjz" style="text-align: center" hidden="">正在加载</p>
+            <p id="jzwc" style="text-align: center" hidden="">已经全部加载完了</p>
+            <p id="xtyc" style="text-align: center" hidden="">系统异常，请刷新</p>
+        </div>
+  
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+  $("#time3").datetimePicker({
+        times: function () {
+          return [
+            {
+              values: []
+            }
+          ];
+        },
+        value: '2018-12-01 ',
+        onChange: function (picker, values, displayValues) {
+          console.log(values);
+        }
+  });
+  $("#time4").datetimePicker({
+        times: function () {
+          return [
+            {
+              values: []
+            }
+          ];
+        },
+        value: '2019-01-01 ',
+        onChange: function (picker, values, displayValues) {
+          console.log(values);
+        }
+  });
+load_more();
+// 当前页数
+var p = 0;
+// 加载完毕标志
+var endflg =  0;
+// 防止重复加载
+var busy = false;
+// 存放数据
+var logs = [];
+function load_more(){
+    if(busy){
+        return false;
+    }
+    busy = true;
+    $.ajax({
+            method:'POST',
+            data:{
+                "p" : p
+            },
+            dataType: "json",
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            url: "/index.php/Mobile/User/recharge_list",
+            success: function(data){
+            console.log(data);               
+                busy = false;
+                $('#zzjz').show();
+                $('#jzwc').hide();
+                if(data.length<15&&p==0){
+                    $('#zzjz').hide();
+                    $('#jzwc').show();
+                }
+                var div1='',div2='',div3='',div4='';
+                if(p==0){
+                     div1+='<div class="weui-cell__hd">支付方式 </div>';
+                     div2+='<div class="weui-cell__hd">充值金额 </div>';
+                     div3+='<div class="weui-cell__hd">充值时间</div>';
+                     div4+='<div class="weui-cell__hd">状态 </div>';
+                    $('#div1').html('');$('#div2').html('');$('#div3').html('');$('#div4').html('');
+                }
+                $.each(data,function(index,item){
+                    if(data[index].pay_status==1){
+                        var pay_status='充值成功';
+                    }else if(data[index].pay_status==2){
+                        var pay_status='充值失败';
+                    }else{
+                        var pay_status='待审核';
+                    }
+                    var ctime=UnixToDate(data[index].ctime,'Y-m-d');
+                    div1+='<div class="weui-cell__hd">'+data[index].pay_name+'</div>';
+                    div2+='<div class="weui-cell__hd">'+data[index].account+'</div>';
+                    div3+='<div class="weui-cell__hd">'+ctime+'</div>';
+                    div4+='<div class="weui-cell__hd">'+pay_status+'</div>';
+                    
+                })
+                $('#div1').append(div1);$('#div2').append(div2);$('#div3').append(div3);$('#div4').append(div4);
+
+                if(data.length==0){
+                    $('#jzwc').show();
+                    $('#zzjz').hide();
+                    var endflg = 1;
+                    return false;
+                }
+                p++;
+            },error:function(){
+                $('#xtyc').show();
+                $('#zzjz').hide();
+                $('#jzwc').hide();
+            }
+        });
+}
+var loading = false;  //状态标记
+    $('.page-bd').infinite().on("infinite", function() {
+        
+      if(loading) return;
+      loading = true;
+      setTimeout(function() {
+        //console.log(9);
+        load_more();
+        
+        loading = false;
+      }, 1500);   //模拟延迟
+    });
+
+/**        
+ * 时间戳转换日期              
+ * @param <int> unixTime    待时间戳(秒)              
+ * @param <bool> isFull    返回完整时间(Y-m-d 或者 Y-m-d H:i:s)              
+ * @param <int>  timeZone   时区              
+ */
+ 
+function UnixToDate(unixTime, isFull, timeZone) {
+    if (typeof (timeZone) == 'number'){
+        unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60;
+    }
+    var time = new Date(unixTime * 1000);
+    var ymdhis = "";
+    ymdhis += time.getUTCFullYear() + "-";
+    ymdhis += (time.getUTCMonth()+1) + "-";
+    ymdhis += time.getUTCDate();
+    if (isFull === true){
+        ymdhis += " " + time.getUTCHours() + ":";
+        ymdhis += time.getUTCMinutes() + ":";
+        ymdhis += time.getUTCSeconds();
+    }
+    return ymdhis;
+}
+</script>
+
+</body>
+</html>

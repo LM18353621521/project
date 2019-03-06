@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <style>
+
+    </style>
+
+</head>
+
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<header class="mui-bar mui-bar-nav" style="background:#f3363a;">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+  <!--  <a class="mui-icon  mui-pull-right toggle" style="color: white;font-size: 14px;line-height: 44px;margin: 0;padding: 0">代理登录</a>-->
+    <h1 class="mui-title login-item" style="color: white">个人信息</h1>
+</header>
+<div style="height: 44px"></div>
+<div style="height: 10px;background:#efeff4; "></div>
+<div class="mui-page-content" >
+
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a>会员号<span class="mui-pull-right">{{message.account}}</span></a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a>推荐人<span class="mui-pull-right">{{message.parentaccount}}</span></a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a>已消费<span class="mui-pull-right">{{message.sumall}}</span></a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a>积分<span class="mui-pull-right">{{message.integral}}</span></a>
+                </li>
+                <div style="height: 4px;background:#efeff4; "></div>
+                <li class="mui-table-view-cell">
+                    <a>所属代理<span class="mui-pull-right">{{message.agen}}</span></a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a>代理手机号<span class="mui-pull-right">{{message.agenphone}}</span></a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a>代理微信号<span class="mui-pull-right">{{message.agenwebchat}}</span></a>
+                </li>
+                <!--<li class="mui-table-view-cell">-->
+                    <!--<a>integral<span class="mui-pull-right">{{message.integral}}</span></a>-->
+                <!--</li>-->
+            </ul>
+
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        $http({
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+                return str.join("&");
+            },
+            url: "/index.php/Home/member/usermessage"
+        }).then(function successCallback(response) {
+            $scope.message = response.data.data
+            console.log(response.data.data)
+        }, function errorCallback(response) {
+        })
+    })
+    //用户登录
+    function login() {
+        var param=$('form').serialize();
+console.log(param)
+        ajax_post("{:U('Login/login?id=1')}",param,"{:U('Index/index')}");
+        return false;
+    }
+    /*代理登录*/
+   $(".login-tab>div").click(function () {
+
+       $(this).siblings("div").removeClass("login-active").find("input").attr("disabled",true);
+       $(this).addClass("login-active").find("input").attr("disabled",false);
+
+   })
+</script>
+<include file="./Application/Home/View/pub/foot.html" name="m"/>
+</body>
+</html>

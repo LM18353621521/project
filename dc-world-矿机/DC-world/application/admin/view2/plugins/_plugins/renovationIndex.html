@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>赢在移动后台</title>
+    <link href="__PUBLIC__/plugins/magicmall/css/list.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/js/zui/css/zui.min.css" rel="stylesheet" />
+
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/style.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/zhuangxiu.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/diy.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/tank.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/js/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" />
+    <script src="__PUBLIC__/plugins/magicmall/js/jquery.js"></script>
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/index2.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/js/swiper/swiper-3.4.2.min.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/zhuangxiu.css" rel="stylesheet" />
+    <link href="__PUBLIC__/plugins/magicmall/css/magicMall/diy.css" rel="stylesheet" />
+<style>
+    #currentEditTemplate .phone-box {
+        /*width: 230px;*/
+    }
+
+    #currentEditTemplate .phone-title {
+        /*width: 198px;*/
+    }
+
+    #currentEditTemplate .phone-body {
+        /*width: 198px;*/
+        height: 400px;
+        min-height: inherit;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #currentEditTemplate .goods-list-type4 .goods-img {
+        width: 54px;
+        height: 54px;
+        margin-right: 0;
+    }
+
+    #currentEditTemplate .goods-list-type4 .goods-name {
+        height: 40px;
+        overflow: hidden;
+    }
+    .htk .opdy table tr th a:hover {
+        text-decoration: none;
+        color: #6d6d6d;
+    }
+
+    /*.card .phone-box {
+        margin: 15px;
+    }*/
+    .draggable img {
+        width:100%!important;
+        height: auto;
+    }
+    .left .card .phone-body {
+        height: 300px !important;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        min-height: inherit;
+    }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+    <div class="panel">
+        <div class="panel-heading" >
+            <span id="plateTips"></span>商城首页配置
+        </div>
+        <div class="panel-body">
+            <div class="alert  alert-dismissable alert-top">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <p><span class="text-muted"><i class="icon icon-volume-up"></i> 操作提示：</span><span class="text-primary">当前页面的二维码或者是网址只是给使用者提供浏览查看功能，并不是最终的装修页面入口</span></p>
+            </div>
+            <div class="htk tablea">
+                <div class="opdy opno">
+                    <table class="table kudd table-hover" cellspacing="2" cellpadding="2">
+                        <colgroup>
+                            <col style="width:17%">
+                            <col style="width:83%">
+                        </colgroup>
+                        <tbody>
+                        <tr id="currentEditTemplate" >
+                            <th class="topu"><span class="uyd">当前使用</span></th>
+                            <th>
+                                <form class="form-horizontal form-group-lg ">
+                                    <fieldset>
+                                        <div class="curuse-tpk">
+                                            <div class="left">
+
+                                                <div class="cards cards-borderless tpl-cards">
+                                                    <div class="col-md-4">
+                                                        <div class="card">
+                                                            <div class="phone-box">
+                                                                <div class="phone-header">
+                                                                    <div class="phone-receiver"></div>
+                                                                    <div class="phone-title">商城首页</div>
+                                                                </div>
+                                                                <div class="phone-body">
+                                                                    <div class="demo ui-sortable">
+                                                                        <div id="EditTemplate"></div>
+                                                                    </div>
+                                                                    <div id="download-layout">
+                                                                        <div class="m-container-fluid">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="phone-footer"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right col-md-5">
+                                                        <p>手机扫描二维码，可直接在手机上访问移动端页面</p>
+                                                        <div class="rwmbox"><div style="width:86px;height:128px;margin: 0 auto" id="code"></div></div>
+                                                        <p style="word-break:break-all;">页面网址：<span id="address"></span></p>
+                                                        <div><a class="btn btn-primaryu" href="javascript:void(0)" onclick="LinkTo()" id="link" style="color:white;">编辑模板</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </form>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="topu"><span class="uyd">可选用的模板</span></th>
+                            <th>
+                                <form class="form-horizontal form-group-lg ">
+                                    <fieldset>
+                                        <div class="cards cards-borderless tpl-cards">
+                                            <div class="col-md-4">
+                                                <div class="qlm">
+                                                    <a href="" id="linkAdd">+新建模板</a>
+                                                </div>
+                                            </div>
+
+                                            <div id="PageList">
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!-- 右侧消息中心 -->
+
+<style>
+    #PageList .phone-body {
+        height: 400px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        min-height: inherit;
+    }
+</style>
+
+<script type="text/template" id="tmplate-table">
+    {@each Model as page,index}
+    <div class="col-md-4 pageInfo" data-TemplateID="$${page.TemplateID}" data-id="$${page.id}">
+        <div class="card">
+            <div class="phone-box">
+                <div class="phone-header">
+                    <div class="phone-receiver"></div>
+                    <div class="phone-title">$${page.title}</div>
+                </div>
+                <div class="phone-body">
+                    <div class="demo ui-sortable">
+                        <div id="abox">
+                            $${page.data}
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="phone-footer"></div>
+                <div class="kold">
+                    <ul>
+                        <li><a href="javascript:void(0)" class="SetDefault"></a></li>
+                        <li><a  href="/index.php?m=Admin&c=Plugins.Plugins&a=renovation&id=$${page.id}"></a></li>
+                        <li><a href="javascript:void(0)" class="deleteBtn"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {@/each}
+</script>
+
+<script src="__PUBLIC__/plugins/magicmall/js/swiper/swiper-3.4.2.jquery.min.js"></script>
+<script>
+    var link = '/index.php?m=Admin&c=Plugins.Plugins&a=renovation&id=20';
+    var Platform = 'Wx';
+    var Type = 'home';
+    var objectType = "";
+    var objectID = "0";
+    if (Platform == "Wx") {
+        $("#plateTips").html("公众号");
+    } else if (Platform == "WxAPP") {
+        $("#plateTips").html("小程序");
+    }
+    else if (Platform == "APP") {
+        $("#plateTips").html("APP");
+    }
+    else if (Platform == "H5") {
+        $("#plateTips").html("H5");
+    }
+    if (objectType == 1) {
+        objectID = 0
+    } else if (objectType == 2) {
+        $("#plate").html("店铺");
+    }
+</script>
+<script src="__PUBLIC__/plugins/magicmall/js/juicer-min.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/base64.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/zp.magicMall.Extend.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/tools/qrcode.js"></script>
+<script src="__PUBLIC__/plugins/magicmall/js/List/Template.js"></script>
+

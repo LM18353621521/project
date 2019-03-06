@@ -1,0 +1,7 @@
+﻿原名：Validform
+
+文档参考:http://validform.rjboy.cn/document.html
+
+b.css 代表提示框在文本下面
+
+tr.css 动画形式在文本框 右边提示

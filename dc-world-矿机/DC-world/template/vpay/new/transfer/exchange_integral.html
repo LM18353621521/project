@@ -1,0 +1,44 @@
+<include file="common/main" title="兑换积分" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                兑换积分
+            </div>
+            <a class="show_text" href="{:U('Transfer/record_exchange')}">
+               兑换记录
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <div class="flex ex_t">
+            <div class="flex1">
+                <label>{$vo.balance}</label>
+                <p>余额</p>
+            </div>
+            <div></div>
+            <div class="flex1">
+                <label>{$vo.tointegral}</label>
+                <p>积分</p>
+            </div>
+        </div>
+        <div class="login">
+            <p class="l_tit">兑换成积分</p>
+            <div>
+                <label>余额</label>
+                <input style="text-align: right;" type="text" name="money" id="balance" placeholder="输入兑换余额" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+            </div>
+        </div>
+        <span class="tips">提示：最少兑换数量100，请输入100的整数倍</span>
+        <input type="button" name="" id="confirm_btn" class="login_btn" value="确认兑换">
+    </body>
+    <block name="custom_js">
+        <script type="text/javascript">
+            $(function () {
+                $("#confirm_btn").click(function () {
+                        ajax_post("/index.php/Vpay/Transfer/exchange_integral",{"balance":$("#balance").val()},"/index.php/Vpay/Transfer/record_exchange");
+                });
+            })
+        </script>
+    </block>
+</block>

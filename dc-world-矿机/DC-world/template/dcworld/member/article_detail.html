@@ -1,0 +1,53 @@
+<include file="common/header" title="{$news.title}" body=""/>
+<style>
+  .ellip_two p img {
+    padding: 0.066667rem 0;
+    max-width: 100%;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .ellip_two p{
+    color: #6e6e6e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+  }
+</style>
+<div class="page">
+  <div class="page-hd">
+    <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">{$news.title}</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+  </div>
+  <div class="page-bd">
+    <!-- 页面内容-->
+    
+    <div class="card xm_active">
+      <div class="weui-cells">
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            <h4 class="fs28">{$news.title}</h4>
+            <p class="fs22 text-gray pt0">{$news.publish_time|date="Y-m-d H:i",###}</p>
+            <div class="ellip_two">
+              {$news.content}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<include file="common/main" title="银行卡" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            银行卡
+        </div>
+        <a  href="javascript:void(0)">
+          
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <p class="b_tip">
+        <i></i>
+        <span>务必保证收款账户姓名、账户等信息真实有效</span>
+    </p>
+
+        <div class="bank_list" id="tpls">
+            <script id="tpl" type="text/html">
+                <ul>
+                {{each data as li i}}
+            <li class="flex">
+                <div>
+                    <i></i>
+                </div>
+                <div class="flex1" onclick="select({{li.id}})">
+                    <label>
+                        <span>
+                            {{li.realName}}
+                        </span>
+                        <span>
+                            {{li.bankName}}
+                        </span>
+                    </label>
+                    <p>
+                        {{li.no}}
+                    </p>
+                </div>
+            </li>
+            {{/each}}
+            </ul>
+            </script>
+        </div>
+    <div style="height: 0.45rem;"></div>
+    <a style="position: fixed;bottom: 0;left: 5.6%;" class="login_btn" href="{:U('Transaction/addBankCard',array('type'=>'purchase'))}">
+        添加银行卡
+    </a>
+</body>
+        <script type="text/javascript">
+
+            function getBank(){
+                $.ajax({
+                    url: "{:U('Member/bankList')}",
+                    type: "post",
+                    dataType: "json",
+                    data:{
+                        "memberId" : $("input[name='memberId']").val(),
+                        "nickname" : $("input[name='nickname']").val(),
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    success: function (data) {
+                        if(data.code==0){
+                            var html = template('tpl',data);
+                            document.getElementById("tpls").innerHTML = html;
+                        }else {
+                            layer.msg(data.msg)
+                        }
+                    },
+                    error: function (result) {
+                    }
+                })
+            };
+            getBank();
+            function select (id) {
+                window.location.href = '/index.php/Vpay/Transaction/purchase?cardid=' + id;
+            }
+
+        </script>

@@ -1,0 +1,189 @@
+<include file="common/head" title="注册" body=""/>
+<style>
+    /* html{width: 100%;height: 100%} */
+    /* body{background: url(/static/mobile/images/login_bg.png) no-repeat;background-position: center;background-size: cover} */
+    body{position: relative;}
+    .body_bg{width: 100%;height:100%;z-index: -1;background-position: center;background-size: cover;position: absolute;}
+    .body_bg img{width: 100%;}
+</style>
+<div class="body_bg"><img src="__PUBLIC__/images/main_bg.png" alt=""></div>
+<div class="login-container register-container">
+    <div class="register-title">用户注册</div>
+    <div class="formbox">
+        <form name="AddUser" id="registerForm" class="formrgister" method="get">
+            <div class="input_box">
+                <span class="iconfont icon-nicheng"></span>
+                <input type="text" name="nickname" class="username" placeholder="昵称" autocomplete="off">
+            </div>
+            <div class="input_box">
+                <span class="iconfont icon-dianhua"></span>
+                <input type="text" name="account" placeholder="输入手机号码" onInput ="returnNum(this)" maxlength="11">
+            </div>
+            <!--  <li><input type="text" name="captcha" id="captcha" placeholder="请输入验证码">
+             <span class="yzm2"><img src="/admin/login/captcha" alt="captcha" onclick="this.src='/admin/login/captcha'+'?'+Math.random()" /></span></li> -->
+            <!--<div class="input_box code_box" id="captcha-container">-->
+                <!--<span class="iconfont icon-verification-code"></span>-->
+                <!--<div class="input-code">-->
+                    <!--<input name="verify" class="captcha-text" placeholder="验证码" id="j_verify" type="text">-->
+                    <!--<img alt="图形验证码" src="./标题_files/captcha" title="点击刷新" onclick="this.src=&#39;/admin/login/captcha&#39;+&#39;?&#39;+Math.random()">-->
+                <!--</div>-->
+            <!--</div>-->
+            <if condition="$regis_sms_enable">
+            <div class="input_box">
+                <span class="iconfont icon-shoujihao1"></span>
+                <div class="phone-code">
+                    <input type="text" name="code" placeholder="验证码" onInput ="returnNum(this)">
+                    <a href="javascript:void(0)" id="mycode" onclick="sendemail()">获取手机验证码</a>
+                </div>
+            </div>
+            </if>
+            <div class="input_box">
+                <span class="iconfont icon-mima"></span>
+                <input type="password" name="password" placeholder="6-32位数字加字母" maxlength="32" minlength="6">
+            </div>
+            <!--<div class="input_box">-->
+                <!--<span class="iconfont icon-mima1"></span>-->
+                <!--<input type="password" name="relogin_pwd" class="confirm_password" placeholder="再次输入密码" oncontextmenu="return false" onpaste="return false">-->
+            <!--</div>-->
+            <div class="input_box">
+                <span class="iconfont icon-shoujihao1"></span>
+                <input type="text" name="invitecode" placeholder="邀请码" value="{$invitecode}" >
+            </div>
+            <div class="input_box">
+                <span class="iconfont icon-jiaoyimima"></span>
+                <input type="password" name="paypassword" placeholder="6位数字支付密码" maxlength="6">
+            </div>
+            <div class="inde-btn">
+            <button id="login_submit" type="button" onclick="reg()" >注 册</button>
+            <!-- <div class="submitbox"><input id="login_submit" type="button" value="立即开启"></div> -->
+        </div>
+        </form>
+    </div>
+    <div class="extra_reg">
+        <a href="{:U('Login/login')}" class="inde-reg">已经有账号？返回登录</a>
+    </div>
+</div>
+
+
+</body>
+<script>
+    function returnNum(_this) {
+        _this.value = _this.value.replace(/[^0-9]/g, '');
+    }
+</script>
+<script>
+
+
+    var countdown=60;
+    function sendemail(){
+        var type=1; //reg
+        var nickname= $('input[name=nickname]').val();
+        var mobile= $('input[name=account]').val();
+        var pwd= $('input[name=password]').val();
+        if(nickname==''){
+            msg_alert('请输入昵称!');
+        }else{
+            // if(!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(number))){
+            if(mobile=='' || !(/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|(19[0-9])|166|(147))\d{8}$/.test(mobile))){
+                msg_alert('请输入正确的手机号!');
+            }else{
+                $.post("{:U('Register/sendCode')}", {account: mobile, type: 1}, function(data){
+                        console.log(data);
+                        if (data.code == 0) {
+                            var obj = $("#mycode");
+                            settime(obj);
+                            layer.msg("发送成功");
+                        } else {
+                            var obj = $("#mycode");
+                            layer.msg(data.msg,{time:1000});
+                            obj.attr("onclick", "sendemail()");
+                            obj.html("免费获取验证码");
+                            countdown = 60;
+                        }
+                    },'json');
+            }
+
+        }
+
+    }
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr("onclick", "sendemail()");
+            //obj.removeattr("disabled");
+            obj.html("免费获取验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr("onclick", "null");
+            obj.html("重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                    settime(obj) }
+                ,1000)
+    }
+
+</script>
+<script>
+        reg = function () {
+
+                $.ajax({
+                    method: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        "invitecode" : $("input[name='invitecode']").val(),
+                        "nickname" : $("input[name='nickname']").val(),
+                        "account" : $("input[name='account']").val(),
+                        "code" : $("input[name='code']").val(),
+                        "password" : $("input[name='password']").val(),
+                        "paypassword" : $("input[name='paypassword']").val()
+                    },
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: "/index.php/Vpay/Register/validaform",
+                    success: function (data) {
+                    if(data.code==-1){
+                        layer.msg(data.msg,{time:1000})
+                    }
+                    else if(data.code==0){
+                        setTimeout(function () {
+                            gotoreg();
+                        },100)
+                    }
+                },error: function (result) {
+                        layer.msg("请求错误！");
+                    }
+                });
+
+        }
+
+        gotoreg = function () {
+            $.ajax({
+                method: 'POST',
+                dataType: 'JSON',
+                data: {
+                    "invitecode" : $("input[name='invitecode']").val(),
+                    "nickname" : $("input[name='nickname']").val(),
+                    "account" : $("input[name='account']").val(),
+                    "code" : $("input[name='code']").val(),
+                    "password" : $("input[name='password']").val(),
+                    "paypassword" : $("input[name='paypassword']").val()
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                url: "/index.php/Vpay/Register/register",
+                success: function (data) {
+                    if(data.code==-1){
+                        layer.msg(data.msg,{time:1000})
+                    }
+                    else if(data.code==0){
+                        layer.msg("注册成功",{time:1000})
+                        setTimeout(function () {
+                            window.location.href="/index.php/Vpay/Login/login"
+                        },1500)
+                    }
+            },error: function (result) {
+                    layer.msg("请求错误！");
+                }
+            });
+        }
+
+</script>

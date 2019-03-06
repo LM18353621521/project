@@ -1,0 +1,146 @@
+<include file="public/layout" />
+<style>
+    td{height:40px;line-height:40px; padding-left:20px;}
+    .span_1{
+        float:left;
+        margin-left:0px;
+        height:130px;
+        line-height:130px;
+    }
+    .span_1 ul{list-style:none;padding:0px;}
+    .span_1 ul li{
+        border:1px solid #CCC;
+        height:40px;
+        padding:0px 10px;
+        margin-left:-1px;
+        margin-top:-1px;
+        line-height:40px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>会员管理 - 会员信息</h3>
+                <h5>网站系统会员管理会员信息</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a href="{:url('Admin/User.User/detail',['id'=>$_GET['id'],'inc_type'=> 1])}" <if condition="$_GET['inc_type'] eq 1">class="current"</if>><span>会员信息配置</span></a></li>
+                <li><a href="{:url('Admin/User.User/detail_distribution',['id'=>$_GET['id'],'inc_type'=> 2])}" <if condition="$_GET['inc_type'] eq 2">class="current"</if>><span>区域代理配置</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <form class="form-horizontal" id="user_form" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>代理区域</label>
+                </dt>
+                <dd class="opt">
+                    {$region_content}
+                    <p class="notic">请选择可代理的区域，可选择的区域范围取决于用户所属角色代理等级。</p>
+                </dd>
+            </dl>
+            <div class="bot"><a id="submit_from" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+            <input type="hidden" name="update_region_code" value="">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    //提交处理
+    $('#submit_from').click(function(){
+        var level = "{$level}";
+        var region_code = '';
+        //忽略区域
+        var last_region_code = "{$last_region_code}";
+        if(level == 1){
+            $('select[name="province[]"] option:checked').each(function(){
+                if(region_code){
+                    region_code += ','
+                }
+                region_code += $(this).val();
+            });
+        }else if(level == 2){
+            $('select[name="city[]"] option:checked').each(function(){
+                if(region_code){
+                    region_code += ','
+                }
+                region_code += $(this).val();
+            });
+        }else if(level == 3){
+            $('select[name="district[]"] option:checked').each(function(){
+                if(region_code){
+                    region_code += ','
+                }
+                region_code += $(this).val();
+            });
+        }
+        //插入到from里面
+        $('input[name=update_region_code]').val(region_code);
+        $.ajax({
+            type: "POST",
+            url: "{:url('mobile/Apply/check_region_proxy_only')}",
+            data: {region_code:region_code,'ignore_code':last_region_code},
+            dataType: 'json',
+            success: function (data) {
+                if(data.status == -1) {
+                    layer.open({content: data.msg, time: 2});
+                    return false;
+                }else{
+                    $('#user_form').submit();
+                }
+            }
+        });
+    });
+    function get_city_proxy(t,id){
+        var parent_id = $(t).val();
+        if(!parent_id > 0){
+            return;
+        }
+        $('#city'+id).empty().css('display','inline');
+        var url = '/index.php?m=Home&c=Api&a=getRegion&level=2&parent_id='+ parent_id;
+        $.ajax({
+            type : "GET",
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(v) {
+                v = '<option value="0">选择城市</option>'+ v;
+                $('#city'+id).empty().html(v);
+            }
+        });
+    }
+
+    /**
+     * 获取地区
+     * @param t  城市select对象
+     */
+    function get_area_proxy(t,id){
+        var parent_id = $(t).val();
+        if(!parent_id > 0){
+            return;
+        }
+        $('#district'+id).empty().css('display','inline');
+        var url = '/index.php?m=Home&c=Api&a=getRegion&level=3&parent_id='+ parent_id;
+        $.ajax({
+            type : "GET",
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(v) {
+                v = '<option>选择区域</option>'+ v;
+                $('#district'+id).empty().html(v);
+            }
+        });
+    }
+</script>
+</body>
+</html>

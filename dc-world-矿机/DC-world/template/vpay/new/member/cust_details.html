@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <script src="__PUBLIC__/mui/js/mui.min.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/js/swiper.min.js"></script>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/swiper.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/new_z.css">
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+<!--正文/商品-->
+<div class="mui-content" style="padding-top: 0">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" ng-repeat="img in img_arr track by $index">
+                <img src="{{ img }}" alt="">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <a href="javascript:history.go(-1)" class="go_back">
+            <i></i>
+        </a>
+    </div>
+    <div class="d_title">
+        <div>
+            {{ detail.name }}
+        </div>
+        <div class="clearfix">
+            <label>￥{{ detail.price }}</label>
+            <p>定制：{{ detail.num }}</p>
+        </div>
+    </div>
+    <!--<div class="d_num clearfix">-->
+        <!--<label>数量</label>-->
+        <!--<p class="tip_s clearfix">-->
+            <!--<a class="fleft jian count_ico" quantity="-">-</a>-->
+            <!--<input class="fleft cart_product_num" type="text" placeholder="" value="1">-->
+            <!--<a class="fleft jia count_ico" quantity="+">+</a>-->
+        <!--</p>-->
+    <!--</div>-->
+    <div class="d_details">
+        <h4>商品详情</h4>
+        <p ng-bind-html="detail.html | to_trusted"></p>
+    </div>
+</div>
+<div style="height: 50px;"></div>
+<!--footer-->
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    var slider = mui("#slider");
+    slider.slider({
+        interval: 1500
+    });
+</script>
+<script language="javascript">
+    window.onload=function(){
+        var mySwiper = new Swiper('.swiper-container',{
+            loop:true,
+            pagination : '.swiper-pagination',
+            grabCursor: true,
+            speed:1000,
+            paginationClickable: true,
+            autoplayDisableOnInteraction : false,
+            autoplay: 3000,
+            observer:true,
+            observeParents:true,
+        })
+    }
+</script>
+<script>
+    var app = angular.module("myApp", []);
+    app.filter('to_trusted', ['$sce', function ($sce) {
+        return function (text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);
+    app.controller('Ctrl', function($scope, $http) {
+        $http({
+            method: 'GET',
+            url: "/Home/Customized/getCustomizedDetail?id=" + getUrlParam("id")
+        }).then(function successCallback(response) {
+            // console.log(response.data.data.detail);
+            $scope.detail = response.data.data.detail;
+            $scope.img_arr = response.data.data.detail.img_arr;
+            // console.log($scope.img_arr);
+        }, function errorCallback(response) {
+            errorHandle(response);
+        });
+
+        $scope.sub=function () {
+            var id = getUrlParam("id")
+
+            $http({
+                method:'POST',
+                data:{"id": id},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/Home/Customized/customized",
+            }).then(function successCallback(response) {
+                if(response.data.code == -200 || response.data.code == -201) { //-200未上传  //-201未通过
+                    layer.msg(response.data.msg);
+                    setTimeout(function () {
+                        window.location.href = "/Home/Member/perfect_infor";
+                    },1000)
+                }else if (response.data.code == -202) {
+                    layer.msg(response.data.msg);
+                    return;
+                }
+                successHandle(response, function () {
+                    if (0 == response.data.code) {
+                        layer.msg(response.data.data);
+                        setTimeout(function () {
+                            window.location.href = "/Home/index/customized";
+                        },1000)
+                    }
+                });
+            }, function errorCallback(response) {
+                errorHandle(response);
+            });
+        }
+    });
+</script>
+</body>
+
+</html>

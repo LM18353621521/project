@@ -1,0 +1,184 @@
+<include file="public/layout" />
+<style>
+    .ncm-goods-gift {
+        text-align: left;
+    }
+    .ncm-goods-gift ul {
+        display: inline-block;
+        font-size: 0;
+        vertical-align: middle;
+    }
+    .ncm-goods-gift li {
+        display: inline-block;
+        letter-spacing: normal;
+        margin-right: 4px;
+        vertical-align: top;
+        word-spacing: normal;
+    }
+    .ncm-goods-gift li a {
+        background-color: #fff;
+        display: table-cell;
+        height: 30px;
+        line-height: 0;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+        width: 30px;
+    }
+    .ncm-goods-gift li a img {
+        max-height: 30px;
+        max-width: 30px;
+    }
+
+    a.green{
+
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #f5f5f5;
+        border-radius: 4px;
+        color: #999;
+        cursor: pointer !important;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: normal;
+        height: 20px;
+        letter-spacing: normal;
+        line-height: 20px;
+        margin: 0 5px 0 0;
+        padding: 1px 6px;
+        vertical-align: top;
+    }
+
+    a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
+
+    .ncap-order-style .ncap-order-details{
+        margin:20px auto;
+    }
+    .contact-info h3,.contact-info .form_class{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .form_class i.fa{
+        vertical-align: text-bottom;
+    }
+</style>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>门店申请管理</h3>
+                <h5 style="color:red">审核通过,账号密码为当前门店联系人手机号码</h5>
+            </div>
+            <div class="subject" style="width:62%">
+                <if condition="$base_info['status'] eq 0">
+                    <a onClick="ajax_submit_form('order-action','{:U('Admin/Supplier.Supplier/door_join_info?is_ajax=1',array('status'=>1))}');" style="float:right;margin-right:10px" class="ncap-btn-big ncap-btn-green" >
+                        <i class="fa fa-print"></i>审核不通过</a>
+                    <a onClick="ajax_submit_form('order-action','{:U('Admin/Supplier.Supplier/door_join_info?is_ajax=1',array('status'=>2))}');"  style="float:right;margin-right:10px" class="ncap-btn-big ncap-btn-green" >
+                        <i class="fa fa-print"></i>审核通过</a>
+                </if>
+
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="ncap-order-style">
+        <div class="titile">
+            <h3></h3>
+        </div>
+
+        <div class="ncap-order-details">
+            <form id="order-action" method="post">
+                <div class="tabs-panels">
+                    <div class="misc-info">
+                        <h3>基本信息</h3>
+                        <dl>
+                            <dt>申请者 ID：</dt>
+                            <dd>{$user.user_id}</dd>
+                            <dt>昵称：</dt>
+                            <dd>{$user.nickname}</dd>
+                        </dl>
+                        <dl>
+                            <dt>电话：</dt>
+                            <dd>{$user.mobile}</dd>
+                            <dt>E-Mail：</dt>
+                            <dd>{$user.email}</dd>
+                            <dt>地址：</dt>
+                            <dd>{$user.address}</dd>
+                        </dl>
+                    </div>
+                    <div class="misc-info">
+                        <h3>申请信息</h3>
+                        <dl>
+                            <dt>申请者姓名：</dt>
+                            <dd>{$apply.user_name}</dd>
+                            <dt>申请人电话：</dt>
+                            <dd>{$apply.phone}</dd>
+                        </dl>
+                        <dl>
+                            <dt>省/市/区：</dt>
+                            <dd>{$apply.p_c_d}</dd>
+                            <dt>E-Mail：</dt>
+                            <dd>{$apply.email}</dd>
+                            <dt>地址：</dt>
+                            <dd>{$apply.address}</dd>
+                        </dl>
+                    </div>
+                    <div class="addr-note">
+                        <h4>扩展信息1</h4>
+                        <dl>
+                            <dt>申请人身份证：</dt>
+                            <dd>{$apply.identity}</dd>
+                        </dl>
+                        <dl>
+                            <dt>银行卡：</dt>
+                            <dd>{$apply.bank}</dd>
+                        </dl>
+                    </div>
+                    <div class="addr-note">
+                        <h4>扩展信息2</h4>
+                        <dl>
+                            <dt>门店名称：</dt>
+                            <dd>{$apply.suppliers_name}</dd>
+                        </dl>
+                        <dl>
+                            <dt>门店照片：</dt>
+                            <dd>{$apply.store_address}</dd>
+                        </dl>
+                        <dl>
+                            <dt>门店介绍：</dt>
+                            <dd>{$apply.suppliers_desc}</dd>
+                        </dl>
+                        <dl>
+                            <dt>付款凭证：</dt>
+                            <dd><img src="{$apply.payment_voucher}" alt=""></dd>
+                        </dl>
+                    </div>
+
+                </div>
+                <input type="hidden" name="id" value="{$apply.apply_id}">
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function checkUserUpdate(status){
+        $('input[name="status"]').val(status);
+        $('#order-action').submit();
+    }
+
+    function delfun() {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定'] //按钮
+        }, function () {
+            console.log("确定");
+        }, function () {
+            console.log("取消");
+        });
+    }
+
+
+</script>
+</body>
+</html>

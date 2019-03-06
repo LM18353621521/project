@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>线下订单录入</title>
+    <include file="pub/css-js" />
+    <!--上傳圖片-->
+    <link rel="stylesheet" href="__PUBLIC__/upload/webuploader.css">
+    <script src="__PUBLIC__/upload/webuploader.js"></script>
+    <!-- jquery.validator -->
+    <link rel="stylesheet" href="__PUBLIC__/home/plugins/validator-0.7.0/jquery.validator.css" />
+    <script type="text/javascript" src="__PUBLIC__/home/plugins/validator-0.7.0/jquery.validator.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/plugins/validator-0.7.0/local/zh_CN.js"></script>
+    <include file="pub/newStyle" />
+    <style>
+        .login form ul li input {
+             width: 60%;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 1.4875em;
+            color: #666;
+            border: none;
+        }
+        #fileList,#fileListInvoice {
+            width: 100px;
+            height: 100px;
+        }
+        #fileList img, #fileListInvoice img {
+            width: 100%;
+            height: 100%;
+        }
+        .msg-wrap {
+            float: right;
+            top: 0;
+            right: -10px;
+        }
+    </style>
+</head>
+<body><div style="width: 100%;height: 4em">
+    <header class="page-header">
+        <h3>
+            <a href="{:U('/Home/Shop/shop')}">
+                <img class="back_img" src="__PUBLIC__/mobile/images/back_1.png"/>
+            </a>
+            线下订单录入
+        </h3>
+    </header>
+</div>
+<div class="login">
+    <form class="form form-horizontal" id="form-id" enctype="multipart/form-data" method="post" action="{:U('/Home/OffOrder/offorder')}">
+    <ul>
+
+            <li>
+                <label>买家会员：</label>
+                <input id="buyername" onblur="getname_phone(this)" class="form-control input-sm" type="text" name="buyername" maxlength="20" placeholder="买家会员号" data-rule="买家会员号:required;remote[/index.php/Home/OffOrder/checkbuyer]">
+            </li>
+            <li>
+                <label>会员电话：</label>
+                <input id="mobile_phone" class="form-control input-sm" name="buyertel" type="text" placeholder="会员电话" readonly="readonly"/>
+            </li>
+            <li>
+                <label>会员姓名：</label>
+                <input id="name" class="form-control input-sm" name="realname" type="text"  placeholder="会员姓名" readonly="readonly"/>
+            </li>
+            <li>
+                <label>购物金额：</label>
+                <input class="form-control input-sm" onblur="setInfo(this)" type="number" maxlength="5" id="amount" name="amount" placeholder="购物金额" data-rule="购物金额:required;range[{$sysTemMin}~{$sysTemMax}];remote[/index.php/Home/OffOrder/checkbalance]"/>
+                <div id="amounttip" style="width: 100%; height: 35px; color: red; display: none;">卖家可用余额不够，请充值</div>
+            </li>
+            <li>
+                <label>应付金额：</label>
+                <input class="form-control input-sm" id="amountInfo" type="text" placeholder="应付金额" readonly="readonly"/>
+            </li>
+            <li>
+                <label>商品名称：</label>
+                <input class="form-control input-sm" type="text" name="name" maxlength="20" placeholder="商品名称" data-rule="商品名称:required;"/>
+            </li>
+            <li>
+                <label>商品数量：</label>
+                <input class="form-control input-sm" type="number" maxlength="5" name="count" placeholder="商品数量" data-rule="商品数量:required;"/>
+            </li>
+            <li>
+                <label>二级密码：</label>
+
+                    <input class="form-control input-sm" type="password" id="password2" name="password2" placeholder="二级密码" data-rule="二级密码:required;remote[/index.php/Home/OffOrder/checkpassword2]"/>
+                    <div id="pdwtip" style="width: 100%; height: 35px; color: red; display: none;">二级密码错误</div>
+            </li>
+            <!--上传图片-->
+            <li>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">商品清单：</label>
+
+                    <div class="col-sm-6" style="overflow: hidden;">
+                        <div class="uploader-demo" style="overflow: hidden;">
+                            <div id="fileList" class="uploader-list"></div>
+                            <div id="filePicker" style="float: right;">上 传</div>
+                        </div>
+                        <input type="hidden" name="thumb" id="thumb" >
+                    </div>
+                </div>
+
+                <div class="form-group" id="item_list">
+                    <label class="control-label col-sm-2">上传发票：</label>
+                    <div class="col-sm-6" style="overflow: hidden;">
+                        <div class="uploader-invoice" style="overflow: hidden;">
+                            <div id="fileListInvoice" class="uploader-list"></div>
+                            <div id="filePickerInvoice" style="float: right;">上 传</div>
+                        </div>
+
+                        <input type="hidden" name="invoice" id="invoice" >
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <input type="submit" value="做单" onclick="return subForm()"/>
+    </form>
+</div>
+<assign name="index" value="4"/>
+<include file="pub/footer" />
+<!--上传图片-->
+<script>
+    var SCOPE = {
+        'swf' : '__PUBLIC__/upload/Uploader.swf',
+        'uploadImg' : '{:U("Home/OffOrder/uploadImg")}',
+        'uploadImgMore' :'{:U("/Home/OffOrder/uploadImgMore")}'
+    }
+</script>
+<script src="__PUBLIC__/upload/upload1.js"></script>
+
+<!--删除上传图片 -->
+<script>
+    $(document).on('click', '.closeImg', function() {
+        var index = $(this).attr('data-id');
+        $(this).parent().remove();
+        $("#da_id" + index).remove();
+    });
+    $(document).on('click', '.closeOne', function() {
+        $(this).parent().remove();
+    });
+
+    function setInfo(obj){
+        if(parseInt($(obj).val()) > 0){
+            $("#amountInfo").val(Math.round(parseFloat($(obj).val()).toFixed(1) * parseFloat('{$orderFee}') *100)/100)
+        }
+    }
+
+    function subForm(){
+        if($("#form-id").isValid()){
+            if($("#thumb").val() == ""){
+                layer.msg("请选择商品清单！");
+                return false;
+            }
+//            if($("#invoice").val() == ""){
+//                layer.msg("请选择发票！");
+//                return false;
+//            }
+            layer.load("提交中");
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /*根据会员号获取姓名和手机*/
+    function getname_phone(obj)
+    {
+        var member=$(obj).val();
+        $.post("{:U('OffOrder/getname_phone')}",{"member":member},function(data){
+            if(data)
+            {
+                $("#mobile_phone").val(data['mobile_phone']);
+                $("#name").val(data['name']);
+            }else{
+                $("#mobile_phone").val("");
+                $("#name").val("");
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<layout name="common/layout_nav" />
+
+<!-- <div class="page-hd">
+    <div class="search-bar">
+        <div class="weui-flex">
+            <a href="{:U('Goods/categoryList')}" class="fenlei"></a>
+            <div class="weui-flex__item search-input">
+                <form action=""  method="post">
+                    <a href="{:U('Goods/ajaxSearch')}"><input type="search" name="q" id="search_text" class="search_text"   value="" placeholder="搜索您想要的商品名称">
+                <a href="" class="search-icon"></a></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<link rel="stylesheet" href="__STATIC__/assets/assets/css/all.css"/>
+<div class="page-bd">
+    <div class="swiper-container index-banner">
+        <div class="swiper-wrapper">
+            <adv pid ="513283" limit="5" item="v">
+                <div class="swiper-slide"> <a href="{$v.ad_link}"><img src="{$v[ad_code]}" style="width: 100%;height: 180px"/> </a></div>
+            </adv>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination-wrap"><div class="swiper-pagination"></div></div>
+    </div>
+    <img src="__STATIC__/assets/images/index01.jpg" style="width: 100%;"/>
+    <div class="weui-panel">
+        <div class="weui-panel__bd">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <a href="{:U('Index/retail')}" class="nav-icon-link">
+                        <div class="weui-grid__icon" style="width: 50%;height: 50%">
+                            <img src="__STATIC__/assets/images/index02.jpg" alt="">
+                        </div>
+                         <p class="weui-grid__label">消费专区</p>
+                    </a>
+                </div>
+                <div class="weui-flex__item">
+                    <a href="{:U('Index/agent')}" class="nav-icon-link">
+                        <!-- <a href="{:U('hot/goods_list')}" class="nav-icon-link"> -->
+                        <div class="weui-grid__icon" style="width: 50%;height: 50%">
+                            <img src="__STATIC__/assets/images/index04.jpg" alt="">
+                        </div>
+                         <p class="weui-grid__label">代理专区</p>
+                    </a>
+                </div>
+                <div class="weui-flex__item">
+                    <a href="{:U('Index/ordinary')}" class="nav-icon-link">
+                        <div class="weui-grid__icon" style="width: 50%;height: 50%">
+                            <img src="__STATIC__/assets/images/index05.jpg" alt="">
+                        </div>
+                         <p class="weui-grid__label">兑换专区</p>
+                    </a>
+                </div>
+                <div class="weui-flex__item">
+                    <a href="#" class="nav-icon-link" onclick="layer.open({content:'功能暂未开放',skin: 'msg',time: 2 })" >
+                        <div class="weui-grid__icon" style="width: 50%;height: 50%">
+                            <img src="__STATIC__/assets/images/index06.jpg" alt="">
+                        </div>
+                         <p class="weui-grid__label">万家连锁</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-flex__item">
+        <adv pid='513288' limit='1' item='v'>
+            <a href="{$v[ad_link]}"  class="graphic__item vux-1px-b"><img src="{$v[ad_code]}" style="width:100%"/></a>
+        </adv>
+    </div>
+<div class="weui-panel">
+    <div class="weui-panel__hd after-left__0" style="height: 1.5rem;padding-top:0.5rem;">
+        <a href="{:U('Index/retail')}"><h3 class="index-panel__title"></i><span style="float: left">消费专区</span><span style="float: right"> 更多> </span></h3></a>
+    </div>
+</div>
+
+<div class="floor guesslike groupquess dic">
+    <div class="likeshop">
+        <ul>
+
+<foreach name="list" item="v" key="k">
+    <li style="margin-bottom: 2%; list-style:none;width: 49%; <if condition=" $k%2==0">margin-right: 2%</if>" >
+        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+            <div class="similer-product">
+                <div class="zjj close">
+                    <img src="{$v.goods_id|goods_thum_images=200,200}">
+                </div>
+                <span class="similar-product-text">{$v[goods_name]}</span>
+                <span class="similar-product-price">
+                    ¥<span class="big-price">{$v[shop_price]}元</span>
+                    <span class="fr sg_g_time last_g_time" id="jstimerBox{$v[goods_id]}"></span>
+                </span>
+            </div>
+        </a>
+    </li>
+</foreach>
+
+        </ul>
+    </div>
+</div>
+
+<div class="weui-panel" style="margin-bottom: 10px;">
+    <div class="weui-panel__hd after-left__0" style="height: 1.5rem;padding-top:0.5rem;">
+        <a href="{:U('Index/agent')}"><h3 class="index-panel__title"><span style="float: left">代理专区</span><span style="float: right"> 更多> </span></h3></a>
+    </div>
+</div>
+
+<div class="floor guesslike groupquess dic">
+    <div class="likeshop2">
+        <ul>
+<foreach name="list2" item="v2" key="k2">
+    <li style="margin-bottom: 2%; list-style:none;width: 49%; <if condition=" $k2%2==0">margin-right: 2%</if>" >
+        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v2[goods_id]))}">
+            <div class="similer-product">
+                <div class="zjj close">
+                    <img src="{$v2.goods_id|goods_thum_images=200,200}">
+                </div>
+                <input type="hidden" id="agentend_time{$k2}" value="{$v2.agentend_time}">
+                <div class="bet-time fs-22 color-f9">
+                        <div class="time-ol" style="padding: 10px">
+                          <span class="opwe _d{$k2}">00</span><span class="_h{$k2}">00</span> <span class="_m{$k2}">00</span><span class="_s{$k2}">00</span>
+                        </div>
+                   </div>
+                <span class="similar-product-text">{$v2[goods_name]}</span>
+                <span class="similar-product-price">
+                    ¥<span class="big-price">{$v2[shop_price]}元</span>
+                    <span class="fr sg_g_time last_g_time" id="jstimerBox{$v2[goods_id]}"></span>
+                </span>
+            </div>
+        </a>
+    </li>
+</foreach>
+        </ul>
+    </div>
+</div>
+
+<div class="weui-panel" style="margin-bottom: 10px">
+    <div class="weui-panel__hd after-left__0" style="height: 1.5rem;padding-top:0.5rem;">
+        <a href="{:U('Index/ordinary')}"><h3 class="index-panel__title"><span style="float: left">兑换专区</span><span style="float: right"> 更多> </span></h3></a>
+    </div>
+</div>
+
+<div class="floor guesslike groupquess dic">
+    <div class="likeshop3">
+        <ul>
+<foreach name="list3" item="v3" key="k3">
+    <li style="margin-bottom: 2%; list-style:none;width: 49%; <if condition=" $k3%2==0">margin-right: 2%</if>" >
+        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v3[goods_id]))}">
+            <div class="similer-product">
+                <div class="zjj close">
+                    <img src="{$v3.goods_id|goods_thum_images=200,200}">
+                </div>
+                <span class="similar-product-text">{$v3[goods_name]}</span>
+                <span class="similar-product-price">
+                    ¥<span class="big-price">{$v3[shop_price]}元</span>
+                    <span class="fr sg_g_time last_g_time" id="jstimerBox{$v3[goods_id]}"></span>
+                </span>
+            </div>
+        </a>
+    </li>
+</foreach>
+        </ul>
+    </div>
+</div>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    //加载更多商品
+    /*var page = 0;
+    function ajax_sourch_submit() {
+        ++page;
+        $.ajax({
+            type: 'GET',
+            url: "/index.php?m=Mobile&c=Index&is_ajax=1&a=_index_goods&p=" + page,
+            success: function (data) {
+                if (data) {
+                    $(".likeshop > ul").append(data);
+                    $('.get_more').hide();
+                } else {
+                    $('.get_more').hide();
+                    $('#getmore').remove();
+                }
+            }
+        })
+    }
+    ajax_sourch_submit();//调用加载更多
+    //滚动加载更多
+    $('.page-bd').scroll(function () {
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        //console.log(scrollTop - (scrollHeight + windowHeight))
+        if (scrollTop - (scrollHeight + windowHeight) > 50) {
+            ajax_sourch_submit();//调用加载更多
+        }
+    });*/
+</script>
+<script src="__STATIC__/assets/js/lib/Swiper-3.4.2/swiper.jquery.min.js"></script>
+<script>
+    var swiper = new Swiper('.index-banner', {
+        loop: true,
+        autoplay: 1500,
+        pagination: '.swiper-pagination',
+        paginationClickable: true
+    });
+function countTime() {  
+        //获取当前时间  
+        var date = new Date();  
+        var now = date.getTime();  
+        //设置截止时间  
+        var str=$('#agentend_time0').val();//"2018/12/14 12:00:00";
+        var endDate = new Date(str); 
+        var end = endDate.getTime();  
+        
+        //时间差  
+        var leftTime = end-now; 
+        //定义变量 d,h,m,s保存倒计时的时间  
+        var d,h,m,s;  
+        if (leftTime>=0) {  
+            d = Math.floor(leftTime/1000/60/60/24);  
+            h = Math.floor(leftTime/1000/60/60%24);  
+            m = Math.floor(leftTime/1000/60%60);  
+            s = Math.floor(leftTime/1000%60);                     
+        }else{
+            return false; 
+        }
+        //将0-9的数字前面加上0，例1变为01
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        function checkTime(i){
+            if (i<10) {
+                i = "0"+i;
+            }
+            return i;
+        }
+        //将倒计时赋值到div中  
+        $("._d0").text(d+"天");  
+        $("._h0").text(h+":");
+        $("._m0").text(m+":"); 
+        $("._s0").text(s+"");
+        //递归每秒调用countTime方法，显示动态时间效果  
+        setTimeout(countTime,1000);
+        countTime2(); 
+        countTime3(); 
+        countTime4();  
+    }
+function countTime2() {  
+        //获取当前时间  
+        var date = new Date();  
+        var now = date.getTime();  
+        //设置截止时间  
+        var str=$('#agentend_time1').val();//"2018/12/15 12:00:00";
+        //console.log(str);
+        var endDate = new Date(str); 
+        var end = endDate.getTime();  
+        
+        //时间差  
+        var leftTime = end-now; 
+        //定义变量 d,h,m,s保存倒计时的时间  
+        var d,h,m,s;  
+        if (leftTime>=0) {  
+            d = Math.floor(leftTime/1000/60/60/24);  
+            h = Math.floor(leftTime/1000/60/60%24);  
+            m = Math.floor(leftTime/1000/60%60);  
+            s = Math.floor(leftTime/1000%60);                     
+        }else{
+            return false; 
+        }
+        //将0-9的数字前面加上0，例1变为01
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        function checkTime(i){
+            if (i<10) {
+                i = "0"+i;
+            }
+            return i;
+        }
+        //将倒计时赋值到div中  
+        $("._d1").text(d+"天");  
+        $("._h1").text(h+":");
+        $("._m1").text(m+":"); 
+        $("._s1").text(s+"");
+        
+        //递归每秒调用countTime方法，显示动态时间效果  
+        //setTimeout(countTime2,1000);  
+
+    } 
+    function countTime3() {  
+        //获取当前时间  
+        var date = new Date();  
+        var now = date.getTime();  
+        //设置截止时间  
+        var str=$('#agentend_time2').val();//"2018/12/15 12:00:00";
+        //console.log(str);
+        var endDate = new Date(str); 
+        var end = endDate.getTime();  
+        
+        //时间差  
+        var leftTime = end-now; 
+        //定义变量 d,h,m,s保存倒计时的时间  
+        var d,h,m,s;  
+        if (leftTime>=0) {  
+            d = Math.floor(leftTime/1000/60/60/24);  
+            h = Math.floor(leftTime/1000/60/60%24);  
+            m = Math.floor(leftTime/1000/60%60);  
+            s = Math.floor(leftTime/1000%60);                     
+        }else{
+            return false; 
+        }
+        //将0-9的数字前面加上0，例1变为01
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        function checkTime(i){
+            if (i<10) {
+                i = "0"+i;
+            }
+            return i;
+        }
+        //将倒计时赋值到div中  
+        $("._d2").text(d+"天");  
+        $("._h2").text(h+":");
+        $("._m2").text(m+":"); 
+        $("._s2").text(s+"");
+        
+        //递归每秒调用countTime方法，显示动态时间效果  
+        //setTimeout(countTime2,1000);  
+
+    }
+    function countTime4() {  
+        //获取当前时间  
+        var date = new Date();  
+        var now = date.getTime();  
+        //设置截止时间  
+        var str=$('#agentend_time3').val();//"2018/12/15 12:00:00";
+        //console.log(str);
+        var endDate = new Date(str); 
+        var end = endDate.getTime();  
+        
+        //时间差  
+        var leftTime = end-now; 
+        //定义变量 d,h,m,s保存倒计时的时间  
+        var d,h,m,s;  
+        if (leftTime>=0) {  
+            d = Math.floor(leftTime/1000/60/60/24);  
+            h = Math.floor(leftTime/1000/60/60%24);  
+            m = Math.floor(leftTime/1000/60%60);  
+            s = Math.floor(leftTime/1000%60);                     
+        }else{
+            return false;  
+        }
+        //将0-9的数字前面加上0，例1变为01
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        function checkTime(i){
+            if (i<10) {
+                i = "0"+i;
+            }
+            return i;
+        }
+        //将倒计时赋值到div中  
+        $("._d3").text(d+"天");  
+        $("._h3").text(h+":");
+        $("._m3").text(m+":"); 
+        $("._s3").text(s+"");
+        
+        //递归每秒调用countTime方法，显示动态时间效果  
+        //setTimeout(countTime2,1000);  
+
+    }    
+</script>

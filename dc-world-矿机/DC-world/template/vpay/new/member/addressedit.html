@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+    <script src="__PUBLIC__/common.js"></script>
+    <style>
+    .enter{
+        background: url("__PUBLIC__/images/enter-right.png")no-repeat right center;
+        background-size: auto 50%;
+    }
+
+    .address{
+        margin-top: 5px;
+    }
+    .cart .mui-input-row {
+        height: 50px;
+    }
+    .cart .mui-checkbox input[type='checkbox']:before {
+         line-height: 42px;
+    }
+/*    .seladd{
+        display: none;
+    }*/
+    .useadd{
+        width: 15%;
+        height: 42px;
+        font-size: 14px;
+        line-height: 42px;
+        color: red;
+    }
+    .deal{
+        background: #ef373b;
+        padding: 0 25px;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        width:33.33%;
+        margin-bottom: 0;
+        height: 50px;
+        text-align: center;
+    }
+</style>
+    <script>
+
+/*$(function () {
+
+    $(".newadd").click(function () {
+        $(".seladd").toggle();
+        $(".address").toggle();
+        $(".cart-total").toggle()
+    })
+})*/
+
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="Ctrl" ng-cloak>
+
+<!--header-->
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"style="color: white" ></a>
+    <h1 class="mui-title">收货地址管理</h1>
+</header>
+<!--购物车-->
+<div class="mui-content seladd" style="margin-top: 30px">
+    <form class="mui-input-group">
+        <div class="mui-input-row">
+            <label>姓名:</label>
+            <input  type="text" class="mui-input-clear mui-input" placeholder="请输入姓名" data-rule="required;length(2~10)" maxlength="10" ng-model="add.name">{{add.name}}
+        </div>
+        <div class="mui-input-row">
+            <label>电话:</label>
+            <input  type="text" class="mui-input-clear mui-input" placeholder="请确认电话" data-rule="required;mobile" ng-model="add.phone" maxlength="11">{{add.phone}}
+        </div>
+        <div class="mui-input-row">
+            <label>所在地区:</label>
+            <select id='proive' style="width:21%;float: left;" ng-change="getcity()" ng-model="prov" >
+                <option value="" selected>请选择</option>
+              <option ng-repeat=" x in province" value="{{x.id}}">{{x.name}}</option>
+            </select>
+            <select id='city' style="width:21%;float: left;"   ng-change="getxian()"  ng-model="cty">
+                <option value="" selected>请选择</option>
+
+                <option ng-repeat=" y in city" value="{{y.id}}">{{y.name}}</option>
+            </select>
+            <select id='xian' style="width:21%;float: left;"   ng-model="xian">
+                <option value="" selected>请选择</option>
+
+                <option ng-repeat="z in subcity" value="{{z.id}}">{{z.name}}</option>
+            </select>
+        </div>
+        <div class="mui-input-row">
+            <label>详细地址:</label>
+            <input id='account' type="text" class="mui-input-clear mui-input" placeholder="请填写地址" data-rule="required;length(2~100)"  ng-model="add.address" maxlength="50">{{add.address}}
+        </div>
+
+
+    </form>
+    <div class="mui-content-padded">
+        <p>请核对您的个人信息无误后再点击确定</p>
+    </div>
+    <div class="mui-content-padded">
+        <button id='reg' style="color: white;background: #ef373b;"  class="mui-btn mui-col-xs-12 " onclick="save()">保存</button>
+    </div>
+</div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl', function($scope,$http) {
+        $scope.id = getUrlParam('id');
+        $scope.flg = getUrlParam('flg');
+        $http({
+            method: 'POST',
+            data:{id:$scope.id},
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest: function(obj) {
+                var str = [];
+                for (var p in obj) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+                return str.join("&");
+            },
+            url: "/index.php/Home/address/index"
+        }).then(function successCallback(response) {
+           $scope.add=response.data.data.address;
+           $scope.province= response.data.data.province;
+           $scope.city= response.data.data.city
+           $scope.subcity= response.data.data.area
+           $scope.region=response.data.data.address.id_path.split(",");
+           $scope.prov=$scope.region[0]
+           $scope.cty=$scope.region[1]
+           $scope.xian=$scope.region[2]
+        }, function errorCallback(response) {
+        });
+
+        $scope.getcity=function () {
+            $scope.cty='';
+            $scope.xian=''
+
+            $http({
+                method:'POST',
+                data:{pid:$scope.prov},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url:"/index.php/Home/Tool/getCityAjax"
+            }).then(function successCallback(response) {
+                $scope.city= response.data;
+            }, function errorCallback(response) {
+            });
+        }
+        $scope.getxian=function () {
+            $http({
+                method:'POST',
+                data:{pid:$scope.cty},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url:"/index.php/Home/Tool/getxianAjax"
+            }).then(function successCallback(response) {
+                $scope.subcity= response.data;
+                }, function errorCallback(response) {
+            });
+        }
+        $scope.save=function () {
+            var data={id:$scope.id,name:$scope.add.name,phone:$scope.add.phone,newaddress:$scope.add.address,xian:$scope.xian}
+            $http({
+                method:'POST',
+                data:data,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for (var p in obj) {
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    }
+                    return str.join("&");
+                },
+                url: "/index.php/Home/address/save"
+            }).then(function successCallback(response) {
+                //console.log(response.data)
+                if(response.data.code==-1){
+                    layer.msg(response.data.msg,{time:1500})
+                }else {
+                    layer.msg(response.data.data,{time:1000})
+                    setTimeout(function () {
+                        if($scope.flg == null || $scope.flg == ''){
+                            window.location.href="/index.php/home/member/address";
+                        } else if($scope.flg == 2) {
+                            window.location.href="/index.php/home/member/address?flg="+$scope.flg;
+                        }
+                    },1200)
+                }
+               /* layer.msg(response.data.data,{time:1000})
+                setTimeout(function () {
+                    window.location.href=window.location.href
+                },1000)
+*/
+            }, function errorCallback(response) {
+            });
+        }
+    });
+</script>
+</body>
+
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+
+</html>

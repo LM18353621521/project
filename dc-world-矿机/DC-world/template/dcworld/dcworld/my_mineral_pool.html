@@ -1,0 +1,277 @@
+<include file="common/header" title="我的矿池" body=""/>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">我的矿池</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+    <style>
+        .header {
+            background: #fff url("__PUBLIC__/images/h_bg1.png") no-repeat;
+            background-size: 100% 0.62rem;
+            background-size: 100% 0.62rem;
+        }
+
+        .header .header-title {
+            color: #fff;
+        }
+
+        .left-arrow:before {
+            border-color: #fff;
+        }
+
+        .header {
+            font-size: 0.213333rem;
+            align-items: center;
+        }
+
+        .header .header-left, .header .header-right {
+            width: 150px;
+        }
+
+        .header .header-left {
+            color: #fff;
+            font-size: 0.186667rem;
+            padding-left: 0.19rem;
+        }
+
+        .header a {
+            color: #ffffff;
+        }
+
+        .header .header-right {
+            color: #ffffff;
+            font-size: 0.186667rem;
+            padding-right: 0.19rem;
+        }
+        .user-top {
+            height: 3.2rem!important;
+        }
+        .user-top .user-top_bd {
+            height: 2rem!important;
+        }
+    </style>
+    <div class="page-bd">
+        <!-- 页面内容-->
+
+       <div class="user-top">
+            <div class="user-top__hd weui-cell">
+                <div class="weui-cell__hd">
+                    <img src={$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'} alt="">
+                </div>
+                <div class="weui-cell__bd">
+                    <p class="name fs28 fw500">{$user.nickname}</p>
+                    <p class="lever fs26">当前等级：{$user.level_name}</p>
+                </div>
+            </div>
+           <div class="user-top_bd pd0" style="align-content: baseline;">
+                <div class="lever">
+                    <if condition="$miner_scale eq 100">
+                        <span>您已经是最高级：</span>
+
+                        <else />
+                        <span>距离下一个等级：</span>
+                    </if>
+
+                    <div class="weui-progress">
+                        <div class="weui-progress__bar">
+                            <div class="weui-progress__inner-bar js_progress" style="width: {$miner_scale}%;"></div>
+                        </div>
+                        <p class="nums">
+                            <span class="color1 fw500 fs28">
+                                <if condition="$statistics.cumulative_miner">
+                                    {$statistics.cumulative_miner }
+                                    <else/>
+                                    0
+                                </if>
+
+                            </span>台矿机</p>
+                    </div>
+                </div>
+               <div class="weui-flex">
+                   <div class="weui-flex__item">
+                       <p class="name">
+                           <if condition="$statistics.one">
+                               {$statistics.one}
+                               <else />
+                               0
+                           </if>
+                           台{$miner_list_data[$up_condition['one']['miner_id']]['short_name']}
+                       </p>
+                       <p class="text">个人自用</p>
+                   </div>
+                   <div class="weui-flex__item">
+                       <p class="name">
+                           <if condition="$statistics.two">
+                               {$statistics.two}
+                               <else />
+                               0
+                           </if>
+                           台{$miner_list_data[$up_condition['two']['miner_id']]['short_name']}
+                       </p>
+                       <p class="text">分享累计</p>
+                   </div>
+                   <div class="weui-flex__item">
+                       <p class="name">
+                           <if condition="$statistics.three">
+                               {$statistics.three}
+                               <else />
+                               0
+                           </if>
+                           台{$miner_list_data[$up_condition['three']['miner_id']]['short_name']}
+                       </p>
+                       <p class="text">其他累计</p>
+                   </div>
+               </div>
+           </div>
+       </div>
+        <div class="user-data weui-flex bor-1px-b border-after_none border-befor_none">
+                <div class="weui-flex__item">
+                    <div class="weui-flex__item_bd">
+                        <p class="nums">{$count.first_leader_miner}</p>
+                        <p class="text">分享矿机数（台）</p>
+                    </div>
+                    <div class="weui-flex__item_ft weui-flex">
+                        <foreach name="minerList" item="vo">
+                            <div class="weui-flex__item">
+                                <p class="lever">{$vo.short_name}</p>
+                                <p class="num">{$vo.first_leader_miner}台</p>
+                            </div>
+                        </foreach>
+
+                        <!--<div class="weui-flex__item">-->
+                            <!--<p class="lever">D2</p>-->
+                            <!--<p class="num">30台</p>-->
+                        <!--</div>-->
+                    </div>
+
+                </div>
+                <div class="weui-flex__item">
+                    <div class="weui-flex__item_bd" style="background-image: url(__PUBLIC__/images/kc_img2.png)">
+                        <p class="nums">{$types_statistical.ten_amount_miner}</p>
+                        <p class="text">矿池总矿机数（台）</p>
+                    </div>
+                    <div class="weui-flex__item_ft weui-flex">
+                        <foreach name="$types_statistical.ten_leader_miner" item="vo">
+                            <div class="weui-flex__item">
+                                <p class="lever">{$vo.short_name}</p>
+                                <p class="num">{$vo.number}台</p>
+                            </div>
+                        </foreach>
+                    </div>
+
+                </div>
+        </div>
+        <div class="user-list weui-cells">
+            <div class="c_tlt">
+                <span>我的矿工团队</span>
+
+            </div>
+            <!--<div class="weui-cell user-list_li border-befor_none" hidden>-->
+                <!--<div class="weui-cell__hd">-->
+                    <!--<img src="__PUBLIC__/images/tx.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd">-->
+                    <!--<p class="phone fs26" style="color: #282c37;">手机：138****4512</p>-->
+                    <!--<p class="lever fs26" style="color: #606470;">-->
+                        <!--<span>D1-10台 </span>-->
+                        <!--<span>D2-10台</span>-->
+                        <!--<span>D3-10台 </span>-->
+                        <!--<span>D4-10台 </span>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <foreach name="first_leader_list" item="vo">
+                <div class="weui-cell user-list_li">
+                    <div class="weui-cell__hd">
+                        <img src="{$vo.profilePhoto|default='__PUBLIC__/images/u_icon1.png'}" alt="">
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p class="phone fs26" style="color: #282c37;">手机：{$vo.account}</p>
+                        <p class="lever fs26" style="color: #606470;">
+                            <foreach name="vo.miner_list" item="vv">
+                                <span style="width:46%;display:inline-block;">{$vv.miner_name}-{$vv.num}台</span>
+                            </foreach>
+                            <!--<span>D2-10台</span>-->
+                        </p>
+                    </div>
+                </div>
+            </foreach>
+        </div>
+    </div>
+</div>
+<style>
+    .sel_page {
+
+        position: fixed;
+        top: 5px;
+        right: 10px;
+    }
+    .sel_page select {
+        width: 100px;
+        height: 30px;
+        border-radius: 3px;
+        background-color: #EEEEEE;
+    }
+</style>
+<!--<div class="sel_page">
+    <select name="" id="">
+        <option value="首页">首页</option>
+        <option value="c沙滩">c沙滩</option>
+        <option value="DC世界">DC世界</option>
+        <option value="DC转账">DC转账</option>
+        <option value="个人中心">个人中心</option>
+        <option value="买家付款">买家付款</option>
+        <option value="买家确认放款">买家确认放款</option>
+        <option value="交易中心">交易中心</option>
+        <option value="交易成功">交易成功</option>
+        <option value="修改密码">修改密码</option>
+        <option value="修改支付密码">修改支付密码</option>
+        <option value="兑换DC">兑换DC</option>
+        <option value="创建钱包">创建钱包</option>
+        <option value="安全设置">安全设置</option>
+        <option value="微信账户信息">微信账户信息</option>
+        <option value="我的矿机">我的矿机</option>
+        <option value="我的矿池">我的矿池</option>
+        <option value="我的资产">我的资产</option>
+        <option value="我的钱包">我的钱包</option>
+        <option value="我要买入">我要买入</option>
+        <option value="我的卖出">我的卖出</option>
+        <option value="支付宝账户信息">支付宝账户信息</option>
+        <option value="收款码">收款码</option>
+        <option value="添加资产">添加资产</option>
+        <option value="矿场">矿场</option>
+        <option value="矿机交易">矿机交易</option>
+        <option value="确认打款">确认打款</option>
+        <option value="等待放款">等待放款</option>
+        <option value="订单取消">订单取消</option>
+        <option value="贝壳记录">贝壳记录</option>
+        <option value="账户列表">账户列表</option>
+        <option value="邀请分享">邀请分享</option>
+        <option value="银行卡信息">银行卡信息</option>
+    </select>
+</div>-->
+<script>
+
+    $(".sel_page select option").each(function(index,e){
+
+        if($(e).val() == decodeURI(window.location.search.split("=")[1])){
+           $(e).attr("selected","selected")
+        }
+    })
+    $(".sel_page select").change(function () {
+        window.location.href='http://192.168.5.59:8080/pages/'+$(this).val()+'.html?sel='+$(this).val();
+    })
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+
+</body>
+</html>

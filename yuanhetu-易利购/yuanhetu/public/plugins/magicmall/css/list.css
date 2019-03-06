@@ -1,0 +1,40 @@
+﻿
+/*日历*/
+.table-data-null { text-align: center; }
+*[data-del-all-checked="true"] { display: none; }
+.list-pagination-page {
+    background-color: #fff;
+    text-align: right;
+ 
+
+}
+    .list-pagination-page span[data-page-search="btn"] { cursor: pointer; background-color: #FF5606; color: #fff; border: 0; }
+        .list-pagination-page span[data-page-search="btn"]:hover {     background-color: #ff5606;
+    border-color: #ff5606; }
+.page-desc { display: inline-block; vertical-align: 32px; padding-right: 10px; }
+    .page-desc > span { padding: 0 6px 0 6px; }
+.page-search-p { display: inline-block; width: 100px; vertical-align: 20px; }
+
+/* 2017-07-11 */
+.list-pagination-page {
+    position: fixed;
+    width: 100%;
+    /*left: 197px;*/
+    right: 0;
+    bottom: 0;
+    /*border-top: 1px solid #e6e6e6;*/
+    height: 40px;
+    /*padding-right: 30px;*/
+    padding-top: 4px;
+}
+.list-pagination-page .pager {
+    margin: 0;
+    vertical-align: top;
+}
+
+
+.allcheck-style {
+    border-color: #145ccd !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(20, 92, 205, .6) !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(20, 92, 205, .6) !important;
+}

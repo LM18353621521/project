@@ -1,0 +1,126 @@
+<include file="common/main" title="分享好友" body=""/>
+        <div class="nav_top flex">
+            <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+                <i></i>
+            </a>
+            <div class="flex1">
+                分享记录
+            </div>
+            <a href="javascript:void(0)">
+                <i></i>
+            </a>
+        </div>
+        <div style="height: 0.44rem;"></div>
+        <!--<div class="ba_list clearfix">
+            <ul>
+                <li>UID</li>
+                <li>手机号</li>
+                <li>时间</li>
+            </ul>
+        </div>
+        <div style="height: 0.4rem;"></div>-->
+       <!-- <div class="list_show">
+            <ul class="clearfix"  ng-repeat="log in logs">
+                    <li>
+                        <div>
+                            {{log.id}}
+                        </div>
+                        <div>
+                            {{log.account}}
+                        </div>
+                        <div>
+                            {{log.createtime}}
+                        </div>
+                    </li>
+            </ul>
+        </div>-->
+        <div class="pay_list" id="tpls">
+            <script id="tpl" type="text/html">
+                <ul>
+                    {{each data as log i}}
+                <li class="flex" ng-repeat="log in logs">
+                    <div tyle="height: 0.75rem;width: 0.75rem;">
+                        {{if log.profilePhoto}}
+                        <img src="{{log.profilePhoto}}" style="height: 100%;border-radius: 50%">
+                        {{else}}
+                        <img src="__PUBLIC__/images/shezhi_icon_head.png"  style="height: 100%;border-radius: 50%">
+                        {{/if}}
+                    </div>
+                    <div class="flex1">
+                        <label style="margin-left: 0.12rem;color: black">
+                            {{log.nickname}}({{log.id}})
+                        </label>
+                        <div style="color: #6b7d86;font-size: 1px;">
+                            <p>身份：{{log.level_name}}</p>
+                            <p>手机号：{{log.account}}</p>
+                            <p>分享时间：{{log.createTime}}</p>
+                        </div>
+                        <!--<div style="color: #6b7d86;">
+                        </div>-->
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            </script>
+        </div>
+    </body>
+        <script type="text/javascript">
+                // 当前页数
+                p = 0;
+                // 加载完毕标志
+                endflg = 0;
+                // 防止重复加载
+                busy = false;
+                // 存放列表数据
+                logs = [];
+                //存放所有数据
+                res = "";
+                // 请求数据方法
+                loadMore = function () {
+                    if (endflg == 0) {
+                        if (busy) {
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method: 'POST',
+                            dataType:'JSON',
+                            data: {
+                                "p": p
+                            },
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            url: "/index.php/Vpay/Member/share_detail",
+                            success: function (data) {
+                                busy = false;
+                                if (data.data != '' && data.data != null) {
+                                    if (p > 0) {
+                                        layer.msg("正在加载...", {time: 500});
+                                    }
+                                } else {
+                                    layer.msg("已经全部加载完了...", {time: 500});
+                                    endflg = 1;
+                                    return false;
+                                }
+                                p++;
+                                if (data.code == -1) {
+                                    layer.msg(data.msg, {time: 1500})
+                                } else {
+                                    if (data.data == null) {
+                                        layer.msg(data.msg, {time: 1500});
+                                    } else {
+                                        // 组织数据
+                                        var html = template('tpl',data);
+                                        document.getElementById("tpls").innerHTML = html;
+                                    }
+                                }
+                            }, error: function (result) {
+                            }
+                        });
+                    } else {
+                        layer.msg("已经全部加载完了...", {time: 500});
+                    }
+                };
+                // 进页面先加载一次数据
+                loadMore();
+           
+        </script>

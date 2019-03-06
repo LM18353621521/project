@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/assets/css/all.css"/>
+<script src="__STATIC__/assets/assets/js/page.js"></script>
+
+    <title>商品详情</title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">商品详情</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cells mg-t0">
+           <div class="swiper-container banner">
+                <div class="swiper-wrapper">
+                <foreach  name="goods_images_list" item="pic">
+                    <div class="swiper-slide"><img src="{$pic[image_url]}" alt=""></div>
+                </foreach>
+                    <!-- <div class="swiper-slide"><img src="__STATIC__/assets/assets/images/03_03.png" alt=""></div> -->
+                    <!-- <div class="swiper-slide"><img src="__STATIC__/assets/assets/images/03_03.png" alt=""></div> -->
+                    <!-- <div class="swiper-slide"><img src="__STATIC__/assets/assets/images/03_03.png" alt=""></div> -->
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        
+            <div class="weui-cell flex-no">
+                <div class="onetn fs-32 color-32 font-w500">{$goods['goods_name']}</div>
+                <div class="fs-30 color-f0 font-w600 pd-o"><span class="fs-22">￥</span><if condition="$goods[type_id] eq 6 and $goods[status] eq 0">{$goods[min]}~{$goods[max]}</if></div>
+                <div class="smll color-7b">
+                    <div class="smll-bd pd-r60">收益积分：<notempty name="$Think.session.user.user_money">{:session('user.user_money')}<else/>0.00</notempty></div>
+                    <div class="smll-hd">可用配额：<notempty name="$Think.session.user.frozen_money">{:session('user.frozen_money')}<else/>0.00</notempty></div>
+                </div>
+            </div>
+
+        </div>
+        <form  id="form1" method="post" action="{:U('Mobile/cart/cart4')}">
+            
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">数量</div>
+                <div class="weui-cell__ft">
+                   <div class="number">
+                        <span class="number-sub num-jian"  id="num-jian">-</span>
+                        <input type="text" value="1" name="num" class="number-input" id="input-num">
+                        <span class="number-plus"  id="num-jia">+</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="setmeal" id="setmeal" value="">
+        
+        </form>
+
+        <div class="weui-cells tr">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">商品套餐</div>
+                <div class="weui-cell__bd">所需配额</div>
+                <div class="weui-cell__bd">剩余数量</div>
+            </div>
+            <foreach name="setmeal" item="set" key="key">
+            <div class="weui-cell">
+                <div class="weui-cell__bd" index="{$set['id']}" onclick="setmeal(this,{$set['id']})" stock="{$set['stock']}"><div <if condition="$set['stock'] eq 0"> class="btn-pm"<else>class="btn-pm back-f" disabled="disabled"</if> >{$set['name']}</div></div>
+                <div class="weui-cell__bd">{$set['quota']}</div>
+                <div class="weui-cell__bd">{$set['stock']}</div>
+            </div>
+            </foreach>
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                    <div class="weui-cell__bd"><span class="fs-30 ">商品详情</span></div>
+            </div>
+            <div class="weui-cell">
+            {$goods.goods_content|htmlspecialchars_decode}
+            </div>
+        </div>
+    </div>
+    <div class="bottom-tabbar-wrapper-btm">
+        <div class="bottom-tabbar-btm">
+
+                <div class="width10">
+                    <a class="weui-bottom weui-btn_red">提交申请</a>
+                </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/assets/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+var swiper = new Swiper('.swiper-container', {
+    
+    spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction',
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+});
+</script>
+<script>
+var num_jia = document.getElementById("num-jia");
+        var num_jian = document.getElementById("num-jian");
+        var input_num = document.getElementById("input-num");
+
+        num_jia.onclick = function() {
+
+            input_num.value = parseInt(input_num.value) + 1;
+        }
+
+        num_jian.onclick = function() {
+
+            if(input_num.value <= 1) {
+                input_num.value = 1;
+            } else {
+
+                input_num.value = parseInt(input_num.value) - 1;
+            }
+
+        }
+function setmeal(obj,id)
+    {
+        var num = $(obj).attr('stock');
+        if(num > 0){
+            $('#setmeal').val(id);
+            $('.back-red').removeClass('back-red');
+            $(obj).find('div').addClass('back-red');
+            $("input[name='goods_num']").attr('index',id);
+        }
+
+    }
+$('.weui-bottom').click(function(){
+     var id = $('.back-red').parent().attr('index');
+     var num = $('#input-num').val();
+     console.log(num);
+     if(id == undefined){
+        alert('选择套餐');return false;
+     }
+     // console.log(num);
+     if(num <= 0){
+        alert('选择数量');return false;
+     }
+
+     $('#form1').submit();
+})
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<include file="public/layout" />
+<if style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+<div class="fixed-bar">
+    <div class="item-title">
+        <div class="subject">
+            <h3>{$prize_list[$inc_type]}</h3>
+            <!--<h5>{$inc_type}-{$level_id}</h5>-->
+        </div>
+        <ul class="tab-base nc-row">
+            <foreach name="prize_list" item="v" key="k">
+                <li><a href="{:U('Distribut/prize',['id'=>$level_id,'inc_type'=>$k])}" <if condition="$k eq $inc_type">class="current"</if>><span>{$v}</span></a></li>
+            </foreach>
+            <!--<li><a href="javascript:void(0);" data-index='1' class="tab current"><span>普通分销奖</span></a></li>-->
+            <!--<li><a href="javascript:void(0);" data-index='2' class="tab "><span>推荐奖</span></a></li>-->
+            <!--<li><a href="javascript:void(0);" data-index='3' class="tab "><span>销售额分红奖(季度)</span></a></li>-->
+            <!--<li><a href="javascript:void(0);" data-index='4' class="tab "><span>二层外分红奖(季度)</span></a></li>-->
+        </ul>
+    </div>
+</div>
+<!-- 操作说明 -->
+<div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+        <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+        <span id="explanationZoom" title="收起提示"></span> </div>
+    <ul>
+        <if condition="$inc_type eq 'distribution'">
+                <li>身份产品不产生分销奖</li>
+                <li></li>
+                <li>分销返佣金额以订单商品总额为准</li>
+            <elseif condition="$inc_type eq 'recommend'"/>
+                <li>被推荐人购买符合的身份才可产生推荐奖</li>
+                <li>推荐人身份符合要求才可获得推荐奖</li>
+                <li>开关按钮控制该项奖励是否开启</li>
+            <elseif condition="$inc_type eq 'sales_reward'"/>
+                <li>身份达到VIP1的会员才可以享受销售分红奖，该奖每季度统计一次</li>
+            <elseif condition="$inc_type eq 'twolayers_reward'"/>
+                <li>身份达到VIP2的会员才可以享受销售分红奖，该奖每季度统计一次</li>
+        </if>
+
+    </ul>
+</div>
+<form method="post" enctype="multipart/form-data" id="handlepost" >
+
+<if condition="$inc_type eq 'distribution'">
+    <!--   分销奖 s  -->
+<div class="ncap-form-default tab_div_1">
+    <div class="bDiv"  style="height: auto;">
+        <dl class="row">
+        <dt class="tit" style="font-weight: bold;">获得该奖项的用户的等级(身份)：</dt>
+        <dd class="opt">
+            {$this_level.level_name}
+        <p class="notic"></p>
+        </dd>
+        </dl>
+        <!--<dl class="row">-->
+            <!--<dt class="tit">是否开启直推奖</dt>-->
+            <!--<dd class="opt">-->
+                <!--<div class="onoff">-->
+                    <!--<label for="drive1" class="cb-enable  <if condition="$config['first_prize_switch'] eq 1">selected</if>">开启</label>-->
+                    <!--<label for="drive0" class="cb-disable <if condition="$config['first_prize_switch'] eq 0">selected</if>">关闭</label>-->
+                    <!--<input type="radio" onclick="ajax_switch(1)" id="drive1"  name="first_prize_switch" value="1" <if condition="$config['first_prize_switch'] eq 1">checked="checked"</if>>-->
+                    <!--<input type="radio" onclick="ajax_switch(0)" id="drive0" name="first_prize_switch" value="0" <if condition="$config['first_prize_switch'] eq 0">checked="checked"</if> >-->
+                <!--</div>-->
+                <!--<p class="notic">注意：切勿频繁修改分佣参数，容易引起系统运算报错</p>-->
+            <!--</dd>-->
+        <!--</dl>-->
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit" style="font-weight: bold;">
+                    <label ><em>*</em>一级分销奖金设置：</label>
+                </dt>
+                <dd class="opt">
+                    <div style="display:block;min-width: 100px;font-weight: bold">购买者等级</div>
+                    <if  condition="$level_id lt 3">
+                        <?php $var = "distribution_first_".$level_id."_0"; ?>
+                        <div style="display:inline-block;min-width: 100px">所有等级</div>
+                        <input type="text" name="distribution_first_{$level_id}_0" value='{$config[$var]}'  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"  class="input-txt">
+                        <p class="notic">设置每个订单获得的分销奖金额，单位：元</p>
+                    <else/>
+                        <foreach name="level_list" item="level">
+                            <div style=" padding: 5px 0">
+                                <?php $var = "distribution_first_".$level_id."_".$level['level_id']; ?>
+                                <div style="display:inline-block;min-width: 100px">{$level.level_name}</div>
+                                <input type="text" name="distribution_first_{$level_id}_{$level.level_id}" value="{$config[$var]}"  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"   class="input-txt">
+                            </div>
+                        </foreach>
+                        <p class="notic">设置每个订单获得的分销奖金额，单位：元</p>
+                    </if>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit" style="font-weight: bold;">
+                    <label><em>*</em>二级分销奖金设置：</label>
+                </dt>
+                <dd class="opt">
+                    <div style="display:block;min-width: 100px;font-weight: bold">购买者等级</div>
+                    <if  condition="$level_id lt 3">
+                        <?php $var = "distribution_second_".$level_id."_0"; ?>
+                        <div style="display:inline-block;min-width: 100px">所有等级</div>
+                        <input type="text" name="distribution_second_{$level_id}_0" value='{$config[$var]}'  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
+                        <p class="notic">设置每个订单获取的分销奖金额，单位：元</p>
+                        <else/>
+                        <foreach name="level_list" item="level">
+                            <div style=" padding: 5px 0">
+                                <?php $var = "distribution_second_".$level_id."_".$level['level_id']; ?>
+                                <div style="display:inline-block;min-width: 100px">{$level.level_name}</div>
+                                <input type="text" name="distribution_second_{$level_id}_{$level.level_id}" value="{$config[$var]}"  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"   class="input-txt">
+                            </div>
+                        </foreach>
+                        <p class="notic">设置每个订单获取的分销奖金额，单位：元</p>
+                    </if>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+    <div class="ncap-form-default">
+        <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+    </div>
+    <!--   分销奖 e  -->
+
+<elseif condition="$inc_type eq 'recommend'"/>
+<!--   推荐奖  s    -->
+<if condition="$level_id gt 2">
+<div class="ncap-form-default tab_div_2" style="display:block;">
+    <dl class="row">
+            <dt class="tit" style="font-weight: bold;">获得该奖项的用户的等级(身份)：</dt>
+        <dd class="opt">
+            {$this_level.level_name}
+        </dd>
+    </dl>
+    <div class="ncap-form-default">
+        <dl class="row">
+            <dt class="tit" style="font-weight: bold">
+                <label ><em>*</em>一级推荐奖设置：</label>
+            </dt>
+            <dd class="opt">
+                <div style="display:block;min-width: 100px;font-weight: bold">购买身份等级</div>
+                    <foreach name="level_list" item="level">
+                        <if condition="$level.level_id gt 2">
+                        <div style=" padding: 5px 0">
+                            <?php $var = "recommend_first_".$level_id."_".$level['level_id']; $var_open = "recommend_first_open_".$level_id."_".$level['level_id']; ?>
+                            <div style="display:inline-block;min-width: 100px">{$level.level_name}</div>
+                            <input type="text" name="{$var}" value="{$config[$var]}"  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"   class="input-txt">
+                            <div class="onoff" style="display: inline-block">
+                                <label for="{$var_open}1" class="cb-enable  <if condition="$config[$var_open] eq 1">selected</if>">开启</label>
+                                <label for="{$var_open}0" class="cb-disable <if condition="$config[$var_open] eq 0">selected</if>">关闭</label>
+                                <input type="radio"  id="{$var_open}1"  name="{$var_open}" value="1" <if condition="$config[$var_open] eq 1">checked="checked"</if>>
+                                <input type="radio"  id="{$var_open}0"  name="{$var_open}" value="0" <if condition="$config[$var_open] eq 0">checked="checked"</if> >
+                            </div>
+                        </div>
+                        </if>
+                    </foreach>
+                    <p class="notic">设置每个订单获取的分佣金额，单位：元</p>
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="tit" style="font-weight: bold">
+                <label><em>*</em>二级分销奖设置：</label>
+            </dt>
+            <dd class="opt">
+                <div style="display:block;min-width: 100px;font-weight: bold">购买身份等级</div>
+                <foreach name="level_list" item="level">
+                    <if condition="$level.level_id gt 2">
+                        <div style=" padding: 5px 0">
+                            <?php $var = "recommend_second_".$level_id."_".$level['level_id']; $var_open = "recommend_second_open_".$level_id."_".$level['level_id']; ?>
+                            <div style="display:inline-block;min-width: 100px">{$level.level_name}</div>
+                            <input type="text" name="{$var}" value="{$config[$var]}"  onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" class="input-txt">
+                            <div class="onoff" style="display: inline-block">
+                                <label for="{$var_open}1" class="cb-enable  <if condition="$config[$var_open] eq 1">selected</if>">开启</label>
+                    <label for="{$var_open}0" class="cb-disable <if condition="$config[$var_open] eq 0">selected</if>">关闭</label>
+                    <input type="radio"  id="{$var_open}1"  name="{$var_open}" value="1" <if condition="$config[$var_open] eq 1">checked="checked"</if>>
+                    <input type="radio"  id="{$var_open}0"  name="{$var_open}" value="0" <if condition="$config[$var_open] eq 0">checked="checked"</if> >
+                    </div>
+                    </div>
+                    </if>
+                </foreach>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="ncap-form-default">
+    <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+</div>
+
+</if>
+<!-- 推荐奖  e-->
+
+<elseif condition="$inc_type eq 'sales_reward'"/>
+<!-- 销售额分红奖 s-->
+<if condition="$level_id gt 2">
+<div class="ncap-form-default tab_div_1">
+    <div class="bDiv"  style="height: auto;">
+        <dl class="row">
+            <dt class="tit" style="font-weight: bold;">获得该奖项的用户的等级(身份)：</dt>
+            <!--<dt class="tit">瓜分奖池的用户的等级</dt>-->
+            <dd class="opt">
+                {$this_level.level_name}
+                <p class="notic"></p>
+            </dd>
+        </dl>
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label ><em>*</em>奖金比例</label>
+                </dt>
+                <dd class="opt">
+                    <?php $var = "sales_reward_".$level_id; ?>
+                    <input type="text" name="sales_reward_{$level_id}" value="{$config[$var]}" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"  class="input-txt">%
+                    <p class="notic">设置该等级瓜分金额占季度销售额的百分比</p>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="ncap-form-default">
+    <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+</div>
+
+</if>
+<!-- 销售额分红奖 e-->
+
+<elseif condition="$inc_type eq 'twolayers_reward'"/>
+<!-- 二层外分红奖 s-->
+<if condition="$level_id gt 3">
+
+<div class="ncap-form-default tab_div_1">
+    <div class="bDiv"  style="height: auto;">
+        <dl class="row">
+            <dt class="tit" style="font-weight: bold;">获得该奖项的用户的等级(身份)：</dt>
+            <dd class="opt">
+                {$this_level.level_name}
+                <p class="notic"></p>
+            </dd>
+        </dl>
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label ><em>*</em>奖金比例</label>
+                </dt>
+                <dd class="opt">
+                    <?php $var = "twolayers_reward_".$level_id; ?>
+                    <input type="text" name="twolayers_reward_{$level_id}" value="{$config[$var]}" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"  class="input-txt">%
+                    <p class="notic">设置该等级瓜分金额占对应奖池总额的百分比</p>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="ncap-form-default">
+    <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+</div>
+
+</if>
+
+<!--二层外分红奖 e-->
+
+
+</if>
+
+    <div class="ncap-form-default">
+        <input type="hidden" name="inc_type" value="{$inc_type}">
+        <input type="hidden" name="id" value="{$level_id}">
+        <!--<div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>-->
+    </div>
+</div>
+
+</form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $(document).ready(function(){
+        //插件切换列表
+        $('.tab-base').find('.tab').click(function(){
+            $('.tab-base').find('.tab').each(function(){
+                $(this).removeClass('current');
+            });
+            $(this).addClass('current');
+            var tab_index = $(this).data('index');
+            $(".tab_div_1, .tab_div_2, .tab_div_3, .tab_div_4,.tab_div_5").hide();
+            $(".tab_div_"+tab_index).show();
+        });
+
+    });
+
+    //设置可返层级
+
+
+function ajax_subimit(da){
+    $.ajax({
+        type: "POST",
+        url: "/index.php/Admin/distribut/ajax_prize",
+        data: da,
+        success: function(res){
+            layer.msg('保存成功！', {icon: 1});
+        }
+    })
+}
+function ajax_switch(num){
+    if (num == 1) {
+        // $('#first_prize_switch_on_off').show()
+    } else {
+        // $('#first_prize_switch_on_off').hide();
+        $('input[name="first_prize_switch"]:checked').val(0);
+        var da = $('#handlepost').serialize();
+        ajax_subimit(da)
+    }
+}
+//
+var bool = $('input[name="first_prize_switch"]:checked').val();
+if (bool == 1) {
+    // $('#first_prize_switch_on_off').show()
+}
+function adsubmit(action){
+    if (action == '' || action == null || action == undefined) {
+        action=0;
+    }
+    //异步提交
+    var da = $('#handlepost').serialize();
+    ajax_subimit(da)
+
+}
+
+</script>
+</body>
+</html>

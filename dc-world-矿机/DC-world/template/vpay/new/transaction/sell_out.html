@@ -1,0 +1,207 @@
+<include file="common/main" title="卖出" body=""/>
+    <style>
+        .sell_out_menu{
+            height: 0.8rem;
+        }
+        .sell_out_menu ul li{
+            float: left;
+            background: #e0dbdb;
+            margin: 0.08rem 0.2rem;
+            width: 0.8rem;
+            text-align: center;
+            padding: 0.02rem 0;
+        }
+        .sell_out_menu .cur{
+            color: #64a0b3;
+        }
+    </style>
+    <div class="nav_top flex">
+        <a  href="/index.php/Vpay/Index/index">
+            <i></i>
+        </a>
+        <div class="flex1">
+            卖出
+        </div>
+        <a class="more_show" href="javascript:void(0)">
+            <i></i>
+        </a>
+        <div class="list_xz">
+            <ul>
+                <li>
+                    <a href="{:U('Transaction/unOrderListSell')}">
+                        订单
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Transaction/selloutLoglist')}">
+                        卖出记录
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" onclick="jump_sell_center()">
+                        卖出中心
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="sell_out_menu">
+        <ul>
+            <li><a href="{:U('Transaction/sellOut')}" class="cur">创建订单</a></li>
+            <li><a href="{:U('Transaction/unOrderListSell')}" class="">未完成订单</a></li>
+            <li><a href="{:U('Transaction/confirmOrderListSell')}" class="">确认收款</a></li>
+            <li><a href="{:U('Transaction/completeOrderListSell')}" class="">已完成订单</a></li>
+            <li><a href="{:U('Transaction/selloutLoglist')}" class="">卖出记录</a></li>
+            <li><a href="javascript:void(0);"  onclick="jump_sell_center()" class="">卖出中心</a></li>
+        </ul>
+    </div>
+    <p class="l_tit">请选择卖出数额</p>
+    <div class="cz_list clearfix">
+        <ul>
+            <volist name="transaction_num" id="vo1" key="k">
+                <li value="<php>echo $vo1;</php>" <if condition="$k eq 1">class="active5"</if> >
+                {$vo1}
+                </li>
+            </volist>
+        </ul>
+    </div>
+    <if condition="$db_flag eq 0">
+        <a class="add_bank" href="{:U('Transaction/bankList_sell')}">
+            <i></i>
+            <p>请选择银行卡</p>
+        </a>
+        <elseif condition="$db_flag eq 1"/>
+        <div class="bank_show">
+            <a href="{:U('Transaction/bankList_sell')}" style="font-size: 0.15rem;padding-bottom: 0.05rem;">
+                收款银行卡
+                <i></i>
+            </a>
+            <div>
+                <input type="hidden" id="bankcardid"  value="{$default_bankcard.id}">
+                {$default_bankcard.realName}
+            </div>
+            <div>
+                {$default_bankcard.bankName}
+            </div>
+            <div>
+                <label for="">
+                    银行卡号：{$default_bankcard.no}
+                </label>
+            </div>
+        </div>
+    </if>
+    <div class="sell_desc">
+        <textarea placeholder="描述..." id="remark"></textarea>
+    </div>
+    <input type="button" name="" class="login_btn" value="创建订单">
+    <div class="masks"></div>
+    <div class="pwd-box">
+        <input type="tel" maxlength="6" class="pwd-input" id="pwd-input">
+        <div class="fake-box">
+            <input type="password" readonly="">
+            <input type="password" readonly="">
+            <input type="password" readonly="">
+            <input type="password" readonly="">
+            <input type="password" readonly="">
+            <input type="password" readonly="">
+        </div>
+        <label>
+            输入支付密码
+        </label>
+    </div>
+    </body>
+        <script src="http://zeptojs.com/zepto.min.js"></script>
+        <script>
+            $(".more_show").click(function(){
+                $(".list_xz").slideToggle();
+            });
+        </script>
+        <script>
+
+                var $input = $(".fake-box input");
+                var bankcardid = $("#bankcardid").val();
+                bankcardid = bankcardid;
+
+                $("#pwd-input").on("input", function() {
+                    var pwd = $(this).val().trim();
+                    for (var i = 0, len = pwd.length; i < len; i++) {
+                        $input.eq("" + i + "").val(pwd[i]);
+                    }
+                    $input.each(function() {
+                        var index = $(this).index();
+                        if (index >= len) {
+                            $(this).val("");
+                        }
+                    });
+                    if (len == 6) {
+                        //执行其他操作
+                        var num = '';
+                        $input.each(function() {
+                            num += $(this).val().trim()
+                        });
+
+                        var sum = $(".active5").val();
+                        //var bankcardid = $("#bankcardid").val();
+
+
+                        if (num.length != 6) {
+                            layer.msg("请输入您6位数字支付密码！");
+                            return;
+                        }
+                        if (sum == 'undefined' || sum == undefined || sum == 'null' || sum == null) {
+                            layer.msg("请刷新页面重试！");
+                            return;
+                        }
+                        if (bankcardid == 'undefined' || bankcardid == undefined || bankcardid == 'null' || bankcardid == null) {
+                            layer.msg("请先添加选择银行卡！");
+                            //location.reload();
+                            setTimeout("location.reload()",2000);
+                            return;
+                        }
+
+                        sub(num, sum, bankcardid);
+                    }
+                });
+
+                sub=function (num, sum, bankcardid) {
+                    $.ajax({
+                        method:'POST',
+                        data:{
+                            "num" : num,
+                            "sum" : sum,
+                            "bankcardid" : bankcardid,
+                            "remark" : $("#remark").val()
+                        },
+                        dataType: "json",
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        url: "/index.php/Vpay/Transaction/sellOut",
+                        success: function (data) {
+                        if(data.code==0){
+                            layer.msg("操作成功！");
+                            setTimeout(function () {
+                                window.location.href = '/index.php/Vpay/Transaction/unOrderListSell';
+                            }, 1000);
+                        }else {
+                            if(data.msg != '' && data.msg != null) {
+                                layer.msg(data.msg,{time:1500})
+                            }
+                        }
+                        },
+                        error: function (result) {
+                        }
+                    });
+                }
+
+                jump_sell_center=function () {
+                    console.log(bankcardid);
+                    if (bankcardid == 'undefined' || bankcardid == undefined || bankcardid == '') {
+                        layer.msg("请选择银行卡");
+                        return;
+                    } else {
+                        window.location.href='/index.php/Vpay/Transaction/sell_center?id=' + bankcardid;
+                    }
+                }
+
+        </script>

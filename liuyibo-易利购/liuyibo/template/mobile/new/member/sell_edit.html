@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 出售商品 </title>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">出售商品</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <form action="">
+       <div class="weui-cells weui-cells_form vux-1px-t">
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
+                <div class="weui-cell__bd">
+                        {$goods_list['goods_name']}
+                </div>
+            </div>
+            <div class="weui-cell fs26 weui-cell_access">
+                <div class="weui-cell__hd"><label class="weui-label">持有商品</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" id="mobile"  placeholder="请选择批发商品">
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">可出售量</label></div>
+                <div class="weui-cell__bd" id="sell_num">
+
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">出售价格</label></div>
+                <div class="weui-cell__bd" id="price">
+                    {$goods_list['shop_price']}
+                        <!--<input class="weui-input" type="text" placeholder="请设定出售价格">-->
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">出售数量</label></div>
+                <div class="weui-cell__bd">
+                        <input class="weui-input" name="num" type="member" id="num" placeholder="请输入出售数量">
+                </div>
+            </div>
+            <div class="weui-cell fs26">
+                <div class="weui-cell__hd"><label class="weui-label">安全密码</label></div>
+                <div class="weui-cell__bd">
+                        <input class="weui-input" name="paypwd" type="password" placeholder="请输入安全密码">
+                </div>
+            </div>
+       </div>
+        <input type="hidden" name="goods_id" value="{$goods_list['goods_id']}" id="goods_id">
+        </form>
+        <div class="weui-btn-area">
+                <a href="###" class="weui-btn weui-btn_primary">寄售</a>
+        </div>
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+    // var datas= {$goodslist}
+    // console.log(datas);
+    // $("#mobile").click(function(){
+    //     alert(1);
+        $("#mobile").picker({
+            title: "请选择类型",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['套餐1', '套餐2', '套餐3','套餐4','套餐5']
+                }
+            ],
+            onChange: function(p, v, dv) {
+
+
+            },
+            onClose: function(p, v, d) {
+                var name = p.value[0];
+
+                $.ajax({
+                    type: 'post',
+                    url: "{:U('Mobile/Member/sell_edit')}",
+                    dataType: 'JSON',
+                    data: {'goods_id': $('#goods_id').val(),'name':name},
+                    success: function (data) {
+                        $('#sell_num').html(data);
+                        //console.log(data);
+                    },
+                    error: function(){
+                        //alert(1)
+                    }
+                })
+                // console.log(v);
+                // console.log(d);
+                // console.log("close");
+            }
+        });
+        $('.weui-btn').click(function(){
+            var t = $('form').serializeArray();
+            if($('#mobile').val() == ''){
+                $.alert('请选择套餐！');return false;
+            }
+            if(t[0].value == ''){
+                $.alert('填写出售数量！');return false;
+            }
+            if(t[1].value == ''){
+                $.alert('填写安全密码！');return false;
+            }
+            var check_sell_num = parseInt($('#sell_num').html());
+            if(t[0].value <= 0 || t[0].value > check_sell_num){
+                $.alert('填写正确的出售数量！');return false;
+            }
+            var arr = {name:'name',value:$('#mobile').val()};
+            t.push(arr);
+            $.ajax({
+                type: 'post',
+                url: "{:U('Mobile/Member/sell_add')}",
+                dataType: 'JSON',
+                data: t,
+                success: function (data) {
+                    if(data.code == 1){
+                        $.toast(data.msg,1000,function(){
+                            window.location.href="{:U('Mobile/Member/sell_list')}";
+                            //location.reload();
+                        });
+                    }else{
+                        $.alert(data.msg);return false;
+                    }
+                },
+                error: function(){
+                    //alert(1)
+                }
+            })
+        });
+    // var t = $('form').serializeArray();
+    // })
+
+       </script>
+</body>
+</html>

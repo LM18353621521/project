@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!--bootstrap 样式-->
+    <link href="__PUBLIC__/static2/css/bootstrap.min.css" rel="stylesheet">
+    <!--本页面共用 样式-->
+    <link href="__PUBLIC__/static2/css/common.css" rel="stylesheet">
+    <!--右键菜单插件 样式-->
+    <link href="__PUBLIC__/static2/css/jquery.contextMenu.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wb-container ">
+        <div class="page-content">
+            <div class="page-sub-toolbar">
+                <span class=''>
+                    <!-- <a class="btn btn-primary btn-sm" href="###">添加新海报</a> -->
+                </span>
+            </div>
+            <form action="" method="post" class="form-horizontal form-validate" enctype="multipart/form-data">
+                <ul class="nav nav-arrow-next nav-tabs" id="myTab">
+                    <!-- <li ><a href="#tab_basic">基本</a></li> -->
+                    <li class="active"><a href="#tab_design">设计</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane  " id="tab_basic">
+                        <div class="form-group">
+                            <label class="col-lg control-label must">海报名称</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="title" class="form-control" value="" data-rule-required="true" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg control-label must">海报类型</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" value="1" /> 商城海报
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" value="2" /> 小店海报
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" value="3" /> 商品海报
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg control-label must">回复关键词</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="keyword2" class="form-control" value="" data-rule-required="true" />
+                                <span class='help-block'>如果是商品海报 ，回复关键词是 关键词+商品ID</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg control-label">是否默认</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <label class="radio-inline">
+                                    <input type="radio" name="isdefault" value="1" /> 是
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="isdefault" value="0" checked /> 否
+                                </label>
+                                <span class='help-block'>是否是海报类型的默认设置，一种海报只能一个默认设置</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg control-label">生成等待文字</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <textarea name="waittext" class="form-control" rows="5"></textarea>
+                                <span class="help-block">例如：您的专属海报正在拼命生成中，请等待片刻...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane  active" id="tab_design">
+                        <div class="form-group" id='goodsdiv' style="display:none">
+                            <label class="col-lg control-label">选择商品</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <div id='goodsid_selector' class='selector' data-type="image" data-key="id" data-text="title" data-thumb="thumb" data-multi="0" data-callback="" data-url="http://wx.cctvia.com/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=shop.query" data-nokeywords="0" data-autosearch="0">
+                                    <div class='input-group'>
+                                        <input type='text' id='goodsid_text' name='goodsid_text' value='' class='form-control text' readonly />
+                                        <div class='input-group-btn'>
+                                            <button class='btn btn-primary' type='button' onclick='biz.selector.select({"url":"http:\/\/wx.cctvia.com\/web\/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=shop.query","items":[],"placeholder":"\u8bf7\u8f93\u5165\u5546\u54c1\u6807\u9898","buttontext":"\u9009\u62e9\u5546\u54c1","multi":0,"readonly":true,"callback":"","key":"id","text":"title","thumb":"thumb","preview":true,"type":"image","input":true,"required":false,"nokeywords":0,"autosearch":0,"name":"goodsid","value":""});'>选择商品</button>
+                                        </div>
+                                    </div>
+                                    <div class='input-group multi-img-details container'></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table style='width:100%;'>
+                                    <tr>
+                                        <td style='width:320px;padding:10px;' valign='top'>
+                                            <div id='poster'>
+                                            </div>
+                                        </td>
+                                        <td valign='top' style='padding:10px;'>
+                                            <div class='panel panel-default'>
+                                                <div class='panel-body'>
+                                                    <div class="form-group" id="bgset">
+                                                        <label class="col-lg control-label">背景图片</label>
+                                                        <div class="col-sm-9 col-xs-12">
+                                                            <div class="input-group ">
+                                                                <input type="text" id="bgName" class="form-control">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-primary" type="button">选择图片
+                                                                    <input type="file"onchange="selectBGImage(this);" class="fileBox" />
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <div class="input-group " style="margin-top:.5em;"><img src="__PUBLIC__/static2/images/default-pic.jpg" id="minBgimg" onerror="this.src='__PUBLIC__/static2/images/nopic.png'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150" />
+                                                                <em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+                                                            </div> <span class='help-block'>背景图片尺寸: 640 * 1008</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg control-label">海报元素</label>
+                                                        <div class="col-sm-9 col-xs-12">
+                                                            <button class='btn btn-default btn-com' type='button' data-type='head'>头像</button>
+                                                            <button class='btn btn-default btn-com' type='button' data-type='nickname'>昵称</button>
+                                                            <button class='btn btn-default btn-com' type='button' data-type='qr'>二维码</button>
+                                                            <button class='btn btn-default btn-com' type='button' data-type='img'>图片</button>
+                                                            <span id="goodsparams" style="display:none">
+                                                                <br />
+                                                                <button class='btn btn-default btn-com' type='button'
+                                                                    data-type='title'>商品名称</button>
+                                                                <button class='btn btn-default btn-com' type='button'
+                                                                    data-type='thumb'>商品图片</button>
+                                                                <button class='btn btn-default btn-com' type='button'
+                                                                    data-type='marketprice'>商品现价</button>
+                                                                <button class='btn btn-default btn-com' type='button'
+                                                                    data-type='productprice'>商品原价</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div id='nameset' style='display:none'>
+                                                        <div class="form-group">
+                                                            <label class="col-lg control-label">昵称颜色</label>
+                                                            <div class="col-sm-9 col-xs-12">
+                                                                <div class="row row-fix">
+                                                                    <div class="col-xs-8 col-sm-8" style="padding-right:0;">
+                                                                        <div class="input-group">
+                                                                            <div class="colorpickerBox">
+                                                                                <input type="text" class="form-control" name="colorpicker" id='colorpicker'>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg control-label">昵称大小</label>
+                                                            <div class="col-sm-4">
+                                                                <div class='input-group'>
+                                                                    <input type="text" id="namesize" class="form-control namesize" placeholder="例如:12、14以上的偶数大小" value='' />
+                                                                    <div class='input-group-addon'>px</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" id="imgset" style="display:none">
+                                                        <label class="col-lg control-label">图片设置</label>
+                                                        <div class="col-sm-9 col-xs-12">
+                                                            <div class="input-group ">
+                                                                <input type="text" id="comimg" class="form-control">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-primary" type="button">选择图片
+                                                                    <input type="file"onchange=" selectImage(this);" class="fileBox" data-index='0' id="comimgBtn" />
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <div class="input-group " style="margin-top:.5em;"><img src="__PUBLIC__/static2/images/default-pic.jpg" onerror="this.src='__PUBLIC__/static2/images/nopic.png'; this.title='图片未找到.'" class="img-responsive img-thumbnail" width="150" />
+                                                                <em class="close" style="position:absolute; top: 0px; right: -14px;" title="删除这张图片" onclick="deleteImage(this)">×</em>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!--weichengtech-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <!-- <input type="submit" onclick="submit_img()" value="提交" class="btn btn-primary" /> -->
+                        <a type="submit" id="sub" onclick="submit_img()" value="提交" class="btn btn-primary" />提交</a>
+                        <input type="hidden" name="data" value="" />
+                        <input type="button" name="back" style='margin-left:10px;' value="返回列表" class="btn btn-default" />
+                    </div>
+                </div>
+            </form>
+            <img src="" id="imgUrl" alt="">
+        </div>
+    </div>
+    <!--jquery-->
+    <script src="__PUBLIC__/static2/js/jquery-1.11.1.min.js"></script>
+    <!--bootstrap js-->
+    <script src="__PUBLIC__/static2/js/bootstrap.min.js"></script>
+    <!--颜色选择插件 js css-->
+    <script src='__PUBLIC__/static2/js/spectrum.js'></script>
+    <link rel='stylesheet' href='__PUBLIC__/static2/js/spectrum.css' />
+    <!--右键菜单插件 js-->
+    <script src="__PUBLIC__/static2/js/jquery.contextMenu.js"></script>
+    <!--拖曳缩放功能 js-->
+    <script src="__PUBLIC__/static2/js/designer.js"></script>
+    <!--本页面公用 js-->
+    <script src="__PUBLIC__/static2/js/common.js"></script>
+    <!-- 画布js -->
+    <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script> 
+    <script>
+    var num = 1;
+    function selectBGImage(file) {
+        if (!file.files || !file.files[0]) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            var imgBghtml = document.getElementsByClassName('imgBg')[0];
+            var TelBox = document.getElementById("poster");
+            if (imgBghtml) {
+                TelBox.removeChild(imgBghtml)
+            }
+
+            var imghtml = "<div class='imgBg'><img src=" + evt.target.result + " \/><\/div>";
+            TelBox.insertAdjacentHTML('afterBegin', imghtml);
+            document.getElementById("minBgimg").src = evt.target.result
+        }
+        reader.readAsDataURL(file.files[0]);
+        var bgName = file.files[0].name;
+        document.getElementById("bgName").value = bgName;
+        console.log(bgName);
+    }
+    //普通图片上传
+    function selectImage(file) {
+        if (!file.files || !file.files[0]) {
+            return;
+        }
+        var attrval="[index='"+$(file).attr('data-index')+"']";
+        console.log(attrval);
+        var imgbase;
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            imgbase = evt.target.result;
+            $(attrval).find('img').attr('src', imgbase);
+                    $("#imgset img").attr('src',imgbase);
+
+        }
+        reader.readAsDataURL(file.files[0]);
+        var bgName = file.files[0].name;
+        $("#comimg").val(bgName);
+        $(attrval).find('img').attr('data-imgname', bgName);
+
+    }
+    </script>
+    <script>
+    $("#colorpicker").spectrum({
+        preferredFormat: 'hex',
+        showInput: true,
+        showPalette: true,
+        palette: [
+            ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+            ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+            ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+            ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+            ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+            ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+            ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+            ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+        ]
+    });
+    $("#colorpicker").show();
+    </script>
+    <script>
+        //图片操作
+    $(function() {
+        $("#poster").on('click','.drag', function() {
+            var imgidnex = $(this).attr('index');
+            console.log(imgidnex)
+            $('#comimgBtn').attr('data-index', imgidnex);
+            // $('#comimgBtn').attr('id', 'dra'+imgidnex);
+            $("#comimg").val($(this).find('img').attr('data-imgname'));
+            $("#imgset img").attr('src',$(this).find('img').attr('src'))
+        })
+    })
+    </script>
+</body>
+<script>
+var ajax_status = false;
+ function submit_img(){
+
+    // 原画布坐标
+    var poster_left = $("#poster").offset().left;
+    var poster_top = $("#poster").offset().top;
+    var data ={};
+
+    if(document.getElementById("qr")){
+        // 二维码坐标
+        var qr_left = $("#qr").offset().left;
+        var qr_top = $("#qr").offset().top;
+
+        // 二维码在画布的坐标
+        var qr_x = qr_left - poster_left;
+        var qr_y = qr_top - poster_top;
+        
+        // 二维码宽高
+        var qr_width = $("#qr").css('width');
+        var qr_height = $("#qr").css('height');
+        data['qr_width'] = qr_width;
+        data['qr_height'] = qr_height;
+        data['qr_x'] = qr_x;
+        data['qr_y'] = qr_y;
+        
+    } 
+
+    if(document.getElementById("nickname")){
+        // 昵称坐标
+        var nk_left = $("#nickname").offset().left;
+        var nk_top = $("#nickname").offset().top;
+
+        // 昵称在画布的坐标
+        var nk_x = nk_left - poster_left;
+        var nk_y = nk_top - poster_top;
+
+        // 昵称颜色大小
+        var nk_font = $("#nickname .text").css('font-size');
+        var nk_color = $("#nickname").css('color');
+        
+        // 昵称宽高
+        var nk_width = $("#nickname").css('width');
+        var nk_height = $("#nickname").css('height');
+
+        data['nk_x'] = nk_x;
+        data['nk_y'] = nk_y;
+        data['nk_font'] = nk_font;
+        data['nk_color'] = nk_color;
+        data['nk_width'] = nk_width;
+        data['nk_height'] = nk_height;
+        
+    }
+
+    if(document.getElementById("head")){
+        // 头像坐标
+        var head_left = $("#head").offset().left;
+        var head_top = $("#head").offset().top;
+
+        // 头像在画布的坐标
+        var head_x = head_left - poster_left;
+        var head_y = head_top - poster_top;
+        
+        // 头像宽高
+        var head_width = $("#head").css('width');
+        var head_height = $("#head").css('height');
+        
+        data['head_x'] = head_x;
+        data['head_y'] = head_y;
+        data['head_width'] = head_width;
+        data['head_height'] = head_height;
+    }
+
+    if (ajax_status) {return false};
+    ajax_status = true
+    $(".drag").css({border:'none'}); 
+    $("#nickname .text").html('');
+    // $("#qr img").attr('src', '');
+    $(".rRightDown, .rLeftDown, .rLeftUp, .rRightUp, .rRight, .rLeft, .rUp, .rDown").css({opacity:0}); 
+    
+    html2canvas($('#poster'), {            
+       onrendered: function (canvas) {           
+            var da = canvas.toDataURL("image/png");//生成的格式      
+            data['img'] = da;
+           //data就是生成的base64码 
+           console.log(data); 
+           $.ajax({
+                type: "POST",
+                   url: "{:url('User.User/addPoster')}",
+                   data: data,
+                   dataType:'JSON',
+                   success: function(msg){
+                        if (msg.code == 1) {
+                            console.log(msg);
+                            window.location.href="/index.php/Admin/User.User/poster";
+                            
+                        } else {
+                            alert(msg.msg);
+                        }
+                        ajax_status = false;   
+                   }
+           });
+        }            
+    });        
+    
+
+ }
+  
+</script>
+</html>

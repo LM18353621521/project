@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="__PUBLIC__/js/jquery-1.9.0.js"></script>
+    <script src="__PUBLIC__/js/angular.js"></script>
+    <script src="__PUBLIC__/home/plugins/layer/layer.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="__PUBLIC__/mui/css/mui.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/cart.css">
+<style>
+    .cart .media-object {
+        line-height: 40px;
+        max-width: 40px;
+        height: 40px;
+        margin-left:  25px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+    .cart .mui-input-row {
+        height: 100%;
+        width: 35%;
+        float: left;
+    }
+    .cart .cart-goods {
+        margin-bottom: 0;
+    }
+    .cart .mui-media-body span {
+        font-size: 13px;
+        width: 100%;
+        display: block;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    .discribe{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+</head>
+<body ng-app="myApp" >
+
+<!--header-->
+<header class="mui-bar mui-bar-nav" >
+    <a class=" mui-icon mui-icon-left-nav mui-pull-left" style="color: white" href="/index.php/Home/member/member"></a>
+    <h1 class="mui-title">我的推荐</h1>
+</header>
+
+<div class="mui-page-content"  ng-controller="recommendCtrl" ng-cloak style="font-size: 15px;">
+    <div style="height: 60px;background:#efeff4; "></div>
+    <ul class="mui-table-view"  id="list" ng-repeat=" re in message">
+        <li class="mui-table-view-cell" ng-show="{{ re.isdisable==1}}">
+            <a>会员号(冻结)<span class="mui-pull-right">{{ re.account}}</span></a>
+        </li>
+        <li class="mui-table-view-cell" ng-show="{{ re.isdisable==2}}">
+            <a>会员号<span class="mui-pull-right">{{ re.account}}</span></a>
+        </li>
+        <li class="mui-table-view-cell" ng-show="{{ re.isdisable==2}}">
+            <a>会员姓名<span class="mui-pull-right">{{ re.name}}</span></a>
+        </li>
+        <li class="mui-table-view-cell">
+            <a>已消费<span class="mui-pull-right">{{ re.sumall}}</span></a>
+        </li>
+        <li class="mui-table-view-cell" ng-show="{{ re.isdisable==1}}">
+            <a>该账号已被禁用<span class="mui-pull-right"></span></a>
+        </li>
+        <li class="mui-table-view-cell" ng-hide="{{ re.isdisable==1}}">
+            <a>上次消费时间<span class="mui-pull-right">{{re.lasttime}}</span></a>
+        </li>
+        <div style="height: 10px;background:#efeff4; "></div>
+    </ul>
+</div>
+
+<!--<div class="mui-content cart" ng-controller="recommendCtrl">
+    <ul class="mui-table-view" id="list">
+        <li class="mui-table-view-cell mui-media cart-goods" ng-repeat=" re in message">
+            <a href="javascript:;">
+                <div class="mui-input-row mui-checkbox">
+                  <p style="line-height: 42px"ng-show="{{ re.isdisable==1}}">{{ re.account}}</p>
+                  <p style="line-height: 42px;color: black" ng-show="{{ re.isdisable==2}}">{{ re.account}}</p>
+                </div>
+                <div class="mui-media-body"style="padding: 0">
+                    <span style="font-size: 18px;line-height: 21px" >已消费：{{ re.recharge}}</span>
+                    <p class="discribe" ng-show="{{ re.isdisable==1}}">该账号已被禁用</p>
+                    <p class="discribe" ng-hide="{{ re.isdisable==1}}" style="font-size: 12px">上次消费时间:{{re.updatetime}}</p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>-->
+
+<!--结算&删除-->
+
+<!--footer-->
+</body>
+
+<script src="__PUBLIC__/mui/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/cart.js"></script>
+<script>
+    var app = getApp('myApp',[]);
+    //我的推荐
+    app.controller('recommendCtrl', function($scope, $http) {
+        scrolldownload($scope,$http,'/index.php/Home/Member/recommend2');
+    });
+</script>
+</html>

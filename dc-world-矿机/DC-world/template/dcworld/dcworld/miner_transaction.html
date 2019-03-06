@@ -1,0 +1,484 @@
+<include file="common/header" title="矿机交易" body=""/>
+<style>
+    .header {
+        background: #fff url("__PUBLIC__/images/h_bg1.png") no-repeat;
+        background-size: 100% 0.62rem;
+        background-size: 100% 0.62rem;
+    }
+
+    .header .header-title {
+        color: #fff;
+    }
+
+    .left-arrow:before {
+        border-color: #fff;
+    }
+
+    .header {
+        font-size: 0.213333rem;
+        align-items: center;
+    }
+
+    .header .header-left, .header .header-right {
+        width: 150px;
+    }
+
+    .header .header-left {
+        color: #fff;
+        font-size: 0.186667rem;
+        padding-left: 0.19rem;
+    }
+
+    .header a {
+        color: #ffffff;
+    }
+
+    .header .header-right {
+        color: #ffffff;
+        font-size: 0.186667rem;
+        padding-right: 0.19rem;
+    }
+
+
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">矿机交易</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd">
+        <!-- 页面内容-->
+
+        <div class="user-top">
+            <div class="user-top__hd weui-cell">
+                <div class="weui-cell__hd">
+                    <img src={$user.profilePhoto|default='__PUBLIC__/images/u_icon1.png'} alt="">
+                </div>
+                <div class="weui-cell__bd">
+                    <p class="name fs28 fw500"> {$user.nickname}</p>
+                    <p class="lever fs26">当前等级：{$user.level_name}</p>
+                </div>
+            </div>
+            <div class="user-top_bd">
+                <div class="item">
+                    当前总算力：<span>{$ManagedForce|default="0.00"}</span>
+                </div>
+                  <div class="item">
+                    现有DC总量：<span>{$user.dc_coin|default="0.00"}</span>
+                </div>
+                <div class="item">
+                    矿机运行数量：<span>{$miner_count|default="0"}</span>
+                </div>
+            </div>
+        </div>
+        <div class="user-ul">
+            <!--<div class="user-ul_li">-->
+                <!--<div class="weui-cell bor-1px-b border-after_none">-->
+                    <!--<div class="weui-cell__hd">-->
+                        <!--<img src="__PUBLIC__/images/kj_img_1.png" alt="">-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p>型号：<span>云算力 (D0)</span></p>-->
+                        <!--<p>算力：<span>12台</span></p>-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__ft">-->
+                        <!--<p>消耗矿币：<span>1.52DC</span></p>-->
+                        <!--<p>产矿衰减率：<span>0.25DC</span></p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="user-ul_li">-->
+                <!--<div class="weui-cell bor-1px-b border-after_none">-->
+                    <!--<div class="weui-cell__hd">-->
+                        <!--<img src="__PUBLIC__/images/kj_img_2.png" alt="">-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p>型号：<span>云算力 (D0)</span></p>-->
+                        <!--<p>算力：<span>12台</span></p>-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__ft">-->
+                        <!--<p>消耗矿币：<span>1.52DC</span></p>-->
+                        <!--<p>产矿衰减率：<span>0.25DC</span></p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="user-ul_li  li-disabled">-->
+                <!--<div class="weui-cell bor-1px-b border-after_none">-->
+                    <!--<div class="weui-cell__hd">-->
+                        <!--<img src="__PUBLIC__/images/kj_img_3.png" alt="">-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p>型号：<span>云算力 (D0)</span></p>-->
+                        <!--<p>算力：<span>12台</span></p>-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__ft">-->
+                        <!--<p>消耗矿币：<span>1.52DC</span></p>-->
+                        <!--<p>产矿衰减率：<span>0.25DC</span></p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="user-ul_li li-disabled">-->
+                <!--<div class="weui-cell bor-1px-b border-after_none">-->
+                    <!--<div class="weui-cell__hd">-->
+                        <!--<img src="__PUBLIC__/images/kj_img_4.png" alt="">-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p>型号：<span>云算力 (D0)</span></p>-->
+                        <!--<p>算力：<span>12台</span></p>-->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__ft">-->
+                        <!--<p>消耗矿币：<span>1.52DC</span></p>-->
+                        <!--<p>产矿衰减率：<span>0.25DC</span></p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="btns">-->
+                    <!--<button class="weui-btn weui-btn_primary weui-btn_mr btn-jh" miner_id="{$vo.miner_id}">激活</button>-->
+                    <!--<button class="weui-btn weui-btn_primary btn-zc" miner_id="{$vo.miner_id}">转出</button>-->
+                <!--</div>-->
+            <!--</div>-->
+
+
+            <foreach name="miner_list" item="vo">
+                <if condition=" in_array($vo.miner_id,$qualification)">
+                    <div class="user-ul_li">
+                        <div class="weui-cell bor-1px-b border-after_none">
+                            <div class="weui-cell__hd">
+                                <img src="{$vo.original_img}" alt="">
+                            </div>
+                            <div class="weui-cell__bd">
+                                <p>型号：<span>{$vo.miner_name}</span></p>
+                                <p>算力：<span>{$vo.release_size}</span></p>
+                            </div>
+                            <div class="weui-cell__ft">
+                                <p>消耗矿币：<span>{$vo.miner_price}DC</span></p>
+                                <p>产矿衰减率：<span>{$vo.rebate_rate}%</span></p>
+                            </div>
+                        </div>
+                        <div class="btns">
+                            <button class="weui-btn weui-btn_primary weui-btn_mr btn-jh" miner_id="{$vo.miner_id}" miner-price="{$vo.miner_price}">激活
+                            </button>
+                            <button class="weui-btn weui-btn_primary btn-zc" miner_id="{$vo.miner_id}" miner-price="{$vo.miner_price}">转出</button>
+                        </div>
+                    </div>
+                    <else/>
+                    <div class="user-ul_li li-disabled">
+                        <div class="weui-cell bor-1px-b border-after_none">
+                            <div class="weui-cell__hd">
+                                <img src="{$vo.original_img}" alt="">
+                            </div>
+                            <div class="weui-cell__bd">
+                                <p>型号：<span>{$vo.miner_name}</span></p>
+                                <p>算力：<span>{$vo.release_size}</span></p>
+                            </div>
+                            <div class="weui-cell__ft">
+                                <p>消耗矿币：<span>{$vo.miner_price}DC</span></p>
+                                <p>产矿衰减率：<span>{$vo.rebate_rate}%</span></p>
+                            </div>
+                        </div>
+                        <div class="btns">
+                            <button class="weui-btn weui-btn_primary weui-btn_mr btn-error">激活</button>
+                            <button class="weui-btn weui-btn_primary btn-error">转出</button>
+                        </div>
+                    </div>
+                </if>
+
+            </foreach>
+
+
+        </div>
+    </div>
+
+</div>
+
+<script src="__PUBLIC__/js/lib/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/js/lib/fastclick.js"></script>
+<style>
+    .sel_page {
+
+        position: fixed;
+        top: 5px;
+        right: 10px;
+    }
+
+    .sel_page select {
+        width: 100px;
+        height: 30px;
+        border-radius: 3px;
+        background-color: #EEEEEE;
+    }
+</style>
+<!--<div class="sel_page">-->
+<!--<select name="" id="">-->
+<!--<option value="首页">首页</option>-->
+<!--<option value="c沙滩">c沙滩</option>-->
+<!--<option value="DC世界">DC世界</option>-->
+<!--<option value="DC转账">DC转账</option>-->
+<!--<option value="个人中心">个人中心</option>-->
+<!--<option value="买家付款">买家付款</option>-->
+<!--<option value="买家确认放款">买家确认放款</option>-->
+<!--<option value="交易中心">交易中心</option>-->
+<!--<option value="交易成功">交易成功</option>-->
+<!--<option value="修改密码">修改密码</option>-->
+<!--<option value="修改支付密码">修改支付密码</option>-->
+<!--<option value="兑换DC">兑换DC</option>-->
+<!--<option value="创建钱包">创建钱包</option>-->
+<!--<option value="安全设置">安全设置</option>-->
+<!--<option value="微信账户信息">微信账户信息</option>-->
+<!--<option value="我的矿机">我的矿机</option>-->
+<!--<option value="我的矿池">我的矿池</option>-->
+<!--<option value="我的资产">我的资产</option>-->
+<!--<option value="我的钱包">我的钱包</option>-->
+<!--<option value="我要买入">我要买入</option>-->
+<!--<option value="我的卖出">我的卖出</option>-->
+<!--<option value="支付宝账户信息">支付宝账户信息</option>-->
+<!--<option value="收款码">收款码</option>-->
+<!--<option value="添加资产">添加资产</option>-->
+<!--<option value="矿场">矿场</option>-->
+<!--<option value="矿机交易">矿机交易</option>-->
+<!--<option value="确认打款">确认打款</option>-->
+<!--<option value="等待放款">等待放款</option>-->
+<!--<option value="订单取消">订单取消</option>-->
+<!--<option value="贝壳记录">贝壳记录</option>-->
+<!--<option value="账户列表">账户列表</option>-->
+<!--<option value="邀请分享">邀请分享</option>-->
+<!--<option value="银行卡信息">银行卡信息</option>-->
+<!--</select>-->
+<!--</div>-->
+<script>
+    $(document).on("focus","input",function(){
+    }).on("blur","input",function(){
+        document.querySelector(".page-bd").scrollIntoView(true);
+    })
+    $(".sel_page select option").each(function (index, e) {
+
+        if ($(e).val() == decodeURI(window.location.search.split("=")[1])) {
+            $(e).attr("selected", "selected")
+        }
+    })
+    $(".sel_page select").change(function () {
+        window.location.href = 'http://192.168.5.59:8080/pages/' + $(this).val() + '.html?sel=' + $(this).val();
+
+
+    })
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $(document).on('click', ".btn-error", function () {
+        $.toast('您的身份暂时无法操作该矿机', "forbidden");
+    });
+    PreventMultipleClicks = 1;
+    $(document).on("click", ".btn-jh", function () {
+        var miner_id = $(this).attr('miner_id');
+        var miner_price = $(this).attr('miner-price');
+
+        $.modal({
+            title: "现有DC总量为：{$user.dc_coin}<br\/>" +"激活矿机需扣除: "+miner_price+'<br \/>'+'是否激活该矿机？',
+            buttons: [
+                {
+                    text: "否", className: "default", onClick: function () {
+
+
+                    $.closeModal();
+                }
+                },
+                {
+                    text: "是", onClick: function () {
+                    if (PreventMultipleClicks == 0) {
+                        return false;
+                    }
+                    PreventMultipleClicks = 0;
+
+
+                        $.prompt({
+                            title: '请输入交易密码',
+                            input: '',
+                            empty: false, // 是否允许为空
+                            onOK: function (input) {
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{:U('Dcworld/Dcworld/activate_miner')}",
+                                    data: {miner_id: miner_id,paypassword:input},
+                                    dataType: 'json',
+                                    error: function (request) {
+                                        alert("服务器繁忙, 请联系管理员!");
+                                        PreventMultipleClicks = 1;
+                                    },
+                                    success: function (response) {
+                                        if (response.code == 0) {
+                                            $.modal({
+                                                title: '<img src="__PUBLIC__/images/icon_7.jpg" alt="" class="img45">&nbsp;&nbsp;<span class="color1 fw500 fs32">' + response.data.msg + '</span>',
+                                                buttons: [
+                                                    {
+                                                        text: "确定", className: "default", onClick: function () {
+                                                            window.location.reload();
+
+                                                        }
+                                                    },
+                                                ]
+                                            });
+
+                                        } else {
+                                            $.toast(response.msg.error, "forbidden");
+                                        }
+
+                                        PreventMultipleClicks = 1;
+                                    }
+                                });
+
+
+
+
+                            },
+                            onCancel: function () {
+                                $.toast("取消激活", "text");
+                                PreventMultipleClicks = 1;
+                            }
+                        });
+                        $('#weui-prompt-input').attr('type','password');
+                        $('#weui-prompt-input').attr('placeholder','请输入交易密码');
+                        // $.closeModal();
+                }
+                }
+            ]
+        });
+    })
+
+    $(document).on("click", ".btn-zc", function () {
+        var miner_id = $(this).attr('miner_id');
+        var miner_price = $(this).attr('miner-price');
+
+        /* $.prompt({
+         title: '转赠该矿机',
+         empty: false, // 是否允许为空
+         onOK: function (input) {
+         if(PreventMultipleClicks == 0){
+         return false;
+         }
+         PreventMultipleClicks = 0;
+
+         $.ajax({
+         type : "POST",
+         url  : "{:U('Dcworld/Dcworld/give_present')}",
+         data : {miner_id:miner_id,to_user:input},
+         dataType : 'json',
+         error: function(request) {
+         alert("服务器繁忙, 请联系管理员!");
+         PreventMultipleClicks = 1;
+         },
+         success: function(response) {
+         if(response.code==0){
+
+         $.modal({
+         title: '<img src="__PUBLIC__/images/icon_7.jpg" alt="" class="img45">&nbsp;&nbsp;<span class="color1 fw500 fs32">' + response.data.msg + '</span>',
+         buttons: [
+         { text: "确定", className: "default", onClick: function(){
+
+         }
+         },
+         ]
+         });
+
+         }else{
+
+         $.toptip(response.msg.error,'error');
+         }
+
+         PreventMultipleClicks = 1;
+         }
+         });
+         },
+         onCancel: function () {
+         //点击取消
+         }
+         });
+         $('#weui-prompt-input').attr('placeholder','请输入转赠人手机号码/ID');*/
+
+        //如果参数过多，建议通过 object 方式传入
+        $.login({
+            title: "现有DC总量为：{$user.dc_coin}<br\/>" +"激活矿机需扣除: "+miner_price+'<br \/>'+'输入对方用户手机号和ID',
+            account: '请输入对方用户手机号',  // 默认用户名
+            id: '请输入对方用户ID',  // 默认密码
+            onOK: function (account, id) {
+                //点击确认
+                if (PreventMultipleClicks == 0) {
+                    return false;
+                }
+                PreventMultipleClicks = 0;
+
+                $.prompt({
+                    title: '请输入交易密码',
+                    input: '',
+                    empty: false, // 是否允许为空
+                    onOK: function (input) {
+
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "{:U('Dcworld/Dcworld/give_present')}",
+                                            data: {miner_id: miner_id, account: account, id: id, paypassword:input},
+                                            dataType: 'json',
+                                            error: function (request) {
+                                                alert("服务器繁忙, 请联系管理员!");
+                                                PreventMultipleClicks = 1;
+                                            },
+                                            success: function (response) {
+
+                                                if (response.code == 0) {
+                                                    $.modal({
+                                                        title: '<img src="__PUBLIC__/images/icon_7.jpg" alt="" class="img45">&nbsp;&nbsp;<span class="color1 fw500 fs32">' + response.data.msg + '</span>',
+                                                        buttons: [
+                                                            {
+                                                                text: "确定", className: "default", onClick: function () {
+
+                                                                }
+                                                            },
+                                                        ]
+                                                    });
+                                                } else {
+                                                    $.toast(response.msg.error, "forbidden");
+                                                }
+                                                PreventMultipleClicks = 1;
+                                            }
+                                        });
+
+
+
+
+                    },
+                    onCancel: function () {
+                        $.toast("取消转出", "text");
+                        PreventMultipleClicks = 1;
+                    }
+                });
+
+
+
+                $('#weui-prompt-input').attr('type','password');
+                $('#weui-prompt-input').attr('placeholder','请输入交易密码');
+
+            },
+            onCancel: function () {
+                //点击取消
+                $.toast("取消转出", "text");
+                PreventMultipleClicks = 1;
+            }
+        });
+
+        $('#weui-prompt-username').attr('placeholder', '请输入对方手用户机号');
+        $('#weui-prompt-password').attr('placeholder', '请输入对方用户ID号');
+        $('#weui-prompt-password').attr('type', 'text');
+    })
+
+</script>
+</body>
+</html>

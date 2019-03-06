@@ -1,0 +1,242 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>自定义菜单 - 添加修改菜单</h3>
+                <!-- <h5>添加或编辑商品分类</h5> -->
+            </div>
+        </div>
+    </div>
+    <!-- <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span>
+        </div>
+        <ul>
+            <li>菜单的图片和链接</li>
+            <li>添加或者修改分类时, 应注意选择对应的上级</li>
+        </ul>
+    </div> -->
+    <form action="{:U('Systems.Diyadminmenu/addAdminMenu')}" method="post" class="form-horizontal" id="adminMenu_form">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_mane"><em>*</em>菜单名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" placeholder="菜单名称" class="input-txt" name="name" value="{$info.name}">
+                    <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_eng_name"><em>*</em>英文名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" placeholder="英文名称" class="input-txt" name="eng_name" value="{$info.eng_name}">
+                    <span class="err" id="err_eng_name" style="color:#F00; display:none;"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>上级菜单</label>
+                </dt>
+                <dd class="opt">
+                    <select name="pid" id="pid">
+                        <option  value="0">不选则为顶级菜单</option>
+                        <volist name="parentMenu" id="s">
+                            <option <if condition="$info['pid'] eq $s['id']">selected="selected"</if>  value="{$s.id}">{$s.name}</option>
+                        </volist>
+                    </select>
+                    <p class="notic">供货商</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">上级菜单</label>
+                </dt>
+                <dd class="opt">
+                      <select name="cat_id" id="cat_id"  class="small form-control">
+                        <option value="0">顶级分类</option>                                      
+                            <foreach name="parentMenu" item="v" key="k" >                                       
+                               <option value="{$v['id']}" <if condition="($v['id'] eq $info['pid']) OR ($level_cat['1'] eq $v['id'])">selected="selected"</if> >
+                                    {$v['name']}
+                               </option>
+                            </foreach>
+                      </select>
+                      <select name="cat_id_2" id="cat_id_2" onChange="get_parent(this.value,'cat_id_3','0');" class="small form-control" >
+                        <option value="0">请选择商品分类</option>
+                      </select>                
+                    <span class="err" id="err_cat_id" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label>菜单图片</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.image}">
+                              <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.image}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="image" name="image" value="{$info.image}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','category','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">请上传图片格式文件</p>
+                </dd>
+            </dl> -->
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_sort"><em>*</em>act</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_mane" name="act" id="t_act" value="{$info.act}">
+                    <span class="err" style="color:#F00; display:none;" id="err_act"></span>
+                    <p class="notic">根据排序进行由小到大排列显示。</p>
+                </dd>
+            </dl><dl class="row">
+                <dt class="tit">
+                    <label for="t_sort"><em>*</em>op</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_mane" name="op" id="t_op" value="{$info.op}">
+                    <span class="err" style="color:#F00; display:none;" id="err_op"></span>
+                    <p class="notic">根据排序进行由小到大排列显示。</p>
+                </dd>
+            </dl><dl class="row">
+                <dt class="tit">
+                    <label for="t_sort"><em>*</em>c</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_mane" name="c" id="t_c" value="{$info.c}">
+                    <span class="err" style="color:#F00; display:none;" id="err_c"></span>
+                    <p class="notic">根据排序进行由小到大排列显示。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="t_sort"><em>*</em>排序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" class="t_mane" name="sort" id="t_sort" value="{$info.sort}">
+                    <span class="err" style="color:#F00; display:none;" id="err_sort"></span>
+                    <p class="notic">根据排序进行由小到大排列显示。</p>
+                </dd>
+            </dl>
+
+            <!-- <dl class="row">
+                <dt class="tit">
+                    <label>是否显示</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="service_show1" class="cb-enable  <if condition="(empty($info) eq ture) OR ($info.is_show eq 1) "> selected </if>">是</label>
+                        <label for="service_show0" class="cb-disable <if condition="(!empty($info) eq ture) AND ($info.is_show eq 0)"> selected </if>">否</label>
+                        <input id="service_show1" name="is_show" value="1" type="radio" <if condition="(empty($info) eq ture) OR ($info.is_show eq 1)"> checked="checked" </if> >
+                        <input id="service_show0" name="is_show" value="0" type="radio" <if condition="(!empty($info) eq ture) AND ($info.is_show eq 0)"> checked="checked" </if> >
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl> -->
+            <div class="bot"><a id="submitBtn" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);" onClick="adsubmit();">确认提交</a></div>
+
+        </div>
+        <input type="hidden" name="id" value="{$info.id}">
+    </form>
+</div>
+<script>
+    function adsubmit()
+    {
+        $('#adminMenu_form').submit();
+    }
+    function img_call_back(fileurl_tmp)
+    {
+        $("#image").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    /**
+     * 获取多级联动的上级菜单
+     */
+    function get_parent(id,next,select_id){
+        var url = '/index.php?m=Admin&c=Systems.Diyadminmenu&a=getParent&parent_id='+ id;
+        $.ajax({
+            type : "GET",
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(v) {
+                v = "<option value='0'>请选择商品分类</option>" + v;
+                $('#'+next).empty().html(v);
+                (select_id > 0) && $('#'+next).val(select_id);//默认选中
+            }
+        });
+    }
+
+    function get_parent2(id,next,select_id){
+        var url = '/index.php?m=Admin&c=Systems.Diyadminmenu&a=getParent&parent_id='+ id;
+        $.ajax({
+            type : "GET",
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(v) {
+                v = "<option value='0'>请选择商品分类</option>" + v;
+                // $('#'+next).empty().html(v);
+                (select_id > 0) && $('#'+next).val(select_id);//默认选中
+            }
+        });
+    }
+
+     //选择分类
+    $(function(){
+        $(document).on("change",'#cat_id',function(){
+            get_parent($(this).val(),'cat_id_2','0');
+            $('#cat_id_2').show();
+        })
+    })
+
+    /** 以下是编辑时默认选中某个商品分类*/
+    $(document).ready(function(){
+
+        var cat2 = {$level_cat['2']}; // 上级ID
+        var cat1 = {$level_cat['1']}; // 上上级ID
+
+        if (cat1==0 && cat2>0) { // 二级菜单,没有上上级
+             get_parent2('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');  
+        }else if(cat1>0){ // 三级菜单
+             get_parent('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');  
+        } 
+        if (cat2>0 && cat1>0) {
+            $('#cat_id_2').show();
+        }else{
+            $('#cat_id_2').hide();
+        }
+        
+        <if condition="$level_cat['2'] gt 0">
+             // 商品分类第二个下拉菜单
+             // get_parent('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');  
+        </if>       
+    });
+</script>
+</body>
+</html>

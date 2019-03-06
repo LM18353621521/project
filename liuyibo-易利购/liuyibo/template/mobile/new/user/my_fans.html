@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/zpui.css"/>
+<link rel="stylesheet" href="__STATIC__/assets/dist/assets/css/all.css"/>
+<script src="__STATIC__/assets/dist/assets/js/page.js"></script>
+
+    <title> 我的粉丝</title>
+    <style type="text/css" media="screen">
+    .picker-item{
+      touch-action: none;
+    }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">我的粉丝</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="weui-cell weui-lmg">
+            <div class="weui-cell__bd timer">
+
+                <span>粉丝数量：{$count}</span>
+
+                <span style="float: right;">我的分享码：{$user_id}</span>
+            </div>
+         </div>
+         <div class="weui-cells tr" id="div1">
+            <div class="weui-cell">
+                <div class="weui-cell__bd one-en">粉丝ID</div>
+                <div class="weui-cell__bd one-en">粉丝账号</div>
+                <div class="weui-cell__bd one-en">当月业绩</div>
+                <div class="weui-cell__bd one-en">注册时间</div>
+            </div>
+            <foreach name="list" item="vo">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd one-en">{$vo.user_id}</div>
+                    <div class="weui-cell__bd one-en">{$vo.mobile}</div>
+                    <div class="weui-cell__bd one-en">{$vo.monthly_performance}</div>
+                    <div class="weui-cell__bd one-en">{:date('Y-m-d',$vo.reg_time)}</div>
+                </div>
+            </foreach>    
+         </div>
+    </div>
+
+</div>
+<script src="__STATIC__/assets/dist/assets/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/assets/dist/assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script src="__STATIC__/assets/dist/assets/js/Swiper-4.0.7/swiper.min.js"></script>
+</body>
+</html>

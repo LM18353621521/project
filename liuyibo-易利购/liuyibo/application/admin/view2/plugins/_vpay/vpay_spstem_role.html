@@ -1,0 +1,191 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>释放规则</h3>
+                <h5>释放规则基本配置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Plugins.Vpay/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>若开启释放规则，不在重用旧的规则</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Plugins.Vpay/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default" style="float: left;width: 40%">
+            <div id="switch_on_off">
+                <dl class="row"><dt class="tit"><label><b>基础设置</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">释放开关</dt>
+                    <dd class="opt">
+                        <div class="onoff">
+                            <label for="switch1" class="cb-enable  <if condition="$config['switch'] eq 1">selected</if>">开启</label>
+                            <label for="switch0" class="cb-disable <if condition="$config['switch'] eq 0">selected</if>">关闭</label>
+                            <input type="radio" onclick="ajax_switch(1)"  id="switch1"  name="switch" value="1" <if condition="$config['switch'] eq 1">checked="checked"</if>>
+                            <input type="radio" onclick="ajax_switch(0);" id="switch0" name="switch" value="0" <if condition="$config['switch'] eq 0">checked="checked"</if> >
+                        </div>
+                        <p class="notic">释放开关默认（关闭），如关闭则不走原路释放规则(建议开启)</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>总释放层数</label>
+                    </dt>
+                    <dd class="opt">
+                        <input id="txt_backflag" name="numbers" value="{$config.numbers}" class="input-txt" type="text">
+                        <p class="notic">请填写有效总释放代数</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>规则层设置</label>
+                    </dt>
+                    <dd class="opt">
+                        <if condition="$config[pushs]">
+                            <foreach name="config[pushs]" item="v"  key="k">
+
+                                <div class="add_recommend_level">
+                                    <span>直推&nbsp;</span>
+                                    <select class=" oudy" name="push[]">
+                                        <option value="0">请选择</option>
+                                        <for start="0" end="31" name="i" >
+                                            <option value="{$i}" <if condition="$v[0] eq $i">selected="selected"</if>>{$i}</option>
+                                        </for>
+                                    </select>
+                                    <span>人,流通返还</span>
+                                    <select class=" oudy" name="return_numbers[]">
+                                        <option value="0">请选择</option>
+                                        <for start="0" end="31" name="i" >
+                                            <option value="{$i}" <if condition="$v[1] eq $i">selected="selected"</if>>{$i}</option>
+                                        </for>
+                                    </select>
+                                    <span class="zs">代</span>&nbsp;&nbsp;&nbsp;
+                                    <if condition="$k eq 0">
+                                        <span><a onclick="add_recommend_level(this);">添加</a></span>
+                                        <else />
+                                        <span><a onclick="del_recommend_level(this);">删除</a></span>
+                                    </if>
+                                </div>
+                            </foreach>
+                            <else />
+                            <div class="add_recommend_level">
+                                <span>直推&nbsp;</span>
+                                <select class=" oudy" name="push[]">
+                                    <option value="0">请选择</option>
+                                    <for start="0" end="31" name="i" >
+                                        <option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}</option>
+                                    </for>
+                                </select>
+                                <span>人,流通返还</span>
+                                <select class=" oudy" name="return_numbers[]">
+                                    <option value="0">请选择</option>
+                                    <for start="0" end="31" name="i" >
+                                        <option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}</option>
+                                    </for>
+                                </select>
+                                <span class="zs">代</span>&nbsp;&nbsp;&nbsp;
+                                <span><a onclick="add_recommend_level(this);">添加</a></span>
+                            </div>
+                        </if>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+        <div class="ncap-form-default">
+            <dl class="row"><dt class="tit"><label><b>流通加速释放</b></label></dt></dl>
+            <foreach name="config[integral]" item="v"  key="k">
+                <dl class="row">
+                    <dt class="tit">
+                        <label></label>
+                    </dt>
+                    <dd class="opt">
+                        兑换积分大于：<input  name="integral[{$k}][]" value="{$v.0}" class="input-txt" type="text" style="width: 50px !important;">&nbsp;&nbsp;&nbsp;
+                        一代释放比例：<input  name="integral[{$k}][]" value="{$v.1}" class="input-txt" type="text" style="width: 50px !important;">&nbsp;&nbsp;&nbsp;
+                        二代释放比例：<input  name="integral[{$k}][]" value="{$v.2}" class="input-txt" type="text" style="width: 50px !important;">&nbsp;&nbsp;&nbsp;
+                        三代以上释放比例：<input  name="integral[{$k}][]" value="{$v.3}" class="input-txt" type="text" style="width: 50px !important;">
+                        <p class="notic" style="color: #ff4f0b">请填写数值为实际比例，填写比例，例如：1% 则填写：0.01</p>
+                    </dd>
+                </dl>
+            </foreach>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $(document).ready(function(){
+        $('#prize_begin_time').layDate();
+    });
+    $('#distribut_pattern').change(function(){
+        if($(this).val() == 1)
+            $('#distribut_order_rate').show();
+        else
+            $('#distribut_order_rate').hide();
+    });
+    //添加推荐层条件
+    function add_recommend_level(that){
+        var html = '<div class="add_recommend_level">' +
+                '<span>直推&nbsp;</span>' +
+                '<select class=" oudy"  name="push[]">' +
+                '<option value="0">请选择</option>' +
+                '<for start="0" end="31" name="i" >' +
+                '<option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}</option>' +
+                '</for>' +
+                '</select>' +
+                '<span>&nbsp;&nbsp;&nbsp;人,流通返还</span>' +
+                '<select class=" oudy"  name="return_numbers[]">' +
+                '<option value="0">请选择</option>' +
+                '<for start="0" end="31" name="i" >' +
+                '<option value="{$i}" <if condition="$config[date] eq $i">selected="selected"</if>>{$i}</option>' +
+                '</for>' +
+                '</select>' +
+                '<span class="zs">代</span>&nbsp;&nbsp;&nbsp;' +
+                '<span><a onclick="add_recommend_level(this);">添加</a></span>&nbsp;&nbsp;&nbsp;' +
+                '<span><a onclick="del_recommend_level(this);">删除</a></span>' +
+                '</div>';
+        $(that).parent().parent().parent().append(html);
+    }
+    //删除推荐层条件
+    function del_recommend_level(that){
+        $(that).parent().parent().remove();
+    }
+    function adsubmit(){
+
+        $('#handlepost').submit();
+    }
+
+    function qr_back_call_back(fileurl_tmp)
+    {
+      $("#qr_back").val(fileurl_tmp);
+      $("#qr_back_a").attr('href', fileurl_tmp);
+      $("#qr_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function qr_big_back_call_back(fileurl_tmp)
+    {
+      $("#qr_big_back").val(fileurl_tmp);
+      $("#qr_big_back_a").attr('href', fileurl_tmp);
+      $("#qr_big_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

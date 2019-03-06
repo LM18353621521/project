@@ -1,0 +1,292 @@
+<include file="public/layout"/>
+<style>
+    .ncm-goods-gift {
+        text-align: left;
+    }
+
+    .ncm-goods-gift ul {
+        display: inline-block;
+        font-size: 0;
+        vertical-align: middle;
+    }
+
+    .ncm-goods-gift li {
+        display: inline-block;
+        letter-spacing: normal;
+        margin-right: 4px;
+        vertical-align: top;
+        word-spacing: normal;
+    }
+
+    .ncm-goods-gift li a {
+        background-color: #fff;
+        display: table-cell;
+        height: 30px;
+        line-height: 0;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+        width: 30px;
+    }
+
+    .ncm-goods-gift li a img {
+        max-height: 30px;
+        max-width: 30px;
+    }
+
+    a.green {
+
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #f5f5f5;
+        border-radius: 4px;
+        color: #999;
+        cursor: pointer !important;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: normal;
+        height: 20px;
+        letter-spacing: normal;
+        line-height: 20px;
+        margin: 0 5px 0 0;
+        padding: 1px 6px;
+        vertical-align: top;
+    }
+
+    a.green:hover {
+        color: #FFF;
+        background-color: #1BBC9D;
+        border-color: #16A086;
+    }
+
+    .ncap-order-style .ncap-order-details {
+        margin: 20px auto;
+    }
+
+    .contact-info h3, .contact-info .form_class {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .form_class i.fa {
+        vertical-align: text-bottom;
+    }
+</style>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="{:url('Admin/World.World/dc_trade_list')}" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>DC币交易管理</h3>
+                <h5>DC币交易订单详情</h5>
+            </div>
+            <div class="subject" style="width:62%">
+                <!--<if condition="$order['order_status'] lt 2">-->
+                <!--<a href="{:url('Admin/Financing.FinancingOrder/edit_order',array('order_id'=>$order['order_id']))}" style="float:right;margin-right:10px" class="ncap-btn-big ncap-btn-green" ><i class="fa fa-pencil-square-o"></i>修改订单</a>-->
+                <!--</if>-->
+                <!--<if condition="($split eq 1) and ($order['order_status'] lt 2)">-->
+                <!--<a href="{:url('Admin/Financing.FinancingOrder/split_order',array('order_id'=>$order['order_id']))}" style="float:right;margin-right:10px" class="ncap-btn-big ncap-btn-green" ><i class="fa fa-external-link-square"></i>拆分订单</a>-->
+                <!--</if>-->
+                <!--<a href="{:url('Admin/Financing.FinancingOrder/order_print',array('order_id'=>$order['order_id']))}" target="_blank" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="打印订单">-->
+                <!--<a href="{:url('Financing.FinancingOrder/order_print',array('order_id'=>$order['order_id']))}" style="float:right;margin-right:10px" class="ncap-btn-big ncap-btn-green" ><i class="fa fa-print"></i>打印订单</a>-->
+                <!--</a>	-->
+            </div>
+        </div>
+
+    </div>
+    <div class="ncap-order-style">
+        <div class="titile">
+            <h3></h3>
+        </div>
+
+        <div class="ncap-order-details">
+            <form id="order-action">
+                <div class="tabs-panels">
+                    <div class="misc-info">
+                        <h3>基本信息</h3>
+                        <dl>
+                            <dt>订单 ID：</dt>
+                            <dd>{$order.id}</dd>
+                            <dt>订单号：</dt>
+                            <dd>{$order.order_sn}</dd>
+                            <dt>下单时间：</dt>
+                            <dd>{$order.create_time|date='Y-m-d H:i',###}</dd>
+                        </dl>
+                        <dl>
+                            <dt>数量：</dt>
+                            <dd>{$order.number}</dd>
+                            <dt>单价：</dt>
+                            <dd>{$order.dc_cny_rate}</dd>
+                            <dt>订单总额：</dt>
+                            <dd>{$order.total_price}</dd>
+                        </dl>
+                        <dl>
+                            <dt>订单状态：</dt>
+                            <dd>{$statusList[$order[status]]}</dd>
+                            <dt>更新时间：</dt>
+                            <dd>{$order.update_time|date='Y-m-d H:i:s',###}</dd>
+                            <dt>支付方式：</dt>
+                            <dd>{$pay_status[$order[pay_type]]}</dd>
+                        </dl>
+                    </div>
+                    <div class="addr-note">
+                        <h4>卖家信息</h4>
+                        <dl>
+                            <dt>昵称：</dt>
+                            <dd>{$order.snickname}</dd>
+                            <dt>账户名：</dt>
+                            <dd>{$order.saccount}</dd>
+                        </dl>
+                    </div>
+
+                    <div class="addr-note">
+                        <h4>买家信息</h4>
+                        <dl>
+                            <dt>昵称：</dt>
+                            <dd>{$order.bnickname}</dd>
+                            <dt>账户名：</dt>
+                            <dd>{$order.baccount}</dd>
+                        </dl>
+                    </div>
+
+                    <if condition="$order.pid==0">
+                    <div class="goods-info">
+                        <h4>接单记录</h4>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>订单号</th>
+                                <th>卖方账户</th>
+                                <!--<th>卖方昵称</th>-->
+                                <th>买方账户</th>
+                                <!--<th>买方昵称</th>-->
+                                <th>数量</th>
+                                <th>单价</th>
+                                <th>总金额</th>
+                                <th>接单时间</th>
+                                <th>转态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <foreach name="orderList" item="vo">
+                                <tr>
+                                    <td class="w60">{$vo.id}</td>
+                                    <td class="w30">{$vo.order_sn}</td>
+                                    <!-- <td class="w80">{$good.spec_key_name}</td> -->
+                                    <td class="w60">{$vo.saccount}</td>
+                                    <td class="w60">{$vo.baccount}</td>
+                                    <td class="w60">{$vo.number}</td>
+                                    <td class="w60">{$vo.dc_cny_rate}</td>
+                                    <td class="w60">{$vo.total_price}</td>
+                                    <td class="w100">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                                    <td class="w100">{$statusList[$vo.status]}</td>
+                                </tr>
+                            </foreach>
+                        </table>
+                    </div>
+                     </if>
+
+
+                    <!--<div class="total-amount contact-info">-->
+                        <!--<h3>订单产品总额：￥{$order.total_price}</h3>-->
+                    <!--</div>-->
+                    <!--<div class="contact-info">-->
+                    <!--<h3>费用信息 </h3>-->
+                    <!--<div class="form_class">-->
+                    <!--</div>-->
+                    <!--<dl>-->
+                    <!--<dt>订单总额：</dt>-->
+                    <!--<dd>{$order.total_amount}</dd>-->
+                    <!--<dt>小计：</dt>-->
+                    <!--<dd>{$order.total_amount}</dd>-->
+                    <!--&lt;!&ndash;<dt>运费：</dt>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dd>+{$order.shipping_price}</dd>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dt>积分 (-{$order.integral})：</dt>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dd>-{$order.integral_money}</dd>&ndash;&gt;-->
+                    <!--</dl>-->
+
+                    <!--<dl>-->
+                    <!--&lt;!&ndash;<dt>应付：</dt>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dd><strong class="red_common">{$order.order_amount}</strong></dd>&ndash;&gt;-->
+                    <!--</dl>-->
+                    <!--</div>-->
+                    <!--<div class="contact-info">-->
+                    <!--<h3>操作信息</h3>-->
+                    <!--<dl class="row">-->
+                    <!--<dt class="tit">-->
+                    <!--<label for="note">操作备注</label>-->
+                    <!--</dt>-->
+                    <!--<dd class="opt" style="margin-left:10px">-->
+                    <!--<textarea id="note" name="note" style="width:600px" rows="6"  placeholder="请输入操作备注" class="tarea">{$keyword.text}</textarea>-->
+                    <!--</dd>-->
+                    <!--</dl> -->
+                    <!--<dl class="row">-->
+                    <!--<dt class="tit">-->
+                    <!--<label for="note">可执行操作</label>-->
+                    <!--</dt>-->
+                    <!--<dd class="opt" style="margin-left:10px">-->
+                    <!--<foreach name="button" item="vo" key="k">-->
+                    <!--<if condition="$k eq 'pay_cancel'">-->
+                    <!--<a class="ncap-btn-big ncap-btn-green" href="javascript:void(0)" data-url="{:url('Admin/Financing.FinancingOrder/pay_cancel',array('order_id'=>$order['order_id']))}" onclick="pay_cancel(this)">{$vo}</a>-->
+                    <!--<elseif condition="$k eq 'delivery'"/>                                                 -->
+                    <!--<a class="ncap-btn-big ncap-btn-green" href="{:url('Admin/Financing.FinancingOrder/delivery_info',array('order_id'=>$order['order_id']))}">{$vo}</a>-->
+                    <!--<elseif condition="$k eq 'refund'"/>-->
+                    <!--<else/>-->
+                    <!--<a class="ncap-btn-big ncap-btn-green" onclick="ajax_submit_form('order-action','{:url(\'Admin/Financing.FinancingOrder/order_action\',array(\'order_id\'=>$order[\'order_id\'],\'type\'=>$k))}');" >-->
+                    <!--{$vo}</a>-->
+                    <!--</if>-->
+                    <!--</foreach>-->
+                    <!--</dd>-->
+                    <!--</dl> -->
+                    <!--</div>-->
+                    <!--<div class="goods-info">-->
+                    <!--<h4>操作记录</h4>-->
+                    <!--<table>-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    <!--<th>操作者</th>-->
+                    <!--<th>操作时间</th>-->
+                    <!--<th>订单状态</th>-->
+                    <!--<th>付款状态</th>-->
+                    <!--&lt;!&ndash;<th>发货状态</th>&ndash;&gt;-->
+                    <!--<th>描述</th>-->
+                    <!--<th>备注</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<volist name="action_log" key="aid" id="log">-->
+                    <!--<tr>-->
+                    <!--<td class="text-center"><if condition="$log.action_user neq 0">管理员：{$admins[$aid]}<else/>用户：{$user[nickname]}</if></td>-->
+                    <!--<td class="text-center">{$log.log_time|date='Y-m-d H:i:s',###}</td>-->
+                    <!--<td class="text-center">{$order_status[$log[order_status]]}</td>-->
+                    <!--<td class="text-center">{$pay_status[$log[pay_status]]}<if condition="$order['pay_code'] eq 'code'"><span style="color: red">(货到付款)</span></if></td>-->
+                    <!--&lt;!&ndash;<td class="text-center">{$shipping_status[$log[shipping_status]]}</td>&ndash;&gt;-->
+                    <!--<td class="text-center">{$log.status_desc}</td>-->
+                    <!--<td class="text-center">{$log.action_note}</td>-->
+                    <!--</tr>-->
+                    <!--</volist>-->
+                    <!--</table>-->
+                    <!--</div>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    function delfun() {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定'] //按钮
+        }, function () {
+            console.log("确定");
+        }, function () {
+            console.log("取消");
+        });
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<include file="common/main" title="g公告" body=""/>
+    <div class="nav_top flex">
+        <a  href="javascript:void(0)"  onclick="window.history.go(-1)">
+            <i></i>
+        </a>
+        <div class="flex1">
+            公告
+        </div>
+        <a  href="javascript:void(0)">
+
+        </a>
+    </div>
+    <div style="height: 0.44rem;"></div>
+    <div class="notice_list">
+        <ul>
+            <li ng-repeat="notice in notices">
+                <a href="{:U('Member/notice_detail')}?id={{notice.id}}">
+                    <div>
+                        <label>
+                            {{ notice.createtime }}
+                        </label>
+                        <p>
+                            {{ notice.title }}
+                        </p>
+                    </div>
+                   
+                    <i></i>
+                    
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+    <block name="custom_js">
+        <script>
+
+                // 当前页数
+                var p = 0;
+                // 加载完毕标志
+                var endflg =  0;
+                // 防止重复加载
+                var busy = false;
+                // 存放数据
+                var notices = [];
+                // 请求数据方法
+                loadMore = function(){
+
+                    if(endflg == 0){
+                        if(busy){
+                            return false;
+                        }
+                        busy = true;
+                        $.ajax({
+                            method:'POST',
+                            data:{
+                                "p" : p
+                            },
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            url: "/index.php/Vpay/Member/notice?p="+p,
+                            success:function(data) {
+
+                                busy = false;
+                                if(data.data != '' && data.data != null){
+                                    if(p > 0) {
+                                        layer.msg("正在加载...", {time: 500});
+                                    }
+                                } else {
+                                    layer.msg("已经全部加载完了...", {time:500});
+                                    endflg = 1;
+                                    return false;
+                                }
+                                p++;
+                                if(data.code == -1){
+                                    layer.msg(data.msg,{time:1500})
+                                }else{
+                                    if(data.data == null){
+                                        layer.msg(data.msg,{time:1500});
+                                    } else {
+                                        // 组织数据
+                                        for (var i in data.data) {
+                                            notices.push(data.data[i]);
+                                        }
+                                    }
+                                }
+                            }, error:function(response) {
+                                layer.msg(response);
+                            }
+                        })
+                    }else{
+                        layer.msg("已经全部加载完了...", {time:500});
+                    }
+                };
+                // 进页面先加载一次数据
+               loadMore();
+
+                $(window).scroll(function(){
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if(scrollTop + windowHeight == scrollHeight){
+                        $scope.loadMore();
+                    }
+                });
+
+        </script>
+    </block>
+</block>

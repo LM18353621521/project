@@ -1,0 +1,71 @@
+<table>
+ 	<tbody>
+ 	<if condition="empty($list) eq true">
+ 		<tr data-id="0">
+	        <td class="no-data" align="center" axis="col0" colspan="50">
+	        	<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+	        </td>
+	     </tr>
+	<else/>
+ 	<volist name="$list" id="items">
+  	<tr>
+        <td class="sign" axis="col0">
+          <div style="width: 24px;"><i class="ico-check"></i></div>
+        </td>
+        <td align="left" abbr="order_sn" axis="col3" class="">
+          <div style="text-align: left; width: 140px;" class="">{$items.order_sn}</div>
+        </td>
+        <td align="left" abbr="add_time" axis="col3" class="">
+          <div style="text-align: left; width: 120px;" class="">{$items.add_time}</div>
+        </td>
+      <if condition="$order_type_hid eq 1">
+        <td align="left" abbr="server_time" axis="col4" class="">
+          <div style="text-align: left; width: 180px;" class="">{$items.start_server_time.'--'.$items.end_server_time}</div>
+        </td>
+      </if>
+        <td align="left" abbr="user_id" axis="col4" class="">
+          <div style="text-align: left; width: 140px;" class="">{$items.consignee.';'.$items.mobile}</div>
+        </td>
+        <td align="center" abbr="order_state" axis="col6" class="">
+          <div style="text-align: center; width: 70px;" class="">{$items.order_state}</div>
+        </td>
+        <td align="center" abbr="order_status" axis="col6" class="">
+          <div style="text-align: center; width: 70px;" class="">{$items.order_status}</div>
+        </td>
+        <td align="center" abbr="order_type" axis="col5" class="">
+          <div style="text-align: center; width: 70px;" class="">{$items.order_type}</div>
+        </td>
+        <td align="center" abbr="pay_status" axis="col6" class="">
+          <div style="text-align: center; width: 70px;" class="">{$items.pay_status}</div>
+        </td>
+        <td align="center" abbr="total_price" axis="col6" class="">
+          <div style="text-align: center; width: 100px;" class="">{$items.total_price}</div>
+        </td>
+        <td align="center" abbr="total_price" axis="col6" class="">
+          <div style="text-align: center; width: 100px;" class="">{$items.paid_price}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+          <div style="text-align: left; width: 150px;" class="">
+          	<a class="btn green" href="{:U('Admin/Order.Order/to_shop_info',array('id'=>$items['order_id']))}" data-toggle="tooltip" title="" ><i class="fa fa-list-alt"></i>查看</a>
+          </div>
+        </td>
+         <td align="" class="" style="width: 100%;">
+            <div>&nbsp;</div>
+          </td>
+      </tr>
+      </volist>
+      </if>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+      
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

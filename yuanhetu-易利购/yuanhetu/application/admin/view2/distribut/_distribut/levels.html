@@ -1,0 +1,435 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>商城设置</h3>
+                <h5>分销基本配置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('Distribut.Distribut/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>若开启分销，可设置分销结算规则设定</li>
+        </ul>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="handlepost" action="{:U('Distribut.Distribut/handle')}">
+        <input type="hidden" name="form_submit" value="ok" />
+        <div class="ncap-form-default">
+            <div id="switch_on_off">
+
+
+
+            <dl class="row"><dt class="tit"><label><b>上下线关系设置</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">是否开启确认关系页面</dt>
+                    <dd class="opt">
+                        <div class="onoff">
+                            <label for="switch1" class="cb-enable  <if condition="$config['level_switch'] eq 1">selected</if>">开启</label>
+                            <label for="switch0" class="cb-disable <if condition="$config['level_switch'] eq 0">selected</if>">关闭</label>
+                            <input type="radio"   id="switch1"  name="level_switch" value="1" <if condition="$config['level_switch'] eq 1">checked="checked"</if>>
+                            <input type="radio"  id="switch0" name="level_switch" value="0" <if condition="$config['level_switch'] eq 0">checked="checked"</if> >
+                        </div>
+                        <p class="notic">前台上下级关联确认关系显示确认关系页面</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>成为下线条件</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="radio" name="level_state" value="0"  <if condition="$config[level_state] eq 0"> checked </if> >首次点击分享链接 &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="level_state" value="1"  <if condition="$config[level_state] eq 1"> checked </if> >首次下单  &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="level_state" value="2"  <if condition="$config[level_state] eq 2"> checked </if> >首次付款
+                        <p class="notic">首次点击分享链接： 可以自由设置分销商条件<br>首次下单/首次付款： 无条件不可用</p>
+                    </dd>
+                </dl>
+                <dl class="row"><dt class="tit"><label><b>分销资格设置</b></label></dt></dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>成为分销商条件</label>
+                    </dt>
+                    <dd class="opt">
+                        <label><input type="radio" id="point_rate" name="condition" onclick="showBecome(this)" value="0"  <if condition="$config[condition] eq 0"> checked </if> >无条件</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label><input type="radio" name="condition"  onclick="showBecome(this)" value="1" <if condition="$config[condition] eq 1"> checked </if> >购买商品</label>  &nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<label><input type="radio" name="condition"  onclick="showBecome(this)" value="2" <if condition="$config[condition] eq 2"> checked </if> >消费次数</label>  &nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <!--<label><input type="radio" name="condition"  onclick="showBecome(this)" value="3" <if condition="$config[condition] eq 3"> checked </if> >消费金额</label>  &nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <!--<label><input type="radio" name="condition"  onclick="showBecome(this)" value="4"<if condition="$config[condition] eq 4"> checked </if> >购买商品</label>-->
+
+                        <!-- <p class="notic">首次点击分享链接： 可以自由设置分销商条件<br>首次下单/首次付款： 无条件不可用</p> -->
+                    </dd>
+                </dl>
+            <!-- <dl class="row goods_img"  style="display:none">
+                <dt class="tit">
+                    <label>图片上传</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$goodsInfo.original_img}">
+                                <i id="img_i" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$goodsInfo.original_img}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="imagetext" name="original_img" value="{$goodsInfo.original_img}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','goods','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">请上传图片格式文件</p>
+                </dd>
+            </dl> -->
+ 
+            <dl class="row goods_img" style="display:none">
+                <dt class="tit">购买商品</dt>
+                <dd class="opt">
+                <!-- <input type="text" id="goods_name" readonly name="goods_name" value="{$info.goods_name}" class="input-txt">
+                    <div style="overflow: hidden" id="selected_group_goods">
+                        <if condition="$info['goods_id'] gt 0">
+                            <div style="float: left;margin-right: 10px" class="selected-group-goods">
+                                <div class="goods-thumb"><img style="width: 162px;height: 162px"  <notempty name="info['specGoodsPrice']">src="{$info['specGoodsPrice']['spec_img']}"<else/>src="{$info['goods_id']|goods_thum_images=162,162}"</notempty>/></div>
+                                <div class="goods-name">
+                                    <a target="_blank" href="{:U('Home/Goods/goodsInfo',array('id'=>$info['goods_id']))}">{$info.goods_name}</a>
+                                </div>
+                                <div class="goods-price">
+                                    <notempty name="info['specGoodsPrice']">
+                                        价格：￥{$info['specGoodsPrice']['price']}库存:{$info['specGoodsPrice']['store_count']}
+                                        <else/>
+                                        价格：￥{$info['goods']['shop_price']}库存:{$info['goods']['store_count']}
+                                    </notempty>
+                                </div>
+                            </div>
+                        </if>
+                    </div>
+                    <span class="err" id="err_goods_name"></span> -->
+
+                     <div class="row">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="85"><b>商品图片</b></td>
+                                <td width="240"><b>商品名称</b></td>
+                                <td width="80"><b>商品价格</b></td>
+                                <td width="80"><b>商品库存</b></td>
+                               <!--  <td width="80"><b>抢购价格</b></td>
+                                <td width="80"><b>抢购数量</b></td>
+                                <td width="80"><b>限购数量</b></td>
+                                <td width="80"><b>已购数量</b></td>
+                                <td width="80"><b>订单数量</b></td>
+                                <td width="80"><b>是否返佣</b></td> -->
+                                <td width="80"><b>操作</b></td>
+                            </tr>
+                            <tbody id="flash_goods_data">
+                            <foreach name="goods_info" id="vo">
+                                <tr>
+                                    <td>
+                                        <input type="hidden" class="flash_id"  name="flash_id[]" value="{$vo.id}">
+                                        <input type="hidden" class="flash_goods_id"  name="flash_goods_id[]" value="{$vo.goods_id}">
+                                        <input type="hidden" class="flash_item_id"  name="flash_item_id[]" value="{$vo.item_id}">
+                                        <img style="width: 80px; height: 80px" src="{$vo.original_img}" alt=""></td>
+                                    <td><input type="hidden" class="goods_name"  name="goods_name[]" value="{$vo.goods_name}">{$vo.goods_name}</td>
+                                    <td><if condition="$vo.item_id gt 0">{$vo.spec_price}<else/>{$vo.shop_price}</if></td>
+                                    <td><if condition="$vo.item_id gt 0">{$vo.spec_store_count}<else/>{$vo.goods_store_count}</if></td>
+
+                                    <!-- <td><input class="is_float" type="text" name="price[]" value="{$vo.price}"  ></td>
+                                    <td><input class="is_number" type="text" name="goods_num[]" value="{$vo.goods_num}"></td>
+                                    <td><input class="is_number" type="text" name="buy_limit[]" value="{$vo.buy_limit}"></td>
+                                    <td><input class="is_number" readonly  type="text" value="{$vo.buy_num}"></td>
+                                    <td><input class="is_number" readonly type="text" value="{$vo.order_num}"></td>
+                                    <td>
+                                        <div class="onoff">
+                                            <label data-val="1"  class="rake_back_btn cb-enable <if condition="$vo[is_rake_back] eq 1">selected</if>">是</label>
+                                            <label data-val="0" class="rake_back_btn cb-disable <if condition="$vo[is_rake_back] eq 0">selected</if>">否</label>
+                                            <input  name="is_rake_back[]" value="{$vo.is_rake_back}" type="hidden">
+                                        </div>
+                                    </td> -->
+
+
+                                    <td><a class="btn red" href="javascript:void(0)" data-url="{:U('Promotion/flash_sale_del')}" data-id="{$vo.id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a></td>'
+                                </tr>
+                             </foreach>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <p class="notic">
+                        <a onclick="selectGoods()" class="ncap-btn"><i class="fa fa-search"></i>选择商品</a>
+                    </p>
+                </dd>
+            </dl>
+
+            <dl class="row cost_money" style="display:none">
+                <dt class="tit">消费达到</dt>
+                <dd class="opt">
+                    <input type="text" name="maid_time" value="{$config[maid_time]}">元
+                </dd>
+            </dl>
+
+            <dl class="row cost_num" style="display:none">
+                <dt class="tit">消费达到</dt>
+                <dd class="opt">
+                    <input type="text" name="maid_time" value="{$config[maid_time]}">次
+                </dd>
+            </dl>
+            <dl class="row goods_img cost_num cost_money " style="display:none">
+                <dt class="tit">消费条件统计方式</dt>
+                <dd class="opt">
+                    <label><input type="radio" name="maid_time" value="0" <if condition="$config[maid_time] eq 0">checked="checked"</if>>付款后</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label><input type="radio" name="maid_time" value="1" <if condition="$config[maid_time] eq 1">checked="checked"</if>>统计后</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                </dd>
+            </dl>
+
+            <dl class="row protocol-group" style="display:none">
+                <dt class="tit">显示申请协议</dt>
+                <dd class="opt">
+                    <label><input type="radio" name="maid_time" value="0" <if condition="$config[maid_time] eq 0">checked="checked"</if>>显示</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label><input type="radio" name="maid_time" value="1" <if condition="$config[maid_time] eq 1">checked="checked"</if>>隐藏</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">是否需要审核</dt>
+                <dd class="opt">
+                    <input type="radio" name="audit" value="0" <if condition="$config[audit] eq 0">checked="checked"</if>>需要 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="audit" value="1" <if condition="$config[audit] eq 1">checked="checked"</if>>不需要 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <!--<input type="radio" name="condition" value="2" <if condition="$config[condition] eq 2">checked="checked"</if>>需提交申请审核 &nbsp;&nbsp;&nbsp;&nbsp;-->
+                    <p class="notic">推荐（不需要）</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>非分销商链接</label>
+                </dt>
+                <dd class="opt">
+                    <input name="first_name" value="{$config.first_name}" class="input-txt" type="text">
+                    <p class="notic">自定义非分销商点击分销中心链接 ; 如果不填写 则走默认;</p>
+                </dd>
+            </dl>
+
+
+            </div>
+            <div class="bot">
+                <input type="hidden" name="inc_type" value="{$inc_type}">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="adsubmit()">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $('#distribut_pattern').change(function(){
+        if($(this).val() == 1)
+            $('#distribut_order_rate').show();
+        else
+            $('#distribut_order_rate').hide();
+    });
+
+    function adsubmit(){
+
+        $('#handlepost').submit();
+    }
+
+    function qr_back_call_back(fileurl_tmp)
+    {
+      $("#qr_back").val(fileurl_tmp);
+      $("#qr_back_a").attr('href', fileurl_tmp);
+      $("#qr_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function qr_big_back_call_back(fileurl_tmp)
+    {
+      $("#qr_big_back").val(fileurl_tmp);
+      $("#qr_big_back_a").attr('href', fileurl_tmp);
+      $("#qr_big_back_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    // 切换分销商资格
+    function showBecome(obj) {
+        var $this = $(obj);
+        if ($this.val() == '1') {
+            $('.cost_money').hide();
+            $('.cost_num').hide();
+            $('.protocol-group').hide();
+            $('.goods_img').hide();
+        } else if ($this.val() == '2') {
+            $('.cost_num').hide();
+            $('.protocol-group').show();
+            $('.goods_img').hide();
+            $('.cost_money').hide();
+        } else if ($this.val() == '3') {
+            $('.cost_money').hide();
+            $('.protocol-group').hide();
+            $('.goods_img').hide();
+            $('.cost_num').show();
+        } else if ($this.val() == '4') {
+            $('.cost_num').hide();
+            $('.protocol-group').hide();
+            $('.goods_img').hide();
+            $('.cost_money').show();
+        } else if ($this.val() == '5') {
+            $('.cost_money').hide();
+            $('.cost_num').hide();
+            $('.goods_img').show();
+            $('.protocol-group').hide();
+        }
+    }
+    // 选择商品
+    /*function selectGoods(){
+        var url = "{:U('Promotion.Promotion/search_goods',array('tpl'=>'select_goods','prom_type'=>1,'prom_id'=>$info[id]))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }*/
+
+    function selectGoods(){
+        var url = "{:U('Promotion.Promotion/search_goods',array('tpl'=>'select_goods_flash','prom_type'=>0,'prom_id'=>$info[id]))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '75%'],
+            content: url,
+        });
+    }
+
+
+    /*function call_back(goodsItem){
+        $('#goods_id').val(goodsItem.goods_id);
+        var html = '';
+        if(goodsItem.spec != null){
+            //有规格
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.spec.spec_img+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+goodsItem.spec.key_name+'</a> </div>' +
+                    ' <div class="goods-price">价格：￥'+goodsItem.spec.price+'库存:'+goodsItem.spec.store_count+'</div> </div>';
+            $('input[name=item_id]').val(goodsItem.spec.item_id)
+            $('input[name=goods_name]').val(goodsItem.goods_name + goodsItem.spec.key_name);
+        }else{
+            html = '<div style="float: left;margin: 10px auto;" class="selected-group-goods"><div class="goods-thumb">' +
+                    '<img style="width: 162px;height: 162px" src="'+goodsItem.goods_image+'"/></div> <div class="goods-name"> ' +
+                    '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id='+goodsItem.goods_id+'">'+goodsItem.goods_name+'</a> </div>' +
+                    ' <div class="goods-price">价格：￥'+goodsItem.goods_price+'库存:'+goodsItem.store_count+'</div> </div>';
+            $('input[name=goods_name]').val(goodsItem.goods_name);
+        }
+        $('#select_goods_button').attr('data-goods-id',goodsItem.goods_id);
+        $('#selected_group_goods').empty().html(html);
+        $('.selected-group-goods').show();
+        layer.closeAll('iframe');
+    }*/
+
+    function call_back(goods_ids,goodsItem_list){
+        var ids = goods_ids;
+        var flash_goods_id = new Array();
+        var flash_item_id = new Array();
+        $(".flash_goods_id").each(function(i,o){
+            flash_goods_id.push(parseInt($(this).val()));
+            flash_item_id.push(parseInt($(this).parents("td").find(".flash_item_id").val()));
+        });
+
+        for(var i=0;i<goodsItem_list.length;i++) {
+            var has_goods_id = $.inArray(parseInt(goodsItem_list[i]['id']), flash_goods_id);
+            //判断是否已经存在
+            if (has_goods_id != -1) {
+                if (goodsItem_list[i].spec.item_id !== undefined) {
+                    var has_item_id = $.inArray(parseInt(goodsItem_list[i].spec.item_id), flash_item_id);
+                    if (has_item_id != -1) {
+                        goodsItem_list[i].has = 1;
+                    }
+                } else {
+                    goodsItem_list[i].has = 1;
+                }
+            }
+        }
+
+        for(var i=0;i<goodsItem_list.length;i++){
+            if(goodsItem_list[i].has==0){
+                var html = '';
+                if(goodsItem_list[i].spec.item_id !== undefined){
+                    html+='<tr>';
+                    html+='<td><input type="hidden" class="flash_id"  name="flash_id[]" value="0"><input type="hidden" class="flash_goods_id"  name="flash_goods_id[]" value="'+goodsItem_list[i]['id']+'"><input type="hidden" class="flash_item_id" name="flash_item_id[]" value="'+goodsItem_list[i]['spec']['item_id']+'"><img style="width: 80px; height: 80px" src="'+goodsItem_list[i]['img']+'" alt=""></td>';
+                    html+='<td><input type="hidden" class="goods_name"  name="goods_name[]" value="'+goodsItem_list[i]['name']+'  '+goodsItem_list[i]['spec']['key-name']+'">'+goodsItem_list[i]['name']+'  '+goodsItem_list[i]['spec']['key-name']+'</td>';
+                    html+='<td>'+goodsItem_list[i]['price']+'</td>';
+                    html+='<td>'+goodsItem_list[i]['spec']['store-count']+'</td>';
+                    /*html+='<td><input class="is_float" type="text" name="price[]"    ></td>';
+                    html+='<td><input class="is_number" type="text" name="goods_num[]"></td>';
+                    html+='<td><input class="is_number" type="text" name="buy_limit[]"></td>';
+                    html+='<td><input class="is_number" readonly  type="text" value="0"></td>';
+                    html+='<td><input class="is_number" readonly type="text" value="0"></td>';
+                    html+='<td><div class="onoff">';
+                    html+='<label data-val="1"  class="rake_back_btn cb-enable selected">是</label>';
+                    html+='<label data-val="0" class="rake_back_btn cb-disable">否</label>';
+                    html+='<input  name="is_rake_back[]" value="1" type="hidden">';
+                    html+='</div></td>';*/
+                    html+='<td><a class="btn red" href="javascript:void(0)" data-id="0" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a></td>';
+                    html+='</tr>';
+                }else{
+                    html+='<tr>';
+                    html+='<td><input type="hidden" class="flash_id"  name="flash_id[]" value="0"><input type="hidden" class="flash_goods_id"  name="flash_goods_id[]" value="'+goodsItem_list[i]['id']+'"><input type="hidden" class="flash_item_id"  name="flash_item_id[]" value=""><img style="width: 80px; height: 80px" src="'+goodsItem_list[i]['img']+'" alt=""></td>';
+                    html+='<td><input type="hidden" class="goods_name"  name="goods_name[]" value="'+goodsItem_list[i]['name']+'">'+goodsItem_list[i]['name']+'</td>';
+                    html+='<td>'+goodsItem_list[i]['price']+'</td>';
+                    html+='<td>'+goodsItem_list[i]['count']+'</td>';
+                    /*html+='<td><input class="is_float" type="text" name="price[]"  ></td>';
+                    html+='<td><input class="is_number" type="text" name="goods_num[]"></td>';
+                    html+='<td><input class="is_number" type="text" name="buy_limit[]"></td>';
+                    html+='<td><input class="is_number" readonly  type="text" value="0"></td>';
+                    html+='<td><input class="is_number" readonly type="text" value="0"></td>';
+                    html+='<td><div class="onoff">';
+                    html+='<label data-val="1"  class="rake_back_btn cb-enable selected">是</label>';
+                    html+='<label data-val="0" class="rake_back_btn cb-disable">否</label>';
+                    html+='<input  name="is_rake_back[]" value="1" type="hidden">';
+                    html+='</div></td>';*/
+                    html+='<td><a class="btn red" href="javascript:void(0)" data-id="0" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a></td>';
+                    html+='</tr>';
+                }
+                $("#flash_goods_data").append(html);
+            }
+        }
+    }
+
+    //删除活动商品
+    function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: "{:U('Promotion.Promotion/flash_sale_del')}",
+                data : {act:'del',del_id:$(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data) {
+                        $(obj).parents("tr").remove();
+                    } else {
+                        layer.alert('删除失败', {icon: 2});  //alert('删除失败');
+                    }
+                }
+            })
+        }, function () {
+            layer.closeAll();
+        });
+    }
+
+</script>
+</body>
+</html>

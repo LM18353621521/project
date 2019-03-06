@@ -1,0 +1,233 @@
+<include file="public/header" title="申请提现" body=""/>
+<include file="public/header_nav" title="申请提现" href="javascript:history.back(-1)"/>
+<input type="hidden" id="openid" value="{$user.openid}">
+<div class="loginsingup-input ma-to-20">
+	<form method="post" id="returnform">
+		<div class="content30">
+			<!--<div class="lsu" style="height:1.83467rem"><span>账号类型：</span>-->
+                  <!--<input type="radio" name="atype" style="width:.8rem;height:1rem;" checked value="支付宝">支付宝-->
+                  <!--<input type="radio" name="atype" style="width:.8rem;height:1rem;" value="微信">微信-->
+                  <!--<input type="radio" name="atype" style="width:.8rem;height:1rem;" value="银行卡">银行卡-->
+			<!--</div>-->
+            <div class="lsu lsu-recharge">
+                <span>提现金额：</span>
+                <input type="text" name="money" id="money" value="" usermoney="{$user.user_money}" placeholder="可提金额：{$user.user_money}元" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')">
+            </div>
+            <div class="lsu lsu-recharge">
+                <span>银行名称：</span>
+                <input type="text" name="bank_name" id="bank_name" value="" placeholder="如：工商银行/支付宝/微信">
+            </div>
+			<div class="lsu lsu-recharge">
+				<span>收款账号：</span>
+				<input type="text" name="bank_card" id="bank_card" maxlength="18" placeholder="收款账号" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')">
+			</div>
+			<div class="lsu lsu-recharge">
+				<span>开 户 名：</span>
+				<input type="text" name="realname" id="realname" value=""  placeholder="持卡人姓名">
+			</div>
+            <div class="lsu lsu-recharge">
+                <span>支付密码：</span>
+                <input type="password" name="paypwd" id="paypwd" placeholder="支付密码">
+            </div>
+            <if condition="$withdrawalsCount gt 0">
+                <div class="lsu lsu-v-code">
+                    <span>验 证 码：</span>
+                    <input type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码">
+                    <img  id="verify_code_img" src="{:U('User/verify',array('type'=>'withdrawals'))}" onClick="verify()" style=""/>
+                </div>
+            </if>
+
+            <if condition="$withdrawalsCount eq 0">
+                <div class="lsu lsu-recharge">
+                    <span>手 机 号：</span>
+                    <input type="text" name="mobile" id="mobile" value="" placeholder="请输入手机号"  class="c-form-txt-normal" onBlur="checkMobilePhone(this.value);">
+                    <span id="mobile_phone_notice"></span>
+                </div>
+                <div class="lsu lsu-v-code">
+                    <span>验 证 码：</span>
+                    <input class="v-code-input" type="text" id="mobile_code" value="" name="mobile_code" placeholder="请输入验证码" >
+                    <a class="btn-text-message" rel="mobile" onClick="sendcode(this)">获取验证码</a>
+                </div>
+            </if>
+
+			<div class="lsu-submit">
+                <input type="hidden" name="__token__" value="{$Request.token}" />
+				<input type="button" onclick="checkSubmit()" value="提交申请">
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" charset="utf-8">
+    // 验证码切换
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&type=withdrawals&r='+Math.random());
+    }
+
+    /**
+     * 提交表单
+     * */
+    function checkSubmit(){
+        var bank_name = $.trim($('#bank_name').val());
+        var bank_card = $.trim($('#bank_card').val());
+        var realname = $.trim($('#realname').val());
+        var money = parseFloat($.trim($('#money').val()));
+        var usermoney = parseFloat({$user_money});  //用户余额
+        var verify_code = $.trim($('#verify_code').val());
+        var paypwd= $.trim($('#paypwd').val());
+
+        var mobile= $.trim($('#mobile').val());
+        var mobile_code= $.trim($('#mobile_code').val());
+        var withdrawalsCount = '{$withdrawalsCount}'; // 提现次数
+
+        //验证码 提现次数大于0才显示 =0显示手机号验证码
+        if (withdrawalsCount > 0) {
+            if(verify_code == '' ){
+                showErrorMsg('验证码不能空')
+                return false;
+            }
+        }
+        if(bank_name == '' || bank_card == '' || realname=='' || money === ''){
+            showErrorMsg("所有信息为必填")
+            return false;
+        }
+        if (withdrawalsCount==0) {
+            if (mobile === '' || mobile_code === '') {
+                showErrorMsg("所有信息为必填")
+                return false;
+            }
+        }
+        if(money > usermoney){
+            showErrorMsg("提现金额大于您的账户余额")
+            return false;
+        }
+        if(paypwd == ''){
+            showErrorMsg("请输入支付密码")
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url :"{:U('Mobile/User/withdrawals')}",
+            dataType:'json',
+            data:$('#returnform').serialize(),
+            success: function(data)
+            {
+                showErrorMsg(data.msg);
+                if(data.status == 1){
+                    window.location.href=data.url;
+                } else {
+//                    window.location.reload();
+                    verify();
+                }
+            }
+        });
+    }
+
+    $(function(){
+    	$('input[name="atype"]').click(function(){
+    		var bankstr = $(this).val();
+    		if(bankstr =='微信'){
+    			if($('#openid').val() == ''){
+    				alert('请在用户中心账号绑定里先扫码绑定微信账号');
+    				return false;
+    			}
+    		}
+    		if(bankstr != '银行卡'){
+    			$('#bank_name').val(bankstr);
+    			$('#bank_name').attr('readonly','readonly');
+    			if(bankstr == '微信'){
+    				$('#bank_card').val($('#openid').val());
+    				$('#bank_card').attr('readonly','readonly');
+    			}else{
+    				$('#bank_card').val('');
+    				$('#bank_card').removeAttr('readonly');
+    			}
+    		}else{
+    			$('#bank_name').val('');
+    			$('#bank_name').removeAttr('readonly');
+    		}
+    	})
+    });
+    /**
+     * 提示弹窗
+     * @param msg
+     */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:3});
+    }
+
+     //发送短信验证码
+    function sendcode(obj){
+        if(flag){
+            $.ajax({
+                url:'/index.php?m=Home&c=Api&a=send_validate_code&t='+Math.random() ,
+                type:'post',
+                dataType:'json',
+                data:{type:$(obj).attr('rel'),send:$.trim($('#mobile').val()), scene:6},
+                success:function(res){
+                    if(res.status==1){
+                        //成功
+                        countdown(obj)
+                        showErrorMsg(res.msg);
+                    }else{
+                        //失败
+                        showErrorMsg(res.msg);
+                    }
+                }
+            })
+        }else{
+            showErrorMsg('请输入手机号！');
+        }
+    }
+     //手机验证
+    function checkMobilePhone(mobile){
+        if(mobile == ''){
+            showErrorMsg('手机不能空');
+            flag = false;
+        }else if(checkMobile(mobile)){ //判断手机格式
+            flag = true;
+//            $.ajax({
+//                type : "GET",
+//                url:"/index.php?m=Home&c=Api&a=issetMobile",//+tab,
+//                data :{mobile:mobile},// 你的formid 搜索表单 序列化提交
+//                success: function(data)
+//                {
+//                    if(data == '0')
+//                    {
+//                        flag = true;
+//                    }else{
+//                        showErrorMsg('* 手机号已存在');
+//                        flag = false;
+//                    }
+//                }
+//            });
+        }else{
+            showErrorMsg('* 手机号码格式不正确');
+           flag = false;
+        }
+    }
+    function countdown(obj) {
+        var s = {$tpshop_config['sms_sms_time_out']};
+        //改变按钮状态
+        obj.disabled = true;
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.disabled=false;
+                obj.innerHTML='获取验证码';
+            }else{
+                if(s<=10){
+                    obj.innerHTML = '0'+ --s + '秒后再获取';
+                }else{
+                    obj.innerHTML = --s+ '秒后再获取';
+                }
+            }
+        }
+    }
+</script>
+	</body>
+</html>
